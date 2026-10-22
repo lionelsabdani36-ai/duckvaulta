@@ -308,27 +308,27 @@
             <div style="background: var(--bg-card); border: 1.5px solid #10b981; border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
                 <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981;">SMK REKAYASA TEKNOLOGI</span>
-                <h3 style="font-size: 1.3rem; margin: 8px 0; color: var(--text-white);">TKA SMK PPLG</h3>
+                <h3 style="font-size: 1.3rem; margin: 8px 0; color: var(--text-white);">TKA SMK PPLG (100 Soal)</h3>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
-                  B. Inggris Kejuruan, B. Indonesia Teknis, Matematika Komputasi, Konsentrasi PPLG (OOP, SQL, REST API, Git), & Kewirausahaan (PKK).
+                  100 Soal HOTS Nasional: B. Inggris (15), B. Indonesia (15), Matematika Komputasi (20), Konsentrasi PPLG (30), & Kewirausahaan/PKK (20).
                 </p>
                 <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px;">
-                  ⏱️ Durasi: 25 Menit &bull; 17 Butir Soal HOTS
+                  ⏱️ Durasi: 90 Menit &bull; 100 Butir Soal Standar Kemendikdasmen
                 </div>
               </div>
-              <button class="btn btn-primary start-exam-btn" data-category="pplg" style="width: 100%; background: #10b981; border-color: #10b981; color: #040812;">Mulai Ujian SMK PPLG</button>
+              <button class="btn btn-primary start-exam-btn" data-category="pplg" style="width: 100%; background: #10b981; border-color: #10b981; color: #040812;">Mulai Ujian SMK PPLG (100 Soal)</button>
             </div>
 
             <!-- Option 4: Campuran -->
             <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #a855f7;">LENGKAP 37 SOAL</span>
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #a855f7;">LENGKAP 120 SOAL</span>
                 <h3 style="font-size: 1.3rem; margin: 8px 0; color: var(--text-white);">TKA Komprehensif</h3>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
-                  Kombinasi lengkap seluruh mata pelajaran akademik Saintek, Soshum, dan Kejuruan PPLG untuk simulasi maraton mandiri.
+                  Kombinasi lengkap seluruh mata pelajaran akademik Saintek, Soshum, dan 100 Soal Kejuruan SMK PPLG untuk simulasi maraton mandiri.
                 </p>
                 <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px;">
-                  ⏱️ Durasi: 40 Menit &bull; 37 Butir Soal
+                  ⏱️ Durasi: 120 Menit &bull; 120 Butir Soal
                 </div>
               </div>
               <button class="btn btn-secondary start-exam-btn" data-category="all" style="width: 100%;">Mulai Ujian Lengkap</button>
@@ -832,7 +832,7 @@
 
         // Fetch questions from persistent API
         try {
-          const res = await fetch(`/api/tka/questions?category=${category}&mode=exam&limit=50`);
+          const res = await fetch(`/api/tka/questions?category=${category}&mode=exam&limit=150`);
           const data = await res.json();
           currentExamQuestions = data.questions || [];
         } catch (e) {
@@ -843,7 +843,7 @@
         userAnswers = {};
         flaggedQuestions.clear();
         currentQuestionIndex = 0;
-        timeRemainingSec = category === 'soshum' ? 900 : (category === 'pplg' ? 1500 : (category === 'all' ? 2400 : 1200));
+        timeRemainingSec = category === 'soshum' ? 900 : (category === 'pplg' ? 5400 : (category === 'all' ? 7200 : 1200));
 
         startTimer();
         buildQuestionNavGrid();
