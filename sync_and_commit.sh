@@ -12,8 +12,8 @@ if [ -f /var/www/duckvaulta/index.html ]; then
     cp /var/www/duckvaulta/index.html "$REPO_DIR/apps/portal/index.html"
     cp -r /var/www/duckvaulta/assets/* "$REPO_DIR/apps/portal/assets/" 2>/dev/null || true
 fi
-if [ -f /var/www/edtech/index.html ]; then
-    cp /var/www/edtech/index.html "$REPO_DIR/apps/edtech/index.html"
+if [ -d /var/www/edtech ]; then
+    cp /var/www/edtech/*.html "$REPO_DIR/apps/edtech/" 2>/dev/null || true
     cp -r /var/www/edtech/assets/* "$REPO_DIR/apps/edtech/assets/" 2>/dev/null || true
 fi
 if [ -n "$(git status --porcelain)" ]; then
@@ -26,8 +26,8 @@ fi
 # 2. Sync & Push Dedicated EdTech Repo (edtech-ai-platform)
 if [ -d "$EDTECH_REPO" ]; then
     cd "$EDTECH_REPO"
-    if [ -f /var/www/edtech/index.html ]; then
-        cp /var/www/edtech/index.html "$EDTECH_REPO/index.html"
+    if [ -d /var/www/edtech ]; then
+        cp /var/www/edtech/*.html "$EDTECH_REPO/" 2>/dev/null || true
         cp -r /var/www/edtech/assets/* "$EDTECH_REPO/assets/" 2>/dev/null || true
     fi
     if [ -n "$(git status --porcelain)" ]; then

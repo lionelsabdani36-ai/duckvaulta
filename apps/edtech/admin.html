@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Mission Control: Manajemen TKA & Pengguna | Duckvaulta</title>
+  <meta name="description" content="Konsol administrasi resmi Duckvaulta EdTech AI: Manajemen Pengguna Real, Bank Soal TKA, Analitik Tryout, dan Audit Keamanan.">
+  <link rel="icon" type="image/png" href="/assets/duck-emblem.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-void: #060913;
+      --bg-surface: #0a1120;
+      --bg-card: #0d172a;
+      --bg-card-hover: #132038;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-accent: rgba(245, 158, 11, 0.35);
+
+      --cyan-primary: #00d2ff;
+      --amber-accent: #f59e0b;
+      --emerald-live: #10b981;
+      --rose-alert: #f43f5e;
+
+      --text-white: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    body { background-color: var(--bg-void); color: var(--text-white); font-family: var(--font-sans); min-height: 100vh; display: flex; flex-direction: column; }
+    
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 20px; width: 100%; }
+
+    header.topbar {
+      height: 70px;
+      background: rgba(6, 9, 19, 0.94);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+    }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-white); }
+    .brand-logo { width: 38px; height: 38px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.05); border: 1px solid var(--border-accent); display: flex; align-items: center; justify-content: center; }
+    .brand-logo img { width: 30px; height: 30px; }
+    .brand-name { font-weight: 800; font-size: 1.15rem; }
+    .brand-tag { font-size: 0.68rem; font-family: var(--font-mono); color: var(--amber-accent); background: rgba(245, 158, 11, 0.08); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-accent); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; min-height: 38px; font-size: 0.85rem; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer; text-decoration: none; border: none; transition: all 0.2s ease; }
+    .btn-primary { background: var(--amber-accent); color: #040812; border: 1px solid var(--amber-accent); }
+    .btn-primary:hover { background: #fbbf24; transform: translateY(-1px); }
+    .btn-secondary { background: var(--bg-surface); color: var(--text-white); border: 1px solid var(--border-medium); }
+    .btn-secondary:hover { background: var(--bg-card); border-color: var(--amber-accent); }
+
+    .card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 10px; }
+    .card-title { font-size: 1.25rem; font-weight: 800; color: var(--text-white); display: flex; align-items: center; gap: 10px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+    .stat-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 20px; position: relative; }
+    .stat-card-val { font-size: 2.2rem; font-weight: 900; font-family: var(--font-mono); color: var(--text-white); line-height: 1; margin: 8px 0 4px; }
+    .stat-card-label { font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-white); margin-bottom: 6px; }
+    .form-input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 14px; color: var(--text-white); font-size: 0.9rem; font-family: var(--font-sans); }
+    .form-input:focus { border-color: var(--amber-accent); outline: none; }
+    textarea.form-input { resize: vertical; min-height: 90px; }
+
+    /* Auth Overlay */
+    .admin-auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .admin-auth-box { background: var(--bg-surface); border: 1.5px solid var(--amber-accent); border-radius: var(--radius-lg); width: 100%; max-width: 460px; padding: 32px; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; }
+    th { padding: 12px; border-bottom: 1px solid var(--border-medium); color: var(--text-muted); font-family: var(--font-mono); font-size: 0.75rem; }
+    td { padding: 12px; border-bottom: 1px solid var(--border-subtle); }
+
+    .q-item-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; margin-bottom: 14px; }
+    .q-item-header { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px; }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Header -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="/" class="brand">
+        <div class="brand-logo">
+          <img src="/assets/duck-emblem.png" alt="Duckvaulta">
+        </div>
+        <div>
+          <span class="brand-name">Duckvaulta</span>
+          <span class="brand-tag">ADMIN MISSION CONTROL</span>
+        </div>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--emerald-live);" id="admin-status-badge">
+          ● Sistem Terhubung
+        </span>
+        <button class="btn btn-secondary" id="admin-logout-btn" style="min-height: 34px; padding: 6px 12px; font-size: 0.78rem;">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="flex: 1; padding: 32px 0 60px;">
+    <div class="container">
+
+      <!-- Metrics Row -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-card-label">Siswa Terdaftar</span>
+          <div class="stat-card-val" id="metric-users" style="color: var(--cyan-primary);">0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Real persistent database</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-label">Bank Soal TKA</span>
+          <div class="stat-card-val" id="metric-questions" style="color: var(--amber-accent);">0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Saintek & Soshum HOTS</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-label">Tryout Diselesaikan</span>
+          <div class="stat-card-val" id="metric-tryouts" style="color: var(--emerald-live);">0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Total sesi ujian siswa</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-label">Rata-Rata Skor UTBK</span>
+          <div class="stat-card-val" id="metric-avg-score" style="color: #a855f7;">0</div>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Skala 200–1000 IRT</span>
+        </div>
+      </div>
+
+      <!-- Section 1: Daftar Pengguna Real -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span>👥</span> Manajemen Pengguna Real (Siswa Terdaftar)</h2>
+          <button class="btn btn-secondary" id="btn-refresh-admin" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">
+            🔄 Refresh Data
+          </button>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 18px;">
+          Daftar seluruh siswa yang mendaftar secara real di database sistem Duckvaulta EdTech.
+        </p>
+
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>NAMA SISWA</th>
+                <th>EMAIL</th>
+                <th>TARGET PTN</th>
+                <th>STREAK</th>
+                <th>XP POIN</th>
+                <th>TRYOUT</th>
+                <th>SKOR TERTINGGI</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">Memuat data pengguna...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 2: Manajemen Bank Soal TKA & Tambah Soal Baru -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span>📝</span> Tambah Butir Soal TKA Baru ke Bank Soal</h2>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--amber-accent);">Otoritas Konten Administrator</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 20px;">
+          Gunakan formulir ini untuk memperluas bank soal TKA di server database. Soal yang ditambahkan akan langsung dapat dikerjakan oleh siswa pada menu Tryout.
+        </p>
+
+        <form id="add-question-form" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px; margin-bottom: 28px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Rumpun Ujian</label>
+              <select class="form-input" id="new-q-cat" required>
+                <option value="saintek">TKA Saintek (IPA)</option>
+                <option value="soshum">TKA Soshum (IPS)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mata Pelajaran</label>
+              <input type="text" class="form-input" id="new-q-subj" required placeholder="Contoh: Matematika IPA / Fisika / Ekonomi">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topik Materi</label>
+              <input type="text" class="form-input" id="new-q-topic" required placeholder="Contoh: Kalkulus / Termodinamika">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tingkat Kesulitan & Tahun</label>
+              <input type="text" class="form-input" id="new-q-level" value="HOTS • UTBK 2026">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Teks Pertanyaan Soal</label>
+            <textarea class="form-input" id="new-q-text" required placeholder="Tuliskan butir soal lengkap dengan konteks dan datanya..."></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label">Opsi A</label>
+              <input type="text" class="form-input" id="new-opt-a" required placeholder="Pilihan jawaban A">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Opsi B</label>
+              <input type="text" class="form-input" id="new-opt-b" required placeholder="Pilihan jawaban B">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Opsi C</label>
+              <input type="text" class="form-input" id="new-opt-c" required placeholder="Pilihan jawaban C">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Opsi D</label>
+              <input type="text" class="form-input" id="new-opt-d" required placeholder="Pilihan jawaban D">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label class="form-label">Opsi E</label>
+              <input type="text" class="form-input" id="new-opt-e" required placeholder="Pilihan jawaban E">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 140px 1fr; gap: 14px; margin-bottom: 18px;">
+            <div class="form-group">
+              <label class="form-label">Kunci Jawaban</label>
+              <select class="form-input" id="new-q-correct" required style="font-weight: 800; color: var(--emerald-live);">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pembahasan Mendalam (Pedagogical Steps)</label>
+              <textarea class="form-input" id="new-q-expl" required placeholder="Langkah-langkah penyelesaian rinci dan rumus yang digunakan..."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="min-height: 44px; padding: 0 24px;">
+            + Simpan Soal ke Bank Data Server
+          </button>
+          <div id="add-q-status" style="margin-top: 12px; font-size: 0.85rem; display: none;"></div>
+        </form>
+
+        <!-- Question Bank Viewer -->
+        <div class="card-header" style="border-top: 1px solid var(--border-subtle); padding-top: 20px;">
+          <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Bank Soal Tersimpan</h3>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-secondary filter-q-btn active" data-filter="all" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Semua</button>
+            <button class="btn btn-secondary filter-q-btn" data-filter="saintek" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Saintek</button>
+            <button class="btn btn-secondary filter-q-btn" data-filter="soshum" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Soshum</button>
+          </div>
+        </div>
+        <div id="questions-list-container" style="max-height: 500px; overflow-y: auto; padding-right: 6px;">
+          <!-- Questions cards rendered here -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Admin Login Modal -->
+  <div class="admin-auth-overlay" id="admin-auth-modal" style="display: none;">
+    <div class="admin-auth-box">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+        <span style="color: var(--amber-accent); font-size: 1.3rem;">🛡️</span>
+        <h3 style="font-size: 1.3rem; font-weight: 800;">Otentikasi Administrator</h3>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+        Masukkan token otentikasi resmi untuk mengakses konsol kontrol sistem Duckvaulta.
+      </p>
+
+      <button class="btn btn-secondary" id="admin-autofill-btn" style="width: 100%; margin-bottom: 18px; color: var(--amber-accent); border-color: var(--border-accent);">
+        🔑 Klik untuk Isi Kunci Admin Demo Otomatis
+      </button>
+
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label class="form-label">ID Administrator</label>
+          <input type="text" class="form-input" id="admin-input-id" required value="admin@duckvaulta.ai.id">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Token Keamanan</label>
+          <input type="password" class="form-input" id="admin-input-token" required placeholder="••••••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 10px;">
+          Verifikasi Otoritas Admin
+        </button>
+      </form>
+      <div id="admin-login-status" style="margin-top: 14px; font-size: 0.85rem; display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let adminToken = localStorage.getItem('duckvaulta_admin_token') || null;
+      let cachedQuestions = [];
+
+      const authModal = document.getElementById('admin-auth-modal');
+
+      async function verifyAdminAuth() {
+        if (!adminToken) {
+          authModal.style.display = 'flex';
+          return;
+        }
+        try {
+          const res = await fetch('/api/admin/overview', {
+            headers: { 'Authorization': `Bearer ${adminToken}` }
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            authModal.style.display = 'none';
+            renderDashboard(data);
+            loadQuestions();
+          } else {
+            localStorage.removeItem('duckvaulta_admin_token');
+            adminToken = null;
+            authModal.style.display = 'flex';
+          }
+        } catch(e) {
+          authModal.style.display = 'flex';
+        }
+      }
+
+      document.getElementById('admin-autofill-btn').addEventListener('click', () => {
+        document.getElementById('admin-input-id').value = 'admin@duckvaulta.ai.id';
+        document.getElementById('admin-input-token').value = 'sec-token-duckvaulta-2026';
+      });
+
+      document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const adminId = document.getElementById('admin-input-id').value.trim();
+        const token = document.getElementById('admin-input-token').value.trim();
+        const statusEl = document.getElementById('admin-login-status');
+
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--cyan-primary)';
+        statusEl.textContent = 'Memverifikasi hak otorisasi...';
+
+        try {
+          const res = await fetch('/api/auth/login/admin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminId, token })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            adminToken = data.token;
+            localStorage.setItem('duckvaulta_admin_token', adminToken);
+            authModal.style.display = 'none';
+            verifyAdminAuth();
+          } else {
+            statusEl.style.color = 'var(--rose-alert)';
+            statusEl.textContent = data.error || 'Otentikasi admin gagal.';
+          }
+        } catch(err) {
+          statusEl.style.color = 'var(--rose-alert)';
+          statusEl.textContent = 'Gagal menghubungi server otentikasi.';
+        }
+      });
+
+      document.getElementById('admin-logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('duckvaulta_admin_token');
+        adminToken = null;
+        authModal.style.display = 'flex';
+      });
+
+      function renderDashboard(data) {
+        document.getElementById('metric-users').textContent = data.stats.totalUsers;
+        document.getElementById('metric-questions').textContent = data.stats.totalQuestions;
+        document.getElementById('metric-tryouts').textContent = data.stats.totalTryouts;
+        document.getElementById('metric-avg-score').textContent = data.stats.averageScore;
+
+        const tbody = document.getElementById('users-tbody');
+        tbody.innerHTML = '';
+        data.users.forEach(u => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="font-weight: 700; color: var(--text-white);">${u.name}</td>
+            <td style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan-primary);">${u.email}</td>
+            <td>${u.targetPtn || 'Belum diatur'}</td>
+            <td>🔥 ${u.streak || 1} Hari</td>
+            <td>⭐ ${u.xp || 100}</td>
+            <td>${u.tryoutsCount} Sesi</td>
+            <td style="font-family: var(--font-mono); font-weight: 800; color: var(--emerald-live);">${u.bestScore || 0}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      async function loadQuestions() {
+        try {
+          const res = await fetch('/api/tka/questions?mode=study&limit=50');
+          const data = await res.json();
+          cachedQuestions = data.questions || [];
+          renderQuestionsList(cachedQuestions);
+        } catch(e) {}
+      }
+
+      function renderQuestionsList(questions) {
+        const container = document.getElementById('questions-list-container');
+        container.innerHTML = '';
+        questions.forEach((q, idx) => {
+          const card = document.createElement('div');
+          card.className = 'q-item-card';
+          card.innerHTML = `
+            <div class="q-item-header">
+              <span>NO. ${idx + 1} &bull; ${q.subject} (${q.topic})</span>
+              <span style="color: var(--amber-accent); font-weight: bold;">KUNCI: ${q.correct}</span>
+            </div>
+            <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-white); margin-bottom: 8px;">${q.question}</div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); background: var(--bg-surface); padding: 8px 12px; border-radius: 4px;">
+              <strong>Pembahasan:</strong> ${q.explanation}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      document.querySelectorAll('.filter-q-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-q-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.getAttribute('data-filter');
+          if (filter === 'all') {
+            renderQuestionsList(cachedQuestions);
+          } else {
+            renderQuestionsList(cachedQuestions.filter(q => q.category === filter));
+          }
+        });
+      });
+
+      // Handle Add New Question
+      document.getElementById('add-question-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const statusEl = document.getElementById('add-q-status');
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--cyan-primary)';
+        statusEl.textContent = 'Menyimpan soal ke server...';
+
+        const payload = {
+          category: document.getElementById('new-q-cat').value,
+          subject: document.getElementById('new-q-subj').value.trim(),
+          topic: document.getElementById('new-q-topic').value.trim(),
+          level: document.getElementById('new-q-level').value.trim(),
+          question: document.getElementById('new-q-text').value.trim(),
+          options: [
+            { key: 'A', text: document.getElementById('new-opt-a').value.trim() },
+            { key: 'B', text: document.getElementById('new-opt-b').value.trim() },
+            { key: 'C', text: document.getElementById('new-opt-c').value.trim() },
+            { key: 'D', text: document.getElementById('new-opt-d').value.trim() },
+            { key: 'E', text: document.getElementById('new-opt-e').value.trim() }
+          ],
+          correct: document.getElementById('new-q-correct').value,
+          explanation: document.getElementById('new-q-expl').value.trim()
+        };
+
+        try {
+          const res = await fetch('/api/admin/questions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${adminToken}`
+            },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            statusEl.style.color = 'var(--emerald-live)';
+            statusEl.textContent = '✓ Soal baru berhasil disimpan ke database!';
+            document.getElementById('add-question-form').reset();
+            verifyAdminAuth();
+          } else {
+            statusEl.style.color = 'var(--rose-alert)';
+            statusEl.textContent = data.error || 'Gagal menyimpan soal.';
+          }
+        } catch(err) {
+          statusEl.style.color = 'var(--rose-alert)';
+          statusEl.textContent = 'Terjadi kesalahan jaringan saat menyimpan soal.';
+        }
+      });
+
+      document.getElementById('btn-refresh-admin').addEventListener('click', verifyAdminAuth);
+
+      // Verify on mount
+      verifyAdminAuth();
+    });
+  </script>
+</body>
+</html>

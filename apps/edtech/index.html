@@ -1359,6 +1359,7 @@
 
       <!-- Center: Links -->
       <ul class="nav-links">
+        <li><a href="/user.html" class="nav-link" style="color: var(--amber-accent); font-weight: 700;">Simulasi TKA 🔥</a></li>
         <li><a href="#fitur" class="nav-link">Fitur AI</a></li>
         <li><a href="#demo" class="nav-link">Coba Demo</a></li>
         <li><a href="#devlog" class="nav-link">Devlog Harian</a></li>
@@ -1369,14 +1370,14 @@
 
       <!-- Right: Auth Action Buttons -->
       <div class="nav-actions">
-        <button class="btn-nav-login" id="open-user-login-btn">
+        <a href="/user.html" class="btn-nav-login" id="open-user-login-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span>Masuk Siswa</span>
-        </button>
-        <button class="btn-nav-admin" id="open-admin-login-btn">
+        </a>
+        <a href="/admin.html" class="btn-nav-admin" id="open-admin-login-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span>Admin Portal</span>
-        </button>
+        </a>
         <button class="mobile-toggle" id="mobile-toggle" aria-label="Buka menu navigasi" aria-expanded="false">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
         </button>
@@ -1386,11 +1387,13 @@
 
   <!-- Mobile Dropdown Menu -->
   <div class="mobile-menu" id="mobile-menu">
+    <a href="/user.html" class="mobile-link" style="color: var(--amber-accent);"><span>🎯 Simulasi Ujian TKA</span><span>→</span></a>
     <a href="#fitur" class="mobile-link"><span>Fitur AI Belajar</span><span>→</span></a>
     <a href="#demo" class="mobile-link"><span>Coba Demo Interaktif</span><span>→</span></a>
     <a href="#devlog" class="mobile-link"><span>Devlog Harian</span><span>→</span></a>
     <a href="#data" class="mobile-link"><span>Data & Metrik</span><span>→</span></a>
     <a href="#bisnis" class="mobile-link"><span>Model Bisnis Digital</span><span>→</span></a>
+    <a href="/admin.html" class="mobile-link" style="color: var(--cyan-primary);"><span>🛡️ Admin Mission Control</span><span>→</span></a>
     <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>3D Virtual Office</span><span>↗</span></a>
   </div>
 
@@ -1409,12 +1412,12 @@
             Transformasi materi sekolah, modul kuliah, dokumen PDF tebal, hingga video penjelasan menjadi ringkasan poin inti, smart flashcards, dan kuis latihan interaktif dalam hitungan detik.
           </p>
           <div class="hero-actions">
-            <button class="btn btn-primary" id="hero-start-btn">
-              <span>Mulai Belajar Sekarang</span>
+            <a href="/user.html" class="btn btn-primary" id="hero-start-btn">
+              <span>Mulai Belajar & Tryout TKA</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-            <a href="#demo" class="btn btn-secondary">
-              <span>Coba Demo Interaktif</span>
+            </a>
+            <a href="#tka-preview" class="btn btn-secondary">
+              <span>Lihat Bank Soal TKA</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </a>
           </div>
@@ -1547,6 +1550,75 @@
               Visualisasikan keterkaitan antar konsep rumit secara spasial dengan diagram hierarkis otomatis agar alur pemahaman konsep tidak terputus-putus.
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modul Persiapan TKA (Tes Kemampuan Akademik) -->
+  <section id="tka-preview" style="background: rgba(10, 17, 32, 0.6); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker" style="color: var(--amber-accent);">PERSIAPAN SELEKSI MASUK PTN & KEDINASAN</span>
+        <h2 class="section-title">Simulasi Ujian TKA (Tes Kemampuan Akademik)</h2>
+        <p class="section-desc">
+          Latihan intensif bank soal HOTS terstandarisasi untuk kelompok Saintek & Soshum, dilengkapi timer hitung mundur, lembar penilaian IRT (200–1000), serta lembar pembahasan analitis mendalam.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 36px;">
+        <!-- Card 1: Saintek -->
+        <div style="background: var(--bg-card); border: 1.5px solid var(--border-accent); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan-primary); background: rgba(0,210,255,0.08); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border-accent);">RUMPUN SAINTEK</span>
+              <span style="font-size: 0.75rem; color: var(--emerald-live); font-family: var(--font-mono);">13 Soal HOTS</span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-white); margin-bottom: 8px;">TKA Saintek (IPA)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+              Mencakup 4 mata pelajaran esensial: <strong>Matematika IPA</strong> (Kalkulus, Peluang, Matriks), <strong>Fisika</strong> (Kinematika, Optik, Termodinamika), <strong>Kimia</strong> (Stoikiometri, Oksidasi, Larutan Asam Basa), dan <strong>Biologi</strong> (Sel, Genetika Populasi, Metabolisme).
+            </p>
+          </div>
+          <a href="/user.html" class="btn btn-primary" style="width: 100%;">
+            <span>Mulai Tryout Saintek</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Card 2: Soshum -->
+        <div style="background: var(--bg-card); border: 1.5px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--amber-accent); background: rgba(245, 158, 11, 0.08); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(245, 158, 11, 0.3);">RUMPUN SOSHUM</span>
+              <span style="font-size: 0.75rem; color: var(--amber-accent); font-family: var(--font-mono);">7 Soal HOTS</span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-white); margin-bottom: 8px;">TKA Soshum (IPS)</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+              Mencakup 4 mata pelajaran sosial humaniora: <strong>Ekonomi</strong> (Neraca Pembayaran, Kebijakan Moneter BI), <strong>Geografi</strong> (Penginderaan Jauh, El Nino), <strong>Sosiologi</strong> (Resolusi Konflik & Integrasi), dan <strong>Sejarah</strong> (Pergerakan Nasional & Diplomasi).
+            </p>
+          </div>
+          <a href="/user.html" class="btn btn-primary" style="width: 100%; background: var(--amber-accent); border-color: var(--amber-accent);">
+            <span>Mulai Tryout Soshum</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- Card 3: Portal Admin & Manajemen Soal -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #a855f7; background: rgba(168, 85, 247, 0.08); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(168, 85, 247, 0.3);">ADMIN KONSOL</span>
+              <span style="font-size: 0.75rem; color: var(--emerald-live); font-family: var(--font-mono);">Real Persistence</span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-white); margin-bottom: 8px;">Manajemen Soal & Pengguna</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+              Pengajar dan administrator dapat memantau pendaftaran siswa real, riwayat tryout, skor rata-rata, serta menambahkan butir soal TKA baru langsung dari antarmuka web.
+            </p>
+          </div>
+          <a href="/admin.html" class="btn btn-secondary" style="width: 100%;">
+            <span>Buka Konsol Admin</span>
+            <span>↗</span>
+          </a>
         </div>
       </div>
     </div>
