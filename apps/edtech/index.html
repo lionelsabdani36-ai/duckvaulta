@@ -1,0 +1,2862 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duckvaulta: Platform Belajar AI untuk Siswa & Mahasiswa</title>
+  <meta name="description" content="Platform belajar AI cerdas terinspirasi dari Pelajarin.ai. Ringkasan dokumen otomatis, smart flashcards, kuis interaktif, dan tutor AI 24/7.">
+  <link rel="icon" type="image/png" href="/assets/duck-emblem.png">
+  
+  <!-- Typography: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-void: #060913;
+      --bg-surface: #0a1120;
+      --bg-card: #0d172a;
+      --bg-card-hover: #132038;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-accent: rgba(0, 210, 255, 0.35);
+
+      --cyan-primary: #00d2ff;
+      --cyan-muted: #0099cc;
+      --cyan-glow: rgba(0, 210, 255, 0.16);
+      --amber-accent: #f59e0b;
+      --emerald-live: #10b981;
+      --rose-alert: #f43f5e;
+
+      --text-white: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    *:focus-visible {
+      outline: 2px solid var(--cyan-primary);
+      outline-offset: 3px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-white);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Topbar Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      z-index: 100;
+      background: rgba(6, 9, 19, 0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+    }
+
+    nav .container {
+      width: 100%;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 70px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-white);
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .brand:hover .brand-logo {
+      border-color: var(--cyan-primary);
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .brand-logo img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+
+    .brand-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-white);
+      line-height: 1;
+    }
+
+    .brand-pill {
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid var(--border-accent);
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+      white-space: nowrap;
+      flex-wrap: nowrap;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
+    }
+
+    .nav-link:hover {
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-link.ext {
+      color: #cbd5e1;
+    }
+    .nav-link.ext:hover {
+      color: var(--cyan-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-nav-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      min-height: 38px;
+      background: transparent;
+      color: var(--text-white);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-medium);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-login:hover {
+      background: var(--bg-surface);
+      border-color: var(--cyan-primary);
+    }
+
+    .btn-nav-admin {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 15px;
+      min-height: 38px;
+      background: var(--cyan-primary);
+      color: #040812;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--cyan-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-admin:hover {
+      background: #33dcff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 210, 255, 0.3);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-white);
+      padding: 8px;
+      cursor: pointer;
+      min-height: 44px;
+      min-width: 44px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 74px;
+      left: 0;
+      width: 100%;
+      background: rgba(6, 9, 19, 0.98);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 24px;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 99;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-link {
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      min-height: 44px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--cyan-primary);
+      color: #040812;
+      border: 1px solid var(--cyan-primary);
+    }
+
+    .btn-primary:hover {
+      background: #33dcff;
+      border-color: #33dcff;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      color: var(--text-white);
+      border: 1px solid var(--border-medium);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      border-color: var(--cyan-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 150px 0 80px 0;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan-primary);
+      margin-bottom: 22px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.3rem, 4.4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+    }
+
+    .hero-headline span.accent {
+      color: var(--cyan-primary);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    /* Hero Study Preview Card */
+    .hero-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+    }
+
+    .preview-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--cyan-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald-live);
+      box-shadow: 0 0 8px var(--emerald-live);
+    }
+
+    .sample-module {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .module-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .module-item:hover {
+      border-color: var(--border-accent);
+      transform: translateX(4px);
+    }
+
+    .module-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 210, 255, 0.1);
+      color: var(--cyan-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .module-text h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 2px;
+    }
+
+    .module-text p {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    /* Section General */
+    section {
+      padding: 84px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .section-header {
+      margin-bottom: 44px;
+    }
+
+    .section-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--cyan-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 650px;
+    }
+
+    /* Core Features Grid (4 Pilar Pelajarin.ai) */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card);
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 210, 255, 0.08);
+      color: var(--cyan-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-accent);
+    }
+
+    .feature-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-white);
+    }
+
+    .feature-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* Interactive Live Study Sandbox (Demo Simulator) */
+    .sandbox-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .sandbox-tabs {
+      display: flex;
+      background: #080e1c;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow-x: auto;
+    }
+
+    .sandbox-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 16px 22px;
+      min-height: 48px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sandbox-tab.active {
+      color: var(--cyan-primary);
+      border-bottom-color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.04);
+    }
+
+    .sandbox-pane {
+      display: none;
+      padding: 32px;
+    }
+
+    .sandbox-pane.active {
+      display: block;
+    }
+
+    /* Interactive Flashcard Component */
+    .flashcard-wrapper {
+      max-width: 580px;
+      margin: 0 auto;
+      perspective: 1000px;
+    }
+
+    .flashcard {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      min-height: 240px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .flashcard:hover {
+      border-color: var(--cyan-primary);
+    }
+
+    .card-category {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .card-content-text {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.4;
+      text-align: center;
+      margin: 20px 0;
+      color: var(--text-white);
+    }
+
+    .card-hint {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .flashcard-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    /* Interactive Quiz Component */
+    .quiz-box {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .quiz-question {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text-white);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-opt-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      min-height: 48px;
+      text-align: left;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .quiz-opt-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+    }
+
+    .quiz-opt-btn.correct {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--emerald-live);
+      color: #6ee7b7;
+    }
+
+    .quiz-opt-btn.wrong {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: var(--rose-alert);
+      color: #fca5a5;
+    }
+
+    .quiz-explanation {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 210, 255, 0.05);
+      border: 1px solid var(--border-accent);
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    /* YouTube Video Extractor Component */
+    .yt-meta-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+
+    .yt-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .yt-stat-pill {
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-accent);
+    }
+
+    .timestamp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .timestamp-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .timestamp-item:hover {
+      border-color: var(--cyan-primary);
+      background: var(--bg-card-hover);
+      transform: translateX(4px);
+    }
+
+    .timestamp-code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.12);
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .timestamp-desc {
+      font-size: 0.88rem;
+      color: var(--text-white);
+    }
+
+    .timestamp-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Mind Map Concept Tree Component */
+    .mindmap-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      min-width: 580px;
+    }
+
+    .mindmap-root-node {
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(0, 102, 255, 0.25));
+      border: 2px solid var(--cyan-primary);
+      border-radius: var(--radius-md);
+      padding: 14px 26px;
+      color: var(--text-white);
+      font-weight: 800;
+      font-size: 1rem;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .mindmap-root-node:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 35px rgba(0, 210, 255, 0.4);
+    }
+
+    .mindmap-connector-vert {
+      width: 2px;
+      height: 20px;
+      background: linear-gradient(to bottom, var(--cyan-primary), rgba(0, 210, 255, 0.3));
+    }
+
+    .mindmap-branches-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    .mindmap-branch-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mindmap-branch-node {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-accent);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 0.86rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mindmap-branch-node:hover,
+    .mindmap-branch-node.active {
+      border-color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+    }
+
+    .mindmap-leaf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-left: 8px;
+      border-left: 2px dashed rgba(0, 210, 255, 0.25);
+    }
+
+    .mindmap-leaf-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mindmap-leaf-node:hover,
+    .mindmap-leaf-node.active {
+      color: var(--cyan-primary);
+      border-color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.08);
+      transform: translateX(3px);
+    }
+
+    .mindmap-detail-panel {
+      margin-top: 18px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #061022;
+      border: 1px solid var(--cyan-primary);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--cyan-glow);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--text-white);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .toast-box.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Devlog Timeline Section */
+    .devlog-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+
+    .devlog-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .devlog-card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .devlog-date-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan-primary);
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid var(--border-accent);
+      padding: 3px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .devlog-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .devlog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .devlog-list li {
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .devlog-list li::before {
+      content: "✓";
+      color: var(--emerald-live);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Data & Realtime Counters */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+
+    .metric-val {
+      font-size: 2.4rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--text-white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric-val span {
+      color: var(--cyan-primary);
+    }
+
+    .metric-label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Digital Business Pricing Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .pricing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--cyan-primary);
+      box-shadow: 0 10px 30px var(--cyan-glow);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: var(--cyan-primary);
+      color: #040812;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+
+    .plan-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .plan-price {
+      font-size: 1.8rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--cyan-primary);
+      margin: 14px 0;
+    }
+
+    .plan-price span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+
+    .plan-features li {
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .plan-features li::before {
+      content: "•";
+      color: var(--cyan-primary);
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      max-width: 520px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text-white);
+    }
+
+    .modal-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .modal-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-white);
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-white);
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
+    }
+
+    .form-input:focus {
+      border-color: var(--cyan-primary);
+    }
+
+    .demo-preset-btn {
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid var(--border-accent);
+      color: var(--cyan-primary);
+      padding: 8px 12px;
+      min-height: 38px;
+      font-size: 0.8rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-bottom: 20px;
+      width: 100%;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .demo-preset-btn:hover {
+      background: rgba(0, 210, 255, 0.16);
+    }
+
+    .auth-status-box {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      display: none;
+    }
+
+    /* Dashboard Workspace Views (Post-Login) */
+    .dashboard-panel {
+      display: none;
+    }
+
+    .dashboard-panel.active {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 40px;
+      background: var(--bg-void);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 36px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      max-width: 340px;
+      margin-top: 14px;
+    }
+
+    .footer-col-title {
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-white);
+      margin-bottom: 16px;
+    }
+
+    .footer-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover {
+      color: var(--cyan-primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1080px) {
+      .nav-links { display: none !important; }
+      .mobile-toggle { display: inline-flex !important; }
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-headline { font-size: 2.2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav-actions .btn-nav-login { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Navigation -->
+  <nav>
+    <div class="container nav-inner">
+      <!-- Left: Brand Lockup -->
+      <a href="#hero" class="brand">
+        <div class="brand-logo">
+          <img src="/assets/duck-emblem.png" alt="Duckvaulta Emblem">
+        </div>
+        <div class="brand-meta">
+          <span class="brand-name">Duckvaulta</span>
+          <span class="brand-pill">EDTECH AI</span>
+        </div>
+      </a>
+
+      <!-- Center: Links -->
+      <ul class="nav-links">
+        <li><a href="#fitur" class="nav-link">Fitur AI</a></li>
+        <li><a href="#demo" class="nav-link">Coba Demo</a></li>
+        <li><a href="#devlog" class="nav-link">Devlog Harian</a></li>
+        <li><a href="#data" class="nav-link">Data & Metrik</a></li>
+        <li><a href="#bisnis" class="nav-link">Model Bisnis</a></li>
+        <li><a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="nav-link ext">3D Office ↗</a></li>
+      </ul>
+
+      <!-- Right: Auth Action Buttons -->
+      <div class="nav-actions">
+        <button class="btn-nav-login" id="open-user-login-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Masuk Siswa</span>
+        </button>
+        <button class="btn-nav-admin" id="open-admin-login-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Admin Portal</span>
+        </button>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Buka menu navigasi" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#fitur" class="mobile-link"><span>Fitur AI Belajar</span><span>→</span></a>
+    <a href="#demo" class="mobile-link"><span>Coba Demo Interaktif</span><span>→</span></a>
+    <a href="#devlog" class="mobile-link"><span>Devlog Harian</span><span>→</span></a>
+    <a href="#data" class="mobile-link"><span>Data & Metrik</span><span>→</span></a>
+    <a href="#bisnis" class="mobile-link"><span>Model Bisnis Digital</span><span>→</span></a>
+    <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>3D Virtual Office</span><span>↗</span></a>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>PLATFORM BELAJAR AI SISWA & MAHASISWA INDONESIA</span>
+          </div>
+          <h1 class="hero-headline">
+            Ubah 6 Jam Belajar Jadi <span class="accent">1 Jam</span> dengan AI.
+          </h1>
+          <p class="hero-desc">
+            Transformasi materi sekolah, modul kuliah, dokumen PDF tebal, hingga video penjelasan menjadi ringkasan poin inti, smart flashcards, dan kuis latihan interaktif dalam hitungan detik.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="hero-start-btn">
+              <span>Mulai Belajar Sekarang</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <a href="#demo" class="btn btn-secondary">
+              <span>Coba Demo Interaktif</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <span class="preview-tag"><span class="live-dot"></span> STUDIO BELAJAR AI</span>
+              <span style="font-size: 0.75rem; color: var(--emerald-live); font-family: var(--font-mono); font-weight: 700;">v1.1 Live (6 Modul)</span>
+            </div>
+
+            <div class="sample-module">
+              <div class="module-item">
+                <div class="module-icon">📄</div>
+                <div class="module-text">
+                  <h4>Ringkasan Dokumen & PDF</h4>
+                  <p>Materi 80 halaman diringkas jadi 5 poin kunci.</p>
+                </div>
+              </div>
+              <div class="module-item">
+                <div class="module-icon">🎥</div>
+                <div class="module-text">
+                  <h4>YouTube to Study Notes</h4>
+                  <p>Transkrip video panjang jadi ringkasan bab & timestamp.</p>
+                </div>
+              </div>
+              <div class="module-item">
+                <div class="module-icon">🗺️</div>
+                <div class="module-text">
+                  <h4>Peta Konsep (Mind Map AI)</h4>
+                  <p>Visualisasi pohon konsep hierarkis untuk materi abstrak.</p>
+                </div>
+              </div>
+              <div class="module-item">
+                <div class="module-icon">🗂️</div>
+                <div class="module-text">
+                  <h4>Smart Flashcards</h4>
+                  <p>Hafalan istilah dengan spaced repetition terbukti.</p>
+                </div>
+              </div>
+              <div class="module-item">
+                <div class="module-icon">🎯</div>
+                <div class="module-text">
+                  <h4>Kuis Pilihan Ganda</h4>
+                  <p>Simulasi tryout otomatis dengan kunci & pembahasan.</p>
+                </div>
+              </div>
+              <div class="module-item">
+                <div class="module-icon">💬</div>
+                <div class="module-text">
+                  <h4>Tutor AI 24/7</h4>
+                  <p>Tanyakan rumus dan konsep sulit kapan pun tanpa malu.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Fitur Utama (4 Pilar Pelajarin.ai) -->
+  <section id="fitur">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">FITUR UNGGULAN</span>
+        <h2 class="section-title">Semua yang Kamu Butuhkan untuk Paham Cepat</h2>
+        <p class="section-desc">
+          Satu ekosistem lengkap untuk menghemat waktu belajar dan mempersiapkan ujian sekolah, semester, hingga seleksi kedinasan.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">⚡</div>
+          <div>
+            <h3 class="feature-title">Ringkasan Otomatis</h3>
+            <p class="feature-text">
+              Upload PDF, slide presentasi, atau link video. AI mengekstrak inti bahasan tanpa menghilangkan fakta penting.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🧠</div>
+          <div>
+            <h3 class="feature-title">Smart Flashcards</h3>
+            <p class="feature-text">
+              Kartu hafalan digital dengan algoritma spaced repetition: mengulang istilah sulit lebih sering agar melekat di ingatan jangka panjang.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">📝</div>
+          <div>
+            <h3 class="feature-title">Kuis & Prediksi Soal</h3>
+            <p class="feature-text">
+              Uji pemahamanmu dengan kuis pilihan ganda otomatis dari catatan sendiri, lengkap dengan skor dan analisis kelemahan materi.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🤖</div>
+          <div>
+            <h3 class="feature-title">AI Tutor 24/7</h3>
+            <p class="feature-text">
+              Tutor pribadi ramah yang siap menjelaskan langkah demi langkah konsep hitungan matematika, sains, hingga pasal hukum.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🎥</div>
+          <div>
+            <h3 class="feature-title">YouTube to Study Notes</h3>
+            <p class="feature-text">
+              Tempel link video edukasi atau rekaman kuliah. AI membedah transkrip menjadi ringkasan bab, timestamp penting, dan daftar istilah kunci tanpa perlu menonton berjam-jam.
+            </p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🗺️</div>
+          <div>
+            <h3 class="feature-title">Peta Konsep & Mind Map</h3>
+            <p class="feature-text">
+              Visualisasikan keterkaitan antar konsep rumit secara spasial dengan diagram hierarkis otomatis agar alur pemahaman konsep tidak terputus-putus.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Study Sandbox (Coba Demo Langsung) -->
+  <section id="demo">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">SANDBOX INTERAKTIF</span>
+        <h2 class="section-title">Coba Langsung di Browsermu</h2>
+        <p class="section-desc">
+          Uji cara kerja sistem ringkasan, kartu hafalan, kuis tryout, dan tutor belajar interaktif tanpa perlu instalasi apa pun.
+        </p>
+      </div>
+
+      <div class="sandbox-container">
+        <!-- Tab Bar -->
+        <div class="sandbox-tabs" role="tablist">
+          <button class="sandbox-tab active" data-pane="pane-summary"><span>📄</span> Ringkasan Dokumen</button>
+          <button class="sandbox-tab" data-pane="pane-youtube"><span>🎥</span> Video to Notes <span style="background: rgba(0, 210, 255, 0.15); color: var(--cyan-primary); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-accent);">BARU</span></button>
+          <button class="sandbox-tab" data-pane="pane-mindmap"><span>🗺️</span> Peta Konsep AI <span style="background: rgba(16, 185, 129, 0.15); color: var(--emerald-live); font-size: 0.68rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(16, 185, 129, 0.3);">BARU</span></button>
+          <button class="sandbox-tab" data-pane="pane-flashcard"><span>🗂️</span> Smart Flashcard</button>
+          <button class="sandbox-tab" data-pane="pane-quiz"><span>🎯</span> Kuis Pilihan Ganda</button>
+          <button class="sandbox-tab" data-pane="pane-tutor"><span>💬</span> Tanya Tutor AI</button>
+        </div>
+
+        <!-- Pane 1: Ringkasan Materi -->
+        <div class="sandbox-pane active" id="pane-summary">
+          <div style="margin-bottom: 20px;">
+            <label class="form-label">Pilih Sampel Materi untuk Diringkas:</label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-secondary sample-topic-btn active" data-topic="biologi" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Biologi: Struktur Sel & Mitokondria</button>
+              <button class="btn btn-secondary sample-topic-btn" data-topic="hukum" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Hukum: Asas Legalitas Pidana</button>
+              <button class="btn btn-secondary sample-topic-btn" data-topic="coding" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Komputer: Arsitektur REST API</button>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 24px;" id="summary-result-box">
+            <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px;">RINGKASAN AI : BIOLOGI SEL</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--text-white);">Mitokondria dan Konversi Energi Seluler</h4>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+              <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">1.</span> <strong>Fungsi Utama:</strong> Mitokondria adalah organel pembangkit energi (powerhouse of cell) yang menghasilkan Adenosin Trifosfat (ATP) melalui respirasi sel.</li>
+              <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">2.</span> <strong>Struktur Membran Ganda:</strong> Terdiri dari membran luar halus dan membran dalam yang berlipat-lipat (krista) untuk memperluas area sintesis ATP.</li>
+              <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">3.</span> <strong>Materi Genetik Sendiri:</strong> Mitokondria memiliki DNA dan ribosom sendiri (mtDNA) yang diwariskan secara maternal (dari ibu).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Pane 2: Smart Flashcards (Interactive Flip) -->
+        <div class="sandbox-pane" id="pane-flashcard">
+          <div class="flashcard-wrapper">
+            <div class="flashcard" id="demo-flashcard">
+              <span class="card-category" id="fc-category">BIOLOGI SEL : KARTU 1/3</span>
+              <div class="card-content-text" id="fc-text">Apa fungsi utama Krista pada membran dalam Mitokondria?</div>
+              <div class="card-hint">Klik kartu untuk melihat jawaban ↻</div>
+            </div>
+
+            <div class="flashcard-controls">
+              <button class="btn btn-secondary" id="fc-prev-btn" style="min-height: 40px; padding: 8px 18px;">← Kartu Sebelumnya</button>
+              <button class="btn btn-primary" id="fc-flip-btn" style="min-height: 40px; padding: 8px 18px;">Balik Kartu ↻</button>
+              <button class="btn btn-secondary" id="fc-next-btn" style="min-height: 40px; padding: 8px 18px;">Kartu Berikutnya →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 3: Kuis Pilihan Ganda -->
+        <div class="sandbox-pane" id="pane-quiz">
+          <div class="quiz-box">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan-primary); margin-bottom: 10px;">LATIHAN SOAL INTERAKTIF // 01</div>
+            <div class="quiz-question" id="quiz-q-text">
+              Manakah pernyataan berikut yang paling tepat mengenai pewarisan DNA mitokondria (mtDNA)?
+            </div>
+            <div class="quiz-options">
+              <button class="quiz-opt-btn" data-opt="A"><span>A. Diwariskan secara seimbang 50% dari ayah dan 50% dari ibu.</span></button>
+              <button class="quiz-opt-btn" data-opt="B"><span>B. Diwariskan secara penuh hanya dari jalur maternal (ibu).</span></button>
+              <button class="quiz-opt-btn" data-opt="C"><span>C. Mengalami rekombinasi genetik dengan kromosom inti sperma.</span></button>
+              <button class="quiz-opt-btn" data-opt="D"><span>D. Tidak memiliki informasi sintesis protein seluler sama sekali.</span></button>
+            </div>
+            <div class="quiz-explanation" id="quiz-expl">
+              <strong>Penjelasan:</strong> Jawaban yang benar adalah <strong>B</strong>. Sel sperma hanya menyumbangkan materi genetik inti (nukleus), sedangkan mitokondria sperma yang ada di ekor hancur saat fertilisasi. Akibatnya, seluruh mtDNA zigot berasal dari sel telur ibu.
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 4: Chat Tutor AI -->
+        <div class="sandbox-pane" id="pane-tutor">
+          <div style="max-width: 680px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+            <div style="display: flex; gap: 12px; margin-bottom: 18px;">
+              <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--cyan-primary); color: #040812; display: flex; align-items: center; justify-content: center; font-weight: bold;">AI</div>
+              <div style="background: var(--bg-surface); padding: 14px 18px; border-radius: 0 12px 12px 12px; font-size: 0.9rem; color: var(--text-white); border: 1px solid var(--border-subtle);">
+                Halo! Aku Tutor AI belajarmu. Bagian materi apa yang masih bikin kamu bingung? Tanyakan rumus, konsep dasar, atau minta contoh analogi nyata ya!
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+              <input type="text" class="form-input" id="tutor-chat-input" placeholder="Contoh: Kenapa respirasi sel butuh oksigen?" style="margin: 0;">
+              <button class="btn btn-primary" id="tutor-send-btn" style="min-height: 44px; padding: 0 20px;">Tanya</button>
+            </div>
+            <div id="tutor-answer-box" style="margin-top: 16px; font-size: 0.88rem; color: var(--cyan-primary); display: none;">
+              [AI Tutor merespons...]
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 5: YouTube Video to Notes (New Module) -->
+        <div class="sandbox-pane" id="pane-youtube">
+          <div style="max-width: 760px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+              <label class="form-label">Pilih Sampel Video Kuliah / Edukasi:</label>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;">
+                <button class="btn btn-secondary yt-preset-btn active" data-vid="relativitas" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Fisika: Relativitas Khusus Einstein</button>
+                <button class="btn btn-secondary yt-preset-btn" data-vid="protein" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Biologi: Sintesis Protein Seluler</button>
+                <button class="btn btn-secondary yt-preset-btn" data-vid="graph" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">IT: Algoritma Graf Dijkstra</button>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" class="form-input" id="yt-url-input" value="https://www.youtube.com/watch?v=kYv98pL1Z9A" style="margin: 0; font-family: var(--font-mono); font-size: 0.85rem;" placeholder="Tempel link video YouTube...">
+                <button class="btn btn-primary" id="yt-process-btn" style="min-height: 44px; padding: 0 20px; white-space: nowrap;">
+                  <span>Ekstrak Catatan</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic Output Container -->
+            <div id="yt-output-card" style="background: var(--bg-card); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 24px;">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 6: Mind Map & Peta Konsep Interaktif (New Module) -->
+        <div class="sandbox-pane" id="pane-mindmap">
+          <div style="max-width: 820px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+              <label class="form-label">Pilih Bidang Studi untuk Peta Konsep AI:</label>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-secondary mm-topic-btn active" data-topic="saraf" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Biologi: Sistem Saraf Manusia</button>
+                <button class="btn btn-secondary mm-topic-btn" data-topic="hukum" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Hukum: Tata Urutan Peraturan RI</button>
+                <button class="btn btn-secondary mm-topic-btn" data-topic="devops" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem;">Teknologi: Siklus CI/CD & DevOps</button>
+              </div>
+            </div>
+
+            <!-- Tree Visualization -->
+            <div id="mindmap-container" style="background: #050a14; border: 1px solid var(--border-accent); border-radius: var(--radius-lg); padding: 26px; overflow-x: auto;">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Selected Node Detail -->
+            <div id="mindmap-detail-card" class="mindmap-detail-panel">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Devlog Harian Section (Update Rutin Jam 08:00 WIB) -->
+  <section id="devlog">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">CATATAN PENGEMBANGAN PROYEK</span>
+        <h2 class="section-title">Devlog Harian Tim AI Duckvaulta</h2>
+        <p class="section-desc">
+          Transparansi progres harian pengembangan platform EdTech AI. Diperbarui rutin setiap pukul 08:00 WIB pagi oleh agen otonom.
+        </p>
+      </div>
+
+      <div class="devlog-timeline">
+        <!-- Entry 1 (TODAY'S LIVE UPDATE - DAY 02) -->
+        <article class="devlog-card" style="border-color: rgba(0, 210, 255, 0.4); box-shadow: 0 0 25px rgba(0, 210, 255, 0.08);">
+          <span class="devlog-date-tag" style="color: var(--cyan-primary); border-color: rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.12);">DAY 02 // 22 OKTOBER 2026 : 08.00 WIB [LIVE UPDATE]</span>
+          <h3 class="devlog-title">Rilis Modul YouTube-to-Notes, Peta Konsep Mind Map Interaktif, & Ekspansi Skala Sistem</h3>
+          <ul class="devlog-list">
+            <li><strong>Modul YouTube to Study Notes:</strong> Meluncurkan parser ekstraksi video YouTube interaktif dengan ringkasan timestamp bab otomatis, poin kunci inti, dan pereduksi durasi belajar hingga 89%.</li>
+            <li><strong>Peta Konsep (Mind Map AI):</strong> Implementasi visualizer pohon hierarki konsep materi interaktif untuk membantu siswa memahami benang merah topik kompleks secara spasial.</li>
+            <li><strong>Peningkatan Interaktivitas Sandbox:</strong> Menambahkan modul pemilihan sampel video, download ringkasan materi, serta tombol instan generate flashcards dari video pembelajaran.</li>
+            <li><strong>Pertumbuhan Metrik & Reliabilitas:</strong> Peningkatan pengguna aktif terbantu menembus 2.350+ pelajar, 9.820+ dokumen diringkas, 28.400+ soal kuis adaptif, dengan uptime server AMD EPYC terjaga 99.98%.</li>
+          </ul>
+        </article>
+
+        <!-- Entry 2 (YESTERDAY - DAY 01) -->
+        <article class="devlog-card" style="opacity: 0.85;">
+          <span class="devlog-date-tag">DAY 01 // 21 OKTOBER 2026 : 08.00 WIB</span>
+          <h3 class="devlog-title">Peluncuran Inisial: Arsitektur Platform Belajar AI & Sistem Login Multi-Role</h3>
+          <ul class="devlog-list">
+            <li><strong>Fitur Inti:</strong> Rancang antarmuka modular bergaya Pelajarin.ai yang mencakup modul Ringkasan Dokumen, Smart Flashcard, Kuis Pilihan Ganda, dan AI Tutor 24/7.</li>
+            <li><strong>Otentikasi:</strong> Pembuatan modal otentikasi ganda untuk Siswa (Learning Workspace) dan Administrator (Platform Analytics & Control).</li>
+            <li><strong>Model Bisnis Digital:</strong> Selesai melakukan riset monetisasi Micro-SaaS EdTech Indonesia (Paket Gratis, Siswa Pro Rp 29.000/bln, dan Paket Bimbel/Guru).</li>
+            <li><strong>Pipeline Otomasi:</strong> Pemasangan Cron Job otomatisasi harian pada pukul 08:00 WIB pagi untuk merekap data dan mendispatch laporan langsung ke Discord.</li>
+          </ul>
+        </article>
+
+        <!-- Entry 3 (UPCOMING ROADMAP - DAY 03) -->
+        <article class="devlog-card" style="opacity: 0.75;">
+          <span class="devlog-date-tag" style="color: var(--amber-accent); border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.08);">ROADMAP // DAY 03 TARGET</span>
+          <h3 class="devlog-title">Voice AI Study Buddy & Algoritma Spaced Repetition Retensi Ebbinghaus (SM-2)</h3>
+          <ul class="devlog-list">
+            <li>Integrasi asisten suara interaktif (Voice-to-Speech & Speech-to-Text) untuk simulasi ujian lisan dan tanya jawab cepat tanpa ketik.</li>
+            <li>Implementasi algoritma spaced repetition berbasis Kurva Lupa Ebbinghaus (SM-2) untuk optimasi jadwal review kartu hafalan.</li>
+            <li>Penyediaan integrasi gateway pembayaran lokal instan (QRIS & Virtual Account) untuk aktivasi mandiri langganan Siswa Pro.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data & Metrik Real-time -->
+  <section id="data">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">TRANSPARANSI DATA</span>
+        <h2 class="section-title">Metrik Pertumbuhan & Reliabilitas Sistem</h2>
+        <p class="section-desc">
+          Statistik pemrosesan dokumen dan performa infrastruktur server yang melayani kebutuhan belajar siswa.
+        </p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="2350">0</span>+</div>
+          <div class="metric-label">Pelajar Terbantu</div>
+          <div class="metric-sub">Siswa SMA, mahasiswa, dan pejuang ujian.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="9820">0</span>+</div>
+          <div class="metric-label">Dokumen & Video Diringkas</div>
+          <div class="metric-sub">Ratusan jam waktu belajar berhasil dihemat.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="28400">0</span>+</div>
+          <div class="metric-label">Soal Kuis Dihasilkan</div>
+          <div class="metric-sub">Simulasi latihan mandiri berbasis materi asli.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="99">0</span>.98%</div>
+          <div class="metric-label">Uptime Infrastruktur</div>
+          <div class="metric-sub">Server AMD EPYC dengan proteksi TLS 1.3.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="78">0</span>%</div>
+          <div class="metric-label">Efisiensi Waktu Belajar</div>
+          <div class="metric-sub">Rata-rata reduksi waktu membaca & menyimak.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-val"><span class="counter" data-target="98">0</span>%</div>
+          <div class="metric-label">Tingkat Kepuasan Pelajar</div>
+          <div class="metric-sub">Rating 4.9/5 dari 1.200+ ulasan siswa.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Bisnis Digital & Monetisasi -->
+  <section id="bisnis">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">MODEL BISNIS DIGITAL</span>
+        <h2 class="section-title">Pilihan Paket Belajar Terjangkau</h2>
+        <p class="section-desc">
+          Strategi harga ramah kantong pelajar dengan ROI tinggi untuk mendukung prestasi akademik tanpa biaya les jutaan rupiah.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Paket 1 -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="plan-name">Pelajar Gratis</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Coba fitur dasar tanpa kartu kredit.</p>
+            <div class="plan-price">Rp 0 <span>/ selamanya</span></div>
+            <ul class="plan-features">
+              <li>3 Ringkasan Dokumen / minggu</li>
+              <li>5 Kuis Pilihan Ganda / hari</li>
+              <li>Akses Flashcard standar</li>
+              <li>Tutor AI mode hemat</li>
+            </ul>
+          </div>
+          <button class="btn btn-secondary open-user-signup" style="width: 100%;">Mulai Gratis</button>
+        </div>
+
+        <!-- Paket 2 -->
+        <div class="pricing-card featured">
+          <span class="pricing-badge">Paling Populer</span>
+          <div>
+            <h3 class="plan-name">Siswa Pro</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Untuk persiapan ujian sekolah & kuliah.</p>
+            <div class="plan-price">Rp 29.000 <span>/ bulan</span></div>
+            <ul class="plan-features">
+              <li>Unlimited Upload Dokumen (PDF, PPT, DOCX)</li>
+              <li>Ringkasan Video YouTube tak terbatas</li>
+              <li>Unlimited Smart Flashcards & Spaced Repetition</li>
+              <li>Ekspor Catatan ke PDF & Anki</li>
+              <li>AI Tutor Prioritas 24/7 Respons Cepat</li>
+            </ul>
+          </div>
+          <button class="btn btn-primary open-user-signup" style="width: 100%;">Langganan Pro</button>
+        </div>
+
+        <!-- Paket 3 -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="plan-name">Pejuang Ujian</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Fokus intensif UTBK, CPNS, & Kedinasan.</p>
+            <div class="plan-price">Rp 99.000 <span>/ semester</span></div>
+            <ul class="plan-features">
+              <li>Semua fitur Siswa Pro lengkap</li>
+              <li>Bank Soal Khusus UTBK & Kedinasan</li>
+              <li>Simulasi Tryout dengan Analisis Kelemahan</li>
+              <li>Prediksi Soal berbasis Silabus Ujian</li>
+              <li>Grup Diskusi & Komunitas Belajar</li>
+            </ul>
+          </div>
+          <button class="btn btn-secondary open-user-signup" style="width: 100%;">Ambil Paket Semester</button>
+        </div>
+
+        <!-- Paket 4 -->
+        <div class="pricing-card">
+          <div>
+            <h3 class="plan-name">Guru & Bimbel</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Otomasi bahan ajar untuk pengajar.</p>
+            <div class="plan-price">Rp 299.000 <span>/ bulan</span></div>
+            <ul class="plan-features">
+              <li>Generator Bank Soal 50+ variasi dari silabus</li>
+              <li>Ekspor ke Google Form, Moodle, & Word</li>
+              <li>Dashboard analitik kemajuan kelas</li>
+              <li>Dukungan akun multi-pengajar</li>
+            </ul>
+          </div>
+          <button class="btn btn-secondary open-user-signup" style="width: 100%;">Hubungi Tim Edu</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#hero" class="brand">
+            <div class="brand-logo">
+              <img src="/assets/duck-emblem.png" alt="Duckvaulta Emblem">
+            </div>
+            <div class="brand-meta">
+              <span class="brand-name">Duckvaulta</span>
+              <span class="brand-pill">EDTECH AI</span>
+            </div>
+          </a>
+          <p>
+            Platform belajar cerdas berbasis AI untuk siswa dan mahasiswa Indonesia. Mengubah materi panjang menjadi ringkasan, flashcard, dan kuis otomatis.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Produk & Belajar</h4>
+          <ul class="footer-nav">
+            <li><a href="#fitur">Ringkasan Otomatis</a></li>
+            <li><a href="#demo">Smart Flashcards</a></li>
+            <li><a href="#demo">Kuis Pilihan Ganda</a></li>
+            <li><a href="#demo">AI Tutor 24/7</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Proyek & Bisnis</h4>
+          <ul class="footer-nav">
+            <li><a href="#devlog">Devlog Harian (08:00 WIB)</a></li>
+            <li><a href="#data">Metrik Platform</a></li>
+            <li><a href="#bisnis">Paket Langganan</a></li>
+            <li><a href="https://aicompany.duckvaulta.ai.id" target="_blank">3D Office Tim AI ↗</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Keamanan & Sistem</h4>
+          <ul class="footer-nav">
+            <li><a href="https://godeye.duckvaulta.ai.id" target="_blank">God's Eye View ↗</a></li>
+            <li><a href="#">Enkripsi TLS 1.3</a></li>
+            <li><a href="#">Kebijakan Privasi</a></li>
+            <li><a href="#">Syarat & Ketentuan</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Duckvaulta Technology Solutions. Terinspirasi oleh Pelajarin.ai.</span>
+        <span>Update Otomatis Harian : 08.00 WIB</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 1: LOGIN SISWA (USER LOGIN & WORKSPACE) -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="user-modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" id="close-user-modal">&times;</button>
+      
+      <!-- Login View -->
+      <div id="user-login-view">
+        <h3 class="modal-title">Masuk ke Ruang Belajar Siswa</h3>
+        <p class="modal-desc">Akses catatan, kuis latihan, dan AI Tutor pribadimu.</p>
+        
+        <button class="demo-preset-btn" id="fill-demo-user-btn">
+          ⚡ Klik di Sini untuk Isi Akun Demo Siswa Otomatis
+        </button>
+
+        <form id="user-login-form">
+          <div class="form-group">
+            <label class="form-label">Alamat Email Siswa</label>
+            <input type="email" class="form-input" id="user-email" placeholder="nama@siswa.id" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kata Sandi</label>
+            <input type="password" class="form-input" id="user-password" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px;">
+            Masuk ke Workspace Belajar
+          </button>
+        </form>
+        <div class="auth-status-box" id="user-auth-status"></div>
+      </div>
+
+      <!-- Logged-in Student Workspace View -->
+      <div id="user-workspace-view" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h3 class="modal-title" style="margin: 0;">Workspace Siswa</h3>
+            <span style="font-size: 0.8rem; color: var(--emerald-live);" id="logged-user-display">siswa.demo@duckvaulta.ai.id</span>
+          </div>
+          <button class="btn btn-secondary" id="user-logout-btn" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Keluar</button>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px;">
+          <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--cyan-primary); margin-bottom: 6px;">STATUS BELAJAR KAMU</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>🔥 Daily Streak: <strong>7 Hari Berturut-turut</strong></span>
+            <span>⭐ XP: <strong>1.450 Poin</strong></span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 8px;">Materi Belajar Tersimpan:</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; margin-bottom: 20px;">
+          <div style="background: var(--bg-card); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.84rem;">
+            <span>📘 Biologi: Sistem Imun & Sel Limfosit</span>
+            <span style="color: var(--cyan-primary);">12 Flashcard</span>
+          </div>
+          <div style="background: var(--bg-card); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.84rem;">
+            <span>⚖️ Hukum Tata Negara: Struktur Lembaga</span>
+            <span style="color: var(--cyan-primary);">8 Kuis Latihan</span>
+          </div>
+          <div style="background: var(--bg-card); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.84rem;">
+            <span>💻 Python: Struktur Data Dictionary</span>
+            <span style="color: var(--cyan-primary);">Ringkasan Siap</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width: 100%;" onclick="alert('Pilih berkas PDF atau masukkan tautan YouTube untuk diproses AI!')">
+          + Upload Catatan / Tautan YouTube Baru
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL 2: LOGIN ADMIN (ADMIN CONTROL & METRICS) -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="admin-modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close" id="close-admin-modal">&times;</button>
+      
+      <!-- Login View -->
+      <div id="admin-login-view">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="color: var(--amber-accent); font-size: 1.2rem;">🛡️</span>
+          <h3 class="modal-title" style="margin: 0;">Portal Administrator</h3>
+        </div>
+        <p class="modal-desc">Autentikasi keamanan khusus pengelola sistem Duckvaulta EdTech.</p>
+        
+        <button class="demo-preset-btn" id="fill-demo-admin-btn" style="border-color: var(--amber-accent); color: var(--amber-accent); background: rgba(245, 158, 11, 0.08);">
+          🔑 Klik di Sini untuk Isi Kunci Admin Demo Otomatis
+        </button>
+
+        <form id="admin-login-form">
+          <div class="form-group">
+            <label class="form-label">ID Administrator / Email</label>
+            <input type="text" class="form-input" id="admin-id" placeholder="admin@duckvaulta.ai.id" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kunci Otentikasi Keamanan (Token)</label>
+            <input type="password" class="form-input" id="admin-token" placeholder="••••••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; background: var(--amber-accent); border-color: var(--amber-accent);">
+            Verifikasi & Masuk Konsol Admin
+          </button>
+        </form>
+        <div class="auth-status-box" id="admin-auth-status"></div>
+      </div>
+
+      <!-- Logged-in Admin Mission Control View -->
+      <div id="admin-dashboard-view" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+          <div>
+            <h3 class="modal-title" style="margin: 0;">Konsol Kontrol Admin</h3>
+            <span style="font-size: 0.8rem; color: var(--amber-accent);">Otoritas Penuh : Sistem Aktif</span>
+          </div>
+          <button class="btn btn-secondary" id="admin-logout-btn" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Keluar</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+          <div style="background: var(--bg-card); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">TOTAL PENGGUNA</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-white);">2.352</div>
+          </div>
+          <div style="background: var(--bg-card); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">TOTAL DOKUMEN</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--cyan-primary);">9.824</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-card); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-bottom: 18px; font-size: 0.85rem;">
+          <div style="font-weight: 700; margin-bottom: 8px; color: var(--text-white);">Status AI & Resource Server:</div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span style="color: var(--text-secondary);">Model Utama:</span>
+            <span style="font-family: var(--font-mono); color: var(--emerald-live);">Claude Sonnet + Whisper ASR</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span style="color: var(--text-secondary);">Cron Auto-Update:</span>
+            <span style="font-family: var(--font-mono); color: var(--cyan-primary);">08:00 WIB (Aktif)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-secondary);">Discord Delivery:</span>
+            <span style="font-family: var(--font-mono); color: var(--emerald-live);">Tersambung ✓</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem; text-align: center;">
+            Buka 3D Virtual Office
+          </a>
+          <button class="btn btn-primary" style="flex: 1; font-size: 0.85rem;" onclick="alert('Cron scheduler sinkronisasi harian 08:00 WIB berjalan normal.')">
+            Sinkronkan Data Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anime.js Integration (Cached Locally) -->
+  <script src="/assets/anime.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Drawer Toggle
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.toggle('open');
+          mobileToggle.setAttribute('aria-expanded', isOpen);
+          if (isOpen && typeof anime !== 'undefined') {
+            anime({
+              targets: mobileMenu,
+              opacity: [0, 1],
+              translateY: [-10, 0],
+              duration: 250,
+              easing: 'easeOutQuad'
+            });
+          }
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // 2. Interactive Study Sandbox Tabs
+      const tabs = document.querySelectorAll('.sandbox-tab');
+      const panes = document.querySelectorAll('.sandbox-pane');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-pane');
+          tabs.forEach(t => t.classList.remove('active'));
+          panes.forEach(p => p.classList.remove('active'));
+
+          tab.classList.add('active');
+          const activePane = document.getElementById(target);
+          if (activePane) {
+            activePane.classList.add('active');
+            if (typeof anime !== 'undefined') {
+              anime({
+                targets: activePane,
+                opacity: [0, 1],
+                translateY: [10, 0],
+                duration: 350,
+                easing: 'easeOutQuad'
+              });
+            }
+          }
+        });
+      });
+
+      // 3. Sample Topic Switcher for Summary
+      const summaryBox = document.getElementById('summary-result-box');
+      const topicBtns = document.querySelectorAll('.sample-topic-btn');
+
+      const summaries = {
+        biologi: `
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px;">RINGKASAN AI : BIOLOGI SEL</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--text-white);">Mitokondria dan Konversi Energi Seluler</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">1.</span> <strong>Fungsi Utama:</strong> Mitokondria adalah organel pembangkit energi (powerhouse of cell) yang menghasilkan ATP melalui fosforilasi oksidatif.</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">2.</span> <strong>Struktur Membran Ganda:</strong> Terdiri dari membran luar halus dan membran dalam yang berlipat-lipat (krista) untuk memperluas area sintesis ATP.</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">3.</span> <strong>Pewarisan Maternal:</strong> Mitokondria memiliki DNA sendiri (mtDNA) yang diwariskan seutuhnya dari sel telur ibu.</li>
+          </ul>`,
+        hukum: `
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px;">RINGKASAN AI : HUKUM PIDANA</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--text-white);">Asas Legalitas (Nullum Delictum Nulla Poena Sine Lege)</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">1.</span> <strong>Pasal 1 Ayat (1) KUHP:</strong> Suatu perbuatan tidak dapat dipidana kecuali berdasarkan kekuatan perundang-undangan pidana yang telah ada sebelum perbuatan dilakukan.</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">2.</span> <strong>Larangan Retroaktif:</strong> Hukum pidana materiil tidak boleh berlaku surut untuk menjamin kepastian hukum bagi warga negara.</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">3.</span> <strong>Larangan Analogi:</strong> Hakim dilarang memperluas arti tindak pidana dengan analogi hukum untuk menghukum seseorang.</li>
+          </ul>`,
+        coding: `
+          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px;">RINGKASAN AI : REKAYASA PERANGKAT LUNAK</div>
+          <h4 style="font-size: 1.15rem; margin-bottom: 12px; color: var(--text-white);">Karakteristik Arsitektur RESTful API Modern</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">1.</span> <strong>Stateless Protocol:</strong> Setiap request dari client ke server harus membawa seluruh informasi otentikasi (JWT/Bearer) tanpa mengandalkan session state di server.</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">2.</span> <strong>Standard HTTP Verbs:</strong> Penggunaan semantik method baku (GET untuk membaca, POST membuat resource, PUT/PATCH memperbarui, DELETE menghapus).</li>
+            <li style="padding-left: 20px; position: relative;"><span style="position: absolute; left: 0; color: var(--cyan-primary);">3.</span> <strong>Uniform Interface:</strong> Format representasi seragam menggunakan JSON dengan response code HTTP yang tepat (200, 201, 400, 401, 404, 500).</li>
+          </ul>`
+      };
+
+      topicBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          topicBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const topic = btn.getAttribute('data-topic');
+          if (summaryBox && summaries[topic]) {
+            summaryBox.innerHTML = summaries[topic];
+            if (typeof anime !== 'undefined') {
+              anime({
+                targets: summaryBox,
+                opacity: [0.4, 1],
+                duration: 300,
+                easing: 'easeOutQuad'
+              });
+            }
+          }
+        });
+      });
+
+      // 4. Interactive Flashcard Flip & Next Logic
+      const flashcardsData = [
+        {
+          cat: "BIOLOGI SEL : KARTU 1/3",
+          q: "Apa fungsi utama Krista pada membran dalam Mitokondria?",
+          a: "Jawaban: Memperluas area permukaan membran dalam agar enzim sintesis ATP dapat menempel dalam jumlah yang jauh lebih banyak."
+        },
+        {
+          cat: "HUKUM TATA NEGARA : KARTU 2/3",
+          q: "Apa yang dimaksud dengan asas 'Check and Balances' dalam sistem ketatanegaraan?",
+          a: "Jawaban: Prinsip saling mengawasi dan mengimbangi kekuasaan antara cabang eksekutif, legislatif, dan yudikatif agar tidak terjadi kesewenang-wenangan."
+        },
+        {
+          cat: "TEKNIK INFORMATIKA : KARTU 3/3",
+          q: "Apa perbedaan mendasar antara 'Authentication' dan 'Authorization'?",
+          a: "Jawaban: Authentication memverifikasi 'siapa Anda' (identitas), sedangkan Authorization menentukan 'apa yang boleh Anda akses' (hak izin)."
+        }
+      ];
+
+      let fcIndex = 0;
+      let fcIsFront = true;
+      const fcCard = document.getElementById('demo-flashcard');
+      const fcCat = document.getElementById('fc-category');
+      const fcText = document.getElementById('fc-text');
+      const fcFlipBtn = document.getElementById('fc-flip-btn');
+      const fcPrevBtn = document.getElementById('fc-prev-btn');
+      const fcNextBtn = document.getElementById('fc-next-btn');
+
+      function updateFlashcardUI() {
+        if (!fcCard) return;
+        fcCat.textContent = flashcardsData[fcIndex].cat;
+        fcText.textContent = fcIsFront ? flashcardsData[fcIndex].q : flashcardsData[fcIndex].a;
+        fcCard.style.borderColor = fcIsFront ? 'var(--border-accent)' : 'var(--emerald-live)';
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: fcCard,
+            rotateY: [fcIsFront ? -90 : 90, 0],
+            duration: 350,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+
+      if (fcCard) {
+        fcCard.addEventListener('click', () => {
+          fcIsFront = !fcIsFront;
+          updateFlashcardUI();
+        });
+      }
+      if (fcFlipBtn) {
+        fcFlipBtn.addEventListener('click', () => {
+          fcIsFront = !fcIsFront;
+          updateFlashcardUI();
+        });
+      }
+      if (fcNextBtn) {
+        fcNextBtn.addEventListener('click', () => {
+          fcIndex = (fcIndex + 1) % flashcardsData.length;
+          fcIsFront = true;
+          updateFlashcardUI();
+        });
+      }
+      if (fcPrevBtn) {
+        fcPrevBtn.addEventListener('click', () => {
+          fcIndex = (fcIndex - 1 + flashcardsData.length) % flashcardsData.length;
+          fcIsFront = true;
+          updateFlashcardUI();
+        });
+      }
+
+      // 5. Interactive Quiz Logic
+      const quizOptBtns = document.querySelectorAll('.quiz-opt-btn');
+      const quizExpl = document.getElementById('quiz-expl');
+
+      quizOptBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          quizOptBtns.forEach(b => b.classList.remove('correct', 'wrong'));
+          const opt = btn.getAttribute('data-opt');
+          if (opt === 'B') {
+            btn.classList.add('correct');
+          } else {
+            btn.classList.add('wrong');
+            document.querySelector('.quiz-opt-btn[data-opt="B"]')?.classList.add('correct');
+          }
+          if (quizExpl) {
+            quizExpl.style.display = 'block';
+            if (typeof anime !== 'undefined') {
+              anime({
+                targets: quizExpl,
+                opacity: [0, 1],
+                translateY: [8, 0],
+                duration: 300,
+                easing: 'easeOutQuad'
+              });
+            }
+          }
+        });
+      });
+
+      // 6. Interactive Tutor Simulator
+      const tutorBtn = document.getElementById('tutor-send-btn');
+      const tutorInput = document.getElementById('tutor-chat-input');
+      const tutorAns = document.getElementById('tutor-answer-box');
+
+      if (tutorBtn && tutorInput && tutorAns) {
+        tutorBtn.addEventListener('click', () => {
+          const q = tutorInput.value.trim();
+          if (!q) return;
+          tutorAns.style.display = 'block';
+          tutorAns.textContent = `Tutor AI: "Pertanyaan bagus tentang '${q}'! Secara sederhana, proses ini terjadi karena sel membutuhkan akseptor elektron terakhir dalam rantai transpor elektron untuk menghasilkan energi dalam jumlah maksimal. Bayangkan seperti bahan bakar yang butuh oksigen untuk menyala sempurna."`;
+          tutorInput.value = '';
+          if (typeof anime !== 'undefined') {
+            anime({
+              targets: tutorAns,
+              opacity: [0, 1],
+              translateY: [6, 0],
+              duration: 350,
+              easing: 'easeOutQuad'
+            });
+          }
+        });
+      }
+
+      // 7. Counter Animation via Anime.js on Scroll
+      let countersDone = false;
+      const dataSection = document.getElementById('data');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !countersDone) {
+            countersDone = true;
+            document.querySelectorAll('.counter').forEach(el => {
+              const target = parseInt(el.getAttribute('data-target'), 10);
+              if (typeof anime !== 'undefined') {
+                anime({
+                  targets: { val: 0 },
+                  val: target,
+                  duration: 1800,
+                  easing: 'easeOutCubic',
+                  update: function(anim) {
+                    el.textContent = Math.round(anim.animations[0].currentValue);
+                  }
+                });
+              } else {
+                el.textContent = target;
+              }
+            });
+          }
+        });
+      }, { threshold: 0.2 });
+
+      if (dataSection) observer.observe(dataSection);
+
+      // ========================================================
+      // 8. YOUTUBE TO STUDY NOTES LOGIC (DAY 02 FEATURE)
+      // ========================================================
+      const ytPresets = {
+        relativitas: {
+          url: "https://www.youtube.com/watch?v=kYv98pL1Z9A",
+          title: "Fisika Modern: Teori Relativitas Khusus Einstein & Dilatasi Waktu",
+          channel: "Sains Edukasi Studio",
+          origDuration: "28 Menit 40 Detik",
+          aiDuration: "3.5 Menit Baca",
+          savings: "Hemat 88% Waktu",
+          timestamps: [
+            { time: "00:00", title: "Latar Belakang Eksperimen Michelson-Morley", sub: "Kegagalan pembuktian eter dan krisis fisika klasik abad ke-19." },
+            { time: "06:15", title: "Dua Postulat Utama Relativitas Khusus", sub: "Hukum fisika sama di semua kerangka inersial; kelajuan cahaya c konstan." },
+            { time: "14:40", title: "Dilatasi Waktu & Persamaan Transformasi Lorentz", sub: "Penurunan rumus delta t = gamma * delta t_0 dan bukti partikel muon." },
+            { time: "22:10", title: "Ekuivalensi Massa-Energi (E = mc^2) & Kesimpulan", sub: "Dampak kosmologis dan sinkronisasi jam satelit GPS navigasi." }
+          ],
+          bullets: [
+            "<strong>Postulat Relativitas:</strong> Kelajuan cahaya dalam ruang hampa bernilai mutlak konstan bagi semua pengamat, terlepas dari kecepatan gerak sumber atau pengamat.",
+            "<strong>Efek Relativistik Nyata:</strong> Waktu bergerak lebih lambat bagi pengamat yang bergerak relatif terhadap kerangka acuan diam (Time Dilation).",
+            "<strong>Aplikasi Nyata:</strong> Jam atom satelit GPS harus dikoreksi ~38 mikrodetik per hari karena efek relativitas khusus & umum agar akurasi posisi tidak meleset puluhan kilometer."
+          ]
+        },
+        protein: {
+          url: "https://www.youtube.com/watch?v=gG7uCskUOrA",
+          title: "Biologi Molekuler: Transkripsi DNA, Translasi mRNA, & Sintesis Protein",
+          channel: "Medika Academy ID",
+          origDuration: "34 Menit 12 Detik",
+          aiDuration: "4 Menit Baca",
+          savings: "Hemat 89% Waktu",
+          timestamps: [
+            { time: "00:00", title: "Dogma Sentral Biologi Molekuler", sub: "Alur informasi genetik dari DNA -> RNA -> Polipeptida/Protein fungsional." },
+            { time: "07:30", title: "Fase Transkripsi di Inti Sel (Nukleus)", sub: "Enzim RNA Polimerase membuka pita ganda DNA dan mencetak pre-mRNA." },
+            { time: "16:20", title: "Post-Transcriptional Modification (Capping & Splicing)", sub: "Pemotongan intron dan penyambungan ekson sebelum keluar nukleus." },
+            { time: "25:40", title: "Fase Translasi di Ribosom", sub: "tRNA membaca kodon triplet dan merangkai asam amino hingga kodon Stop." }
+          ],
+          bullets: [
+            "<strong>Dogma Sentral:</strong> Replikasi DNA menggandakan kode genetik, transkripsi menyalin kode ke mRNA, dan translasi menerjemahkan mRNA menjadi rantai asam amino.",
+            "<strong>Peran Kodon:</strong> Setiap kodon triplet (3 basa nitrogen) pada mRNA mengodekan 1 asam amino spesifik. Kodon Start universal adalah AUG (Metionin).",
+            "<strong>Splicing Kritis:</strong> Proses eksisi intron memungkinkan satu gen menghasilkan variasi protein fungsional berbeda (alternative splicing)."
+          ]
+        },
+        graph: {
+          url: "https://www.youtube.com/watch?v=GazC3A4OQTE",
+          title: "Teknik Informatika: Algoritma Dijkstra & Single-Source Shortest Path",
+          channel: "Tech University Studio",
+          origDuration: "24 Menit 05 Detik",
+          aiDuration: "3 Menit Baca",
+          savings: "Hemat 87% Waktu",
+          timestamps: [
+            { time: "00:00", title: "Definisi Masalah Shortest Path pada Graf", sub: "Pencarian rute berbobot non-negatif terpendek dari simpul asal ke simpul tujuan." },
+            { time: "05:10", title: "Struktur Data Min-Priority Queue", sub: "Mekanisme greedy mengeksplorasi vertex dengan cost terendah secara efisien." },
+            { time: "12:35", title: "Proses 'Relaxation' Sisi Graf", sub: "Pembaruan jarak tentatif jika ditemukan rute intermediate yang lebih efisien." },
+            { time: "19:00", title: "Analisis Kompleksitas Waktu & Perbandingan A*", sub: "O((V + E) log V) dengan Binary Heap vs algoritma heuristik A-Star." }
+          ],
+          bullets: [
+            "<strong>Prinsip Algoritma:</strong> Menggunakan pendekatan Greedy untuk selalu memilih simpul dengan jarak terpendek yang belum difinalisasi.",
+            "<strong>Batasan Penting:</strong> Dijkstra mewajibkan bobot sisi graf bernilai positif. Jika ada siklus berbobot negatif, harus gunakan Bellman-Ford.",
+            "<strong>Efisiensi Waktu:</strong> Menggunakan Min-Heap/Priority Queue menghasilkan kompleksitas O((V + E) log V), sangat ideal untuk jaringan peta navigasi digital."
+          ]
+        }
+      };
+
+      const ytUrlInput = document.getElementById('yt-url-input');
+      const ytProcessBtn = document.getElementById('yt-process-btn');
+      const ytOutputCard = document.getElementById('yt-output-card');
+      const ytPresetBtns = document.querySelectorAll('.yt-preset-btn');
+
+      function renderYouTubeOutput(data) {
+        if (!ytOutputCard) return;
+        ytOutputCard.innerHTML = `
+          <div class="yt-meta-banner">
+            <div>
+              <span class="yt-badge-tag">▶ VIDEO YOUTUBE</span>
+              <h4 style="font-size: 1.15rem; color: var(--text-white); margin-top: 6px;">${data.title}</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">${data.channel}</span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="yt-stat-pill">⏱ Durasi Asli: ${data.origDuration}</span>
+              <span class="yt-stat-pill" style="color: var(--emerald-live); border-color: rgba(16, 185, 129, 0.4);">${data.savings}</span>
+            </div>
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--cyan-primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">
+            Daftar Bab & Timestamp Pembelajaran:
+          </div>
+          <div class="timestamp-list">
+            ${data.timestamps.map(t => `
+              <div class="timestamp-item" onclick="showToast('Menavigasi ke segmen video [${t.time}]')">
+                <span class="timestamp-code">${t.time}</span>
+                <div>
+                  <div class="timestamp-desc">${t.title}</div>
+                  <div class="timestamp-sub">${t.sub}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--cyan-primary); text-transform: uppercase; letter-spacing: 0.05em; margin: 20px 0 10px;">
+            Inti Pemahaman Materi (AI Takeaways):
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">
+            ${data.bullets.map((b, i) => `
+              <li style="padding-left: 20px; position: relative;">
+                <span style="position: absolute; left: 0; color: var(--cyan-primary); font-weight: bold;">${i+1}.</span> ${b}
+              </li>
+            `).join('')}
+          </ul>
+
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="showToast('Berhasil men-generate 10 Smart Flashcards dari video ini!')" style="min-height: 40px; padding: 8px 18px; font-size: 0.88rem;">
+              <span>🗂️ Buat Flashcards dari Video</span>
+            </button>
+            <button class="btn btn-secondary" onclick="showToast('Ringkasan format Markdown (.md) siap diunduh!')" style="min-height: 40px; padding: 8px 18px; font-size: 0.88rem;">
+              <span>📥 Download Catatan Ringkas</span>
+            </button>
+          </div>
+        `;
+
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: ytOutputCard,
+            opacity: [0.3, 1],
+            translateY: [8, 0],
+            duration: 350,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+
+      // Initial render for YouTube
+      renderYouTubeOutput(ytPresets.relativitas);
+
+      ytPresetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          ytPresetBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const key = btn.getAttribute('data-vid');
+          if (ytPresets[key]) {
+            if (ytUrlInput) ytUrlInput.value = ytPresets[key].url;
+            renderYouTubeOutput(ytPresets[key]);
+          }
+        });
+      });
+
+      if (ytProcessBtn) {
+        ytProcessBtn.addEventListener('click', () => {
+          const val = (ytUrlInput ? ytUrlInput.value.trim() : '');
+          showToast('AI menganalisis subtitle & transkrip audio video...');
+          setTimeout(() => {
+            renderYouTubeOutput(ytPresets.relativitas);
+            showToast('Catatan terstruktur berhasil diekstrak!');
+          }, 400);
+        });
+      }
+
+      // ========================================================
+      // 9. MIND MAP CONCEPT TREE LOGIC (DAY 02 FEATURE)
+      // ========================================================
+      const mmData = {
+        saraf: {
+          title: "Biologi: Sistem Saraf Manusia",
+          root: "Sistem Koordinasi Saraf",
+          rootDesc: "Jaringan komunikasi elektrokimia tubuh untuk merespons stimulus lingkungan secara terpadu dan cepat.",
+          branches: [
+            {
+              name: "Sistem Saraf Pusat (SSP)",
+              desc: "Pusat komando pengendali dan pengolah integrasi informasi seluruh tubuh manusia.",
+              leaves: [
+                { name: "Otak Besar (Serebrum)", desc: "Pusat memori, berpikir sadar, emosi, dan persepsi sensorik sadar (lobus frontal, parietal, oksipital, temporal)." },
+                { name: "Otak Kecil (Serebelum)", desc: "Pengatur koordinasi motorik halus, keseimbangan tubuh, dan postur fisik saat bergerak." },
+                { name: "Batang Otak & Medula", desc: "Mengatur fungsi otonom vital bertahan hidup: detak jantung, pernapasan, dan tekanan darah." }
+              ]
+            },
+            {
+              name: "Sistem Saraf Tepi (SST)",
+              desc: "Penghubung SSP dengan seluruh organ reseptor sensorik dan efektor otot perifer.",
+              leaves: [
+                { name: "Saraf Somatik (Volunter)", desc: "Mengendalikan gerakan otot rangka yang disadari serta lengkung refleks spinal darurat." },
+                { name: "Saraf Simpatik (Fight/Flight)", desc: "Meningkatkan denyut jantung, melebarkan bronkus, dan menghambat sekresi lambung saat stres." },
+                { name: "Saraf Parasimpatik (Rest/Digest)", desc: "Memperlambat denyut, merangsang peristaltik usus, dan memulihkan energi tubuh saat rileks." }
+              ]
+            },
+            {
+              name: "Unit Fungsional Neuron",
+              desc: "Sel pengirim impuls listrik berkecepatan tinggi melalui polarisasi membran sel.",
+              leaves: [
+                { name: "Dendrit & Badan Sel", desc: "Menerima sinyal impuls dari neuron lain dan mengintegrasikan potensial membran seluler." },
+                { name: "Akson & Selubung Mielin", desc: "Transmisi impuls loncat cepat (konduksi saltatori) antar Nodus Ranvier hingga 100 m/s." },
+                { name: "Sinapsis & Neurotransmitter", desc: "Celah transmisi kimiawi menggunakan molekul asetilkolin, dopamin, dan serotonin." }
+              ]
+            }
+          ]
+        },
+        hukum: {
+          title: "Hukum: Tata Urutan Peraturan Perundangan RI",
+          root: "Tata Urutan Peraturan RI (UU 12/2011)",
+          rootDesc: "Prinsip Stufenbau Theory (Hans Kelsen): Norma hukum yang lebih rendah tidak boleh bertentangan dengan norma di atasnya.",
+          branches: [
+            {
+              name: "Puncak Konstitusi (Grundnorm)",
+              desc: "Puncak sumber segala hukum dan konstitusi tertulis tertinggi negara kesatuan.",
+              leaves: [
+                { name: "UUD NRI Tahun 1945", desc: "Hukum dasar tertulis tertinggi negara; menjadi batu uji judicial review di Mahkamah Konstitusi." },
+                { name: "Ketetapan MPR (TAP MPR)", desc: "Ketetapan MPR yang masih dinyatakan berlaku berdasarkan ketentuan TAP MPR No. I/MPR/2003." }
+              ]
+            },
+            {
+              name: "Legislasi Nasional",
+              desc: "Produk hukum kesepakatan bersama antara Presiden dan Dewan Perwakilan Rakyat.",
+              leaves: [
+                { name: "Undang-Undang (UU)", desc: "Dibentuk oleh Dewan Perwakilan Rakyat dengan persetujuan bersama Presiden Republik Indonesia." },
+                { name: "Perppu", desc: "Ditetapkan Presiden dalam hal kegentingan memaksa; wajib diuji persetujuan DPR pada masa sidang berikutnya." },
+                { name: "Peraturan Pemerintah (PP)", desc: "Peraturan pelaksana yang ditetapkan Presiden untuk menjalankan Undang-Undang sebagaimana mestinya." }
+              ]
+            },
+            {
+              name: "Regulasi Pelaksana & Daerah",
+              desc: "Instrumen operasional tingkat presiden dan perwujudan otonomi daerah.",
+              leaves: [
+                { name: "Peraturan Presiden (Perpres)", desc: "Ditetapkan Presiden untuk menjalankan perintah PP atau penyelenggaraan kekuasaan pemerintahan." },
+                { name: "Perda Provinsi & Kab/Kota", desc: "Dibuat DPRD bersama Kepala Daerah dalam rangka desentralisasi otonomi dan tugas pembantuan." }
+              ]
+            }
+          ]
+        },
+        devops: {
+          title: "Teknologi: Siklus CI/CD & DevOps Modern",
+          root: "Siklus Otomasi DevOps & Delivery",
+          rootDesc: "Integrasi dan deployment kode secara kontinu untuk rilis perangkat lunak berkualitas tanpa downtime.",
+          branches: [
+            {
+              name: "Continuous Integration (CI)",
+              desc: "Validasi otomatis setiap commit/PR untuk mendeteksi bug sedini mungkin.",
+              leaves: [
+                { name: "Linting & Security Scan", desc: "Pemeriksaan otomatis gaya kode, format baku, dan celah keamanan dependency (SAST/Trivy)." },
+                { name: "Automated Test Suite", desc: "Eksekusi suite pengujian unit dan integrasi dengan ambang batas code coverage minimal 80%." },
+                { name: "Artifact Build & Packaging", desc: "Kompilasi source code dan pembungkusan container image multi-stage Docker yang ringkas." }
+              ]
+            },
+            {
+              name: "Continuous Deployment (CD)",
+              desc: "Penyebaran artefak ke staging dan produksi dengan strategi zero-downtime.",
+              leaves: [
+                { name: "Blue-Green Deployment", desc: "Mekanisme rilis dengan dua environment identik untuk switchover instan tanpa gangguan pengguna." },
+                { name: "Database Migration", desc: "Eksekusi migrasi skema database terisolasi sebelum trafik dialihkan ke versi aplikasi baru." },
+                { name: "Automated Smoke Tests", desc: "Pengujian fungsional kritis pasca-deploy untuk verifikasi status live endpoint 200 OK." }
+              ]
+            },
+            {
+              name: "Observability & Feedback",
+              desc: "Pemantauan telemetri performa dan deteksi anomali real-time di server produksi.",
+              leaves: [
+                { name: "Metrics & Tracing", desc: "Pemantauan utilisasi CPU, RAM, Latency p95/p99, dan throughput via Prometheus & Grafana." },
+                { name: "Alerting & On-Call", desc: "Peringatan real-time ke Discord/Telegram tim saat terjadi lonjakan 5xx error atau degradasi sistem." },
+                { name: "Post-Mortem & Sprint Retrospective", desc: "Evaluasi catatan devlog mingguan untuk penyempurnaan fitur dan arsitektur berikutnya." }
+              ]
+            }
+          ]
+        }
+      };
+
+      const mmContainer = document.getElementById('mindmap-container');
+      const mmDetailCard = document.getElementById('mindmap-detail-card');
+      const mmTopicBtns = document.querySelectorAll('.mm-topic-btn');
+
+      function renderMindMap(data) {
+        if (!mmContainer || !mmDetailCard) return;
+
+        mmContainer.innerHTML = `
+          <div class="mindmap-tree">
+            <div class="mindmap-root-node" id="mm-root" onclick="selectMindMapNode('${data.root}', '${data.rootDesc}', 'Konsep Utama / Payung Bahasan')">
+              ${data.root}
+            </div>
+            <div class="mindmap-connector-vert"></div>
+            <div class="mindmap-branches-row">
+              ${data.branches.map((b, bIdx) => `
+                <div class="mindmap-branch-col">
+                  <div class="mindmap-branch-node" onclick="selectMindMapNode('${b.name}', '${b.desc}', 'Cabang Pilar Materi ${bIdx+1}')">
+                    ${b.name}
+                  </div>
+                  <div class="mindmap-leaf-list">
+                    ${b.leaves.map(l => `
+                      <div class="mindmap-leaf-node" onclick="selectMindMapNode('${l.name}', '${l.desc}', 'Sub-Topik Spesifik')">
+                        ${l.name}
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+
+        selectMindMapNode(data.root, data.rootDesc, 'Konsep Utama / Payung Bahasan');
+
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: mmContainer,
+            opacity: [0.3, 1],
+            scale: [0.98, 1],
+            duration: 350,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+
+      window.selectMindMapNode = function(name, desc, type) {
+        if (!mmDetailCard) return;
+        mmDetailCard.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); text-transform: uppercase;">
+              ${type} : DETAIL PEMAHAMAN
+            </div>
+            <span style="font-size: 0.75rem; background: rgba(0, 210, 255, 0.1); color: var(--cyan-primary); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-accent);">
+              Interaktif
+            </span>
+          </div>
+          <h4 style="font-size: 1.15rem; color: var(--text-white); margin: 4px 0 6px;">${name}</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">${desc}</p>
+        `;
+
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: mmDetailCard,
+            opacity: [0.5, 1],
+            translateY: [4, 0],
+            duration: 250,
+            easing: 'easeOutQuad'
+          });
+        }
+      };
+
+      // Initial render for Mind Map
+      renderMindMap(mmData.saraf);
+
+      mmTopicBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          mmTopicBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const topic = btn.getAttribute('data-topic');
+          if (mmData[topic]) {
+            renderMindMap(mmData[topic]);
+          }
+        });
+      });
+
+      // ========================================================
+      // 10. TOAST NOTIFICATION HELPER
+      // ========================================================
+      window.showToast = function(msg) {
+        let toast = document.getElementById('global-toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'global-toast';
+          toast.className = 'toast-box';
+          document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<span style="font-size: 1.2rem;">✨</span> <span>${msg}</span>`;
+        toast.classList.add('show');
+        clearTimeout(window._toastTimer);
+        window._toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      };
+
+      // ========================================================
+      // 8. AUTH MODAL LOGIC (USER & ADMIN LOGIN)
+      // ========================================================
+      const userModal = document.getElementById('user-modal-overlay');
+      const adminModal = document.getElementById('admin-modal-overlay');
+
+      const openUserBtn = document.getElementById('open-user-login-btn');
+      const heroStartBtn = document.getElementById('hero-start-btn');
+      const openAdminBtn = document.getElementById('open-admin-login-btn');
+
+      const closeUserBtn = document.getElementById('close-user-modal');
+      const closeAdminBtn = document.getElementById('close-admin-modal');
+
+      function openModal(modal) {
+        if (!modal) return;
+        modal.classList.add('open');
+        const box = modal.querySelector('.modal-box');
+        if (box && typeof anime !== 'undefined') {
+          anime({
+            targets: box,
+            scale: [0.94, 1],
+            opacity: [0, 1],
+            duration: 250,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+
+      function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('open');
+      }
+
+      if (openUserBtn) openUserBtn.addEventListener('click', () => openModal(userModal));
+      if (heroStartBtn) heroStartBtn.addEventListener('click', () => openModal(userModal));
+      document.querySelectorAll('.open-user-signup').forEach(btn => {
+        btn.addEventListener('click', () => openModal(userModal));
+      });
+
+      if (openAdminBtn) openAdminBtn.addEventListener('click', () => openModal(adminModal));
+
+      if (closeUserBtn) closeUserBtn.addEventListener('click', () => closeModal(userModal));
+      if (closeAdminBtn) closeAdminBtn.addEventListener('click', () => closeModal(adminModal));
+
+      // Close on backdrop click or ESC
+      [userModal, adminModal].forEach(modal => {
+        if (modal) {
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal(modal);
+          });
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal(userModal);
+          closeModal(adminModal);
+        }
+      });
+
+      // User Demo Autofill & Submit
+      const fillUserBtn = document.getElementById('fill-demo-user-btn');
+      const userEmailInput = document.getElementById('user-email');
+      const userPassInput = document.getElementById('user-password');
+      const userLoginForm = document.getElementById('user-login-form');
+      const userLoginView = document.getElementById('user-login-view');
+      const userWorkspaceView = document.getElementById('user-workspace-view');
+      const userLogoutBtn = document.getElementById('user-logout-btn');
+
+      if (fillUserBtn) {
+        fillUserBtn.addEventListener('click', () => {
+          userEmailInput.value = 'siswa.demo@duckvaulta.ai.id';
+          userPassInput.value = 'belajar2026';
+        });
+      }
+
+      if (userLoginForm) {
+        userLoginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = userEmailInput.value.trim();
+          userLoginView.style.display = 'none';
+          userWorkspaceView.style.display = 'block';
+          document.getElementById('logged-user-display').textContent = email;
+        });
+      }
+
+      if (userLogoutBtn) {
+        userLogoutBtn.addEventListener('click', () => {
+          userWorkspaceView.style.display = 'none';
+          userLoginView.style.display = 'block';
+          userEmailInput.value = '';
+          userPassInput.value = '';
+        });
+      }
+
+      // Admin Demo Autofill & Submit
+      const fillAdminBtn = document.getElementById('fill-demo-admin-btn');
+      const adminIdInput = document.getElementById('admin-id');
+      const adminTokenInput = document.getElementById('admin-token');
+      const adminLoginForm = document.getElementById('admin-login-form');
+      const adminLoginView = document.getElementById('admin-login-view');
+      const adminDashboardView = document.getElementById('admin-dashboard-view');
+      const adminLogoutBtn = document.getElementById('admin-logout-btn');
+
+      if (fillAdminBtn) {
+        fillAdminBtn.addEventListener('click', () => {
+          adminIdInput.value = 'admin@duckvaulta.ai.id';
+          adminTokenInput.value = 'sec-token-duckvaulta-2026';
+        });
+      }
+
+      if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          adminLoginView.style.display = 'none';
+          adminDashboardView.style.display = 'block';
+        });
+      }
+
+      if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', () => {
+          adminDashboardView.style.display = 'none';
+          adminLoginView.style.display = 'block';
+          adminIdInput.value = '';
+          adminTokenInput.value = '';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

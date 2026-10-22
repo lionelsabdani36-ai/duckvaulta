@@ -1,0 +1,10 @@
+[Unit]
+Description=Ruang, Hermes 3D Virtual Office (read-only mission control)
+After=network.target
+
+[Service]
+ExecStart=/home/lionelsabdani36/.local/bin/ruang
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
