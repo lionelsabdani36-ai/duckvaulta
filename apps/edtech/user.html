@@ -505,12 +505,8 @@
       <div id="login-form-view">
         <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">Masuk ke Akun Belajar</h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
-          Gunakan akun siswa terdaftar atau akun demo untuk memulai.
+          Masukkan alamat email dan kata sandi akun belajarmu untuk melanjutkan.
         </p>
-
-        <button class="btn btn-secondary" id="autofill-demo-btn" style="width: 100%; margin-bottom: 18px; color: var(--cyan-primary); border-color: var(--border-accent);">
-          ⚡ Klik untuk Isi Akun Demo Siswa Otomatis
-        </button>
 
         <form id="real-login-form">
           <div class="form-group">
@@ -618,12 +614,6 @@
         document.getElementById('xp-count').textContent = `${user.xp || 100} XP`;
         document.getElementById('exam-user-display').textContent = user.identity || user.email;
       }
-
-      // Autofill Demo Account
-      document.getElementById('autofill-demo-btn').addEventListener('click', () => {
-        document.getElementById('login-email').value = 'siswa.demo@duckvaulta.ai.id';
-        document.getElementById('login-pass').value = 'belajar2026';
-      });
 
       // Real Login Form Submit
       document.getElementById('real-login-form').addEventListener('submit', async (e) => {

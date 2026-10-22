@@ -292,12 +292,8 @@
         <h3 style="font-size: 1.3rem; font-weight: 800;">Otentikasi Administrator</h3>
       </div>
       <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
-        Masukkan token otentikasi resmi untuk mengakses konsol kontrol sistem Duckvaulta.
+        Masukkan ID Administrator dan token otentikasi resmi untuk mengakses konsol kontrol sistem Duckvaulta.
       </p>
-
-      <button class="btn btn-secondary" id="admin-autofill-btn" style="width: 100%; margin-bottom: 18px; color: var(--amber-accent); border-color: var(--border-accent);">
-        🔑 Klik untuk Isi Kunci Admin Demo Otomatis
-      </button>
 
       <form id="admin-login-form">
         <div class="form-group">
@@ -346,11 +342,6 @@
           authModal.style.display = 'flex';
         }
       }
-
-      document.getElementById('admin-autofill-btn').addEventListener('click', () => {
-        document.getElementById('admin-input-id').value = 'admin@duckvaulta.ai.id';
-        document.getElementById('admin-input-token').value = 'sec-token-duckvaulta-2026';
-      });
 
       document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
         e.preventDefault();
