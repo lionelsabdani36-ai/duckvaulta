@@ -2,10 +2,14 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Portal Siswa: Simulasi TKA & Ruang Belajar AI | Duckvaulta</title>
   <meta name="description" content="Workspace belajar mandiri siswa: Simulasi Ujian TKA Saintek & Soshum, Bank Soal HOTS UTBK, Smart Flashcards, dan AI Tutor.">
   <link rel="icon" type="image/png" href="/assets/duck-emblem.png">
+  <meta name="theme-color" content="#060913">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -147,6 +151,64 @@
       .tka-container { grid-template-columns: 1fr; }
       .tka-nav-card { position: static; }
       .result-stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Deep Mobile Optimization (Smartphones & Tablets) */
+    @media (max-width: 640px) {
+      header.topbar { height: auto; min-height: 64px; padding: 10px 0; }
+      .topbar-inner { flex-wrap: wrap; gap: 8px; }
+      .brand-name { font-size: 1.05rem; }
+      .brand-tag { display: none; }
+      .user-profile-bar { width: 100%; justify-content: space-between; gap: 6px; }
+      .stat-badge { padding: 4px 8px; font-size: 0.72rem; }
+
+      .workspace-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .workspace-nav::-webkit-scrollbar { display: none; }
+      .tab-btn { padding: 14px 16px; font-size: 0.85rem; }
+
+      .card { padding: 18px 14px; border-radius: var(--radius-md); }
+      .card-title { font-size: 1.1rem; }
+
+      .tka-meta-bar {
+        position: sticky;
+        top: 64px;
+        z-index: 40;
+        padding: 10px 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+      }
+      .tka-meta-bar > div { display: flex; justify-content: space-between; align-items: center; }
+      .tka-timer { justify-content: center; width: 100%; font-size: 0.95rem; }
+
+      .question-box { padding: 18px 14px; border-radius: var(--radius-md); }
+      .question-text { font-size: 1rem; line-height: 1.5; margin-bottom: 18px; }
+
+      .option-item { min-height: 48px; padding: 12px 14px; font-size: 0.9rem; }
+      .option-key { width: 26px; height: 26px; font-size: 0.78rem; }
+
+      /* Action controls wrap neatly on small phones */
+      .question-box > div:last-child {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .question-box > div:last-child > button {
+        width: 100%;
+        min-height: 44px;
+      }
+      #btn-flag-q { order: 1; }
+      #btn-prev-q { order: 2; }
+      #btn-next-q { order: 3; }
+
+      .nav-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+      .nav-num-btn { min-height: 42px; min-width: 42px; font-size: 0.9rem; }
+
+      .result-score-val { font-size: 3rem; }
+      .result-stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+      .auth-box { padding: 22px 16px; }
+      .form-input { min-height: 44px; font-size: 0.95rem; }
     }
   </style>
 </head>

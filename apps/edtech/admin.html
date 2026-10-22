@@ -2,10 +2,14 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Admin Mission Control: Manajemen TKA & Pengguna | Duckvaulta</title>
   <meta name="description" content="Konsol administrasi resmi Duckvaulta EdTech AI: Manajemen Pengguna Real, Bank Soal TKA, Analitik Tryout, dan Audit Keamanan.">
   <link rel="icon" type="image/png" href="/assets/duck-emblem.png">
+  <meta name="theme-color" content="#060913">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -94,8 +98,31 @@
     .q-item-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; margin-bottom: 14px; }
     .q-item-header { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.78rem; color: var(--cyan-primary); margin-bottom: 8px; }
 
+    .admin-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .admin-key-grid { display: grid; grid-template-columns: 140px 1fr; gap: 14px; margin-bottom: 18px; }
+
     @media (max-width: 900px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      header.topbar { height: auto; min-height: 64px; padding: 10px 0; }
+      .topbar-inner { flex-wrap: wrap; gap: 8px; }
+      .brand-name { font-size: 1.05rem; }
+      .brand-tag { display: none; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .stat-card { padding: 14px; }
+      .stat-card-val { font-size: 1.8rem; }
+      
+      .card { padding: 18px 14px; border-radius: var(--radius-md); }
+      .card-title { font-size: 1.1rem; }
+      
+      .admin-options-grid { grid-template-columns: 1fr; }
+      .admin-options-grid > div:last-child { grid-column: auto !important; }
+      .admin-key-grid { grid-template-columns: 1fr; }
+      
+      .form-input { min-height: 44px; font-size: 0.95rem; }
+      .admin-auth-box { padding: 22px 16px; }
     }
   </style>
 </head>
@@ -221,7 +248,7 @@
             <textarea class="form-input" id="new-q-text" required placeholder="Tuliskan butir soal lengkap dengan konteks dan datanya..."></textarea>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="admin-options-grid">
             <div class="form-group">
               <label class="form-label">Opsi A</label>
               <input type="text" class="form-input" id="new-opt-a" required placeholder="Pilihan jawaban A">
@@ -244,7 +271,7 @@
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 140px 1fr; gap: 14px; margin-bottom: 18px;">
+          <div class="admin-key-grid">
             <div class="form-group">
               <label class="form-label">Kunci Jawaban</label>
               <select class="form-input" id="new-q-correct" required style="font-weight: 800; color: var(--emerald-live);">
