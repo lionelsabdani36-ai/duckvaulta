@@ -115,14 +115,26 @@
     .option-key { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid var(--border-medium); display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-mono); font-size: 0.82rem; flex-shrink: 0; }
     .option-item.selected .option-key { background: var(--cyan-primary); color: #040812; border-color: var(--cyan-primary); }
 
-    /* Navigation Grid for TKA */
-    .tka-nav-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; position: sticky; top: 90px; }
-    .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 18px 0; }
-    .nav-num-btn { aspect-ratio: 1; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    /* Navigation Grid for TKA (Compact & Ergonomic) */
+    .tka-nav-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px; position: sticky; top: 90px; }
+    .nav-scroll-box { max-height: 250px; overflow-y: auto; padding: 6px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: rgba(3, 7, 18, 0.45); }
+    .nav-scroll-box::-webkit-scrollbar { width: 5px; }
+    .nav-scroll-box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+    .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .nav-num-btn { height: 36px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .nav-num-btn:hover { border-color: var(--border-medium); color: var(--text-white); }
     .nav-num-btn.answered { background: rgba(0, 210, 255, 0.15); border-color: var(--cyan-primary); color: var(--cyan-primary); }
     .nav-num-btn.flagged { background: rgba(245, 158, 11, 0.15); border-color: var(--amber-accent); color: var(--amber-accent); }
-    .nav-num-btn.current { outline: 2px solid #ffffff; outline-offset: 2px; }
+    .nav-num-btn.current { outline: 2px solid #ffffff; outline-offset: 1px; color: #fff; font-weight: 800; }
+    .nav-range-btn { background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); border-radius: 4px; font-size: 0.72rem; font-family: var(--font-mono); padding: 4px 8px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+    .nav-range-btn:hover { border-color: var(--cyan-primary); color: #fff; }
+    .nav-range-btn.active { background: rgba(0, 210, 255, 0.15); border-color: var(--cyan-primary); color: var(--cyan-primary); font-weight: 700; }
+    .mobile-only-toggle { display: none; }
+
+    @media (max-width: 900px) {
+      .mobile-only-toggle { display: flex !important; align-items: center; justify-content: space-between; }
+      .tka-nav-card.collapsed-mobile { display: none; }
+    }
 
     /* Results Card */
     .result-score-box { background: var(--bg-card); border: 1px solid var(--border-accent); border-radius: var(--radius-lg); padding: 32px; text-align: center; margin-bottom: 24px; }
@@ -356,6 +368,12 @@
           <div class="tka-container">
             <!-- Left: Question Sheet -->
             <div class="tka-sheet">
+              <!-- Mobile-only Toggle for Question Drawer -->
+              <button id="btn-toggle-mobile-nav" class="btn btn-secondary mobile-only-toggle" style="width: 100%; margin-bottom: 14px; min-height: 42px;">
+                <span>📋 Daftar Nomor Soal (<span id="mobile-nav-summary">0/100 Terjawab</span>)</span>
+                <span id="mobile-nav-arrow" style="color: var(--cyan-primary); font-family: var(--font-mono);">▾ Buka Grid</span>
+              </button>
+
               <div class="question-box">
                 <div class="question-header">
                   <span id="q-number-tag">SOAL NOMOR 1 DARI 20</span>
@@ -380,20 +398,39 @@
               </div>
             </div>
 
-            <!-- Right: Question Number Grid Navigation -->
-            <aside class="tka-nav-card">
-              <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 10px;">Navigasi Nomor Soal</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 10px; margin-bottom: 12px; font-family: var(--font-mono);">
-                <span><span style="display:inline-block; width:8px; height:8px; background:var(--cyan-primary); border-radius:50%;"></span> Terjawab</span>
+            <!-- Right: Question Number Grid Navigation (Compact & Clustered) -->
+            <aside class="tka-nav-card" id="tka-nav-sidebar">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div style="font-weight: 800; font-size: 0.9rem;">Daftar Nomor Soal</div>
+                <div id="nav-progress-counter" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan-primary);">0/100 Terjawab</div>
+              </div>
+
+              <div style="font-size: 0.72rem; color: var(--text-muted); display: flex; gap: 8px; margin-bottom: 10px; font-family: var(--font-mono);">
+                <span><span style="display:inline-block; width:8px; height:8px; background:var(--cyan-primary); border-radius:50%;"></span> Jawab</span>
                 <span><span style="display:inline-block; width:8px; height:8px; background:var(--amber-accent); border-radius:50%;"></span> Ragu</span>
                 <span><span style="display:inline-block; width:8px; height:8px; background:var(--bg-card); border-radius:50%;"></span> Belum</span>
               </div>
 
-              <div class="nav-grid" id="question-nav-grid">
-                <!-- Numbers 1 to N injected dynamically -->
+              <!-- Cluster Range Tabs for Fast Navigation -->
+              <div id="nav-range-tabs" style="display: flex; gap: 4px; overflow-x: auto; margin-bottom: 10px; padding-bottom: 4px; -webkit-overflow-scrolling: touch;">
+                <!-- Range buttons e.g. [Semua] [1-20] [21-40]... -->
               </div>
 
-              <button class="btn btn-primary" id="btn-submit-exam" style="width: 100%; margin-top: 18px; min-height: 44px;">
+              <!-- Compact Scrollable Grid Container (Max 250px) -->
+              <div class="nav-scroll-box">
+                <div class="nav-grid" id="question-nav-grid" style="margin: 0;">
+                  <!-- Numbers 1 to N injected dynamically -->
+                </div>
+              </div>
+
+              <!-- Quick Jump Input -->
+              <div style="display: flex; gap: 8px; margin-top: 12px; align-items: center;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">Lompat:</span>
+                <input type="number" id="quick-jump-input" min="1" max="120" placeholder="No..." style="width: 70px; height: 32px; font-size: 0.8rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 4px; color: #fff; text-align: center;">
+                <button type="button" id="btn-quick-jump" class="btn btn-secondary" style="min-height: 32px; padding: 2px 10px; font-size: 0.75rem;">Ke Soal</button>
+              </div>
+
+              <button class="btn btn-primary" id="btn-submit-exam" style="width: 100%; margin-top: 14px; min-height: 42px;">
                 ✓ Kumpulkan Jawaban Ujian
               </button>
             </aside>
@@ -868,13 +905,53 @@
         timerInterval = setInterval(updateDisplay, 1000);
       }
 
+      let activeRange = 'all';
+
       function buildQuestionNavGrid() {
         const grid = document.getElementById('question-nav-grid');
+        const rangeContainer = document.getElementById('nav-range-tabs');
         grid.innerHTML = '';
+        rangeContainer.innerHTML = '';
+
+        const total = currentExamQuestions.length;
+
+        // Build Range Tabs if total > 20
+        if (total > 20) {
+          const allBtn = document.createElement('button');
+          allBtn.className = 'nav-range-btn active';
+          allBtn.textContent = `Semua (${total})`;
+          allBtn.addEventListener('click', () => {
+            document.querySelectorAll('.nav-range-btn').forEach(b => b.classList.remove('active'));
+            allBtn.classList.add('active');
+            filterNavGrid('all');
+          });
+          rangeContainer.appendChild(allBtn);
+
+          const step = 20;
+          for (let start = 0; start < total; start += step) {
+            const end = Math.min(start + step, total);
+            const rBtn = document.createElement('button');
+            rBtn.className = 'nav-range-btn';
+            rBtn.textContent = `${start + 1}–${end}`;
+            rBtn.setAttribute('data-start', start);
+            rBtn.setAttribute('data-end', end);
+            rBtn.addEventListener('click', () => {
+              document.querySelectorAll('.nav-range-btn').forEach(b => b.classList.remove('active'));
+              rBtn.classList.add('active');
+              filterNavGrid([start, end]);
+            });
+            rangeContainer.appendChild(rBtn);
+          }
+          rangeContainer.style.display = 'flex';
+        } else {
+          rangeContainer.style.display = 'none';
+        }
+
         currentExamQuestions.forEach((q, idx) => {
           const btn = document.createElement('button');
           btn.className = 'nav-num-btn';
           btn.id = `nav-num-${idx}`;
+          btn.setAttribute('data-idx', idx);
           btn.textContent = idx + 1;
           btn.addEventListener('click', () => {
             currentQuestionIndex = idx;
@@ -882,17 +959,60 @@
           });
           grid.appendChild(btn);
         });
+
+        // Set max for quick jump
+        const qj = document.getElementById('quick-jump-input');
+        if (qj) qj.max = total;
+
+        updateNavGridStatus();
+      }
+
+      function filterNavGrid(range) {
+        activeRange = range;
+        const buttons = document.querySelectorAll('.nav-num-btn');
+        buttons.forEach((btn, idx) => {
+          if (range === 'all') {
+            btn.style.display = 'flex';
+          } else {
+            const [start, end] = range;
+            if (idx >= start && idx < end) {
+              btn.style.display = 'flex';
+            } else {
+              btn.style.display = 'none';
+            }
+          }
+        });
       }
 
       function updateNavGridStatus() {
+        let answeredCount = 0;
+        let flaggedCount = 0;
+
         currentExamQuestions.forEach((q, idx) => {
           const btn = document.getElementById(`nav-num-${idx}`);
           if (!btn) return;
           btn.className = 'nav-num-btn';
-          if (idx === currentQuestionIndex) btn.classList.add('current');
-          if (userAnswers[q.id]) btn.classList.add('answered');
-          if (flaggedQuestions.has(q.id)) btn.classList.add('flagged');
+          if (idx === currentQuestionIndex) {
+            btn.classList.add('current');
+            btn.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+          }
+          if (userAnswers[q.id]) {
+            btn.classList.add('answered');
+            answeredCount++;
+          }
+          if (flaggedQuestions.has(q.id)) {
+            btn.classList.add('flagged');
+            flaggedCount++;
+          }
         });
+
+        const total = currentExamQuestions.length;
+        const progressText = `${answeredCount}/${total} Terjawab`;
+        const counterEl = document.getElementById('nav-progress-counter');
+        if (counterEl) counterEl.textContent = progressText;
+
+        const mobileSummary = document.getElementById('mobile-nav-summary');
+        if (mobileSummary) mobileSummary.textContent = progressText;
       }
 
       function renderQuestion(idx) {
@@ -959,6 +1079,33 @@
           submitExamAnswers();
         }
       });
+
+      // Quick Jump to Question Number
+      const btnQuickJump = document.getElementById('btn-quick-jump');
+      if (btnQuickJump) {
+        btnQuickJump.addEventListener('click', () => {
+          const val = parseInt(document.getElementById('quick-jump-input').value, 10);
+          if (val >= 1 && val <= currentExamQuestions.length) {
+            currentQuestionIndex = val - 1;
+            renderQuestion(currentQuestionIndex);
+          } else {
+            alert(`Masukkan nomor soal antara 1 dan ${currentExamQuestions.length}`);
+          }
+        });
+      }
+
+      // Mobile Drawer Toggle
+      const btnToggleMobileNav = document.getElementById('btn-toggle-mobile-nav');
+      const navSidebar = document.getElementById('tka-nav-sidebar');
+      if (btnToggleMobileNav && navSidebar) {
+        btnToggleMobileNav.addEventListener('click', () => {
+          const isCollapsed = navSidebar.classList.toggle('collapsed-mobile');
+          const arrowEl = document.getElementById('mobile-nav-arrow');
+          if (arrowEl) {
+            arrowEl.textContent = isCollapsed ? '▾ Buka Grid' : '▴ Tutup Grid';
+          }
+        });
+      }
 
       async function submitExamAnswers() {
         clearInterval(timerInterval);
