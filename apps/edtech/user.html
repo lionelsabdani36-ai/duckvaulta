@@ -815,6 +815,13 @@
         });
       });
 
+      // Check query params to auto-open specific exam (e.g. ?cat=pplg)
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      if (catParam && ['saintek', 'soshum', 'pplg', 'all'].includes(catParam)) {
+        startTkaExam(catParam);
+      }
+
       async function startTkaExam(category) {
         setupView.style.display = 'none';
         resultView.style.display = 'none';

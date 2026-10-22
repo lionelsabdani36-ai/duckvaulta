@@ -227,6 +227,7 @@
               <select class="form-input" id="new-q-cat" required>
                 <option value="saintek">TKA Saintek (IPA)</option>
                 <option value="soshum">TKA Soshum (IPS)</option>
+                <option value="pplg">TKA SMK PPLG (Kejuruan)</option>
               </select>
             </div>
             <div class="form-group">
@@ -297,10 +298,11 @@
         <!-- Question Bank Viewer -->
         <div class="card-header" style="border-top: 1px solid var(--border-subtle); padding-top: 20px;">
           <h3 style="font-size: 1.1rem; font-weight: 700;">Daftar Bank Soal Tersimpan</h3>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="btn btn-secondary filter-q-btn active" data-filter="all" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Semua</button>
             <button class="btn btn-secondary filter-q-btn" data-filter="saintek" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Saintek</button>
             <button class="btn btn-secondary filter-q-btn" data-filter="soshum" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">Soshum</button>
+            <button class="btn btn-secondary filter-q-btn" data-filter="pplg" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem; border-color: rgba(16, 185, 129, 0.4); color: #10b981;">SMK PPLG</button>
           </div>
         </div>
         <div id="questions-list-container" style="max-height: 500px; overflow-y: auto; padding-right: 6px;">
