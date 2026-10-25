@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-23 22:47:55 WIB",
+  "timestamp": "2026-10-25 23:09:13 WIB",
   "targets": [
     {
       "name": "Duckvaulta Core Portal",
@@ -7,19 +7,19 @@
       "status_code": 200,
       "latencies": {
         "status_code": 200,
-        "avg_dns_ms": 1.14,
-        "avg_tcp_ms": 1.44,
-        "avg_tls_ms": 16.15,
-        "avg_ttfb_ms": 16.62,
-        "avg_total_ms": 17.59,
-        "min_total_ms": 16.04,
-        "max_total_ms": 18.46
+        "avg_dns_ms": 0.96,
+        "avg_tcp_ms": 1.31,
+        "avg_tls_ms": 11.64,
+        "avg_ttfb_ms": 12.04,
+        "avg_total_ms": 12.69,
+        "min_total_ms": 12.11,
+        "max_total_ms": 13.59
       },
       "tls": {
         "version": "TLSv1.3",
         "cipher": "TLS_AES_256_GCM_SHA384",
         "issuer": "Let's Encrypt",
-        "days_remaining": 87,
+        "days_remaining": 85,
         "valid_until": "Jan 19 13:06:24 2027 GMT"
       },
       "headers": {
@@ -37,21 +37,21 @@
           "asset": "/assets/anime.min.js",
           "url": "https://duckvaulta.ai.id/assets/anime.min.js",
           "status": 200,
-          "latency_ms": 4.63,
+          "latency_ms": 4.35,
           "content_type": "application/javascript"
         },
         {
           "asset": "/assets/duck-emblem.png",
           "url": "https://duckvaulta.ai.id/assets/duck-emblem.png",
           "status": 200,
-          "latency_ms": 4.66,
+          "latency_ms": 4.32,
           "content_type": "image/png"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
           "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
           "status": 200,
-          "latency_ms": 16.74,
+          "latency_ms": 17.94,
           "content_type": "text/css; charset=utf-8"
         }
       ],
@@ -63,19 +63,19 @@
       "status_code": 200,
       "latencies": {
         "status_code": 200,
-        "avg_dns_ms": 1.24,
-        "avg_tcp_ms": 1.62,
-        "avg_tls_ms": 15.04,
-        "avg_ttfb_ms": 36.39,
-        "avg_total_ms": 37.04,
-        "min_total_ms": 32.92,
-        "max_total_ms": 41.3
+        "avg_dns_ms": 1.06,
+        "avg_tcp_ms": 1.37,
+        "avg_tls_ms": 12.88,
+        "avg_ttfb_ms": 29.94,
+        "avg_total_ms": 30.52,
+        "min_total_ms": 28.91,
+        "max_total_ms": 31.51
       },
       "tls": {
         "version": "TLSv1.3",
         "cipher": "TLS_AES_256_GCM_SHA384",
         "issuer": "Let's Encrypt",
-        "days_remaining": 87,
+        "days_remaining": 85,
         "valid_until": "Jan 19 12:40:18 2027 GMT"
       },
       "headers": {
@@ -93,98 +93,98 @@
           "asset": "/@vite/client",
           "url": "https://godeye.duckvaulta.ai.id/@vite/client",
           "status": 200,
-          "latency_ms": 9.54,
+          "latency_ms": 14.18,
           "content_type": "text/javascript"
         },
         {
           "asset": "/cesium/Widgets/widgets.css",
           "url": "https://godeye.duckvaulta.ai.id/cesium/Widgets/widgets.css",
           "status": 200,
-          "latency_ms": 5.09,
+          "latency_ms": 5.53,
           "content_type": "text/css; charset=UTF-8"
         },
         {
           "asset": "/icons/icon-180.png",
           "url": "https://godeye.duckvaulta.ai.id/icons/icon-180.png",
           "status": 200,
-          "latency_ms": 5.88,
+          "latency_ms": 5.0,
           "content_type": "image/png"
         },
         {
           "asset": "/icons/icon-32.png",
           "url": "https://godeye.duckvaulta.ai.id/icons/icon-32.png",
           "status": 200,
-          "latency_ms": 11.09,
+          "latency_ms": 4.66,
           "content_type": "image/png"
         },
         {
           "asset": "/logo.svg",
           "url": "https://godeye.duckvaulta.ai.id/logo.svg",
           "status": 200,
-          "latency_ms": 14.84,
+          "latency_ms": 4.61,
           "content_type": "image/svg+xml"
         },
         {
           "asset": "/manifest.webmanifest",
           "url": "https://godeye.duckvaulta.ai.id/manifest.webmanifest",
           "status": 200,
-          "latency_ms": 6.46,
+          "latency_ms": 5.4,
           "content_type": "application/manifest+json"
         },
         {
           "asset": "/pin.svg",
           "url": "https://godeye.duckvaulta.ai.id/pin.svg",
           "status": 200,
-          "latency_ms": 5.68,
+          "latency_ms": 4.65,
           "content_type": "image/svg+xml"
         },
         {
           "asset": "/src/main.js",
           "url": "https://godeye.duckvaulta.ai.id/src/main.js",
           "status": 200,
-          "latency_ms": 6.49,
+          "latency_ms": 4.94,
           "content_type": "text/javascript"
         },
         {
           "asset": "/style.css",
           "url": "https://godeye.duckvaulta.ai.id/style.css",
           "status": 200,
-          "latency_ms": 9.7,
+          "latency_ms": 6.05,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
           "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
           "status": 200,
-          "latency_ms": 12.07,
+          "latency_ms": 10.54,
           "content_type": "text/css; charset=utf-8"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=adjust,arrow_drop_down,arrow_forward,arrow_left,arrow_right,bolt,chevron_left,chevron_right,close,close_fullscreen,dark_mode,draw,east,flare,flight,layers_clear,light_mode,local_fire_department,my_location,navigation,normal,on,open_in_full,public,radar,radio,right_panel_close,right_panel_open,rocket_launch,skip_next,skip_previous,upload_file,view_in_ar,visibility,visibility_off",
           "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=adjust,arrow_drop_down,arrow_forward,arrow_left,arrow_right,bolt,chevron_left,chevron_right,close,close_fullscreen,dark_mode,draw,east,flare,flight,layers_clear,light_mode,local_fire_department,my_location,navigation,normal,on,open_in_full,public,radar,radio,right_panel_close,right_panel_open,rocket_launch,skip_next,skip_previous,upload_file,view_in_ar,visibility,visibility_off",
           "status": 200,
-          "latency_ms": 12.21,
+          "latency_ms": 12.57,
           "content_type": "text/css; charset=utf-8"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/i18n/index.js",
           "url": "https://godeye.duckvaulta.ai.id/src/i18n/index.js",
           "status": 200,
-          "latency_ms": 8.56,
+          "latency_ms": 6.4,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/standalone/application.js",
           "url": "https://godeye.duckvaulta.ai.id/src/standalone/application.js",
           "status": 200,
-          "latency_ms": 6.72,
+          "latency_ms": 5.08,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/standalone/errors.js",
           "url": "https://godeye.duckvaulta.ai.id/src/standalone/errors.js",
           "status": 200,
-          "latency_ms": 7.45,
+          "latency_ms": 4.83,
           "content_type": "text/javascript"
         }
       ],
