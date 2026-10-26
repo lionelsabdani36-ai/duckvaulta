@@ -1,0 +1,209 @@
+{
+  "generated_at": "2026-10-26T22:33:12.846350+00:00",
+  "host": {
+    "hostname": "leohermes",
+    "os": "Debian GNU/Linux 13 (trixie) x86_64",
+    "kernel": "Linux 6.12.111+deb13-cloud-amd64",
+    "cpu": "AMD EPYC 9B14 (4 vCPU)",
+    "ram_total_mb": 15996,
+    "ram_used_mb": 7477,
+    "ram_available_mb": 8518,
+    "ram_utilization_pct": 46.7,
+    "disk_total_gb": 79,
+    "disk_used_gb": 33,
+    "disk_available_gb": 43,
+    "disk_utilization_pct": 44.0,
+    "swap_total_mb": 0,
+    "ip_public": "34.135.45.195"
+  },
+  "domains": {
+    "https://duckvaulta.ai.id": {
+      "tier": "Tier 1 (Core Portal & Compro)",
+      "upstream": "Static (/var/www/duckvaulta) + API (:3002)",
+      "status_code": 200,
+      "ttfb_avg_ms": 12.65,
+      "ttfb_min_ms": 8.05,
+      "ttfb_max_ms": 24.49,
+      "hsts": true,
+      "csp": true,
+      "corp": "same-origin",
+      "coop": "same-origin",
+      "cert_issuer": "Let's Encrypt (YE1)",
+      "cert_expiry": "2027-01-19T13:06:24Z",
+      "cert_days_left": 85
+    },
+    "https://godeye.duckvaulta.ai.id": {
+      "tier": "Tier 2 (God's Eye 3D Mission Control)",
+      "upstream": "Reverse Proxy (127.0.0.1:4173 Node.js)",
+      "status_code": 200,
+      "ttfb_avg_ms": 41.84,
+      "ttfb_min_ms": 34.26,
+      "ttfb_max_ms": 51.55,
+      "hsts": true,
+      "csp": true,
+      "corp": "none",
+      "coop": "none",
+      "cert_issuer": "Let's Encrypt (YE1)",
+      "cert_expiry": "2027-01-19T12:40:18Z",
+      "cert_days_left": 85
+    },
+    "https://edtech.duckvaulta.ai.id": {
+      "tier": "Tier 3 (EdTech AI Learning Platform)",
+      "upstream": "Static (/var/www/edtech) + API (:3002)",
+      "status_code": 200,
+      "ttfb_avg_ms": 12.12,
+      "ttfb_min_ms": 6.84,
+      "ttfb_max_ms": 20.27,
+      "hsts": true,
+      "csp": true,
+      "corp": "same-origin",
+      "coop": "same-origin",
+      "cert_issuer": "Let's Encrypt (YE1)",
+      "cert_expiry": "2027-01-20T01:44:55Z",
+      "cert_days_left": 85
+    },
+    "https://aicompany.duckvaulta.ai.id": {
+      "tier": "Tier 4 (Ruang 3D Virtual Office)",
+      "upstream": "Reverse Proxy (127.0.0.1:3001 Node.js)",
+      "status_code": 200,
+      "ttfb_avg_ms": 9.49,
+      "ttfb_min_ms": 7.58,
+      "ttfb_max_ms": 12.26,
+      "hsts": true,
+      "csp": false,
+      "corp": "none",
+      "coop": "none",
+      "cert_issuer": "Let's Encrypt (YE2)",
+      "cert_expiry": "2027-01-19T23:27:44Z",
+      "cert_days_left": 85
+    }
+  },
+  "slo_matrix": {
+    "tier_1_core": {
+      "service_name": "Duckvaulta Core & Auth Gateway",
+      "sli_availability_target_pct": 99.9,
+      "monthly_error_budget_minutes": 43.8,
+      "sli_latency_p95_ms": 50,
+      "sli_latency_p99_ms": 100,
+      "sli_error_rate_pct": 0.1,
+      "current_performance": {
+        "measured_availability_pct": 100.0,
+        "measured_p95_ttfb_ms": 24.49,
+        "measured_error_rate_pct": 0.0
+      }
+    },
+    "tier_2_godeye": {
+      "service_name": "God's Eye 3D Surveillance & Cesium Engine",
+      "sli_availability_target_pct": 99.5,
+      "monthly_error_budget_minutes": 219.0,
+      "sli_latency_p95_ms": 100,
+      "sli_latency_p99_ms": 200,
+      "sli_error_rate_pct": 0.5,
+      "webgl_render_success_pct": 99.9,
+      "current_performance": {
+        "measured_availability_pct": 100.0,
+        "measured_p95_ttfb_ms": 51.55,
+        "measured_error_rate_pct": 0.0,
+        "active_canvases": 8
+      }
+    },
+    "tier_3_edtech": {
+      "service_name": "EdTech AI Learning Platform",
+      "sli_availability_target_pct": 99.9,
+      "monthly_error_budget_minutes": 43.8,
+      "sli_latency_p95_ms": 50,
+      "sli_latency_p99_ms": 100,
+      "sli_error_rate_pct": 0.1,
+      "current_performance": {
+        "measured_availability_pct": 100.0,
+        "measured_p95_ttfb_ms": 20.27,
+        "measured_error_rate_pct": 0.0
+      }
+    },
+    "tier_4_ruang": {
+      "service_name": "Ruang 3D Virtual Office",
+      "sli_availability_target_pct": 99.5,
+      "monthly_error_budget_minutes": 219.0,
+      "sli_latency_p95_ms": 60,
+      "sli_latency_p99_ms": 120,
+      "sli_error_rate_pct": 0.5,
+      "current_performance": {
+        "measured_availability_pct": 100.0,
+        "measured_p95_ttfb_ms": 12.26,
+        "measured_error_rate_pct": 0.0
+      }
+    }
+  },
+  "multi_window_burn_rate_alerts": [
+    {
+      "severity": "CRITICAL (Pager)",
+      "short_window": "5m",
+      "long_window": "1h",
+      "burn_rate": 14.4,
+      "budget_consumed_pct": 2.0,
+      "action": "Immediate on-call paging, initiate automated circuit breaker, check upstream status"
+    },
+    {
+      "severity": "CRITICAL (Pager)",
+      "short_window": "30m",
+      "long_window": "6h",
+      "burn_rate": 6.0,
+      "budget_consumed_pct": 5.0,
+      "action": "Immediate on-call paging, halt non-essential background daemons, analyze traffic anomaly"
+    },
+    {
+      "severity": "HIGH (Ticket / Discord)",
+      "short_window": "2h",
+      "long_window": "24h",
+      "burn_rate": 3.0,
+      "budget_consumed_pct": 10.0,
+      "action": "Dispatch task to AI fullstack-dev and qa-engineer, investigate slow degradation"
+    },
+    {
+      "severity": "MEDIUM (Ticket / Discord)",
+      "short_window": "6h",
+      "long_window": "3d",
+      "burn_rate": 1.0,
+      "budget_consumed_pct": 10.0,
+      "action": "Log ticket, schedule investigation in next daily sync, review log trends"
+    }
+  ],
+  "port_isolation_status": {
+    "3001": {
+      "binding": "127.0.0.1",
+      "process": "ruang.service (Node.js)",
+      "status": "ISOLATED_OK"
+    },
+    "3002": {
+      "binding": "127.0.0.1",
+      "process": "duckvaulta-auth (PM2)",
+      "status": "ISOLATED_OK"
+    },
+    "4173": {
+      "binding": "127.0.0.1",
+      "process": "gods-eye-view (PM2)",
+      "status": "ISOLATED_OK"
+    },
+    "11434": {
+      "binding": "127.0.0.1",
+      "process": "ollama.service",
+      "status": "ISOLATED_OK"
+    },
+    "80": {
+      "binding": "0.0.0.0 / [::]",
+      "process": "nginx",
+      "status": "PUBLIC_INGRESS_HTTP"
+    },
+    "443": {
+      "binding": "0.0.0.0 / [::]",
+      "process": "nginx",
+      "status": "PUBLIC_INGRESS_HTTPS"
+    }
+  },
+  "anti_slop_compliance": {
+    "zero_em_dash": true,
+    "no_generic_buzzwords": true,
+    "wcag_contrast_ratio": "4.5:1",
+    "mobile_tap_target_px": 44
+  }
+}
