@@ -1,5 +1,5 @@
 # Port Audit & Network Isolation Report: VPS Leohermes
-**Execution Timestamp:** 26 Oktober 2026, 09:42 UTC (16:42 WIB)  
+**Execution Timestamp:** 26 Oktober 2026, 13:45 UTC (20:45 WIB)  
 **Host:** `leohermes` (AMD EPYC 9B14, 4 vCPU, 15GB RAM, Debian 13)  
 **Public IP:** `34.135.45.195` | **Internal IP:** `10.128.0.2`  
 **Penyusun:** Master Guru Judith (`guru`) bersama Tim AI Duckvaulta  
@@ -30,34 +30,34 @@ Hasil pengujian soket TCP Python live per 26 Oktober 2026:
 ### A. Interface Loopback (`127.0.0.1`)
 | Port | Status | Latensi | Layanan / Daemon | Keterangan |
 |---|---|---|---|---|
-| 22 | OPEN | 0.12 ms | OpenSSH 10.0p2 | Remote management |
-| 80 | OPEN | 0.04 ms | Nginx Reverse Proxy | Ingress HTTP |
-| 443 | OPEN | 0.08 ms | Nginx Reverse Proxy | Ingress TLS 1.3 |
-| 3001 | OPEN | 0.04 ms | Node.js (Ruang 3D Office) | Upstream service |
-| 3002 | OPEN | 0.03 ms | Node.js (Duckvaulta Auth) | Upstream API |
-| 4173 | OPEN | 0.39 ms | Node.js / Vite Preview | God's Eye View |
+| 22 | OPEN | 0.14 ms | OpenSSH 10.0p2 | Remote management |
+| 80 | OPEN | 0.05 ms | Nginx Reverse Proxy | Ingress HTTP |
+| 443 | OPEN | 0.05 ms | Nginx Reverse Proxy | Ingress TLS 1.3 |
+| 3001 | OPEN | 0.06 ms | Node.js (Ruang 3D Office) | Upstream service |
+| 3002 | OPEN | 0.05 ms | Node.js (Duckvaulta Auth) | Upstream API |
+| 4173 | OPEN | 0.04 ms | Node.js / Vite Preview | God's Eye View |
 | 11434 | OPEN | 0.05 ms | Ollama LLM Engine | Model inference lokal |
-| 20128 | OPEN | 0.03 ms | Next.js 9router LLM Gateway | AI agent dispatcher |
+| 20128 | OPEN | 0.78 ms | Next.js 9router LLM Gateway | AI agent dispatcher |
 
 ### B. Interface Internal Private (`10.128.0.2 - ens3`)
 | Port | Status | Latensi | Layanan / Daemon | Evaluasi Isolasi |
 |---|---|---|---|---|
 | 3001 | REFUSED (111) | 0.03 ms | Ruang 3D Virtual Office | PASS: Terisolasi sempurna |
-| 3002 | REFUSED (111) | 0.02 ms | Duckvaulta Auth Service | PASS: Terisolasi sempurna |
+| 3002 | REFUSED (111) | 0.03 ms | Duckvaulta Auth Service | PASS: Terisolasi sempurna |
 | 4173 | REFUSED (111) | 0.02 ms | God's Eye View | PASS: Terisolasi sempurna |
 | 11434 | REFUSED (111) | 0.02 ms | Ollama LLM Engine | PASS: Terisolasi sempurna |
 
 ### C. IP Publik (`34.135.45.195`)
 | Port | Status | Latensi | Protokol / Kebijakan | Evaluasi Keamanan |
 |---|---|---|---|---|
-| 22 | OPEN | 0.34 ms | SSH (Public Key Only) | PASS: Terproteksi |
-| 80 | OPEN | 0.38 ms | HTTP (301 HTTPS Redirect) | PASS: Terenkripsi |
+| 22 | OPEN | 0.50 ms | SSH (Public Key Only) | PASS: Terproteksi |
+| 80 | OPEN | 0.36 ms | HTTP (301 HTTPS Redirect) | PASS: Terenkripsi |
 | 443 | OPEN | 0.24 ms | HTTPS TLS 1.3 | PASS: Standar A+ SSL Labs |
-| 3001 | REFUSED (111) | 0.29 ms | Node.js Ruang 3D | PASS: Ditolak kernel Linux |
-| 3002 | REFUSED (111) | 0.24 ms | Node.js Auth Service | PASS: Ditolak kernel Linux |
-| 4173 | REFUSED (111) | 0.22 ms | Vite Preview God's Eye | PASS: Ditolak kernel Linux |
-| 11434 | REFUSED (111) | 0.20 ms | Ollama API | PASS: Ditolak kernel Linux |
-| 20128 | OPEN | 0.23 ms | HTTP 401 Unauthorized | PASS: Mandatory Bearer Token |
+| 3001 | REFUSED (111) | 0.27 ms | Node.js Ruang 3D | PASS: Ditolak kernel Linux |
+| 3002 | REFUSED (111) | 0.25 ms | Node.js Auth Service | PASS: Ditolak kernel Linux |
+| 4173 | REFUSED (111) | 0.21 ms | Vite Preview God's Eye | PASS: Ditolak kernel Linux |
+| 11434 | REFUSED (111) | 0.23 ms | Ollama API | PASS: Ditolak kernel Linux |
+| 20128 | OPEN | 0.26 ms | HTTP 401 Unauthorized | PASS: Mandatory Bearer Token |
 
 ---
 
@@ -142,4 +142,4 @@ Laporan dan sintesis ini merupakan hasil kerja terintegrasi dari tim AI Duckvaul
 3. **fullstack-dev Alex (`t_eb7787d1`):** Verifikasi socket binding level kernel Linux (`ss -tulnp`, `/proc/net/tcp`) dan upstream routing Nginx.
 4. **qa-engineer Julius (`t_2b62fadf`):** Penetration testing soket TCP empiris, pengujian connection timeout/refusal pada IP publik vs loopback.
 5. **security-engineer Athena (`t_c54e8d93`):** Evaluasi postur defense-in-depth, validasi autentikasi token port 20128, dan audit telemetri Google Cloud.
-6. **guru Judith (`t_028cd3d7`):** Sintesis panduan operasional SRE, verifikasi boundary isolasi zero-trust, kurikulum edukatif, dan best practices hardening.
+6. **guru Judith (`t_7716f97f`):** Sintesis panduan operasional SRE, verifikasi boundary isolasi zero-trust, kurikulum edukatif, dan best practices hardening.
