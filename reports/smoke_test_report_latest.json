@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-26 05:10:50 WIB",
+  "timestamp": "2026-10-26 17:18:56 WIB",
   "targets": [
     {
       "name": "Duckvaulta Core Portal",
@@ -7,13 +7,13 @@
       "status_code": 200,
       "latencies": {
         "status_code": 200,
-        "avg_dns_ms": 87.91,
-        "avg_tcp_ms": 88.19,
-        "avg_tls_ms": 99.28,
-        "avg_ttfb_ms": 99.69,
-        "avg_total_ms": 100.29,
-        "min_total_ms": 13.05,
-        "max_total_ms": 273.94
+        "avg_dns_ms": 0.99,
+        "avg_tcp_ms": 1.27,
+        "avg_tls_ms": 11.84,
+        "avg_ttfb_ms": 12.23,
+        "avg_total_ms": 12.91,
+        "min_total_ms": 12.34,
+        "max_total_ms": 13.57
       },
       "tls": {
         "version": "TLSv1.3",
@@ -37,21 +37,21 @@
           "asset": "/assets/anime.min.js",
           "url": "https://duckvaulta.ai.id/assets/anime.min.js",
           "status": 200,
-          "latency_ms": 4.51,
+          "latency_ms": 4.53,
           "content_type": "application/javascript"
         },
         {
           "asset": "/assets/duck-emblem.png",
           "url": "https://duckvaulta.ai.id/assets/duck-emblem.png",
           "status": 200,
-          "latency_ms": 4.41,
+          "latency_ms": 4.5,
           "content_type": "image/png"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
           "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
           "status": 200,
-          "latency_ms": 46.73,
+          "latency_ms": 14.66,
           "content_type": "text/css; charset=utf-8"
         }
       ],
@@ -63,13 +63,13 @@
       "status_code": 200,
       "latencies": {
         "status_code": 200,
-        "avg_dns_ms": 116.4,
-        "avg_tcp_ms": 116.69,
-        "avg_tls_ms": 127.24,
-        "avg_ttfb_ms": 143.89,
-        "avg_total_ms": 144.51,
-        "min_total_ms": 25.43,
-        "max_total_ms": 380.57
+        "avg_dns_ms": 0.99,
+        "avg_tcp_ms": 1.28,
+        "avg_tls_ms": 11.61,
+        "avg_ttfb_ms": 30.67,
+        "avg_total_ms": 31.31,
+        "min_total_ms": 30.25,
+        "max_total_ms": 33.07
       },
       "tls": {
         "version": "TLSv1.3",
@@ -93,99 +93,204 @@
           "asset": "/@vite/client",
           "url": "https://godeye.duckvaulta.ai.id/@vite/client",
           "status": 200,
-          "latency_ms": 15.14,
+          "latency_ms": 8.35,
           "content_type": "text/javascript"
         },
         {
           "asset": "/cesium/Widgets/widgets.css",
           "url": "https://godeye.duckvaulta.ai.id/cesium/Widgets/widgets.css",
           "status": 200,
-          "latency_ms": 5.55,
+          "latency_ms": 17.64,
           "content_type": "text/css; charset=UTF-8"
         },
         {
           "asset": "/icons/icon-180.png",
           "url": "https://godeye.duckvaulta.ai.id/icons/icon-180.png",
           "status": 200,
-          "latency_ms": 4.85,
+          "latency_ms": 5.45,
           "content_type": "image/png"
         },
         {
           "asset": "/icons/icon-32.png",
           "url": "https://godeye.duckvaulta.ai.id/icons/icon-32.png",
           "status": 200,
-          "latency_ms": 4.69,
+          "latency_ms": 4.9,
           "content_type": "image/png"
         },
         {
           "asset": "/logo.svg",
           "url": "https://godeye.duckvaulta.ai.id/logo.svg",
           "status": 200,
-          "latency_ms": 4.7,
+          "latency_ms": 4.88,
           "content_type": "image/svg+xml"
         },
         {
           "asset": "/manifest.webmanifest",
           "url": "https://godeye.duckvaulta.ai.id/manifest.webmanifest",
           "status": 200,
-          "latency_ms": 4.64,
+          "latency_ms": 4.75,
           "content_type": "application/manifest+json"
         },
         {
           "asset": "/pin.svg",
           "url": "https://godeye.duckvaulta.ai.id/pin.svg",
           "status": 200,
-          "latency_ms": 4.75,
+          "latency_ms": 5.51,
           "content_type": "image/svg+xml"
         },
         {
           "asset": "/src/main.js",
           "url": "https://godeye.duckvaulta.ai.id/src/main.js",
           "status": 200,
-          "latency_ms": 6.18,
+          "latency_ms": 4.86,
           "content_type": "text/javascript"
         },
         {
           "asset": "/style.css",
           "url": "https://godeye.duckvaulta.ai.id/style.css",
           "status": 200,
-          "latency_ms": 6.99,
+          "latency_ms": 6.07,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
           "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
           "status": 200,
-          "latency_ms": 9.3,
+          "latency_ms": 11.68,
           "content_type": "text/css; charset=utf-8"
         },
         {
           "asset": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=adjust,arrow_drop_down,arrow_forward,arrow_left,arrow_right,bolt,chevron_left,chevron_right,close,close_fullscreen,dark_mode,draw,east,flare,flight,layers_clear,light_mode,local_fire_department,my_location,navigation,normal,on,open_in_full,public,radar,radio,right_panel_close,right_panel_open,rocket_launch,skip_next,skip_previous,upload_file,view_in_ar,visibility,visibility_off",
           "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&icon_names=adjust,arrow_drop_down,arrow_forward,arrow_left,arrow_right,bolt,chevron_left,chevron_right,close,close_fullscreen,dark_mode,draw,east,flare,flight,layers_clear,light_mode,local_fire_department,my_location,navigation,normal,on,open_in_full,public,radar,radio,right_panel_close,right_panel_open,rocket_launch,skip_next,skip_previous,upload_file,view_in_ar,visibility,visibility_off",
           "status": 200,
-          "latency_ms": 7.26,
+          "latency_ms": 11.81,
           "content_type": "text/css; charset=utf-8"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/i18n/index.js",
           "url": "https://godeye.duckvaulta.ai.id/src/i18n/index.js",
           "status": 200,
-          "latency_ms": 6.24,
+          "latency_ms": 5.96,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/standalone/application.js",
           "url": "https://godeye.duckvaulta.ai.id/src/standalone/application.js",
           "status": 200,
-          "latency_ms": 5.37,
+          "latency_ms": 4.92,
           "content_type": "text/javascript"
         },
         {
           "asset": "https://godeye.duckvaulta.ai.id/src/standalone/errors.js",
           "url": "https://godeye.duckvaulta.ai.id/src/standalone/errors.js",
           "status": 200,
-          "latency_ms": 4.57,
+          "latency_ms": 5.11,
           "content_type": "text/javascript"
+        }
+      ],
+      "assets_broken": []
+    },
+    {
+      "name": "Duckvaulta EdTech AI Platform",
+      "url": "https://edtech.duckvaulta.ai.id",
+      "status_code": 200,
+      "latencies": {
+        "status_code": 200,
+        "avg_dns_ms": 0.96,
+        "avg_tcp_ms": 1.23,
+        "avg_tls_ms": 12.05,
+        "avg_ttfb_ms": 12.56,
+        "avg_total_ms": 13.3,
+        "min_total_ms": 12.81,
+        "max_total_ms": 14.18
+      },
+      "tls": {
+        "version": "TLSv1.3",
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "issuer": "Let's Encrypt",
+        "days_remaining": 85,
+        "valid_until": "Jan 20 01:44:55 2027 GMT"
+      },
+      "headers": {
+        "server": "nginx",
+        "hsts": "max-age=63072000; includeSubDomains; preload",
+        "csp": "Present",
+        "x_frame_options": "SAMEORIGIN",
+        "x_content_type_options": "nosniff"
+      },
+      "assets_total": 3,
+      "assets_ok_count": 3,
+      "assets_broken_count": 0,
+      "assets_ok": [
+        {
+          "asset": "/assets/anime.min.js",
+          "url": "https://edtech.duckvaulta.ai.id/assets/anime.min.js",
+          "status": 200,
+          "latency_ms": 4.85,
+          "content_type": "application/javascript"
+        },
+        {
+          "asset": "/assets/duck-emblem.png",
+          "url": "https://edtech.duckvaulta.ai.id/assets/duck-emblem.png",
+          "status": 200,
+          "latency_ms": 4.48,
+          "content_type": "image/png"
+        },
+        {
+          "asset": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
+          "url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
+          "status": 200,
+          "latency_ms": 11.96,
+          "content_type": "text/css; charset=utf-8"
+        }
+      ],
+      "assets_broken": []
+    },
+    {
+      "name": "Duckvaulta Ruang 3D Virtual Office",
+      "url": "https://aicompany.duckvaulta.ai.id",
+      "status_code": 200,
+      "latencies": {
+        "status_code": 200,
+        "avg_dns_ms": 1.05,
+        "avg_tcp_ms": 1.32,
+        "avg_tls_ms": 11.63,
+        "avg_ttfb_ms": 13.04,
+        "avg_total_ms": 13.1,
+        "min_total_ms": 12.73,
+        "max_total_ms": 13.48
+      },
+      "tls": {
+        "version": "TLSv1.3",
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "issuer": "Let's Encrypt",
+        "days_remaining": 85,
+        "valid_until": "Jan 19 23:27:44 2027 GMT"
+      },
+      "headers": {
+        "server": "nginx",
+        "hsts": "max-age=63072000; includeSubDomains; preload",
+        "csp": "Missing",
+        "x_frame_options": "SAMEORIGIN",
+        "x_content_type_options": "nosniff"
+      },
+      "assets_total": 2,
+      "assets_ok_count": 2,
+      "assets_broken_count": 0,
+      "assets_ok": [
+        {
+          "asset": "/assets/index-DFOnZF01.css",
+          "url": "https://aicompany.duckvaulta.ai.id/assets/index-DFOnZF01.css",
+          "status": 200,
+          "latency_ms": 5.01,
+          "content_type": "text/css; charset=utf-8"
+        },
+        {
+          "asset": "/assets/index-Dlyyj7C9.js",
+          "url": "https://aicompany.duckvaulta.ai.id/assets/index-Dlyyj7C9.js",
+          "status": 200,
+          "latency_ms": 4.84,
+          "content_type": "text/javascript; charset=utf-8"
         }
       ],
       "assets_broken": []

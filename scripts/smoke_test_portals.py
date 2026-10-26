@@ -31,7 +31,9 @@ TIMESTAMP_STR = NOW_WIB.strftime("%Y-%m-%d %H:%M:%S WIB")
 
 TARGET_HOSTS = [
     {"name": "Duckvaulta Core Portal", "url": "https://duckvaulta.ai.id"},
-    {"name": "God's Eye View", "url": "https://godeye.duckvaulta.ai.id"}
+    {"name": "God's Eye View", "url": "https://godeye.duckvaulta.ai.id"},
+    {"name": "Duckvaulta EdTech AI Platform", "url": "https://edtech.duckvaulta.ai.id"},
+    {"name": "Duckvaulta Ruang 3D Virtual Office", "url": "https://aicompany.duckvaulta.ai.id"}
 ]
 
 class AssetHTMLParser(HTMLParser):
