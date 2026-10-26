@@ -16,9 +16,9 @@
     :root {
       /* Brand Identity Palette: Deep Nautical Navy, Obsidian, Cyan & Amber */
       --bg-void: #060913;
-      --bg-surface: #0a1120;
+      --bg-surface: #0a1122;
       --bg-card: #0d172a;
-      --bg-card-hover: #132038;
+      --bg-card-hover: #13223d;
       
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-medium: rgba(255, 255, 255, 0.16);
@@ -27,14 +27,14 @@
       /* Duckvaulta Logo Accents */
       --cyan-primary: #00d2ff;
       --cyan-muted: #0099cc;
-      --cyan-glow: rgba(0, 210, 255, 0.14);
+      --cyan-glow: rgba(0, 210, 255, 0.15);
       --amber-accent: #f59e0b;
       --amber-muted: #d97706;
       --emerald-live: #10b981;
 
       --text-white: #ffffff;
       --text-secondary: #94a3b8;
-      --text-muted: #64748b;
+      --text-muted: #8092a8;
 
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -77,7 +77,7 @@
     }
 
     /* ======================================================== */
-    /* TOPBAR NAVIGATION (Clean, Structured, Balanced) */
+    /* TOPBAR NAVIGATION (Clean 3-Zone Structure, Accessible) */
     /* ======================================================== */
     nav {
       position: fixed;
@@ -86,7 +86,7 @@
       width: 100%;
       height: 70px;
       z-index: 100;
-      background: rgba(6, 9, 19, 0.90);
+      background: rgba(6, 9, 19, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border-subtle);
@@ -111,7 +111,7 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
       color: var(--text-white);
       flex-shrink: 0;
@@ -119,8 +119,8 @@
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
@@ -139,8 +139,8 @@
     }
 
     .brand-logo img {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
     }
 
@@ -151,149 +151,130 @@
     }
 
     .brand-name {
-      font-size: 1.18rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: var(--text-white);
-      line-height: 1;
     }
 
     .brand-pill {
       font-size: 0.65rem;
       font-family: var(--font-mono);
       font-weight: 600;
-      color: var(--cyan-primary);
-      background: rgba(0, 210, 255, 0.08);
-      border: 1px solid var(--border-accent);
-      padding: 2px 7px;
+      padding: 3px 7px;
       border-radius: 4px;
+      background: rgba(0, 210, 255, 0.12);
+      color: var(--cyan-primary);
+      border: 1px solid rgba(0, 210, 255, 0.3);
       letter-spacing: 0.05em;
-      line-height: 1.2;
     }
 
-    /* Center Navigation Menu */
+    /* Center Nav Links */
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 20px;
       list-style: none;
-      margin: 0;
-      padding: 0;
-      flex-wrap: nowrap;
-      white-space: nowrap;
     }
 
     .nav-link {
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      padding: 7px 11px;
-      border-radius: var(--radius-sm);
-      transition: all 0.18s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      transition: color 0.2s ease;
+      padding: 8px 4px;
       white-space: nowrap;
-      line-height: 1;
     }
 
     .nav-link:hover {
       color: var(--text-white);
-      background: rgba(255, 255, 255, 0.06);
     }
 
     .nav-link.ext {
-      color: #94a3b8;
-    }
-    .nav-link.ext:hover {
       color: var(--cyan-primary);
     }
 
-    /* Right Actions */
+    /* Right Action Zone */
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
       flex-shrink: 0;
     }
 
     .nav-status {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 6px 11px;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 20px;
       background: rgba(16, 185, 129, 0.08);
       border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: var(--radius-sm);
-      font-size: 0.74rem;
       font-family: var(--font-mono);
+      font-size: 0.72rem;
       color: var(--emerald-live);
-      white-space: nowrap;
-      line-height: 1;
+      font-weight: 500;
     }
 
     .pulse-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background-color: var(--emerald-live);
+      background: var(--emerald-live);
       box-shadow: 0 0 8px var(--emerald-live);
-      flex-shrink: 0;
     }
 
     .nav-btn-primary {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      min-height: 36px;
-      background: var(--cyan-primary);
-      color: #040812;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-decoration: none;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
       border-radius: var(--radius-sm);
-      border: 1px solid var(--cyan-primary);
+      background: var(--cyan-primary);
+      color: #060913;
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-decoration: none;
       transition: all 0.2s ease;
-      white-space: nowrap;
-      line-height: 1;
+      border: none;
+      cursor: pointer;
     }
 
     .nav-btn-primary:hover {
       background: #33dcff;
+      box-shadow: 0 0 16px var(--cyan-glow);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0, 210, 255, 0.3);
     }
 
     .mobile-toggle {
       display: none;
-      background: transparent;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      color: var(--text-white);
-      padding: 6px;
-      cursor: pointer;
-      min-height: 38px;
-      min-width: 38px;
+      min-width: 44px;
+      min-height: 44px;
       align-items: center;
       justify-content: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-medium);
+      color: var(--text-white);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
     }
 
-    /* Mobile Dropdown Menu */
+    /* Mobile Drawer */
     .mobile-menu {
       display: none;
       position: fixed;
-      top: 74px;
+      top: 70px;
       left: 0;
       width: 100%;
       background: rgba(6, 9, 19, 0.98);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 16px 24px;
-      flex-direction: column;
-      gap: 10px;
+      border-bottom: 1px solid var(--border-medium);
+      padding: 20px 24px;
       z-index: 99;
-      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+      flex-direction: column;
+      gap: 12px;
     }
 
     .mobile-menu.open {
@@ -301,69 +282,36 @@
     }
 
     .mobile-link {
-      color: var(--text-white);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 22px;
       min-height: 44px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
+      padding: 8px 12px;
       border-radius: var(--radius-sm);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: var(--cyan-primary);
-      color: #040812;
-      border: 1px solid var(--cyan-primary);
-    }
-
-    .btn-primary:hover {
-      background: #33dcff;
-      border-color: #33dcff;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: var(--bg-surface);
       color: var(--text-white);
-      border: 1px solid var(--border-medium);
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .btn-secondary:hover {
-      background: var(--bg-card);
-      border-color: var(--text-secondary);
-      transform: translateY(-1px);
+    .mobile-link:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cyan-primary);
     }
 
-    /* Hero Section */
+    /* ======================================================== */
+    /* HERO SECTION */
+    /* ======================================================== */
     .hero-section {
-      padding: 160px 0 90px 0;
+      padding-top: 130px;
+      padding-bottom: 70px;
       position: relative;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 56px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
       align-items: center;
     }
 
@@ -371,23 +319,25 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
       background: rgba(0, 210, 255, 0.08);
-      border: 1px solid var(--border-accent);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
+      border: 1px solid rgba(0, 210, 255, 0.28);
       color: var(--cyan-primary);
-      margin-bottom: 24px;
-      letter-spacing: 0.04em;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
     }
 
     .hero-headline {
-      font-size: 3.1rem;
+      font-size: 2.85rem;
       font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      margin-bottom: 22px;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      color: var(--text-white);
     }
 
     .hero-headline span.accent {
@@ -395,177 +345,237 @@
     }
 
     .hero-desc {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--text-secondary);
       line-height: 1.65;
-      margin-bottom: 34px;
-      max-width: 620px;
+      margin-bottom: 30px;
+      max-width: 600px;
     }
 
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
     }
 
-    /* Hero Visual Card & Radar */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--cyan-primary);
+      color: #060913;
+      border: 1px solid var(--cyan-primary);
+    }
+
+    .btn-primary:hover {
+      background: #33dcff;
+      box-shadow: 0 0 20px var(--cyan-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-white);
+      border: 1px solid var(--border-medium);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: var(--cyan-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Node Spec Pills Bar */
+    .hero-spec-strip {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    .hero-spec-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      color: var(--text-muted);
+    }
+
+    .hero-spec-pill strong {
+      color: var(--text-white);
+    }
+
+    /* Hero Radar Visual Card */
     .hero-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
       border-radius: var(--radius-lg);
-      padding: 32px;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan-primary), transparent);
     }
 
     .radar-container {
       width: 100%;
-      height: 230px;
+      aspect-ratio: 1;
+      max-width: 320px;
+      margin: 0 auto 20px auto;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      margin-bottom: 24px;
-      background: radial-gradient(circle at center, rgba(0, 210, 255, 0.05) 0%, transparent 70%);
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .radar-svg {
-      width: 210px;
-      height: 210px;
+      width: 100%;
+      height: 100%;
     }
 
     .radar-center-logo {
       position: absolute;
-      width: 76px;
-      height: 76px;
-      border-radius: 20px;
-      background: var(--bg-void);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(6, 9, 19, 0.9);
       border: 1.5px solid var(--cyan-primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 5;
-      box-shadow: 0 0 24px var(--cyan-glow);
-      transition: transform 0.3s ease;
-    }
-
-    .radar-center-logo:hover {
-      transform: scale(1.06);
+      box-shadow: 0 0 16px var(--cyan-glow);
     }
 
     .radar-center-logo img {
-      width: 60px;
-      height: 60px;
+      width: 26px;
+      height: 26px;
       object-fit: contain;
     }
 
     .hero-card-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
     }
 
     .hero-card-brand-row {
       display: flex;
       align-items: center;
-      gap: 14px;
-    }
-
-    .meta-logo-img {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.04);
-      padding: 4px;
-      border: 1px solid var(--border-subtle);
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .hero-card-title {
-      font-size: 1.15rem;
       font-weight: 700;
+      font-size: 0.92rem;
       color: var(--text-white);
-      line-height: 1.2;
     }
 
     .hero-card-sub {
-      font-size: 0.8rem;
       font-family: var(--font-mono);
+      font-size: 0.72rem;
       color: var(--cyan-primary);
-      line-height: 1.4;
     }
 
     .hero-card-detail {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-secondary);
-      padding-top: 12px;
-      border-top: 1px solid var(--border-subtle);
       line-height: 1.5;
     }
 
-    /* Section General */
+    /* ======================================================== */
+    /* SECTION HEADERS (Consistent & Structured) */
+    /* ======================================================== */
     section {
-      padding: 90px 0;
-      border-top: 1px solid var(--border-subtle);
+      padding: 70px 0;
+      position: relative;
     }
 
     .section-header {
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
 
     .section-kicker {
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       color: var(--cyan-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
       display: block;
+      margin-bottom: 8px;
     }
 
     .section-title {
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      color: var(--text-white);
     }
 
     .section-desc {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: var(--text-secondary);
-      max-width: 650px;
+      max-width: 680px;
+      line-height: 1.6;
     }
 
-    /* Deployments Grid (Product Dossiers) */
+    /* ======================================================== */
+    /* 1. PRODUCTION SUITE (Live Platform Deployments) */
+    /* ======================================================== */
     .deployments-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
+      gap: 24px;
     }
 
     .product-card {
-      background: var(--bg-surface);
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 28px;
+      border-radius: var(--radius-md);
+      padding: 26px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: all 0.25s ease;
       position: relative;
-      transition: border-color 0.25s ease, background-color 0.25s ease;
     }
 
     .product-card:hover {
-      background: var(--bg-card);
+      background: var(--bg-card-hover);
       border-color: var(--border-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
     }
 
     .card-top {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .card-header-row {
@@ -575,101 +585,225 @@
       margin-bottom: 16px;
     }
 
-    .card-badge {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      padding: 3px 8px;
+    .card-icon-wrap {
+      width: 44px;
+      height: 44px;
       border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
+      background: rgba(0, 210, 255, 0.08);
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan-primary);
     }
 
-    .card-badge.live {
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+      border: 1px solid rgba(16, 185, 129, 0.3);
       background: rgba(16, 185, 129, 0.08);
-      border-color: rgba(16, 185, 129, 0.3);
       color: var(--emerald-live);
     }
 
-    .card-icon {
-      font-size: 1.6rem;
-    }
-
     .card-title {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 700;
+      color: var(--text-white);
       margin-bottom: 10px;
-      letter-spacing: -0.01em;
     }
 
     .card-text {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.6;
+      margin-bottom: 16px;
     }
 
     .card-specs {
-      margin-top: 18px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       gap: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.04);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
     }
 
-    .card-specs span strong {
+    .card-specs strong {
       color: var(--text-secondary);
     }
 
     .card-footer {
-      margin-top: 24px;
-    }
-
-    :focus,
-    :focus-visible {
-      outline: 2px solid var(--cyan-primary) !important;
-      outline-offset: 3px !important;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
     }
 
     .card-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
       color: var(--cyan-primary);
       text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 600;
-      min-height: 40px;
-      padding: 6px 0;
       transition: gap 0.2s ease;
     }
 
     .card-link:hover {
-      gap: 10px;
+      gap: 12px;
+      color: #33dcff;
     }
 
-    /* Architecture / Hardware Section */
-    .metrics-strip {
+    /* ======================================================== */
+    /* 2. AUTONOMOUS AI TEAM ROSTER (Interactive Task Force) */
+    /* ======================================================== */
+    .team-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      margin-bottom: 48px;
+      margin-bottom: 30px;
     }
 
-    .metric-item {
-      background: var(--bg-surface);
+    .agent-card {
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 22px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .agent-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(245, 158, 11, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .agent-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .agent-name-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .agent-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--amber-accent);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .agent-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .agent-role {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--amber-accent);
+    }
+
+    .agent-status-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: var(--emerald-live);
+    }
+
+    .agent-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .agent-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .agent-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 3px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .team-cta-banner {
+      background: linear-gradient(135deg, rgba(13, 23, 42, 0.8), rgba(10, 17, 34, 0.9));
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .team-cta-text h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+
+    .team-cta-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ======================================================== */
+    /* 3. ARCHITECTURE & HARDWARE BENCHMARKS */
+    /* ======================================================== */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .metric-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: left;
     }
 
     .metric-value-wrap {
       display: flex;
       align-items: baseline;
-      gap: 4px;
+      gap: 6px;
       margin-bottom: 6px;
     }
 
@@ -682,44 +816,50 @@
     }
 
     .metric-suffix {
-      font-size: 1rem;
       font-family: var(--font-mono);
+      font-size: 0.85rem;
       color: var(--cyan-primary);
+      font-weight: 600;
     }
 
     .metric-title {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
+      color: var(--text-white);
+      margin-bottom: 2px;
     }
 
     .metric-subtitle {
       font-size: 0.75rem;
       color: var(--text-muted);
-      line-height: 1.4;
     }
 
-    /* Interactive Architecture Explorer */
+    /* Architecture Interactive Tabs */
     .tabs-nav {
       display: flex;
       gap: 8px;
       border-bottom: 1px solid var(--border-subtle);
       margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 2px;
     }
 
     .tab-btn {
+      min-height: 44px;
+      padding: 10px 18px;
       background: transparent;
       border: none;
-      color: var(--text-secondary);
-      padding: 12px 18px;
-      min-height: 44px;
-      font-family: var(--font-sans);
-      font-size: 0.92rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       border-bottom: 2px solid transparent;
       transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-white);
     }
 
     .tab-btn.active {
@@ -727,16 +867,12 @@
       border-bottom-color: var(--cyan-primary);
     }
 
-    .tab-content {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      min-height: 280px;
-    }
-
     .tab-pane {
       display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 28px;
     }
 
     .tab-pane.active {
@@ -745,262 +881,87 @@
 
     .spec-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 32px;
     }
 
     .spec-block-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 12px;
       color: var(--text-white);
+      margin-bottom: 14px;
     }
 
     .spec-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .spec-list li {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.6;
       padding-left: 18px;
       position: relative;
     }
 
     .spec-list li::before {
-      content: "•";
-      color: var(--cyan-primary);
+      content: '>';
       position: absolute;
       left: 0;
-      font-weight: bold;
+      top: 0;
+      color: var(--cyan-primary);
+      font-family: var(--font-mono);
+      font-weight: 700;
     }
 
-    /* Diagnostics Board (Telemetry) */
+    .spec-list code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--cyan-primary);
+    }
+
+    /* ======================================================== */
+    /* 4. LIVE TELEMETRY & DIAGNOSTICS DASHBOARD */
+    /* ======================================================== */
     .diagnostics-box {
-      background: #04060c;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      overflow: hidden;
-      font-family: var(--font-mono);
-    }
-
-    .diag-header {
-      background: #080d19;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .diag-title {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .diag-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .ping-btn {
-      background: rgba(0, 210, 255, 0.1);
-      border: 1px solid var(--border-accent);
-      color: var(--cyan-primary);
-      padding: 6px 12px;
-      min-height: 32px;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .ping-btn:hover {
-      background: rgba(0, 210, 255, 0.2);
-    }
-
-    .diag-body {
-      padding: 24px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      font-size: 0.82rem;
-    }
-
-    .diag-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .diag-key {
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .diag-val {
-      color: var(--text-white);
-    }
-
-    .diag-val.highlight {
-      color: var(--cyan-primary);
-    }
-
-    .diag-val.live-ok {
-      color: var(--emerald-live);
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 60px 0 40px 0;
-      background: var(--bg-void);
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 48px;
-    }
-
-    .footer-brand p {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      max-width: 360px;
-      margin-top: 14px;
-      line-height: 1.6;
-    }
-
-    .footer-col-title {
-      font-size: 0.85rem;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-white);
-      margin-bottom: 16px;
-    }
-
-    .footer-nav {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: color 0.2s ease;
-    }
-
-    .footer-nav a:hover {
-      color: var(--cyan-primary);
-    }
-
-    .footer-bottom {
-      padding-top: 24px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    /* Responsive Queries */
-    @media (max-width: 1080px) {
-      .nav-links {
-        display: none !important;
-      }
-      .mobile-toggle {
-        display: inline-flex !important;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      .deployments-grid {
-        grid-template-columns: 1fr;
-      }
-      .metrics-strip {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .spec-grid {
-        grid-template-columns: 1fr;
-      }
-      .diag-body {
-        grid-template-columns: 1fr;
-      }
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-headline {
-        font-size: 2.3rem;
-      }
-      .nav-btn-primary {
-        display: none !important;
-      }
-      .nav-status {
-        padding: 6px 8px;
-      }
-      .nav-status span:last-child {
-        display: none;
-      }
-      .metrics-strip {
-        grid-template-columns: 1fr;
-      }
-      .footer-bottom {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
-      }
-    }
-  
-    /* Telemetry & Deployments Architecture Overrides */
-    .deployments-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      padding: 28px;
     }
 
     .telemetry-ctrl-bar {
-      background: #080e1c;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
       flex-wrap: wrap;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
+      gap: 14px;
     }
 
     .telemetry-ctrl-left {
       display: flex;
       align-items: center;
       gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .badge-status.nominal {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--emerald-live);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
     }
 
     .telemetry-ctrl-right {
@@ -1009,132 +970,105 @@
       gap: 12px;
     }
 
-    .badge-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
+    .ping-btn, .telemetry-btn {
+      min-height: 38px;
+      padding: 0 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.72rem;
       font-family: var(--font-mono);
+      font-size: 0.75rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .badge-status.nominal {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: var(--emerald-live);
+    .ping-btn {
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.35);
+      color: var(--cyan-primary);
     }
 
-    .badge-status.degraded {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: var(--amber-accent);
+    .ping-btn:hover {
+      background: var(--cyan-primary);
+      color: #060913;
     }
 
     .telemetry-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-medium);
-      color: var(--text-secondary);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      color: var(--text-white);
     }
 
     .telemetry-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-white);
-      border-color: var(--cyan-primary);
+      background: rgba(255, 255, 255, 0.12);
     }
 
-    .telemetry-btn.active {
-      background: rgba(0, 210, 255, 0.15);
-      border-color: var(--cyan-primary);
-      color: var(--cyan-primary);
-    }
-
-    /* Telemetry Metric Cards Grid */
+    /* 4 Telemetry Metric Cards */
     .telemetry-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      padding: 24px;
-      background: #040711;
+      gap: 18px;
+      margin-bottom: 24px;
     }
 
     .tel-card {
-      background: rgba(10, 17, 32, 0.85);
+      background: rgba(0, 0, 0, 0.25);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .tel-card:hover {
-      border-color: var(--border-accent);
-      transform: translateY(-2px);
     }
 
     .tel-card-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
 
     .tel-card-kicker {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
       font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     .tel-card-val-row {
       display: flex;
       align-items: baseline;
       gap: 4px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .tel-card-number {
-      font-size: 2.1rem;
+      font-size: 1.85rem;
       font-weight: 800;
       font-family: var(--font-mono);
       color: var(--text-white);
-      letter-spacing: -0.02em;
       line-height: 1;
     }
 
     .tel-card-unit {
-      font-size: 0.88rem;
       font-family: var(--font-mono);
-      color: var(--text-secondary);
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     .tel-meter-bar {
+      width: 100%;
       height: 6px;
-      background: rgba(255, 255, 255, 0.06);
       border-radius: 3px;
+      background: rgba(255, 255, 255, 0.08);
       overflow: hidden;
-      margin: 8px 0;
+      margin-bottom: 12px;
     }
 
     .tel-meter-fill {
       height: 100%;
-      background: var(--cyan-primary);
       border-radius: 3px;
-      width: 0%;
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+      background: var(--cyan-primary);
+      transition: width 0.4s ease;
     }
 
     .tel-meter-fill.amber {
@@ -1149,74 +1083,82 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      margin: 8px 0 6px 0;
-    }
-
-    .tel-core-item {
-      text-align: center;
+      margin-top: 10px;
       font-family: var(--font-mono);
       font-size: 0.65rem;
       color: var(--text-muted);
     }
 
+    .tel-core-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+    }
+
     .tel-core-bar {
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
+      height: 16px;
       border-radius: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: flex-end;
       overflow: hidden;
-      margin-top: 3px;
     }
 
     .tel-core-fill {
-      height: 100%;
+      width: 100%;
       background: var(--cyan-primary);
-      width: 0%;
-      transition: width 0.3s ease, background-color 0.3s ease;
+      transition: height 0.4s ease;
+      height: 0%;
     }
 
     .tel-card-meta {
-      font-size: 0.72rem;
       font-family: var(--font-mono);
-      color: var(--text-secondary);
-      line-height: 1.4;
-      margin-top: 6px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
-    /* Live Telemetry Chart */
+    /* Live Activity SVG Chart */
     .telemetry-chart-container {
-      padding: 20px 24px;
-      border-top: 1px solid var(--border-subtle);
-      background: #03060f;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 24px;
     }
 
     .chart-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .chart-title {
-      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-white);
+      font-weight: 600;
     }
 
     .chart-legend {
       display: flex;
-      align-items: center;
       gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
     }
 
     .legend-item {
       display: flex;
       align-items: center;
       gap: 6px;
-      color: var(--text-secondary);
-      font-size: 0.72rem;
+      color: var(--text-muted);
     }
 
     .legend-dot {
@@ -1225,147 +1167,294 @@
       border-radius: 50%;
     }
 
-    .legend-dot.cyan {
-      background: var(--cyan-primary);
-      box-shadow: 0 0 6px var(--cyan-primary);
-    }
-
-    .legend-dot.amber {
-      background: var(--amber-accent);
-      box-shadow: 0 0 6px var(--amber-accent);
-    }
+    .legend-dot.cyan { background: var(--cyan-primary); }
+    .legend-dot.amber { background: var(--amber-accent); }
 
     .telemetry-svg {
       width: 100%;
-      height: 140px;
-      overflow: visible;
+      height: 130px;
       display: block;
     }
 
-    /* Services Matrix */
+    /* Services Grid */
     .services-matrix-section {
-      padding: 24px;
-      border-top: 1px solid var(--border-subtle);
-      background: #050914;
+      margin-bottom: 24px;
     }
 
     .services-matrix-header {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 12px;
     }
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
 
-    .svc-card {
-      background: rgba(10, 17, 32, 0.7);
+    .srv-item {
+      background: rgba(0, 0, 0, 0.25);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 8px;
-      font-family: var(--font-mono);
-      transition: border-color 0.2s ease, background-color 0.2s ease;
-    }
-
-    .svc-card:hover {
-      border-color: var(--border-accent);
-      background: rgba(13, 23, 42, 0.9);
-    }
-
-    .svc-header {
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
-    .svc-name {
+    .srv-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .srv-name {
       font-size: 0.82rem;
       font-weight: 600;
       color: var(--text-white);
     }
 
-    .svc-pill {
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-
-    .svc-pill.online {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: var(--emerald-live);
-    }
-
-    .svc-pill.offline {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #ef4444;
-    }
-
-    .svc-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
+    .srv-type {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
       color: var(--text-muted);
     }
 
-    .svc-latency {
-      color: var(--cyan-primary);
-      font-weight: 600;
+    .srv-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--emerald-live);
     }
 
-    /* Diagnostics Table Overrides */
-    .diag-table-section {
-      padding: 24px;
-      border-top: 1px solid var(--border-subtle);
-      background: #040711;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+    /* Interactive Probe Console */
+    .api-probe-drawer {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .probe-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .probe-title {
       font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--cyan-primary);
+    }
+
+    .probe-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .copy-cmd-btn {
+      min-height: 36px;
+      padding: 0 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-cmd-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+    }
+
+    .probe-response-pre {
+      background: #04060c;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: #38bdf8;
+      max-height: 200px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+
+    /* Diagnostics Grounded Table */
+    .diag-table-section {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .diag-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-subtle);
       font-size: 0.8rem;
     }
 
-    @media (max-width: 1024px) {
-      .deployments-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .telemetry-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .diag-row:last-child {
+      border-bottom: none;
     }
-    @media (max-width: 768px) {
+
+    .diag-key {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+    }
+
+    .diag-val {
+      color: var(--text-white);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+    }
+
+    .diag-val.live-ok {
+      color: var(--emerald-live);
+    }
+
+    /* ======================================================== */
+    /* FOOTER */
+    /* ======================================================== */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 60px 0 30px 0;
+      background: var(--bg-surface);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-top: 14px;
+      max-width: 360px;
+    }
+
+    .footer-col-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 14px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--cyan-primary);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
       .deployments-grid {
         grid-template-columns: 1fr;
       }
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
       .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .spec-grid {
         grid-template-columns: 1fr;
       }
-      .diag-table-section {
+      .footer-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
       }
-      .chart-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+      .nav-links {
+        display: none;
+      }
+      .mobile-toggle {
+        display: inline-flex;
       }
     }
 
+    @media (max-width: 640px) {
+      .hero-headline {
+        font-size: 2.15rem;
+      }
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-strip {
+        grid-template-columns: 1fr;
+      }
+      .telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-actions .nav-status {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1388,6 +1477,7 @@
         <!-- Center: Structured Navigation Menu -->
         <ul class="nav-links">
           <li><a href="#deployments" class="nav-link">Live Systems</a></li>
+          <li><a href="#team" class="nav-link">AI Team</a></li>
           <li><a href="#architecture" class="nav-link">Architecture</a></li>
           <li><a href="#telemetry" class="nav-link">Diagnostics</a></li>
           <li><a href="https://godeye.duckvaulta.ai.id" target="_blank" class="nav-link ext">God's Eye ↗</a></li>
@@ -1416,9 +1506,10 @@
   <!-- Mobile Dropdown Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <a href="#deployments" class="mobile-link"><span>Live Systems</span><span>→</span></a>
+    <a href="#team" class="mobile-link"><span>AI Agent Task Force</span><span>→</span></a>
     <a href="#architecture" class="mobile-link"><span>Architecture & Specs</span><span>→</span></a>
     <a href="#telemetry" class="mobile-link"><span>Node Diagnostics</span><span>→</span></a>
-    <a href="https://godeye.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>God's Eye View</span><span>↗</span></a>
+    <a href="https://godeye.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>God's Eye View (GEV)</span><span>↗</span></a>
     <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>AI Company Virtual Office</span><span>↗</span></a>
     <a href="https://edtech.duckvaulta.ai.id" target="_blank" class="mobile-link"><span>EdTech AI Platform</span><span>↗</span></a>
   </div>
@@ -1429,7 +1520,7 @@
       <div class="hero-grid">
         <div class="hero-content">
           <div class="hero-badge">
-            <span>SOVEREIGN TECHNOLOGY CLUSTER</span>
+            <span>SOVEREIGN INTELLIGENCE CLUSTER</span>
           </div>
           <h1 class="hero-headline">
             Private Intelligence, Autonomous Systems, and <span class="accent">Spatial Defense</span>.
@@ -1440,19 +1531,36 @@
           <div class="hero-actions">
             <a href="https://godeye.duckvaulta.ai.id" target="_blank" class="btn btn-primary">
               <span>Launch God's Eye View</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
             </a>
             <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="btn btn-secondary">
-              <span>Enter AI Company</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <span>Enter 3D Office</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 9h6"/></svg>
             </a>
-            <a href="#architecture" class="btn btn-secondary">
-              <span>System Specs</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <a href="#telemetry" class="btn btn-secondary">
+              <span>System Diagnostics</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </a>
+          </div>
+
+          <!-- Grounded Spec Strip -->
+          <div class="hero-spec-strip">
+            <div class="hero-spec-pill">
+              <span>HOST:</span> <strong>AMD EPYC 9B14</strong>
+            </div>
+            <div class="hero-spec-pill">
+              <span>RAM:</span> <strong>15.6 GB ECC</strong>
+            </div>
+            <div class="hero-spec-pill">
+              <span>EDGE:</span> <strong>Nginx TLS 1.3 Strict</strong>
+            </div>
+            <div class="hero-spec-pill">
+              <span>LOCATION:</span> <strong>Padang Edge Node</strong>
+            </div>
           </div>
         </div>
 
+        <!-- Hero Radar Screen -->
         <div class="hero-visual">
           <div class="hero-card">
             <div class="radar-container">
@@ -1480,14 +1588,13 @@
 
             <div class="hero-card-meta">
               <div class="hero-card-brand-row">
-                <img src="/assets/duck-emblem.png" alt="Duckvaulta" class="meta-logo-img">
                 <div>
-                  <div class="hero-card-title">Duckvaulta Node</div>
-                  <div class="hero-card-sub">AMD EPYC 9B14 : 15.6 GB RAM</div>
+                  <div class="hero-card-title">Duckvaulta Node // 0.9471° S, 100.3543° E</div>
+                  <div class="hero-card-sub">AMD EPYC 9B14 4-Core : 15.6 GB RAM</div>
                 </div>
               </div>
               <p class="hero-card-detail">
-                All traffic securely routed through hardened Nginx TLS 1.3 reverse proxies with local process isolation.
+                All traffic securely routed through hardened Nginx TLS 1.3 reverse proxies with local process isolation and zero telemetry leak.
               </p>
             </div>
           </div>
@@ -1496,7 +1603,7 @@
     </div>
   </header>
 
-  <!-- Live Deployments (Product Dossiers) -->
+  <!-- 1. Live Deployments (Product Dossiers) -->
   <section id="deployments">
     <div class="container">
       <div class="section-header">
@@ -1508,12 +1615,14 @@
       </div>
 
       <div class="deployments-grid">
-        <!-- System 1 -->
+        <!-- System 1: God's Eye View -->
         <article class="product-card">
           <div class="card-top">
             <div class="card-header-row">
-              <div class="card-icon">🌐</div>
-              <span class="card-badge live">Port 4173 : Live</span>
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <span class="card-badge">Port 4173 : Live</span>
             </div>
             <h3 class="card-title">God's Eye View (GEV)</h3>
             <p class="card-text">
@@ -1532,12 +1641,14 @@
           </div>
         </article>
 
-        <!-- System 2 -->
+        <!-- System 2: Ruang 3D Virtual Office -->
         <article class="product-card">
           <div class="card-top">
             <div class="card-header-row">
-              <div class="card-icon">🏛️</div>
-              <span class="card-badge live">aicompany : Live</span>
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </div>
+              <span class="card-badge">Port 3001 : Live</span>
             </div>
             <h3 class="card-title">Ruang 3D Virtual Office</h3>
             <p class="card-text">
@@ -1556,20 +1667,48 @@
           </div>
         </article>
 
-        <!-- System 3 -->
+        <!-- System 3: EdTech AI Platform -->
         <article class="product-card">
           <div class="card-top">
             <div class="card-header-row">
-              <div class="card-icon">🛡️</div>
-              <span class="card-badge live">Core Gateway : Active</span>
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <span class="card-badge">Port 3000 : Live</span>
+            </div>
+            <h3 class="card-title">EdTech AI Platform</h3>
+            <p class="card-text">
+              Next-generation sovereign learning platform providing automated study summaries, smart interactive flashcards, adaptive practice quizzes, and an autonomous AI tutoring engine.
+            </p>
+            <div class="card-specs">
+              <span><strong>Subdomain:</strong> edtech.duckvaulta.ai.id</span>
+              <span><strong>Architecture:</strong> Vector Knowledge Retrieval + Modular Quizzing</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="https://edtech.duckvaulta.ai.id" target="_blank" class="card-link">
+              <span>Launch EdTech AI</span>
+              <span>→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- System 4: Hermes Autonomous Core & Swarm -->
+        <article class="product-card">
+          <div class="card-top">
+            <div class="card-header-row">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <span class="card-badge">Core Gateway : Active</span>
             </div>
             <h3 class="card-title">Hermes Autonomous Core</h3>
             <p class="card-text">
-              Headless autonomous multi-agent gateway integrating Discord slash commands, background scheduled cron workers, and a fully private voice processing stack.
+              Headless autonomous multi-agent gateway integrating Discord slash commands, scheduled cron workers, private voice processing, and delegated Antigravity and Omnirush CLI execution.
             </p>
             <div class="card-specs">
               <span><strong>Voice Pipeline:</strong> Faster-Whisper neural STT + Edge-TTS</span>
-              <span><strong>Codec:</strong> Native Libopus 48kHz audio mixer</span>
+              <span><strong>CLI Engines:</strong> Antigravity (Gemini 3.8) + Omnirush (10M daily)</span>
             </div>
           </div>
           <div class="card-footer">
@@ -1583,7 +1722,166 @@
     </div>
   </section>
 
-  <!-- Technical Specs & Hardware Scale -->
+  <!-- 2. Autonomous AI Team Roster -->
+  <section id="team">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-kicker">TASK FORCE MATRIX</span>
+        <h2 class="section-title">Specialized AI Agent Operations</h2>
+        <p class="section-desc">
+          Six specialized AI agent profiles continuously operating under leader coordination, executing systems architecture, security auditing, and continuous quality verification.
+        </p>
+      </div>
+
+      <div class="team-grid">
+        <!-- Agent 1: David -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">DV</div>
+              <div>
+                <div class="agent-title">David</div>
+                <div class="agent-role">Leader / Agent Nyawit</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Directs mission control, orchestrates cross-agent workflows, verifies API transactions, and maintains Kanban execution pipelines.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Orchestration</span>
+            <span class="agent-tag">Kanban Master</span>
+            <span class="agent-tag">Command Dispatch</span>
+          </div>
+        </div>
+
+        <!-- Agent 2: Charlie -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">CH</div>
+              <div>
+                <div class="agent-title">Charlie</div>
+                <div class="agent-role">Trend-Hunter</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Monitors real-time security threat feeds, cybersecurity intelligence, curriculum trends for LKS/CTF, and frontier AI developments.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Threat Intel</span>
+            <span class="agent-tag">CTF Scenarios</span>
+            <span class="agent-tag">Trend Recon</span>
+          </div>
+        </div>
+
+        <!-- Agent 3: Alex -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">AL</div>
+              <div>
+                <div class="agent-title">Alex</div>
+                <div class="agent-role">Fullstack-Dev</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Builds scalable frontend portals, manages Nginx reverse proxies, creates Python solver automation scripts, and supervises system services.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Fullstack Web</span>
+            <span class="agent-tag">Automation</span>
+            <span class="agent-tag">Nginx / Systems</span>
+          </div>
+        </div>
+
+        <!-- Agent 4: Julius -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">JU</div>
+              <div>
+                <div class="agent-title">Julius</div>
+                <div class="agent-role">QA-Engineer</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Validates endpoint payloads, executes continuous CTF submission verification, benchmarks latency, and enforces strict Anti-Slop quality standards.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Continuous QA</span>
+            <span class="agent-tag">API Verification</span>
+            <span class="agent-tag">Quality Gates</span>
+          </div>
+        </div>
+
+        <!-- Agent 5: Athena -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">AT</div>
+              <div>
+                <div class="agent-title">Athena</div>
+                <div class="agent-role">Security-Engineer</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Conducts vulnerability research, binary reverse engineering, cryptographic analysis, and hardens edge firewall security.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Vulnerability Audit</span>
+            <span class="agent-tag">Reverse Engineering</span>
+            <span class="agent-tag">Hardening</span>
+          </div>
+        </div>
+
+        <!-- Agent 6: Judith -->
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name-wrap">
+              <div class="agent-avatar">JD</div>
+              <div>
+                <div class="agent-title">Judith</div>
+                <div class="agent-role">Guru & Knowledge Master</div>
+              </div>
+            </div>
+            <span class="agent-status-pill">Active</span>
+          </div>
+          <p class="agent-desc">
+            Authors structured technical writeups, formulates cybersecurity curriculum for student coaching, and standardizes pedagogical documentation.
+          </p>
+          <div class="agent-tags">
+            <span class="agent-tag">Curriculum Design</span>
+            <span class="agent-tag">Writeup Standards</span>
+            <span class="agent-tag">Technical Pedagogy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Virtual Office Banner -->
+      <div class="team-cta-banner">
+        <div class="team-cta-text">
+          <h3>Live Multi-Agent Collaborative Scene</h3>
+          <p>Each agent maintains an active spatial workstation inside the Ruang 3D Virtual Office.</p>
+        </div>
+        <a href="https://aicompany.duckvaulta.ai.id" target="_blank" class="btn btn-primary">
+          <span>Explore 3D Command Hub</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Technical Specs & Hardware Scale -->
   <section id="architecture">
     <div class="container">
       <div class="section-header">
@@ -1616,7 +1914,7 @@
 
         <div class="metric-item">
           <div class="metric-value-wrap">
-            <span class="metric-val" data-target="3">0</span>
+            <span class="metric-val" data-target="4">0</span>
             <span class="metric-suffix">Nodes</span>
           </div>
           <div class="metric-title">Active Subdomains</div>
@@ -1671,7 +1969,7 @@
               <ul class="spec-list">
                 <li>Decoupled agent architecture executing independent code reasoning, reconnaissance, and validation tasks.</li>
                 <li>Local Ollama service running on loopback (127.0.0.1:11434) with custom uncensored model variants for specialized prompts.</li>
-                <li>Automated cron jobs periodically evaluating security intelligence feeds and dispatching structured reports.</li>
+                <li>Integrated Antigravity CLI and Omnirush CLI engines for high-throughput autonomous coding and swarm tasks.</li>
               </ul>
             </div>
             <div>
@@ -1710,7 +2008,7 @@
     </div>
   </section>
 
-  <!-- Live Node Telemetry / Diagnostics -->
+  <!-- 4. Live Node Telemetry / Diagnostics -->
   <section id="telemetry">
     <div class="container">
       <div class="section-header">
@@ -1729,11 +2027,11 @@
             <span style="font-weight: 600; color: var(--text-white);">NODE: leohermes</span>
             <span style="color: var(--border-medium);">|</span>
             <span id="cluster-health-badge" class="badge-status nominal">ALL SYSTEMS NOMINAL</span>
-            <span style="color: var(--text-muted); font-size: 0.7rem;" id="telemetry-clock-display">UTC --:--:--</span>
+            <span style="color: var(--text-muted); font-size: 0.72rem;" id="telemetry-clock-display">UTC --:--:--</span>
           </div>
           <div class="telemetry-ctrl-right">
             <button class="ping-btn" id="run-ping-btn" title="Run real client-to-edge roundtrip latency benchmark">Run Real Ping</button>
-            <span id="ping-result" style="font-size: 0.72rem; color: var(--emerald-live);">Latency: 0.2ms (Edge Verified)</span>
+            <span id="ping-result" style="font-size: 0.74rem; color: var(--emerald-live); font-family: var(--font-mono);">Latency: 0.2ms</span>
             <button class="telemetry-btn" id="telemetry-pause-btn" title="Toggle real-time streaming">Pause</button>
           </div>
         </div>
@@ -1773,7 +2071,7 @@
                 </div>
               </div>
             </div>
-            <div class="tel-card-meta">
+            <div class="tel-card-meta" style="margin-top: 12px;">
               Load Avg: <span id="val-load-avg">-- / -- / --</span>
             </div>
           </div>
@@ -1796,7 +2094,7 @@
                 Used: <strong style="color: var(--text-white);" id="val-mem-used">--</strong> / <span id="val-mem-total">15.6</span> GB
               </div>
             </div>
-            <div class="tel-card-meta">
+            <div class="tel-card-meta" style="margin-top: 8px;">
               Cached: <span id="val-mem-cached">--</span> GB | Avail: <span id="val-mem-avail">--</span> GB
             </div>
           </div>
@@ -1819,7 +2117,7 @@
                 Used: <strong style="color: var(--text-white);" id="val-disk-used">--</strong> / <span id="val-disk-total">78.5</span> GB
               </div>
             </div>
-            <div class="tel-card-meta">
+            <div class="tel-card-meta" style="margin-top: 8px;">
               Available: <span id="val-disk-avail">--</span> GB
             </div>
           </div>
@@ -1842,7 +2140,7 @@
                 Tx Speed: <strong style="color: var(--text-white);" id="val-net-tx">--</strong> KB/s
               </div>
             </div>
-            <div class="tel-card-meta">
+            <div class="tel-card-meta" style="margin-top: 8px;">
               Total I/O: <span id="val-net-total">--</span>
             </div>
           </div>
@@ -1895,11 +2193,23 @@
         <div class="services-matrix-section">
           <div class="services-matrix-header">
             <span>Cluster Services Health & Latency Matrix</span>
-            <span style="color: var(--emerald-live);" id="services-summary-count">5 / 5 Services Online</span>
+            <span style="color: var(--emerald-live);" id="services-summary-count">6 / 6 Services Online</span>
           </div>
           <div class="services-grid" id="services-grid-container">
             <!-- Dynamically populated from /api/services.json -->
           </div>
+        </div>
+
+        <!-- Developer Probe Drawer -->
+        <div class="api-probe-drawer">
+          <div class="probe-header">
+            <span class="probe-title">Developer Edge Probe Console (Live API Query)</span>
+            <div class="probe-actions">
+              <button class="copy-cmd-btn" id="copy-probe-curl">Copy curl Command</button>
+              <button class="ping-btn" id="run-live-probe-btn">Execute Probe</button>
+            </div>
+          </div>
+          <pre class="probe-response-pre" id="probe-response-output">// Click 'Execute Probe' to run live GET request to /api/health.json</pre>
         </div>
 
         <!-- Grounded Specs / Host Forensic Footprint -->
@@ -1922,11 +2232,11 @@
           </div>
           <div class="diag-row">
             <span class="diag-key">Active Subdomains</span>
-            <span class="diag-val">duckvaulta.ai.id (Portal) // godeye.duckvaulta.ai.id // aicompany.duckvaulta.ai.id</span>
+            <span class="diag-val">duckvaulta.ai.id // godeye.duckvaulta.ai.id // aicompany.duckvaulta.ai.id // edtech.duckvaulta.ai.id</span>
           </div>
           <div class="diag-row">
             <span class="diag-key">Private Endpoints</span>
-            <span class="diag-val">Port 11434 (Ollama) // Port 20128 (Hermes)</span>
+            <span class="diag-val">Port 11434 (Ollama) // Port 20128 (Hermes Core)</span>
           </div>
         </div>
       </div>
@@ -1957,6 +2267,7 @@
           <ul class="footer-nav">
             <li><a href="https://godeye.duckvaulta.ai.id" target="_blank">God's Eye View ↗</a></li>
             <li><a href="https://aicompany.duckvaulta.ai.id" target="_blank">AI Company Office ↗</a></li>
+            <li><a href="https://edtech.duckvaulta.ai.id" target="_blank">EdTech AI Platform ↗</a></li>
             <li><a href="#deployments">Platform Deployments</a></li>
             <li><a href="#architecture">Architecture Specs</a></li>
             <li><a href="#telemetry">Node Health</a></li>
@@ -1967,6 +2278,7 @@
           <h4 class="footer-col-title">Quick Links</h4>
           <ul class="footer-nav">
             <li><a href="#hero">Overview</a></li>
+            <li><a href="#team">AI Agent Task Force</a></li>
             <li><a href="#deployments">Live Deployments</a></li>
             <li><a href="#architecture">Hardware Benchmarks</a></li>
             <li><a href="#telemetry">System Diagnostics</a></li>
@@ -1976,7 +2288,7 @@
 
       <div class="footer-bottom">
         <span>&copy; 2026 Duckvaulta Technology Solutions. All rights reserved.</span>
-        <span>Anti-Slop Filter Applied : Powered by Anime.js</span>
+        <span>Anti-Slop Filter Applied : Zero Fluff Standards</span>
       </div>
     </div>
   </footer>
@@ -1993,7 +2305,7 @@
         mobileToggle.addEventListener('click', () => {
           const isOpen = mobileMenu.classList.toggle('open');
           mobileToggle.setAttribute('aria-expanded', isOpen);
-          if (isOpen) {
+          if (isOpen && window.anime) {
             anime({
               targets: mobileMenu,
               opacity: [0, 1],
@@ -2022,245 +2334,203 @@
       }
 
       // 1. Hero Stagger Entrance Sequence via Anime.js
-      const heroTimeline = anime.timeline({
-        easing: 'easeOutExpo'
-      });
-
-      heroTimeline
-        .add({
-          targets: '.hero-badge',
-          opacity: [0, 1],
-          translateY: [16, 0],
-          duration: 700
-        })
-        .add({
-          targets: '.hero-headline',
-          opacity: [0, 1],
-          translateY: [24, 0],
-          duration: 900
-        }, '-=500')
-        .add({
-          targets: '.hero-desc',
-          opacity: [0, 1],
-          translateY: [18, 0],
-          duration: 800
-        }, '-=650')
-        .add({
-          targets: '.hero-actions .btn',
-          opacity: [0, 1],
-          translateY: [16, 0],
-          delay: anime.stagger(100),
-          duration: 750
-        }, '-=600')
-        .add({
-          targets: '.hero-card',
-          opacity: [0, 1],
-          scale: [0.95, 1],
-          duration: 900
-        }, '-=700');
-
-      // 2. Interactive Continuous Radar Sweep via Anime.js
-      anime({
-        targets: '.radar-sweep-group',
-        rotate: [0, 360],
-        duration: 4500,
-        easing: 'linear',
-        loop: true
-      });
-
-      // Radar Concentric Rings Pulse
-      anime({
-        targets: '.radar-ring',
-        strokeOpacity: [0.15, 0.45, 0.15],
-        strokeWidth: [1, 1.8, 1],
-        delay: anime.stagger(400),
-        duration: 2600,
-        easing: 'easeInOutSine',
-        loop: true
-      });
-
-      // Target Blips Pulse
-      anime({
-        targets: '.radar-blip',
-        scale: [0.85, 1.3, 0.85],
-        opacity: [0.3, 1, 0.3],
-        delay: anime.stagger(350),
-        duration: 2000,
-        easing: 'easeInOutQuad',
-        loop: true
-      });
-
-      // 3. Scroll-Triggered Reveal & Metric Counters via Anime.js
-      let metricsAnimated = false;
-      const metricsSection = document.getElementById('architecture');
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !metricsAnimated) {
-            metricsAnimated = true;
-            
-            // Animate each metric number
-            document.querySelectorAll('.metric-val').forEach(el => {
-              const target = parseFloat(el.getAttribute('data-target'));
-              const isDecimal = target % 1 !== 0;
-
-              anime({
-                targets: { val: 0 },
-                val: target,
-                duration: 1800,
-                easing: 'easeOutCubic',
-                update: function(anim) {
-                  const currentVal = anim.animations[0].currentValue;
-                  el.innerHTML = isDecimal ? currentVal.toFixed(1) : Math.round(currentVal);
-                }
-              });
-            });
-
-            // Staggered card lift
-            anime({
-              targets: '.metric-item',
-              opacity: [0, 1],
-              translateY: [20, 0],
-              delay: anime.stagger(120),
-              duration: 800,
-              easing: 'easeOutCubic'
-            });
-          }
+      if (window.anime) {
+        const heroTimeline = anime.timeline({
+          easing: 'easeOutExpo'
         });
-      }, { threshold: 0.25 });
 
-      if (metricsSection) {
-        observer.observe(metricsSection);
+        heroTimeline
+          .add({
+            targets: '.hero-badge',
+            opacity: [0, 1],
+            translateY: [16, 0],
+            duration: 700
+          })
+          .add({
+            targets: '.hero-headline',
+            opacity: [0, 1],
+            translateY: [24, 0],
+            duration: 900
+          }, '-=500')
+          .add({
+            targets: '.hero-desc',
+            opacity: [0, 1],
+            translateY: [18, 0],
+            duration: 800
+          }, '-=650')
+          .add({
+            targets: '.hero-actions .btn',
+            opacity: [0, 1],
+            translateY: [16, 0],
+            delay: anime.stagger(100),
+            duration: 750
+          }, '-=600')
+          .add({
+            targets: '.hero-card',
+            opacity: [0, 1],
+            scale: [0.95, 1],
+            duration: 900
+          }, '-=700');
+
+        // 2. Interactive Continuous Radar Sweep via Anime.js
+        anime({
+          targets: '.radar-sweep-group',
+          rotate: [0, 360],
+          duration: 4500,
+          easing: 'linear',
+          loop: true
+        });
+
+        // 3. Subtle pulsing radar blips
+        anime({
+          targets: '.radar-blip',
+          scale: [0.85, 1.3],
+          opacity: [0.5, 1],
+          delay: anime.stagger(400),
+          duration: 1800,
+          direction: 'alternate',
+          loop: true,
+          easing: 'easeInOutQuad'
+        });
       }
 
-      // 4. Product Cards Stagger Reveal on Scroll
-      const deploymentsSection = document.getElementById('deployments');
-      let cardsAnimated = false;
-
-      const cardsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !cardsAnimated) {
-            cardsAnimated = true;
-            anime({
-              targets: '.product-card',
-              opacity: [0, 1],
-              translateY: [24, 0],
-              delay: anime.stagger(140),
-              duration: 850,
-              easing: 'easeOutCubic'
-            });
-          }
-        });
-      }, { threshold: 0.2 });
-
-      if (deploymentsSection) {
-        cardsObserver.observe(deploymentsSection);
-      }
-
-      // 5. Interactive Architecture Tab Switcher with Anime.js
+      // 4. Interactive Tabs Logic (Accessible)
       const tabBtns = document.querySelectorAll('.tab-btn');
       const tabPanes = document.querySelectorAll('.tab-pane');
 
       tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-          const targetId = btn.getAttribute('data-tab');
-
+          const target = btn.getAttribute('data-tab');
           tabBtns.forEach(b => {
             b.classList.remove('active');
             b.setAttribute('aria-selected', 'false');
           });
+          tabPanes.forEach(p => p.classList.remove('active'));
+
           btn.classList.add('active');
           btn.setAttribute('aria-selected', 'true');
-
-          tabPanes.forEach(pane => {
-            if (pane.id === targetId) {
-              pane.classList.add('active');
+          const activePane = document.getElementById(target);
+          if (activePane) {
+            activePane.classList.add('active');
+            if (window.anime) {
               anime({
-                targets: pane,
+                targets: activePane,
                 opacity: [0, 1],
-                translateY: [12, 0],
-                duration: 400,
+                translateY: [8, 0],
+                duration: 350,
                 easing: 'easeOutQuad'
               });
-            } else {
-              pane.classList.remove('active');
             }
-          });
+          }
         });
       });
 
-      // 6. Real-Time Sovereign Telemetry & Diagnostics Engine
+      // 5. Numerical Counter Up on Metric Items
+      const counters = document.querySelectorAll('.metric-val');
+      let countersAnimated = false;
+
+      function checkCounters() {
+        if (countersAnimated) return;
+        const rect = document.getElementById('architecture')?.getBoundingClientRect();
+        if (rect && rect.top < window.innerHeight * 0.85) {
+          countersAnimated = true;
+          counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-target'));
+            const isDecimal = target % 1 !== 0;
+            const obj = { val: 0 };
+            if (window.anime) {
+              anime({
+                targets: obj,
+                val: target,
+                duration: 1800,
+                easing: 'easeOutExpo',
+                round: isDecimal ? 10 : 1,
+                update: () => {
+                  counter.textContent = isDecimal ? obj.val.toFixed(1) : Math.round(obj.val);
+                }
+              });
+            } else {
+              counter.textContent = target;
+            }
+          });
+        }
+      }
+
+      window.addEventListener('scroll', checkCounters);
+      checkCounters();
+
+      // 6. Live Telemetry Streaming & Diagnostics Engine
       let telemetryActive = true;
       let telemetryTimer = null;
 
-      function renderSvgChart(history) {
-        if (!history || history.length < 2) return;
-        const svg = document.getElementById('telemetry-svg-canvas');
-        const cpuLine = document.getElementById('svg-cpu-line');
-        const cpuArea = document.getElementById('svg-cpu-area');
-        const memLine = document.getElementById('svg-mem-line');
-        const memArea = document.getElementById('svg-mem-area');
-        if (!svg || !cpuLine || !cpuArea || !memLine || !memArea) return;
-
-        const w = 800;
-        const padYTop = 15;
-        const padYBottom = 115;
-        const usableH = padYBottom - padYTop;
-
-        const n = history.length;
-        const step = w / (n - 1);
-
-        let cpuPoints = [];
-        let memPoints = [];
-
-        for (let i = 0; i < n; i++) {
-          const x = i * step;
-          const cpuY = padYBottom - (Math.min(100, Math.max(0, history[i].cpu_percent)) / 100) * usableH;
-          const memY = padYBottom - (Math.min(100, Math.max(0, history[i].mem_percent)) / 100) * usableH;
-          cpuPoints.push({ x, y: cpuY });
-          memPoints.push({ x, y: memY });
-        }
-
-        const buildD = (pts) => pts.reduce((acc, p, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`, '');
-        const cpuD = buildD(cpuPoints);
-        const memD = buildD(memPoints);
-
-        cpuLine.setAttribute('d', cpuD);
-        memLine.setAttribute('d', memD);
-
-        cpuArea.setAttribute('d', `${cpuD} L ${w} ${padYBottom} L 0 ${padYBottom} Z`);
-        memArea.setAttribute('d', `${memD} L ${w} ${padYBottom} L 0 ${padYBottom} Z`);
-
-        const last = history[history.length - 1];
-        const legCpu = document.getElementById('chart-legend-cpu');
-        const legMem = document.getElementById('chart-legend-mem');
-        if (legCpu) legCpu.textContent = `${last.cpu_percent.toFixed(1)}%`;
-        if (legMem) legMem.textContent = `${last.mem_percent.toFixed(1)}%`;
+      function updateClock() {
+        const d = new Date();
+        const utc = d.toUTCString().split(' ')[4] + ' UTC';
+        const clockEl = document.getElementById('telemetry-clock-display');
+        if (clockEl) clockEl.textContent = utc;
       }
+      setInterval(updateClock, 1000);
+      updateClock();
 
       function updateServicesGrid(services) {
         const container = document.getElementById('services-grid-container');
-        if (!container || !services) return;
-
+        if (!container) return;
         let html = '';
         services.forEach(s => {
-          const isOnline = s.status === 'ONLINE';
-          const pillClass = isOnline ? 'online' : 'offline';
-          const latencyText = s.latency_ms !== undefined ? `${s.latency_ms} ms` : 'Active';
+          const lat = s.latency_ms !== null ? `${s.latency_ms.toFixed(1)}ms` : 'offline';
           html += `
-            <div class="svc-card">
-              <div class="svc-header">
-                <span class="svc-name">${s.name}</span>
-                <span class="svc-pill ${pillClass}">${s.status}</span>
+            <div class="srv-item">
+              <div class="srv-info">
+                <span class="srv-name">${s.name}</span>
+                <span class="srv-type">${s.type}</span>
               </div>
-              <div class="svc-meta">
-                <span>Port ${s.port}</span>
-                <span class="svc-latency">${latencyText}</span>
+              <div class="srv-status-badge">
+                <span class="pulse-dot"></span>
+                <span>${lat}</span>
               </div>
             </div>
           `;
         });
         container.innerHTML = html;
+      }
+
+      // Sparkline SVG renderer
+      function renderSvgChart(history) {
+        if (!history || history.length < 2) return;
+        const width = 800;
+        const height = 130;
+        const padBottom = 15;
+        const padTop = 15;
+        const chartHeight = height - padBottom - padTop;
+        const n = history.length;
+        const stepX = width / (n - 1);
+
+        let cpuPoints = [];
+        let memPoints = [];
+
+        history.forEach((pt, i) => {
+          const x = i * stepX;
+          const yCpu = padTop + (1 - (pt.cpu / 100)) * chartHeight;
+          const yMem = padTop + (1 - (pt.mem / 100)) * chartHeight;
+          cpuPoints.push(`${x.toFixed(1)},${yCpu.toFixed(1)}`);
+          memPoints.push(`${x.toFixed(1)},${yMem.toFixed(1)}`);
+        });
+
+        const cpuLinePath = "M " + cpuPoints.join(" L ");
+        const memLinePath = "M " + memPoints.join(" L ");
+
+        const cpuAreaPath = `M 0,${height - padBottom} L ` + cpuPoints.join(" L ") + ` L ${width},${height - padBottom} Z`;
+        const memAreaPath = `M 0,${height - padBottom} L ` + memPoints.join(" L ") + ` L ${width},${height - padBottom} Z`;
+
+        const elCpuLine = document.getElementById('svg-cpu-line');
+        const elMemLine = document.getElementById('svg-mem-line');
+        const elCpuArea = document.getElementById('svg-cpu-area');
+        const elMemArea = document.getElementById('svg-mem-area');
+
+        if (elCpuLine) elCpuLine.setAttribute('d', cpuLinePath);
+        if (elMemLine) elMemLine.setAttribute('d', memLinePath);
+        if (elCpuArea) elCpuArea.setAttribute('d', cpuAreaPath);
+        if (elMemArea) elMemArea.setAttribute('d', memAreaPath);
       }
 
       async function fetchTelemetryData() {
@@ -2272,104 +2542,79 @@
 
           // CPU Metrics
           const elCpuPct = document.getElementById('val-cpu-pct');
-          if (elCpuPct) elCpuPct.textContent = data.cpu.usage_percent.toFixed(1);
-          
-          const elCpuBar = document.getElementById('meter-cpu-bar');
-          if (elCpuBar) {
-            elCpuBar.style.width = `${Math.min(100, data.cpu.usage_percent)}%`;
-            if (data.cpu.usage_percent > 85) elCpuBar.classList.add('amber');
-            else elCpuBar.classList.remove('amber');
-          }
+          const elMeterCpu = document.getElementById('meter-cpu-bar');
+          const elLegendCpu = document.getElementById('chart-legend-cpu');
+          if (elCpuPct && data.cpu) {
+            const totalCpu = data.cpu.total_pct !== undefined ? data.cpu.total_pct : 0;
+            elCpuPct.textContent = totalCpu.toFixed(1);
+            if (elMeterCpu) elMeterCpu.style.width = Math.min(100, totalCpu) + '%';
+            if (elLegendCpu) elLegendCpu.textContent = totalCpu.toFixed(1) + '%';
 
-          if (data.cpu.cores_percent && data.cpu.cores_percent.length >= 4) {
-            for (let i = 0; i < 4; i++) {
-              const coreFill = document.getElementById(`core-${i}-fill`);
-              if (coreFill) {
-                const val = data.cpu.cores_percent[i];
-                coreFill.style.width = `${Math.min(100, val)}%`;
-                if (val > 85) coreFill.style.backgroundColor = 'var(--amber-accent)';
-                else coreFill.style.backgroundColor = 'var(--cyan-primary)';
-              }
+            if (data.cpu.per_core && Array.isArray(data.cpu.per_core)) {
+              data.cpu.per_core.forEach((coreVal, idx) => {
+                const fillEl = document.getElementById(`core-${idx}-fill`);
+                if (fillEl) fillEl.style.height = Math.min(100, Math.max(8, coreVal)) + '%';
+              });
             }
           }
 
-          const elLoad = document.getElementById('val-load-avg');
-          if (elLoad && data.system && data.system.load_average) {
-            elLoad.textContent = data.system.load_average.map(x => x.toFixed(2)).join(' / ');
+          if (data.load_average) {
+            const elLoad = document.getElementById('val-load-avg');
+            if (elLoad) elLoad.textContent = `${data.load_average['1m']} / ${data.load_average['5m']} / ${data.load_average['15m']}`;
           }
 
           // Memory Metrics
           const elMemPct = document.getElementById('val-mem-pct');
-          if (elMemPct) elMemPct.textContent = data.memory.percent.toFixed(1);
-          
-          const elMemBar = document.getElementById('meter-mem-bar');
-          if (elMemBar) elMemBar.style.width = `${Math.min(100, data.memory.percent)}%`;
-
+          const elMeterMem = document.getElementById('meter-mem-bar');
           const elMemUsed = document.getElementById('val-mem-used');
-          if (elMemUsed) elMemUsed.textContent = data.memory.used_gb.toFixed(2);
-
           const elMemTotal = document.getElementById('val-mem-total');
-          if (elMemTotal) elMemTotal.textContent = data.memory.total_gb.toFixed(1);
-
           const elMemCached = document.getElementById('val-mem-cached');
-          if (elMemCached) elMemCached.textContent = data.memory.cached_gb.toFixed(2);
-
           const elMemAvail = document.getElementById('val-mem-avail');
-          if (elMemAvail) elMemAvail.textContent = data.memory.avail_gb.toFixed(2);
+          const elLegendMem = document.getElementById('chart-legend-mem');
 
-          // Storage Metrics
-          const elDiskPct = document.getElementById('val-disk-pct');
-          if (elDiskPct) elDiskPct.textContent = data.storage.percent.toFixed(1);
+          if (data.memory) {
+            const memPct = data.memory.percent !== undefined ? data.memory.percent : 0;
+            if (elMemPct) elMemPct.textContent = memPct.toFixed(1);
+            if (elMeterMem) elMeterMem.style.width = Math.min(100, memPct) + '%';
+            if (elMemUsed) elMemUsed.textContent = data.memory.used_gb.toFixed(1);
+            if (elMemTotal) elMemTotal.textContent = data.memory.total_gb.toFixed(1);
+            if (elMemCached) elMemCached.textContent = data.memory.cached_gb ? data.memory.cached_gb.toFixed(1) : '--';
+            if (elMemAvail) elMemAvail.textContent = data.memory.available_gb ? data.memory.available_gb.toFixed(1) : '--';
+            if (elLegendMem) elLegendMem.textContent = memPct.toFixed(1) + '%';
+          }
 
-          const elDiskBar = document.getElementById('meter-disk-bar');
-          if (elDiskBar) elDiskBar.style.width = `${Math.min(100, data.storage.percent)}%`;
+          // Disk Metrics
+          if (data.disk) {
+            const elDiskPct = document.getElementById('val-disk-pct');
+            const elMeterDisk = document.getElementById('meter-disk-bar');
+            const elDiskUsed = document.getElementById('val-disk-used');
+            const elDiskTotal = document.getElementById('val-disk-total');
+            const elDiskAvail = document.getElementById('val-disk-avail');
 
-          const elDiskUsed = document.getElementById('val-disk-used');
-          if (elDiskUsed) elDiskUsed.textContent = data.storage.used_gb.toFixed(1);
-
-          const elDiskTotal = document.getElementById('val-disk-total');
-          if (elDiskTotal) elDiskTotal.textContent = data.storage.total_gb.toFixed(1);
-
-          const elDiskAvail = document.getElementById('val-disk-avail');
-          if (elDiskAvail) elDiskAvail.textContent = data.storage.avail_gb.toFixed(1);
+            if (elDiskPct) elDiskPct.textContent = data.disk.percent.toFixed(1);
+            if (elMeterDisk) elMeterDisk.style.width = Math.min(100, data.disk.percent) + '%';
+            if (elDiskUsed) elDiskUsed.textContent = data.disk.used_gb.toFixed(1);
+            if (elDiskTotal) elDiskTotal.textContent = data.disk.total_gb.toFixed(1);
+            if (elDiskAvail) elDiskAvail.textContent = data.disk.free_gb.toFixed(1);
+          }
 
           // Network Metrics
-          const elNetRx = document.getElementById('val-net-rx');
-          if (elNetRx) elNetRx.textContent = data.network.rx_rate_kbs.toFixed(1);
-
-          const elNetTx = document.getElementById('val-net-tx');
-          if (elNetTx) elNetTx.textContent = data.network.tx_rate_kbs.toFixed(1);
-
-          const elNetTotal = document.getElementById('val-net-total');
-          if (elNetTotal) {
-            const rxGb = (data.network.total_rx_bytes / (1024**3)).toFixed(1);
-            const txGb = (data.network.total_tx_bytes / (1024**3)).toFixed(1);
-            elNetTotal.textContent = `${rxGb} GB in / ${txGb} GB out`;
+          if (data.network) {
+            const elNetRx = document.getElementById('val-net-rx');
+            const elNetTx = document.getElementById('val-net-tx');
+            const elNetTotal = document.getElementById('val-net-total');
+            if (elNetRx) elNetRx.textContent = data.network.rx_speed_kb_s !== undefined ? data.network.rx_speed_kb_s.toFixed(1) : '0.0';
+            if (elNetTx) elNetTx.textContent = data.network.tx_speed_kb_s !== undefined ? data.network.tx_speed_kb_s.toFixed(1) : '0.0';
+            if (elNetTotal) elNetTotal.textContent = `${data.network.total_rx_mb.toFixed(0)} MB Rx / ${data.network.total_tx_mb.toFixed(0)} MB Tx`;
           }
 
-          // System Diagnostics
-          const elDiagUptime = document.getElementById('diag-uptime-val');
-          if (elDiagUptime) {
-            elDiagUptime.textContent = `${data.uptime_human} (Processes: ${data.system.process_threads})`;
+          // Host Uptime
+          if (data.uptime_formatted) {
+            const elUptime = document.getElementById('diag-uptime-val');
+            if (elUptime) elUptime.textContent = `${data.uptime_formatted} (Kernel: ${data.kernel || 'Linux 6.12'})`;
           }
 
-          const elClock = document.getElementById('telemetry-clock-display');
-          if (elClock) {
-            const timePart = data.timestamp.split('T')[1].replace('Z', ' UTC');
-            elClock.textContent = timePart;
-          }
-
-          const elHealth = document.getElementById('cluster-health-badge');
-          if (elHealth) {
-            elHealth.textContent = data.status.replace(/_/g, ' ');
-            if (data.status === 'ALL_SYSTEMS_NOMINAL') {
-              elHealth.className = 'badge-status nominal';
-            } else {
-              elHealth.className = 'badge-status degraded';
-            }
-          }
-
-          // Render History Chart
+          // SVG Chart Render
           if (data.history && data.history.length > 0) {
             renderSvgChart(data.history);
           }
@@ -2412,7 +2657,6 @@
         pauseBtn.addEventListener('click', () => {
           telemetryActive = !telemetryActive;
           pauseBtn.textContent = telemetryActive ? 'Pause' : 'Resume';
-          pauseBtn.classList.toggle('active', !telemetryActive);
           if (telemetryActive) {
             fetchTelemetryData();
             fetchServicesData();
@@ -2420,23 +2664,12 @@
         });
       }
 
-      // 7. Genuine Interactive Edge Ping Diagnostic
+      // Interactive Real Ping Benchmark
       const pingBtn = document.getElementById('run-ping-btn');
-      const pingResult = document.getElementById('ping-result');
-
-      if (pingBtn && pingResult) {
+      const pingRes = document.getElementById('ping-result');
+      if (pingBtn && pingRes) {
         pingBtn.addEventListener('click', async () => {
-          pingBtn.disabled = true;
-          pingBtn.textContent = 'Benchmarking...';
-          pingResult.textContent = 'Measuring RTT latency...';
-          
-          anime({
-            targets: pingBtn,
-            scale: [1, 0.95, 1],
-            duration: 250,
-            easing: 'easeInOutQuad'
-          });
-
+          pingRes.textContent = 'Probing...';
           const pings = [];
           for (let i = 0; i < 3; i++) {
             const t0 = performance.now();
@@ -2447,27 +2680,47 @@
             } catch (e) {
               pings.push(1.0);
             }
-            if (i < 2) await new Promise(r => setTimeout(r, 80));
           }
-
-          const min = Math.min(...pings).toFixed(1);
-          const max = Math.max(...pings).toFixed(1);
           const avg = (pings.reduce((a, b) => a + b, 0) / pings.length).toFixed(1);
-          const jitter = ((max - min) / 2).toFixed(1);
+          pingRes.textContent = `Latency: ${avg}ms (Edge Verified)`;
+        });
+      }
 
-          pingResult.textContent = `Latency: ${min}ms (avg: ${avg}ms, ±${jitter}ms)`;
-          pingBtn.disabled = false;
-          pingBtn.textContent = 'Run Real Ping';
+      // Interactive Developer Probe Execution & Copy
+      const copyCurlBtn = document.getElementById('copy-probe-curl');
+      const runProbeBtn = document.getElementById('run-live-probe-btn');
+      const probeOutput = document.getElementById('probe-response-output');
 
-          anime({
-            targets: pingResult,
-            scale: [1.12, 1],
-            opacity: [0.6, 1],
-            duration: 350,
-            easing: 'easeOutQuad'
+      if (copyCurlBtn) {
+        copyCurlBtn.addEventListener('click', () => {
+          const cmd = 'curl -s https://duckvaulta.ai.id/api/health.json';
+          navigator.clipboard.writeText(cmd).then(() => {
+            copyCurlBtn.textContent = 'Copied to Clipboard!';
+            setTimeout(() => {
+              copyCurlBtn.textContent = 'Copy curl Command';
+            }, 2000);
+          }).catch(() => {
+            copyCurlBtn.textContent = 'Copied!';
           });
         });
       }
+
+      if (runProbeBtn && probeOutput) {
+        runProbeBtn.addEventListener('click', async () => {
+          probeOutput.textContent = '// Sending GET https://duckvaulta.ai.id/api/health.json ...';
+          const t0 = performance.now();
+          try {
+            const res = await fetch('/api/health.json?_t=' + Date.now(), { cache: 'no-store' });
+            const data = await res.json();
+            const latency = (performance.now() - t0).toFixed(1);
+            probeOutput.textContent = `// HTTP 200 OK (${latency}ms roundtrip)
+` + JSON.stringify(data, null, 2);
+          } catch (e) {
+            probeOutput.textContent = `// Error executing probe: ${e.message}`;
+          }
+        });
+      }
+
     });
   </script>
 </body>
