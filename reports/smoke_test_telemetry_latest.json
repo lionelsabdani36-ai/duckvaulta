@@ -1,0 +1,2091 @@
+{
+  "schema_version": "1.0",
+  "engine_version": "1.0.0",
+  "generated_at_utc": "2026-10-27T04:48:24.239+00:00",
+  "configuration": {
+    "timeout_seconds": 8.0,
+    "valid_status_codes": [
+      200,
+      301,
+      302,
+      307,
+      308
+    ],
+    "max_discovered_assets": 500,
+    "checksum": "SHA-256 over the complete response body"
+  },
+  "crawl": {
+    "source": "remote_homepage",
+    "base_url": "https://duckvaulta.ai.id/",
+    "references_discovered": 2,
+    "unique_targets_probed": 2,
+    "remote_homepage_status": 200
+  },
+  "summary": {
+    "count_tested_targets": 23,
+    "passed_targets": 23,
+    "failed_targets": 0,
+    "pass_rate_percent": 100.0,
+    "latency_ms": {
+      "p50": 10.323,
+      "p95": 16.595,
+      "p99": 24.128,
+      "sample_count": 23
+    },
+    "slowest_endpoint": {
+      "target": "https://godeye.duckvaulta.ai.id/",
+      "total_latency_ms": 26.175
+    },
+    "fastest_endpoint": {
+      "target": "http://127.0.0.1:80/",
+      "total_latency_ms": 0.295
+    }
+  },
+  "targets": [
+    {
+      "target": "https://duckvaulta.ai.id/",
+      "role": "public_homepage",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_homepage"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.018+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.351,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "90074",
+        "last-modified": "Mon, 26 Oct 2026 12:51:34 GMT",
+        "connection": "close",
+        "etag": "\"6adf4cd6-15fda\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 90074,
+      "sha256": "cfbf45b01444f1cd32e6801b2071e3e310dd6b927c620475798867f51ee05374",
+      "transfer_speed_kbps": 131370.248,
+      "timings_ms": {
+        "dns_lookup_ms": 1.731,
+        "tcp_connect_ms": 0.354,
+        "tls_handshake_ms": 10.236,
+        "ttfb_ms": 0.967,
+        "download_ms": 0.663,
+        "total_latency_ms": 14.116
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/api/health.json",
+      "role": "public_health",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_health"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.033+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/api/health.json",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.23,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/json",
+        "content-length": "154",
+        "last-modified": "Tue, 27 Oct 2026 04:48:22 GMT",
+        "connection": "close",
+        "etag": "\"6ae02d16-9a\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 154,
+      "sha256": "a819dc248973ca7590bce0e95b1dce29d37c39127661c22a07a5f13b17dccf54",
+      "transfer_speed_kbps": 11595.268,
+      "timings_ms": {
+        "dns_lookup_ms": 0.507,
+        "tcp_connect_ms": 0.233,
+        "tls_handshake_ms": 8.166,
+        "ttfb_ms": 0.658,
+        "download_ms": 0.009,
+        "total_latency_ms": 9.7
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/api/services.json",
+      "role": "public_services",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_services"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.043+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/api/services.json",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.222,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/json",
+        "content-length": "1703",
+        "last-modified": "Tue, 27 Oct 2026 04:48:22 GMT",
+        "connection": "close",
+        "etag": "\"6ae02d16-6a7\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 1703,
+      "sha256": "00ec7ea7a927e610932414800355c3fa04c7fe8e8b440c54bf348b0dac3eeeb4",
+      "transfer_speed_kbps": 141780.557,
+      "timings_ms": {
+        "dns_lookup_ms": 0.483,
+        "tcp_connect_ms": 0.224,
+        "tls_handshake_ms": 8.132,
+        "ttfb_ms": 0.667,
+        "download_ms": 0.009,
+        "total_latency_ms": 9.629
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/api/telemetry.json",
+      "role": "public_telemetry",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_telemetry"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.053+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/api/telemetry.json",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.217,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/json",
+        "content-length": "9996",
+        "last-modified": "Tue, 27 Oct 2026 04:48:22 GMT",
+        "connection": "close",
+        "etag": "\"6ae02d16-270c\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 9996,
+      "sha256": "bebf8cb02844e6b5bf476939069848fa85ef5e167adc9bc6feaa574ed46a2d81",
+      "transfer_speed_kbps": 316425.243,
+      "timings_ms": {
+        "dns_lookup_ms": 0.466,
+        "tcp_connect_ms": 0.219,
+        "tls_handshake_ms": 8.63,
+        "ttfb_ms": 0.709,
+        "download_ms": 0.027,
+        "total_latency_ms": 10.186
+      }
+    },
+    {
+      "target": "https://aicompany.duckvaulta.ai.id/",
+      "role": "public_aicompany",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_aicompany"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.063+00:00",
+      "scheme": "https",
+      "hostname": "aicompany.duckvaulta.ai.id",
+      "port": 443,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.237,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": "1025",
+        "connection": "close",
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=0",
+        "last-modified": "Tue, 27 Oct 2026 01:28:56 GMT",
+        "etag": "W/\"401-1a17af98a34\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 1025,
+      "sha256": "365d9e684fbbf958ad1bc958373f0b4b72285c233e2a2dc18c8dd12ff7b74199",
+      "transfer_speed_kbps": 79632.185,
+      "timings_ms": {
+        "dns_lookup_ms": 0.537,
+        "tcp_connect_ms": 0.24,
+        "tls_handshake_ms": 8.176,
+        "ttfb_ms": 1.528,
+        "download_ms": 0.009,
+        "total_latency_ms": 10.611
+      }
+    },
+    {
+      "target": "https://godeye.duckvaulta.ai.id/",
+      "role": "public_godeye",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_godeye"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.074+00:00",
+      "scheme": "https",
+      "hostname": "godeye.duckvaulta.ai.id",
+      "port": 443,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.217,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "85579",
+        "connection": "close",
+        "vary": "Origin",
+        "cache-control": "no-cache",
+        "etag": "W/\"14e4b-IrM3+PBWL9uxSSZLQJCL2jcQnZI\"",
+        "x-frame-options": "DENY, SAMEORIGIN",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' blob: https://www.youtube.com https://connect.facebook.net https://platform.twitter.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' blob: data: https: wss: ws:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self' blob: https://www.youtube-nocookie.com https://www.youtube.com https://www.facebook.com https://platform.twitter.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "x-content-type-options": "nosniff, nosniff",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' blob: https://www.youtube.com https://connect.facebook.net https://platform.twitter.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' blob: data: https: wss: ws:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self' blob: https://www.youtube-nocookie.com https://www.youtube.com https://www.facebook.com https://platform.twitter.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "DENY, SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff, nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 85579,
+      "sha256": "56021e634824be0e6e00f4036d5738d6d97ce37583fa34d83773ff29c11b21a3",
+      "transfer_speed_kbps": 137632.559,
+      "timings_ms": {
+        "dns_lookup_ms": 0.497,
+        "tcp_connect_ms": 0.219,
+        "tls_handshake_ms": 8.061,
+        "ttfb_ms": 16.642,
+        "download_ms": 0.601,
+        "total_latency_ms": 26.175
+      }
+    },
+    {
+      "target": "https://edtech.duckvaulta.ai.id/",
+      "role": "public_edtech",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_edtech"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.101+00:00",
+      "scheme": "https",
+      "hostname": "edtech.duckvaulta.ai.id",
+      "port": 443,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.266,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "105238",
+        "last-modified": "Thu, 22 Oct 2026 06:58:10 GMT",
+        "connection": "close",
+        "etag": "\"6ad9b402-19b16\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 105238,
+      "sha256": "9a6d63f93feb806274343a15bb831f1aec72ee383f79a3f70c8632260bb722a4",
+      "transfer_speed_kbps": 179432.021,
+      "timings_ms": {
+        "dns_lookup_ms": 0.568,
+        "tcp_connect_ms": 0.268,
+        "tls_handshake_ms": 8.447,
+        "ttfb_ms": 1.04,
+        "download_ms": 0.568,
+        "total_latency_ms": 11.017
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/assets/logo.png",
+      "role": "public_logo",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_logo"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.112+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/assets/logo.png",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.248,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "image/png",
+        "content-length": "110087",
+        "last-modified": "Wed, 21 Oct 2026 14:03:45 GMT",
+        "connection": "close",
+        "etag": "\"6ad8c641-1ae07\"",
+        "expires": "Thu, 26 Nov 2026 04:48:24 GMT",
+        "cache-control": "max-age=2592000, public, no-transform",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 110087,
+      "sha256": "91ac19ad23e8e40ac7daab4900dafaf3b8f4f85ac41ef4ca1a0ed523b0ef6a3b",
+      "transfer_speed_kbps": 308838.943,
+      "timings_ms": {
+        "dns_lookup_ms": 0.49,
+        "tcp_connect_ms": 0.25,
+        "tls_handshake_ms": 9.816,
+        "ttfb_ms": 0.947,
+        "download_ms": 0.343,
+        "total_latency_ms": 11.97
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/assets/duck-lockup.png",
+      "role": "public_duck_lockup",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_duck_lockup"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.125+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/assets/duck-lockup.png",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.239,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "image/png",
+        "content-length": "88559",
+        "last-modified": "Wed, 21 Oct 2026 14:25:49 GMT",
+        "connection": "close",
+        "etag": "\"6ad8cb6d-159ef\"",
+        "expires": "Thu, 26 Nov 2026 04:48:24 GMT",
+        "cache-control": "max-age=2592000, public, no-transform",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 88559,
+      "sha256": "195fc35289ca56e24e494c108385d682d2eae424250b262f1730c43355a8a2ee",
+      "transfer_speed_kbps": 228013.917,
+      "timings_ms": {
+        "dns_lookup_ms": 0.511,
+        "tcp_connect_ms": 0.241,
+        "tls_handshake_ms": 8.45,
+        "ttfb_ms": 0.991,
+        "download_ms": 0.374,
+        "total_latency_ms": 10.7
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/assets/logo-transparent.png",
+      "role": "public_logo_transparent",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_logo_transparent"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.136+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/assets/logo-transparent.png",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.242,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "image/png",
+        "content-length": "128334",
+        "last-modified": "Wed, 21 Oct 2026 14:03:52 GMT",
+        "connection": "close",
+        "etag": "\"6ad8c648-1f54e\"",
+        "expires": "Thu, 26 Nov 2026 04:48:24 GMT",
+        "cache-control": "max-age=2592000, public, no-transform",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 128334,
+      "sha256": "29017cf0a180753719f64a2148d3830bb772831b3f9b71936f3a949d2a58cdbb",
+      "transfer_speed_kbps": 303732.664,
+      "timings_ms": {
+        "dns_lookup_ms": 0.476,
+        "tcp_connect_ms": 0.244,
+        "tls_handshake_ms": 8.13,
+        "ttfb_ms": 0.929,
+        "download_ms": 0.407,
+        "total_latency_ms": 10.323
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/assets/anime.min.js",
+      "role": "public_anime",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_anime",
+        "discovered_internal_asset"
+      ],
+      "sources": [
+        "required_public_endpoint",
+        "remote_homepage"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.146+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/assets/anime.min.js",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.222,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/javascript",
+        "content-length": "17384",
+        "last-modified": "Wed, 21 Oct 2026 14:20:31 GMT",
+        "connection": "close",
+        "etag": "\"6ad8ca2f-43e8\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 17384,
+      "sha256": "bceef94f964481f7680d95e7fbbe5a8c20d3945a926a754874898a578db7c7ab",
+      "transfer_speed_kbps": 442789.841,
+      "timings_ms": {
+        "dns_lookup_ms": 0.46,
+        "tcp_connect_ms": 0.224,
+        "tls_handshake_ms": 8.249,
+        "ttfb_ms": 0.842,
+        "download_ms": 0.035,
+        "total_latency_ms": 9.937
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/assets/duck-emblem.png",
+      "role": "public_duck_emblem",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_duck_emblem",
+        "discovered_internal_asset"
+      ],
+      "sources": [
+        "required_public_endpoint",
+        "remote_homepage"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.157+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/assets/duck-emblem.png",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.231,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "image/png",
+        "content-length": "39618",
+        "last-modified": "Wed, 21 Oct 2026 14:25:49 GMT",
+        "connection": "close",
+        "etag": "\"6ad8cb6d-9ac2\"",
+        "expires": "Thu, 26 Nov 2026 04:48:24 GMT",
+        "cache-control": "max-age=2592000, public, no-transform",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 39618,
+      "sha256": "03f69ec4e37e6d4988fcd98e756c95803b69c729c6fd5d20795f992c21cc9a86",
+      "transfer_speed_kbps": 446605.715,
+      "timings_ms": {
+        "dns_lookup_ms": 0.461,
+        "tcp_connect_ms": 0.233,
+        "tls_handshake_ms": 8.387,
+        "ttfb_ms": 1.776,
+        "download_ms": 0.081,
+        "total_latency_ms": 11.106
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/ctf-challenges/66-dont-use-client-side/index.html",
+      "role": "public_client_side_challenge",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_client_side_challenge"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.169+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/ctf-challenges/66-dont-use-client-side/index.html",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.669,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "3806",
+        "last-modified": "Mon, 26 Oct 2026 15:51:17 GMT",
+        "connection": "close",
+        "etag": "\"6adf76f5-ede\"",
+        "cache-control": "public, max-age=86400",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 3806,
+      "sha256": "fcffad789df4f1e230c0c7109a6a4a270e984e2c085e3affbd66582b886f3d41",
+      "transfer_speed_kbps": 229149.006,
+      "timings_ms": {
+        "dns_lookup_ms": 0.58,
+        "tcp_connect_ms": 0.672,
+        "tls_handshake_ms": 8.827,
+        "ttfb_ms": 0.64,
+        "download_ms": 0.013,
+        "total_latency_ms": 10.873
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/ctf-challenges/779-perceptron/index.html",
+      "role": "public_perceptron_challenge",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_perceptron_challenge"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.180+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/ctf-challenges/779-perceptron/index.html",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.242,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "15906",
+        "last-modified": "Tue, 27 Oct 2026 02:04:11 GMT",
+        "connection": "close",
+        "etag": "\"6ae0069b-3e22\"",
+        "cache-control": "public, max-age=86400",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 15906,
+      "sha256": "18489343bf7592d8d7b037e30a488d6d45637c9999ae69af5a80593e1e2d6750",
+      "transfer_speed_kbps": 553571.031,
+      "timings_ms": {
+        "dns_lookup_ms": 0.494,
+        "tcp_connect_ms": 0.243,
+        "tls_handshake_ms": 8.179,
+        "ttfb_ms": 0.878,
+        "download_ms": 0.025,
+        "total_latency_ms": 9.939
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/ctf-challenges/405-blame-game.zip",
+      "role": "public_blame_game_archive",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_blame_game_archive"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.190+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/ctf-challenges/405-blame-game.zip",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.253,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/zip",
+        "content-length": "296464",
+        "last-modified": "Mon, 26 Oct 2026 15:38:50 GMT",
+        "connection": "close",
+        "etag": "\"6adf740a-48610\"",
+        "cache-control": "public, max-age=86400",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 296464,
+      "sha256": "56bea5dbbfda90bfc2b1ce28ff84d914eb9cf9b5e44c2ada3f59d05a63e4d227",
+      "transfer_speed_kbps": 243384.523,
+      "timings_ms": {
+        "dns_lookup_ms": 0.481,
+        "tcp_connect_ms": 0.255,
+        "tls_handshake_ms": 8.209,
+        "ttfb_ms": 0.904,
+        "download_ms": 1.184,
+        "total_latency_ms": 11.143
+      }
+    },
+    {
+      "target": "https://duckvaulta.ai.id/drawio/index.html",
+      "role": "public_drawio",
+      "source": "required_public_endpoint",
+      "roles": [
+        "public_drawio"
+      ],
+      "sources": [
+        "required_public_endpoint"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.201+00:00",
+      "scheme": "https",
+      "hostname": "duckvaulta.ai.id",
+      "port": 443,
+      "path": "/drawio/index.html",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "34.135.45.195"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('34.135.45.195', 443)",
+          "elapsed_ms": 0.226,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "16759",
+        "last-modified": "Thu, 22 Oct 2026 04:52:27 GMT",
+        "connection": "close",
+        "etag": "\"6ad9968b-4177\"",
+        "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "SAMEORIGIN",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": "camera=(self), microphone=(self), geolocation=(self)",
+        "x-xss-protection": "1; mode=block",
+        "x-permitted-cross-domain-policies": "none",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+        "cross-origin-opener-policy": "same-origin",
+        "cross-origin-resource-policy": "same-origin",
+        "accept-ranges": "bytes"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": true,
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://duckvaulta.ai.id; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "SAMEORIGIN"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": true,
+          "value": "strict-origin-when-cross-origin"
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 16759,
+      "sha256": "6c058ceca2127067f1c4859f3e153fc0962efb4448248bc6797dd844fd037a12",
+      "transfer_speed_kbps": 405606.219,
+      "timings_ms": {
+        "dns_lookup_ms": 0.442,
+        "tcp_connect_ms": 0.228,
+        "tls_handshake_ms": 8.146,
+        "ttfb_ms": 2.014,
+        "download_ms": 0.037,
+        "total_latency_ms": 10.992
+      }
+    },
+    {
+      "target": "http://127.0.0.1:80/",
+      "role": "local_nginx",
+      "source": "required_local_service",
+      "roles": [
+        "local_nginx"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.217+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 80,
+      "path": "/",
+      "status_code": 301,
+      "reason": "Moved Permanently",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 80)",
+          "elapsed_ms": 0.06,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "nginx",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "text/html",
+        "content-length": "162",
+        "connection": "close",
+        "location": "https://127.0.0.1/"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 162,
+      "sha256": "9e17cb15dd75bbbd5dbb984eda674863c3b10ab72613cf8a39a00c3e11a8492a",
+      "transfer_speed_kbps": 15124.582,
+      "timings_ms": {
+        "dns_lookup_ms": 0.014,
+        "tcp_connect_ms": 0.062,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 0.139,
+        "download_ms": 0.008,
+        "total_latency_ms": 0.295
+      }
+    },
+    {
+      "target": "http://127.0.0.1:3001/",
+      "role": "local_ruang_3d",
+      "source": "required_local_service",
+      "roles": [
+        "local_ruang_3d"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.217+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 3001,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 3001)",
+          "elapsed_ms": 0.041,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "accept-ranges": "bytes",
+        "cache-control": "public, max-age=0",
+        "last-modified": "Tue, 27 Oct 2026 01:28:56 GMT",
+        "etag": "W/\"401-1a17af98a34\"",
+        "content-type": "text/html; charset=utf-8",
+        "content-length": "1025",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "connection": "close"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 1025,
+      "sha256": "365d9e684fbbf958ad1bc958373f0b4b72285c233e2a2dc18c8dd12ff7b74199",
+      "transfer_speed_kbps": 81446.425,
+      "timings_ms": {
+        "dns_lookup_ms": 0.01,
+        "tcp_connect_ms": 0.042,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 0.887,
+        "download_ms": 0.009,
+        "total_latency_ms": 1.016
+      }
+    },
+    {
+      "target": "http://127.0.0.1:4173/",
+      "role": "local_gods_eye",
+      "source": "required_local_service",
+      "roles": [
+        "local_gods_eye"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.218+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 4173,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 4173)",
+          "elapsed_ms": 0.053,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "vary": "Origin",
+        "content-type": "text/html",
+        "cache-control": "no-cache",
+        "etag": "W/\"14e4b-IrM3+PBWL9uxSSZLQJCL2jcQnZI\"",
+        "x-frame-options": "DENY",
+        "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' blob: https://www.youtube.com https://connect.facebook.net https://platform.twitter.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' blob: data: https: wss: ws:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self' blob: https://www.youtube-nocookie.com https://www.youtube.com https://www.facebook.com https://platform.twitter.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "x-content-type-options": "nosniff",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "connection": "close",
+        "content-length": "85579"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": true,
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' blob: https://www.youtube.com https://connect.facebook.net https://platform.twitter.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' blob: data: https: wss: ws:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self' blob: https://www.youtube-nocookie.com https://www.youtube.com https://www.facebook.com https://platform.twitter.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": true,
+          "value": "DENY"
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": true,
+          "value": "nosniff"
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 85579,
+      "sha256": "56021e634824be0e6e00f4036d5738d6d97ce37583fa34d83773ff29c11b21a3",
+      "transfer_speed_kbps": 665710.07,
+      "timings_ms": {
+        "dns_lookup_ms": 0.013,
+        "tcp_connect_ms": 0.055,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 16.573,
+        "download_ms": 0.12,
+        "total_latency_ms": 16.871
+      }
+    },
+    {
+      "target": "http://127.0.0.1:20128/",
+      "role": "local_hermes_api",
+      "source": "required_local_service",
+      "roles": [
+        "local_hermes_api"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.235+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 20128,
+      "path": "/",
+      "status_code": 307,
+      "reason": "Temporary Redirect",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 20128)",
+          "elapsed_ms": 0.06,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "location": "/dashboard",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 10,
+      "sha256": "89347bb23a645278522a8cfd5dd8001ca6b244aa6898972d5af26a6dbaf33f55",
+      "transfer_speed_kbps": 399.086,
+      "timings_ms": {
+        "dns_lookup_ms": 0.023,
+        "tcp_connect_ms": 0.062,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 1.644,
+        "download_ms": 0.021,
+        "total_latency_ms": 1.846
+      }
+    },
+    {
+      "target": "http://127.0.0.1:20128/dashboard",
+      "role": "local_hermes_dashboard",
+      "source": "required_local_service",
+      "roles": [
+        "local_hermes_dashboard"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.237+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 20128,
+      "path": "/dashboard",
+      "status_code": 307,
+      "reason": "Temporary Redirect",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 20128)",
+          "elapsed_ms": 0.043,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "location": "/login",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "connection": "close",
+        "transfer-encoding": "chunked"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 6,
+      "sha256": "7e93fba0bc7adda858a2500090e639e4f563a3965c7cf4c719fb56eb6b12c666",
+      "transfer_speed_kbps": 410.608,
+      "timings_ms": {
+        "dns_lookup_ms": 0.011,
+        "tcp_connect_ms": 0.044,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 0.842,
+        "download_ms": 0.012,
+        "total_latency_ms": 0.979
+      }
+    },
+    {
+      "target": "http://127.0.0.1:3005/",
+      "role": "local_discord_service",
+      "source": "required_local_service",
+      "roles": [
+        "local_discord_service"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.238+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 3005,
+      "path": "/",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 3005)",
+          "elapsed_ms": 0.04,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "server": "BaseHTTP/0.6 Python/3.13.5",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-type": "application/json",
+        "content-length": "74"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 74,
+      "sha256": "8b5830ca3734a9e07f7d32ff39dab50c59e32405ebba91d4a73f3c8520a622af",
+      "transfer_speed_kbps": 8654.566,
+      "timings_ms": {
+        "dns_lookup_ms": 0.009,
+        "tcp_connect_ms": 0.041,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 0.295,
+        "download_ms": 0.006,
+        "total_latency_ms": 0.416
+      }
+    },
+    {
+      "target": "http://127.0.0.1:11434/api/version",
+      "role": "local_ollama_api_version",
+      "source": "required_local_service",
+      "roles": [
+        "local_ollama_api_version"
+      ],
+      "sources": [
+        "required_local_service"
+      ],
+      "started_at_utc": "2026-10-27T04:48:24.239+00:00",
+      "scheme": "http",
+      "hostname": "127.0.0.1",
+      "port": 11434,
+      "path": "/api/version",
+      "status_code": 200,
+      "reason": "OK",
+      "valid_status": true,
+      "passed": true,
+      "error": null,
+      "resolved_addresses": [
+        "127.0.0.1"
+      ],
+      "connect_attempts": [
+        {
+          "address": "('127.0.0.1', 11434)",
+          "elapsed_ms": 0.05,
+          "success": true
+        }
+      ],
+      "response_headers": {
+        "content-type": "application/json; charset=utf-8",
+        "date": "Tue, 27 Oct 2026 04:48:24 GMT",
+        "content-length": "20",
+        "connection": "close"
+      },
+      "security_headers": {
+        "hsts": {
+          "header": "Strict-Transport-Security",
+          "present": false,
+          "value": null
+        },
+        "csp": {
+          "header": "Content-Security-Policy",
+          "present": false,
+          "value": null
+        },
+        "x_frame_options": {
+          "header": "X-Frame-Options",
+          "present": false,
+          "value": null
+        },
+        "x_content_type_options": {
+          "header": "X-Content-Type-Options",
+          "present": false,
+          "value": null
+        },
+        "referrer_policy": {
+          "header": "Referrer-Policy",
+          "present": false,
+          "value": null
+        },
+        "cors": {
+          "header": "Access-Control-Allow-Origin",
+          "present": false,
+          "value": null
+        }
+      },
+      "body_bytes": 20,
+      "sha256": "576f54710b38affc33858b6ef1f2a35e9b38c6c49535143bdec153afad5d8830",
+      "transfer_speed_kbps": 1350.709,
+      "timings_ms": {
+        "dns_lookup_ms": 0.009,
+        "tcp_connect_ms": 0.052,
+        "tls_handshake_ms": null,
+        "ttfb_ms": 0.315,
+        "download_ms": 0.006,
+        "total_latency_ms": 0.484
+      }
+    }
+  ]
+}
