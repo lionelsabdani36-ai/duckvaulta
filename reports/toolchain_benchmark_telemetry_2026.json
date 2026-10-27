@@ -1,0 +1,120 @@
+{
+  "timestamp": "2026-10-27T04:00:00Z",
+  "environment": {
+    "platform": "linux",
+    "arch": "x64",
+    "node_version": "v22.23.4",
+    "cpu_cores": 4,
+    "memory_gb": 15.62,
+    "rust_bundler": "Rolldown 1.2.15",
+    "esm_bundler": "Vite 8.3.5",
+    "legacy_bundler": "Webpack 5.112.2"
+  },
+  "benchmarks": {
+    "scale_50_modules": {
+      "rolldown": {
+        "avg_duration_ms": 7.93,
+        "min_duration_ms": 3.69,
+        "max_duration_ms": 10.20,
+        "stddev_ms": 3.00,
+        "rss_delta_mb": 10.79,
+        "bundle_size_bytes": 2433,
+        "bundle_gzip_bytes": 622,
+        "throughput_mods_per_sec": 6305.35,
+        "speedup_vs_webpack": 44.59
+      },
+      "vite_8": {
+        "avg_duration_ms": 29.23,
+        "min_duration_ms": 15.57,
+        "max_duration_ms": 56.40,
+        "stddev_ms": 19.21,
+        "rss_delta_mb": 7.57,
+        "bundle_size_bytes": 2406,
+        "bundle_gzip_bytes": 594,
+        "throughput_mods_per_sec": 1710.57,
+        "speedup_vs_webpack": 12.10
+      },
+      "webpack_5": {
+        "avg_duration_ms": 353.64,
+        "min_duration_ms": 228.81,
+        "max_duration_ms": 587.26,
+        "stddev_ms": 165.32,
+        "rss_delta_mb": 24.14,
+        "bundle_size_bytes": 2363,
+        "bundle_gzip_bytes": 609,
+        "throughput_mods_per_sec": 141.39,
+        "speedup_vs_webpack": 1.00
+      }
+    },
+    "scale_250_modules": {
+      "rolldown": {
+        "avg_duration_ms": 10.85,
+        "min_duration_ms": 10.33,
+        "max_duration_ms": 11.25,
+        "stddev_ms": 0.39,
+        "rss_delta_mb": 4.03,
+        "bundle_size_bytes": 12272,
+        "bundle_gzip_bytes": 2416,
+        "throughput_mods_per_sec": 23039.30,
+        "speedup_vs_webpack": 50.00
+      },
+      "vite_8": {
+        "avg_duration_ms": 35.85,
+        "min_duration_ms": 26.55,
+        "max_duration_ms": 53.70,
+        "stddev_ms": 12.63,
+        "rss_delta_mb": 5.49,
+        "bundle_size_bytes": 12247,
+        "bundle_gzip_bytes": 2427,
+        "throughput_mods_per_sec": 6973.50,
+        "speedup_vs_webpack": 15.13
+      },
+      "webpack_5": {
+        "avg_duration_ms": 542.46,
+        "min_duration_ms": 518.02,
+        "max_duration_ms": 574.21,
+        "stddev_ms": 23.51,
+        "rss_delta_mb": 10.03,
+        "bundle_size_bytes": 11935,
+        "bundle_gzip_bytes": 2314,
+        "throughput_mods_per_sec": 460.86,
+        "speedup_vs_webpack": 1.00
+      }
+    },
+    "scale_1000_modules": {
+      "rolldown": {
+        "avg_duration_ms": 35.40,
+        "min_duration_ms": 33.67,
+        "max_duration_ms": 36.46,
+        "stddev_ms": 1.15,
+        "rss_delta_mb": 17.43,
+        "bundle_size_bytes": 49940,
+        "bundle_gzip_bytes": 9205,
+        "throughput_mods_per_sec": 28248.58,
+        "speedup_vs_webpack": 38.55
+      },
+      "vite_8": {
+        "avg_duration_ms": 75.82,
+        "min_duration_ms": 70.40,
+        "max_duration_ms": 86.20,
+        "stddev_ms": 7.35,
+        "rss_delta_mb": 4.80,
+        "bundle_size_bytes": 49930,
+        "bundle_gzip_bytes": 9625,
+        "throughput_mods_per_sec": 13189.13,
+        "speedup_vs_webpack": 18.00
+      },
+      "webpack_5": {
+        "avg_duration_ms": 1364.80,
+        "min_duration_ms": 1271.74,
+        "max_duration_ms": 1448.05,
+        "stddev_ms": 72.31,
+        "rss_delta_mb": 29.31,
+        "bundle_size_bytes": 48585,
+        "bundle_gzip_bytes": 8933,
+        "throughput_mods_per_sec": 732.71,
+        "speedup_vs_webpack": 1.00
+      }
+    }
+  }
+}
