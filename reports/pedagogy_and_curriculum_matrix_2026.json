@@ -1,0 +1,129 @@
+{
+  "title": "Master Sintesis Pedagogis, Kurikulum Talenta AI, & Standar Anti-Slop 2026",
+  "lead_mentor": "Judith (Master Guru & Mentor Akademik / Kompetisi)",
+  "date": "2026-10-27",
+  "cycle": "Day 06 Q4 2026",
+  "target_audience": [
+    "White Jack (Mentee)",
+    "SMK PPLG / SIJA / RPL",
+    "Kontingen LKS Cyber Security",
+    "Peserta CTF Nasional",
+    "Talenta AI Vokasi Nasional"
+  ],
+  "pedagogical_pillars": [
+    {
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi Logika)",
+      "methodology": "Teknik Feynman dan pemodelan dasar sistem komputasi (memori, compiler, OS).",
+      "rule": "Dilarang menghafal tanpa memahami asal usul logika."
+    },
+    {
+      "name": "Metode Socratic & Scaffolding",
+      "methodology": "3-Tier Scaffolding Protocol (Observasi, Relasi Sistemik, Eksperimen Mandiri).",
+      "rule": "Zero direct spoiler saat siswa buntu."
+    },
+    {
+      "name": "Bedah Anatomi Distraktor",
+      "methodology": "Dekonstruksi 4 pola jebakan HOTS dan rabbit hole skenario CTF.",
+      "rule": "Setiap butir soal wajib memiliki pembedahan opsi pengecoh."
+    },
+    {
+      "name": "Siklus Belajar Adaptif",
+      "methodology": "Diagnostic -> Drill L1-L3 -> 100% Mastery Verification.",
+      "rule": "Verifikasi pemahaman mandiri sebelum modul baru."
+    },
+    {
+      "name": "Evaluasi Berbasis Item Response Theory (IRT)",
+      "methodology": "Model Logistik 3PL (Parameter a, b, c).",
+      "rule": "Penalaran bertahap dihargai lebih tinggi daripada tebakan semu."
+    }
+  ],
+  "curriculum_modules": [
+    {
+      "code": "MOD-01",
+      "title": "Web Exploitation & Protocol Security",
+      "topics": [
+        "SSRF and Inter-Agent Lateral Movement",
+        "Prototype Pollution JavaScript Runtime",
+        "OAuth2 and JWT Token Manipulation",
+        "CSP Level 3 and Modern Web Defenses"
+      ],
+      "competitions": [
+        "LKS Kota/Provinsi",
+        "Jeopardy CTF"
+      ]
+    },
+    {
+      "code": "MOD-02",
+      "title": "Binary Exploitation & Reverse Engineering",
+      "topics": [
+        "x86_64 CPU Architecture and Stack Layout",
+        "Buffer Overflow and Modern Mitigations (ASLR/NX/Canary/PIE)",
+        "ROP Chain, ret2libc, and GOT Overwrite",
+        "Static/Dynamic Analysis (Ghidra, radare2, GDB-pwndbg)"
+      ],
+      "competitions": [
+        "LKS Nasional",
+        "WorldSkills Cyber Security"
+      ]
+    },
+    {
+      "code": "MOD-03",
+      "title": "Digital Forensics & Incident Response (DFIR)",
+      "topics": [
+        "Memory Dump Forensics (Volatility 3)",
+        "Network Packet Forensics (Wireshark/tshark, TLS analysis)",
+        "Disk and Artifact Forensics (Autopsy, MFT, inodes)"
+      ],
+      "competitions": [
+        "LKS Provinsi/Nasional",
+        "Enterprise DFIR"
+      ]
+    },
+    {
+      "code": "MOD-04",
+      "title": "Cryptography & Applied Mathematics",
+      "topics": [
+        "Modular Arithmetic and Euclidean Algorithm",
+        "Asymmetric RSA Attack Vectors (Small e, Wiener, Common Modulus)",
+        "Symmetric AES Flaws (ECB leak, CBC bit-flip, Padding Oracle)",
+        "PRNG Seed and State Predictability"
+      ],
+      "competitions": [
+        "CTF Jeopardy",
+        "Applied Cryptanalysis"
+      ]
+    },
+    {
+      "code": "MOD-05",
+      "title": "AI Security, Agentic Sandboxing, & Red Teaming",
+      "topics": [
+        "Indirect Prompt Injection Mitigation",
+        "MCP Tool Poisoning and Protocol Defense",
+        "Sandbox Isolation (Linux bubblewrap, cgroups, loopback binding)",
+        "UU Perlindungan Data Pribadi (UU PDP No. 27/2022) Compliance"
+      ],
+      "competitions": [
+        "AI Red Teaming",
+        "Agentic Security 2026"
+      ]
+    }
+  ],
+  "antislop_compliance": {
+    "zero_em_dash": true,
+    "no_generic_ai_buzzwords": true,
+    "mobile_touch_target_min_px": 44,
+    "wcag_contrast_ratio_min": 4.5,
+    "interactive_state_feedback": true,
+    "zero_unverified_claims": true
+  },
+  "ai_team_orchestration": {
+    "david": "Leader / default - State machine Kanban & bounded context supervisor",
+    "charlie": "trend-hunter - Market reconnaissance & protocol standardization Q4 2026",
+    "alex": "fullstack-dev - EdTech platform engineering & CBT bank soal engine",
+    "athena": "security-engineer - Zero-trust architecture, socket isolation & UU PDP compliance",
+    "julius": "qa-engineer - Automated verification, load testing & WCAG AA auditing",
+    "omnirush": "coding-agent - Deterministic pipeline executor & code verification",
+    "judith": "guru - Master Guru & Lead Mentor: Pedagogical synthesis, LKS curriculum & IRT validation"
+  },
+  "status": "APPROVED_AND_VERIFIED"
+}

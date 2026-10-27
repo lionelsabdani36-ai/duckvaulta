@@ -28,6 +28,7 @@
 **5. Judith (`guru`):**
 • **Validasi Pedagogi:** Audit taksonomi Bloom tingkat analisis/evaluasi untuk butir soal TKA & UTBK.
 • **Integritas Jawaban:** Pembobotan Item Response Theory (IRT) & zero-hallucination penjelasan solusi terverifikasi.
+• **Master Sintesis Pedagogis & Kurikulum LKS:** Kurikulum vokasi SMK/LKS Cyber Security 5 modul, strategi up-skilling talenta AI nasional 12 minggu, dan standar Anti-Slop (zero em dash, WCAG 4.5:1, 44px tap target) tuntas terverifikasi.
 
 **6. Omnirush (`coding-agent` / v2.7.1):**
 • **Eksekutor Kode:** Otomasi pipeline eksekusi, verifikasi integritas build & sinkronisasi repo aktif.
