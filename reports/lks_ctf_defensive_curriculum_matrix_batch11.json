@@ -1,0 +1,465 @@
+{
+  "schema_version": "2026.1",
+  "document_title": "Pedagogical CTF Curriculum Synthesis & LKS Defensive Hardening Matrix (Batch 11)",
+  "mentor": {
+    "name": "Judith",
+    "role": "Master Guru & Mentor Akademik / Kompetisi",
+    "mentee": "White Jack",
+    "objective": "Total Concept Mastery 100% & LKS Cyber Security Defense Hardening"
+  },
+  "batch_metadata": {
+    "batch_number": 11,
+    "target_platform": "CyLab Security Academy (picoCTF-2019 Core)",
+    "total_challenges": 11,
+    "total_score_points": 2600,
+    "completion_rate": "100%",
+    "date_synthesized": "2026-10-27"
+  },
+  "pedagogical_pillars": [
+    {
+      "pillar": 1,
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi)",
+      "description": "Membongkar konsep komputasi dan matematika di balik exploit tanpa menghafal payload atau skrip mentah."
+    },
+    {
+      "pillar": 2,
+      "name": "Metode Socratic & Scaffolding Bertingkat",
+      "description": "Menuntun murid melalui 3 lapis pertanyaan pemantik (Orientasi, Struktural, Terobosan) untuk memicu momen Aha!"
+    },
+    {
+      "pillar": 3,
+      "name": "Bedah Anatomi Distraktor (Jebakan Soal HOTS)",
+      "description": "Menganalisis pola kesalahan pemula, jebakan bias kognitif, dan asumsi keliru pada soal kompetisi."
+    },
+    {
+      "pillar": 4,
+      "name": "Siklus Belajar Adaptif (Diagnostic -> Drill -> Mastery)",
+      "description": "Rute eskalasi kompetensi dari fondasi sintaks dan inspeksi byte hingga kriptanalisis lanjutan dan pengerasan defensif."
+    },
+    {
+      "pillar": 5,
+      "name": "Evaluasi Berbasis IRT (Item Response Theory)",
+      "description": "Pengukuran daya beda (a), tingkat kesulitan (b), dan resistansi tebakan (c) untuk evaluasi performa objektif."
+    }
+  ],
+  "cognitive_distribution": {
+    "C2_Understanding": 1,
+    "C3_Applying": 3,
+    "C4_Analyzing": 4,
+    "C5_Evaluating": 3
+  },
+  "domain_distribution": {
+    "Domain_A_Forensics": {
+      "challenges": 2,
+      "points": 400,
+      "share_pct": 15.38
+    },
+    "Domain_B_Cryptography_SIGINT": {
+      "challenges": 4,
+      "points": 1000,
+      "share_pct": 38.46
+    },
+    "Domain_C_Reverse_Engineering": {
+      "challenges": 5,
+      "points": 1200,
+      "share_pct": 46.16
+    }
+  },
+  "modules": [
+    {
+      "module_id": "MOD-01",
+      "challenge_id": 19,
+      "name": "So Meta",
+      "category": "Digital Forensics",
+      "points": 150,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-200: Information Exposure Through Ancillary Metadata",
+      "verified_flag": "academy{s0_m3ta_d4aa0408}",
+      "first_principles_theory": "Spesifikasi ISO/IEC 15948 PNG membagi berkas menjadi chunk kritikal (IHDR, PLTE, IDAT, IEND) dan chunk tambahan (tEXt, zTXt, iTXt). Data teks atau rahasia yang disisipkan ke dalam chunk tEXt tidak memengaruhi render piksel visual namun tetap tersimpan dalam representasi biner mentah berkas.",
+      "feynman_analogy": "Seperti menulis catatan rahasia di bagian belakang foto polaroid: orang yang hanya melihat foto dari depan tidak menyadarinya, tetapi siapa pun yang membalik foto akan langsung membacanya.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apakah sebuah berkas gambar hanya berisi piksel warna, atau ada struktur data pembungkus lain di dalamnya?",
+        "tier_2_structural": "Jika kamu membuka berkas gambar menggunakan editor teks atau pemeriksa string biner, di bagian mana biasanya teks keterangan kamera atau komentar pembuat disimpan?",
+        "tier_3_breakthrough": "Gunakan perintah strings atau inspeksi chunk tEXt pada berkas PNG tersebut. String apa yang memiliki pola diawali kata academy?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira flag disembunyikan menggunakan algoritma steganografi LSB (Least Significant Bit) piksel yang rumit.",
+        "Hanya melihat tampilan visual gambar di image viewer biasa tanpa memeriksa struktur biner mentah."
+      ],
+      "blue_team_incident_takeaway": "Penanganan insiden kebocoran data (Data Leakage Prevention). Penyerang sering menyisipkan data tercuri atau komunikasi C2 di dalam metadata gambar profil atau banner web publik.",
+      "defensive_hardening_standard": "Pipeline build CI/CD wajib mengotomatisasi pembersihan metadata aset statis menggunakan exiftool -all= atau optipng -strip all sebelum aset diunggah ke CDN publik.",
+      "irt_parameters": {
+        "a_discrimination": 1.15,
+        "b_difficulty": -0.85,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-53 MP-6 (Media Sanitization)",
+        "OWASP ASVS V14.4.6 (Asset Hardening)",
+        "BSSN CSIRT Guideline"
+      ]
+    },
+    {
+      "module_id": "MOD-02",
+      "challenge_id": 12,
+      "name": "vault-door-1",
+      "category": "Reverse Engineering",
+      "points": 100,
+      "difficulty": "Medium",
+      "bloom_level": "C3 - Applying",
+      "cwe": "CWE-602: Client-Side Enforcement of Server Security",
+      "verified_flag": "academy{d35cr4mbl3_tH3_cH4r4cT3r5_179fbd}",
+      "first_principles_theory": "Instruksi percabangan JVM bytecode (if_icmpne) membandingkan karakter masukan pengguna secara langsung dengan operan konstan (bipush). Karena semua klausa perbandingan indeks bersifat statis dan berurutan pada fungsi checkPassword, relasi indeks-karakter dapat direkonstruksi 100% tanpa eksekusi dinamis.",
+      "feynman_analogy": "Seperti brankas kode rahasia di mana pemiliknya menempelkan 32 kertas kecil bernomor 0 sampai 31 di pintu brankas, lengkap dengan huruf yang harus ditekan pada nomor tersebut.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Di mana proses verifikasi kata sandi dijalankan: apakah di server jarak jauh yang aman atau di dalam kode Java yang ada di tanganmu?",
+        "tier_2_structural": "Perhatikan kondisi perbandingan password.charAt(i) == karakter. Apakah kondisi-kondisi tersebut independen satu sama lain?",
+        "tier_3_breakthrough": "Jika kamu mengumpulkan semua pasangan (indeks, karakter) lalu mengurutkannya dari indeks 0 hingga 31, kata apa yang terbentuk?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba melakukan brute-force kombinasi 32 karakter alfanumerik (ruang pencarian 62^32 yang mustahil diselesaikan).",
+        "Terganggu oleh urutan baris kode yang diacak sehingga mengira ada algoritma enkripsi nonlinear."
+      ],
+      "blue_team_incident_takeaway": "Audit logika aplikasi (Application Logic Security). Penyerang dapat mem-bypass seluruh sistem otentikasi jika verifikasi hak akses atau lisensi dilakukan secara client-side.",
+      "defensive_hardening_standard": "Otentikasi wajib dilakukan secara server-side. Password tidak boleh disimpan atau dibandingkan dalam plaintext; gunakan cryptographic password hashing seperti Argon2id atau bcrypt dengan parameter memori dan waktu yang aman.",
+      "irt_parameters": {
+        "a_discrimination": 1.25,
+        "b_difficulty": -0.65,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-63B Section 5.1.1 (Memorized Secret Verifiers)",
+        "OWASP ASVS V2.1 (Password Storage)",
+        "ISO 27001 A.9.4.3"
+      ]
+    },
+    {
+      "module_id": "MOD-03",
+      "challenge_id": 43,
+      "name": "Easy1",
+      "category": "Cryptography",
+      "points": 100,
+      "difficulty": "Medium",
+      "bloom_level": "C2 - Understanding",
+      "cwe": "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+      "verified_flag": "academy{CRYPTOISFUN}",
+      "first_principles_theory": "Cipher Vigen\u00e8re adalah operasi penjumlahan pada grup siklik Z/26Z. Rumus enkripsi C_i = (P_i + K_i) mod 26 memiliki invers penjumlahan langsung P_i = (C_i - K_i) mod 26. Dengan kunci periodik K yang diketahui, dekripsi bersifat deterministik dan linear sempurna.",
+      "feynman_analogy": "Seperti dua penggaris huruf geser yang sejajar: jika kamu tahu seberapa jauh penggaris kedua digeser untuk setiap huruf, kamu tinggal menggesernya kembali ke posisi semula.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Jika sebuah huruf digeser sebanyak k langkah maju, langkah matematis apa yang harus dilakukan untuk mengembalikannya ke posisi semula?",
+        "tier_2_structural": "Jika tabel Vigenere adalah tabel penjumlahan modulo 26 dari indeks huruf (A=0, B=1, ... Z=25), bagaimana cara mencari huruf asli jika huruf sandi dan huruf kunci diketahui?",
+        "tier_3_breakthrough": "Kurangkan nilai numerik setiap huruf ciphertext UFJKXQZQUNB dengan huruf kunci SOLVECRYPTO secara modulo 26. Kata apa yang terbaca?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Bingung antara arah enkripsi dan dekripsi pada Tabula Recta sehingga menggeser ke arah yang salah.",
+        "Mengira cipher klasik ini membutuhkan alat kriptanalisis frekuensi statistik padahal kuncinya sudah diberikan secara eksplisit."
+      ],
+      "blue_team_incident_takeaway": "Kriptanalisis protokol komunikasi warisan (Legacy Cryptographic Protocols). Kegagalan memahami kelemahan cipher simetris aditif menyebabkan sistem rentan terhadap serangan pemulihan kunci total.",
+      "defensive_hardening_standard": "Dilarang keras menggunakan cipher substitusi klasik untuk data produksi. Terapkan standar modern Authenticated Encryption with Associated Data (AEAD) seperti AES-256-GCM atau ChaCha20-Poly1305.",
+      "irt_parameters": {
+        "a_discrimination": 1.05,
+        "b_difficulty": -1.1,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-175B (Cryptographic Mechanisms)",
+        "OWASP Cryptographic Failures Top 10 A02:2021",
+        "BSSN Standar Kriptografi"
+      ]
+    },
+    {
+      "module_id": "MOD-04",
+      "challenge_id": 60,
+      "name": "vault-door-3",
+      "category": "Reverse Engineering",
+      "points": 200,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-656: Reliance on Security Through Obscurity via Permutation",
+      "verified_flag": "academy{jU5t_a_s1mpl3_an4gr4m_4_u_bfac26}",
+      "first_principles_theory": "Fungsi permutasi array tanpa kehilangan informasi merupakan pemetaan bijektif f: {0..31} -> {0..31}. Setiap indeks input i dipetakan ke indeks buffer j secara deterministik melalui 4 segmen loop. Karena f adalah bijeksi, invers f^-1 selalu ada dan dapat dievaluasi secara langsung.",
+      "feynman_analogy": "Seperti mengocok tumpukan 32 kartu dengan aturan gerak tertentu yang dicatat langkah demi langkah: untuk mengembalikan urutan kartu ke susunan awal, kamu cukup memutar video rekaman gerakan tersebut ke arah sebaliknya.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apakah kode ini menambahkan karakter baru atau hanya memindahkan posisi karakter-karakter yang sudah ada?",
+        "tier_2_structural": "Perhatikan formula penempatan karakter: buffer[i] = password[23-i] untuk rentang 8 sampai 15. Di manakah posisi karakter asli saat berada di buffer[i]?",
+        "tier_3_breakthrough": "Buat array kosong berukuran 32. Jika buffer[j] = password[k], maka masukkan karakter ke-j dari string target ke slot ke-k pada array hasilmu."
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba menebak susunan anagram secara linguistik (mengingat teks mengandung leetspeak acak).",
+        "Salah mengartikan kondisi langkah ganjil/genap (i += 2) pada loop ketiga dan keempat sehingga urutan karakter tertukar."
+      ],
+      "blue_team_incident_takeaway": "Prinsip Kerckhoffs dalam arsitektur perangkat lunak. Mengaburkan susunan memori tidak pernah setara dengan perlindungan enkripsi sejati. Analis biner dapat dengan mudah memetakan tabel permutasi.",
+      "defensive_hardening_standard": "Perlindungan integritas memori dan kode rahasia harus mengandalkan enkripsi berbasis kunci yang kuat dan algoritma Key Derivation Function (KDF), bukan permutasi array statis.",
+      "irt_parameters": {
+        "a_discrimination": 1.35,
+        "b_difficulty": 0.15,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-160 Vol 1 (Engineering Trustworthy Secure Systems)",
+        "CWE-656 Guidelines"
+      ]
+    },
+    {
+      "module_id": "MOD-05",
+      "challenge_id": 71,
+      "name": "vault-door-4",
+      "category": "Reverse Engineering",
+      "points": 250,
+      "difficulty": "Medium",
+      "bloom_level": "C3 - Applying",
+      "cwe": "CWE-311: Missing Encryption of Sensitive Data (Multi-Radix Obfuscation)",
+      "verified_flag": "academy{jU5t_4_bUnCh_0f_bYt3s_88a31dad6c}",
+      "first_principles_theory": "Angka dalam sistem komputer adalah nilai skalar numerik murni. Representasi desimal (basis 10), heksadesimal (basis 16, awalan 0x), dan oktal (basis 8, awalan 0) hanyalah format representasi string atau literal kode bagi programmer. Seluruhnya diubah menjadi bit biner identik oleh kompilator.",
+      "feynman_analogy": "Seperti menyebut jumlah buah apel: sepuluh apel (Bahasa Indonesia), ten apples (Bahasa Inggris), atau diex pomes (Bahasa Latin). Bahasa penuturnya berbeda, tetapi jumlah fisik buah apel di keranjang tetap sama persis.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apakah angka 0x6a, 106, dan 0152 bernilai beda di dalam memori komputer, ataukah mereka merujuk pada nilai integer yang sama persis?",
+        "tier_2_structural": "Jika kamu mengonversi setiap angka pada larik (baik yang diawali 0x, 0, maupun desimal biasa) menjadi integer standar, karakter ASCII apa yang dihasilkan dari nilai numerik tersebut?",
+        "tier_3_breakthrough": "Ubah seluruh elemen array byte pada kode menjadi karakter ASCII menggunakan fungsi chr() di Python. Kalimat apa yang terbentuk?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengabaikan basis oktal pada angka dengan awalan 0 (misalnya menganggap 0152 sebagai desimal 152 padahal 0152 oktal bernilai 106 desimal).",
+        "Mengira ada kunci kriptografi rahasia yang mengikat antar blok basis bilangan."
+      ],
+      "blue_team_incident_takeaway": "Deteksi teknik penyamaran muatan berbahaya (Malware Payload Obfuscation). Penulis malware kerap mencampur representasi oktal, heksadesimal, dan desimal dalam script PowerShell atau shellcode untuk menghindari deteksi berbasis string statis.",
+      "defensive_hardening_standard": "Gunakan static analysis tools dan deobfuscation engine pada sensor EDR / SIEM yang mampu menormalisasi representasi multi-radix ke bentuk kanonikal biner sebelum melakukan pencocokan signature.",
+      "irt_parameters": {
+        "a_discrimination": 1.2,
+        "b_difficulty": -0.2,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "MITRE ATT&CK T1027 (Obfuscated Files or Information)",
+        "OWASP ASVS V5.1"
+      ]
+    },
+    {
+      "module_id": "MOD-06",
+      "challenge_id": 77,
+      "name": "vault-door-5",
+      "category": "Reverse Engineering",
+      "points": 300,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-311: Missing Encryption of Sensitive Data (Encoding vs Encryption)",
+      "verified_flag": "academy{c0nv3rt1ng_fr0m_ba5e_64_953e9301}",
+      "first_principles_theory": "Encoding (seperti URL percent-encoding dan Base64) adalah pemetaan injektif publik tanpa parameter kunci rahasia yang dirancang untuk serialisasi data agar kompatibel dengan media transmisi teks. Karena tidak memiliki kunci atau fungsi satu arah (trapdoor one-way function), pipeline encoding f_2(f_1(x)) dapat dibalik secara sempurna melalui f_1^-1(f_2^-1(y)).",
+      "feynman_analogy": "Seperti membungkus dokumen ke dalam amplop bening, lalu memasukkannya lagi ke dalam kantong plastik belanjaan. Siapa pun yang melihat bungkus tersebut dapat membukanya kembali dalam hitungan detik tanpa membutuhkan anak kunci.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apakah Base64 dan URL encoding memerlukan kata sandi rahasia untuk membaca kembali isinya?",
+        "tier_2_structural": "Jika kode melakukan: input -> URL-Encode -> Base64-Encode -> target_string, urutan apa yang harus dilakukan secara mundur untuk mendapatkan input asli?",
+        "tier_3_breakthrough": "Lakukan Base64 decode pada target_string, lalu terapkan URL decode (unquote) pada teks hasil decode pertama. Apa hasil akhirnya?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Miskonsepsi fatal bahwa Base64 adalah bentuk enkripsi yang melindungi kerahasiaan data.",
+        "Membalik urutan decoding (mencoba melakukan URL unquote sebelum Base64 decode sehingga menghasilkan teks acak)."
+      ],
+      "blue_team_incident_takeaway": "Inspeksi lalu lintas data dan pencegahan kebocoran data. Seringkali pengembang menyimpan kredensial atau token sesi dalam format Base64 di cookie browser dengan asumsi keliru bahwa token tersebut terenkripsi aman.",
+      "defensive_hardening_standard": "Terapkan enkripsi kriptografis terautentikasi (seperti JSON Web Encryption / JWE atau AES-GCM) untuk token sensitif di sisi klien: jangan pernah mengandalkan encoding untuk privasi data.",
+      "irt_parameters": {
+        "a_discrimination": 1.3,
+        "b_difficulty": -0.1,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "OWASP Top 10 A02:2021 (Cryptographic Failures)",
+        "NIST SP 800-52 Rev 2",
+        "ISO 27001 A.10.1"
+      ]
+    },
+    {
+      "module_id": "MOD-07",
+      "challenge_id": 45,
+      "name": "vault-door-6",
+      "category": "Reverse Engineering",
+      "points": 350,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-326: Inadequate Encryption Strength (Single-Byte XOR Involution)",
+      "verified_flag": "academy{n0t_mUcH_h4rD3r_tH4n_x0r_cfee664}",
+      "first_principles_theory": "Operasi bitwise XOR (eksklusif OR, simbol ^) adalah operasi grup abelian di mana setiap elemen merupakan invers dari dirinya sendiri (involusi): A ^ B ^ B = A. Jika suatu plaintext P dienkripsi dengan kunci K statis menghasilkan C = P ^ K, maka operasi C ^ K secara matematis identik dengan P ^ K ^ K = P.",
+      "feynman_analogy": "Seperti saklar lampu dua arah: jika kamu menekan saklar sekali untuk menyalakan lampu, kamu hanya perlu menekan saklar yang sama sekali lagi untuk mematikan lampu dan mengembalikannya ke kondisi awal.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apakah sifat unik dari operasi bitwise XOR saat suatu angka dikenakan operasi XOR dengan angka yang sama sebanyak dua kali?",
+        "tier_2_structural": "Jika kode memeriksa: (input[i] ^ 0x55) == target[i], apa yang terjadi jika kedua sisi persamaan tersebut kamu lakukan XOR dengan 0x55?",
+        "tier_3_breakthrough": "Iterasikan seluruh elemen pada array target, kenakan operasi ^ 0x55 pada setiap elemennya, lalu ubah ke karakter ASCII. Apa kata sandinya?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba mencari fungsi invers yang kompleks alih-alih menyadari bahwa operasi XOR adalah invers dirinya sendiri.",
+        "Terjebak tipe data byte bertanda (signed byte) di Java yang bernilai negatif jika bit tertingginya bernilai 1."
+      ],
+      "blue_team_incident_takeaway": "Analisis malware dan deteksi de-obfuscation payload. XOR dengan kunci 1 byte statis adalah teknik paling lazim yang digunakan malware untuk menyembunyikan string URL C2 atau API call di dalam berkas PE.",
+      "defensive_hardening_standard": "Gunakan cipher simetris modern dengan kunci berukuran minimal 128 atau 256 bit dan Initialization Vector (IV) yang unik setiap enkripsi. Dilarang menggunakan XOR statis di kode produksi.",
+      "irt_parameters": {
+        "a_discrimination": 1.4,
+        "b_difficulty": 0.3,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-38D (GCM Mode)",
+        "OWASP ASVS V6.2",
+        "BSSN Panduan Rekayasa Kriptografi"
+      ]
+    },
+    {
+      "module_id": "MOD-08",
+      "challenge_id": 40,
+      "name": "Mr-Worldwide",
+      "category": "Cryptography / OSINT",
+      "points": 200,
+      "difficulty": "Medium",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-656: Reliance on Obscurity via Geolocation Acrostics",
+      "verified_flag": "academy{KODIAK_ALASKA}",
+      "first_principles_theory": "Sandi substitusi berbasis entitas eksternal menggunakan koordinat geospasial WGS84 (latitude, longitude) sebagai penunjuk kota dunia, kemudian mengambil huruf pertama dari nama kota tersebut (akrostik). Kelemahan fundamentalnya adalah determinisme publik: koordinat bumi dapat di-reverse geocode secara instan menggunakan basis data GIS terbuka.",
+      "feynman_analogy": "Seperti teka-teki silang di mana petunjuknya adalah titik koordinat GPS dari monumen terkenal di dunia, dan kamu diminta merangkai huruf depan kota tempat monumen itu berdiri.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Format data apa yang tersusun dari pasangan angka desimal seperti (35.028309, 135.753082)?",
+        "tier_2_structural": "Jika koordinat tersebut dicari pada peta dunia (Google Maps atau OpenStreetMap), kota atau lokasi utama apa yang berada tepat di titik tersebut?",
+        "tier_3_breakthrough": "Catat huruf pertama dari setiap nama kota hasil pencarian koordinat secara berurutan. Kata apa yang terbentuk dari dua kelompok koordinat tersebut?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba mencari nama negara alih-alih nama kota spesifik.",
+        "Mengira angka koordinat harus dihitung jarak geodesiknya (rumus Haversine) alih-alih dicari nama lokasinya."
+      ],
+      "blue_team_incident_takeaway": "Operational Security (OPSEC) dan perlindungan metadata telemetri. Data lokasi geospasial yang bocor pada log sistem atau transmisi IoT dapat digunakan musuh untuk melacak aset fisik organisasi.",
+      "defensive_hardening_standard": "Terapkan anonymization dan fuzzing koordinat geospasial pada log publik sesuai prinsip GDPR dan UU Perlindungan Data Pribadi (UU PDP No. 27 Tahun 2022).",
+      "irt_parameters": {
+        "a_discrimination": 1.1,
+        "b_difficulty": 0.4,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "UU PDP No. 27/2022 (Perlindungan Data Pribadi)",
+        "ISO/IEC 27701 (Privacy Information Management)"
+      ]
+    },
+    {
+      "module_id": "MOD-09",
+      "challenge_id": 51,
+      "name": "WhitePages",
+      "category": "Digital Forensics",
+      "points": 250,
+      "difficulty": "Medium",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-506: Embedded Malicious Code / Covert Whitespace Steganography",
+      "verified_flag": "academy{not_all_spaces_are_created_equal_19fc1787ee14ef2c56ee0cddc142a0d9}",
+      "first_principles_theory": "Sistem teks modern menggunakan pengodean UTF-8 multi-byte. Karakter spasi standar ASCII adalah 0x20 (1 byte), sedangkan EM Space Unicode U+2003 dikodekan menjadi 3 byte (0xE2 0x80 0x83). Disparitas representasi biner ini menciptakan kanal komunikasi tersembunyi (covert channel) di mana dua jenis spasi dimodulasi sebagai bit biner 0 dan 1.",
+      "feynman_analogy": "Seperti menulis surat dengan mesin tik biasa, di mana kamu secara sengaja menggunakan tombol spasi pendek untuk melambangkan angka 0 dan tombol spasi panjang untuk melambangkan angka 1: secara visual tampak seperti kertas berjarak biasa, tetapi ada pesan biner rahasia di baliknya.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Mengapa sebuah berkas teks yang terlihat kosong di Notepad memiliki ukuran puluhan atau ratusan kilobyte?",
+        "tier_2_structural": "Buka berkas tersebut dengan hex editor (hexdump / xxd). Byte heksadesimal apa saja yang menyusun isi berkas tersebut?",
+        "tier_3_breakthrough": "Petakan byte spasi biasa (0x20) menjadi bit 1 dan byte EM space (0xe2 0x80 0x83) menjadi bit 0 (atau sebaliknya). Kelompokkan per 8 bit menjadi karakter teks ASCII. Kalimat apa yang terbaca?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira berkas teks rusak karena tampilan editor teks biasa tidak merender apapun.",
+        "Mencoba mencari teks tersembunyi dengan perintah strings standar yang menyaring karakter non-printable sehingga melewatkan pola spasi."
+      ],
+      "blue_team_incident_takeaway": "Deteksi kebocoran data melalui kanal rahasia (Covert Channel Data Exfiltration). Pelaku ancaman tingkat lanjut (APT) dapat menyelundupkan data rahasia melalui dokumen teks polos tanpa memicu alert DLP tradisional.",
+      "defensive_hardening_standard": "Gateway transfer berkas dan email inspection engine wajib menerapkan normalisasi Unicode (Unicode Normalization Form C / NFKC) dan menyaring karakter zero-width / whitespace non-ASCII sebelum dokumen keluar dari perimeter jaringan.",
+      "irt_parameters": {
+        "a_discrimination": 1.45,
+        "b_difficulty": 0.7,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-53 SC-31 (Covert Channel Analysis)",
+        "MITRE ATT&CK T1001 (Data Obfuscation)"
+      ]
+    },
+    {
+      "module_id": "MOD-10",
+      "challenge_id": 6,
+      "name": "john_pollard",
+      "category": "Cryptography",
+      "points": 500,
+      "difficulty": "Medium/Hard",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-326: Inadequate Encryption Strength (Weak Small RSA Modulus)",
+      "verified_flag": "academy{73176001,67867967}",
+      "first_principles_theory": "Keamanan kriptografi RSA bertumpu pada kesulitan komputasi memfaktorkan bilangan komposit n = p * q ke dalam dua bilangan prima besar. Jika ukuran modulus n hanya 53 bit (n = 4966306421059967), batas atas pencarian faktor prima adalah sqrt(n) = 70.472.025. Batas ini dapat disisir dalam waktu kurang dari 1 milidetik menggunakan trial division atau algoritma Pollard rho.",
+      "feynman_analogy": "Seperti gembok kombinasi brankas bank yang seharusnya memiliki 100 digit kombinasi angka rumit, namun hanya disetel dengan 4 digit angka sederhana yang bisa diputar satu per satu oleh anak kecil dalam beberapa detik.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Berapa bit ukuran modulus n yang tersimpan di dalam sertifikat digital X.509 tersebut?",
+        "tier_2_structural": "Berapakah nilai akar kuadrat dari bilangan modulus n tersebut? Apakah nilai tersebut cukup kecil untuk dilakukan pencarian faktor prima secara langsung?",
+        "tier_3_breakthrough": "Faktorkan nilai n menjadi dua bilangan prima p dan q menggunakan metode pembagian atau Pollard rho. Berapakah nilai kedua bilangan prima tersebut?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba mencari celah pada algoritma RSA itu sendiri atau implementasi OpenSSL, padahal kelemahannya semata-mata pada parameter ukuran kunci yang terlalu kecil.",
+        "Kebalik memasukkan format flag antara n dan pasangan faktor prima p,q."
+      ],
+      "blue_team_incident_takeaway": "Audit sertifikat digital PKI dan postur kriptografi infrastruktur. Penggunaan kunci RSA lemah atau usang pada sertifikat internal memungkinkan penyerang merekonstruksi kunci privat dan melakukan Man-in-the-Middle (MitM) decryption.",
+      "defensive_hardening_standard": "Terapkan baseline NIST SP 800-57 Part 1 Rev 5: Larang keras penggunaan kunci RSA di bawah 2048-bit (rekomendasi minimal 3072-bit atau kurva eliptik Ed25519/ECDSA). Lakukan pemindaian otomatis terhadap seluruh sertifikat TLS publik dan internal.",
+      "irt_parameters": {
+        "a_discrimination": 1.6,
+        "b_difficulty": 0.95,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-57 Part 1 Rev 5 (Key Management)",
+        "BSSN Peraturan Kriptografi Asimetris",
+        "CA/Browser Forum Baseline Requirements"
+      ]
+    },
+    {
+      "module_id": "MOD-11",
+      "challenge_id": 21,
+      "name": "Tapping",
+      "category": "Cryptography / SIGINT",
+      "points": 200,
+      "difficulty": "Medium",
+      "bloom_level": "C3 - Applying",
+      "cwe": "CWE-319: Cleartext Transmission of Sensitive Information (Raw Morse Telemetry)",
+      "verified_flag": "academy{m0rs3c0d31sfun178da798}",
+      "first_principles_theory": "Sandi Morse internasional (ITU-R M.1677-1) adalah sistem pengodean karakter telegrafi menggunakan dua durasi sinyal (titik dan garis). Ditransmisikan melalui soket TCP mentah tanpa enkripsi transport layer (cleartext network stream), data telemetri tersebut sepenuhnya terbuka untuk diintersepsi dan didekodekan secara deterministik menggunakan kamus simbol standar.",
+      "feynman_analogy": "Seperti mengetuk kode morse pada pipa besi air yang menghubungkan seluruh apartemen: siapa saja yang menempelkan telinganya ke pipa bisa mendengar dan menyalin seluruh ketukan pesan tanpa halangan.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Karakter apa saja yang kamu terima saat terhubung ke port jaringan layanan tersebut?",
+        "tier_2_structural": "Jika titik (.) dan garis (-) melambangkan sinyal sandi Morse standar internasional, bagaimana aturan pemisah antar karakter dan antar kata?",
+        "tier_3_breakthrough": "Gunakan tabel konversi Morse internasional untuk menerjemahkan deretan token titik-garis tersebut. Pesan apa yang tersembunyi di dalamnya?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira deretan titik dan garis adalah representasi biner acak alih-alih sandi telegrafi Morse.",
+        "Gagal menangani tanda kurung kurawal { dan } yang dikirimkan dalam representasi teks literal di antara token Morse."
+      ],
+      "blue_team_incident_takeaway": "Deteksi transmisi data tanpa enkripsi (Insecure Cleartext Network Protocols). Intersepsi lalu lintas jaringan pada segmen yang tidak terenkripsi memungkinkan penyadapan kredensial, token sesi, dan data operasional sensitif (Eavesdropping / Packet Sniffing).",
+      "defensive_hardening_standard": "Wajibkan enkripsi transport layer (TLS 1.3) untuk seluruh komunikasi jaringan internal maupun eksternal, dilengkapi mutual TLS (mTLS) untuk autentikasi endpoint perangkat IoT dan microservice.",
+      "irt_parameters": {
+        "a_discrimination": 1.15,
+        "b_difficulty": -0.5,
+        "c_guessing": 0.01
+      },
+      "compliance_mapping": [
+        "NIST SP 800-52 Rev 2 (TLS Implementations)",
+        "PCI DSS Req 4.1 (Encrypt Transmission of Cardholder Data)",
+        "CIS Controls v8 Control 3.10"
+      ]
+    }
+  ],
+  "lks_scoring_rubric": {
+    "scoring_system": "Objective 4-Pillar Criterion (100% Total Scale)",
+    "pillars": [
+      {
+        "pillar_name": "Eksploitasi & Solver Script Reproducible",
+        "weight_pct": 30,
+        "criteria": "Kemampuan merekonstruksi serangan secara mandiri dan menyusun script otomasi Python mandiri yang dapat dieksekusi ulang dengan exit code 0."
+      },
+      {
+        "pillar_name": "Analisis Akar Masalah Teknis (Root Cause Theory)",
+        "weight_pct": 25,
+        "criteria": "Ketajaman membongkar akar kerentanan (CWE), membuktikan premis matematis/logika biner, dan menolak asumsi dangkal (First Principles)."
+      },
+      {
+        "pillar_name": "Rekomendasi Pengerasan Defensif (Blue Team Mitigation)",
+        "weight_pct": 30,
+        "criteria": "Kualitas formulasi kontrol pencegahan industri, standarisasi NIST/BSSN, playbooks respons insiden, dan perbaikan kode arsitektural."
+      },
+      {
+        "pillar_name": "Dokumentasi Teknis, Standard Operating Procedure, & Anti-Slop",
+        "weight_pct": 15,
+        "criteria": "Kerapian laporan berstandar industri: zero em dash, no placeholder slop, tata bahasa lugas, dan kepatuhan format teknis."
+      }
+    ]
+  }
+}

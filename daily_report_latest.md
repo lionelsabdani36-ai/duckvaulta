@@ -30,6 +30,7 @@
 • **Integritas Jawaban:** Pembobotan Item Response Theory (IRT) & zero-hallucination penjelasan solusi terverifikasi.
 • **Master Sintesis Pedagogis & Kurikulum LKS:** Kurikulum vokasi SMK/LKS Cyber Security 5 modul, strategi up-skilling talenta AI nasional 12 minggu, dan standar Anti-Slop (zero em dash, WCAG 4.5:1, 44px tap target) tuntas terverifikasi.
 • **SRE Resilience & SOP Mitigasi Broken Assets:** Standarisasi 8 SRE Playbooks, First Principles siklus hidup aset web browser, bedah anatomi 4 jebakan/distraktor SRE, matriks SLO error budget 30 hari, serta verifikasi zero broken assets (268 aset lolos 100%).
+• **Sintesis Pedagogi CTF Batch 11 & Defensive Hardening:** Perumusan kurikulum kompetisi LKS berbobot 2.600 poin (11 modul: MOD-01 s/d MOD-11), First Principles 11 tantangan, scaffolding Socratic 3-tier, blueprint deteksi PICERL (Yara & Suricata), kepatuhan standar NIST SP 800-57 / 800-63B / BSSN, serta rubrik penilaian IRT model 3PL.
 
 **6. Omnirush (`coding-agent` / v2.7.1):**
 • **Eksekutor Kode:** Otomasi pipeline eksekusi, verifikasi integritas build & sinkronisasi repo aktif.
