@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PIE TIME (ID 490) — Binary Exploitation Lab</title>
+<style>
+body{background:#060913;color:#e6edf3;font-family:monospace;max-width:800px;margin:0 auto;padding:24px}
+.card{background:#0a1122;border:1px solid #1c2942;border-radius:10px;padding:20px;margin:16px 0}
+a{color:#00d2ff}
+button{background:#00d2ff;border:0;border-radius:8px;padding:12px 20px;font-weight:bold;cursor:pointer;min-height:44px}
+input{background:#060913;border:1px solid #1c2942;color:#e6edf3;border-radius:8px;padding:12px;width:100%;box-sizing:border-box;font-family:monospace}
+.term{background:#000;border:1px solid #1c2942;border-radius:8px;padding:16px;min-height:200px;white-space:pre-wrap}
+.ok{color:#3fb950}.err{color:#f85149}.dim{color:#8b949e}
+</style>
+</head>
+<body>
+<h1>PIE TIME <span class="dim">(ID 490 · Binary Exploitation · Medium)</span></h1>
+<div class="card">
+<p><b>Misi:</b> program mencetak alamat <span class="dim">main()</span> lalu meminta alamat lompatan. Hitung alamat <span class="dim">win()</span> dari offset dan lompat ke sana untuk cetak flag.</p>
+<p>Proteksi PIE mengacak base address tiap run — tapi offset <span class="dim">win - main</span> selalu sama. Bocoran alamat main = kunci.</p>
+<p>File asli:
+<a href="vuln.c" download>vuln.c</a> ·
+<a href="vuln" download>vuln (ELF 64-bit)</a></p>
+<p class="dim">Cara main: download <span class="dim">vuln</span> + <span class="dim">vuln.c</span>, analisis offset <span class="dim">win-main</span> via objdump, jalankan <span class="dim">./vuln</span> di mesinmu, hitung target = main_bocor + offset, masukkan → <span class="dim">You won! + flag</span>. Flag yang keluar dari biner itulah flag resmi — submit via 🚩 Submit Flag di Discord.</p>
+<p class="dim">Simulasi di bawah ini cuma buat latihan hitung offset. Menang di simulasi ≠ dapat flag. Flag HANYA keluar dari biner asli.</p>
+</div>
+<div class="card">
+<h3>Simulasi interaktif</h3>
+<div class="term" id="term">Address of main: 0x55a3f2c1e1a9
+Enter the address to jump to, ex =&gt; 0x12345: <span class="dim">_</span></div>
+<p><input id="addr" placeholder="0x... (contoh: hasil main + offset win)"></p>
+<p><button onclick="jump()">Lompat!</button> <button onclick="reset()">Reset</button></p>
+<p id="msg" class="dim">Petunjuk: offset = win - main. Cari dengan objdump -d vuln | grep -A2 '&lt;main&gt;\|&lt;win&gt;' lalu hitung selisihnya.</p>
+</div>
+<div class="card">
+<h3>Cara analisis lokal</h3>
+<pre>objdump -d vuln | grep -E "&lt;(main|win)&gt;:"
+# misal main=0x11da win=0x126d -&gt; offset = win - main = 0x93
+# target = alamat_main_bocor + offset
+chmod +x vuln
+(echo 0xtarget; cat) | ./vuln</pre>
+</div>
+<script>
+const MAIN=0x55a3f2c1e1a9;
+async function sha256hex(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function reset(){document.getElementById('term').innerHTML='Address of main: 0x'+MAIN.toString(16)+'\nEnter the address to jump to, ex => 0x12345: <span class="dim">_</span>';document.getElementById('msg').textContent='Petunjuk: offset = win - main.';document.getElementById('msg').className='dim';}
+async function jump(){
+  const v=document.getElementById('addr').value.trim();
+  const t=parseInt(v,16), term=document.getElementById('term'), msg=document.getElementById('msg');
+  if(isNaN(t)){msg.textContent='Format salah. Contoh: 0x55a3f2c1e107';msg.className='err';return;}
+  const h=await sha256hex('pie-win:'+t.toString(16));
+  // hash jawaban benar (bukan flag). Flag resmi hanya via Submit Discord.
+  if(h==='b6fff4ae5dd0e3376e7774835a231e3917cd08a8097d5e868a87387ba65a425c'){
+    term.innerHTML+='\nYour input: '+t.toString(16)+'\nYou won!\n<span class="ok">Jawaban benar! Ambil flag resmi via Submit Flag di Discord.</span>';
+    msg.textContent='Menang! Itu prinsip PIE bypass: base + offset tetap. Submit flag di Discord.';msg.className='ok';
+  } else {
+    term.innerHTML+='\nYour input: '+t.toString(16)+'\nSegfault Occurred, incorrect address.';
+    msg.textContent='Segfault. Hitung ulang: target = main_bocor + (win - main).';msg.className='err';
+  }
+}
+</script>
+</body>
+</html>
