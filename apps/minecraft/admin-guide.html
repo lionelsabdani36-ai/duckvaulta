@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cycraft SMP: Panduan Admin OP, Multi-World & Hologram Quest</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --code-bg: #0f172a;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #065f46;
+      color: #a7f3d0;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 16px;
+      background-color: #1e293b;
+      color: var(--primary);
+      text-decoration: none;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    .nav-btn:hover {
+      background-color: #334155;
+      border-color: var(--primary);
+    }
+    .nav-btn.primary {
+      background-color: var(--primary);
+      color: #0b1120;
+    }
+    .nav-btn.primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 16px 0 8px 0;
+      color: #e2e8f0;
+    }
+    p {
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: #cbd5e1;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #0f172a;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    td {
+      background-color: rgba(15, 23, 42, 0.4);
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #38bdf8;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 14px;
+      overflow-x: auto;
+      margin: 12px 0 16px 0;
+      position: relative;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      border: none;
+      color: #f1f5f9;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .cmd-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background-color: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+    .cmd-text {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      word-break: break-all;
+    }
+    .copy-btn {
+      min-height: 44px;
+      min-width: 80px;
+      padding: 0 16px;
+      background-color: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    .copy-btn:hover {
+      background-color: #475569;
+      border-color: var(--primary);
+    }
+    .alert-box {
+      background-color: rgba(56, 189, 248, 0.1);
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #e2e8f0;
+    }
+    .alert-box.success {
+      background-color: rgba(16, 185, 129, 0.1);
+      border-left-color: var(--accent);
+    }
+    .alert-box.warning {
+      background-color: rgba(245, 158, 11, 0.1);
+      border-left-color: var(--warning);
+    }
+    footer {
+      text-align: center;
+      padding: 24px 0 12px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Cycraft SMP : Operations Manual</span>
+      <h1>Panduan Lengkap Admin OP, Multi-World & Setup Hologram Quest</h1>
+      <p class="subtitle">Disusun oleh Judith (Master Guru & Mentor Akademik / Kompetisi) untuk tata kelola server Cycraft SMP.</p>
+      <div class="nav-links">
+        <a href="index.html" class="nav-btn">Kembali ke Portal Utama</a>
+        <a href="#admin-op" class="nav-btn">Command Admin OP</a>
+        <a href="#multi-world" class="nav-btn">Warp & Multi-World</a>
+        <a href="#hologram" class="nav-btn">Setup Hologram</a>
+        <a href="#quest-ctf" class="nav-btn">Quest & Arena CTF</a>
+      </div>
+    </header>
+
+    <!-- SECTION 1: COMMAND ADMIN OP -->
+    <div class="card" id="admin-op">
+      <h2>1. Panduan Command Admin OP (Operator Essentials)</h2>
+      <p>Operator (OP) di Cycraft SMP terbagi ke dalam 4 tingkatan izin. Pastikan pemberian akses disesuaikan dengan tanggung jawab peran.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Tingkat</th>
+            <th>Peran</th>
+            <th>Kewenangan Utama</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Level 1</td>
+            <td>Spawn Builder</td>
+            <td>Bypass proteksi spawn untuk pembangunan lobi</td>
+          </tr>
+          <tr>
+            <td>Level 2</td>
+            <td>Game Master</td>
+            <td>Gamemode, teleport, cuaca, waktu, dan pengoperasian Command Block</td>
+          </tr>
+          <tr>
+            <td>Level 3</td>
+            <td>Moderator</td>
+            <td>Tindakan disipliner pemain (/kick, /ban, /pardon, /mute)</td>
+          </tr>
+          <tr>
+            <td>Level 4</td>
+            <td>Administrator</td>
+            <td>Hak penuh sistem server (/stop, /reload, /whitelist, /save-all)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Prosedur Pemberian OP via Terminal Shell VPS</h3>
+      <p>Jalankan perintah ini langsung dari terminal host tanpa harus membuka layar console secara interaktif:</p>
+
+      <div class="cmd-row">
+        <div class="cmd-text">screen -S cycraft -X stuff "op WhiteJack^M"</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">screen -S cycraft -X stuff "op .WhiteJack^M"</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+
+      <div class="alert-box warning">
+        <strong>Penting untuk Pemain Bedrock (HP):</strong> Sistem Floodgate menyematkan tanda titik (<code>.</code>) di depan nama pemain Bedrock. Saat memberikan OP ke pemain Bedrock, wajib menyertakan titik tersebut (contoh: <code>op .WhiteJack</code>).
+      </div>
+
+      <h3>Daftar Perintah Penting EssentialsX untuk Admin</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Perintah</th>
+            <th>Fungsi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/gmc [pemain]</code> / <code>/gms [pemain]</code></td>
+            <td>Mengubah mode permainan ke Kreatif atau Survival</td>
+          </tr>
+          <tr>
+            <td><code>/heal [pemain]</code> & <code>/feed [pemain]</code></td>
+            <td>Memulihkan darah dan rasa lapar seketika</td>
+          </tr>
+          <tr>
+            <td><code>/god [pemain]</code> & <code>/fly [pemain]</code></td>
+            <td>Mengaktifkan mode kebal kerusakan dan terbang bebas</td>
+          </tr>
+          <tr>
+            <td><code>/invsee [pemain]</code></td>
+            <td>Membuka dan memeriksa inventori pemain secara langsung</td>
+          </tr>
+          <tr>
+            <td><code>/enderchest [pemain]</code></td>
+            <td>Membuka peti rahasia (Ender Chest) milik pemain target</td>
+          </tr>
+          <tr>
+            <td><code>/vanish</code></td>
+            <td>Menghilangkan avatar admin untuk investigasi tanpa terdeteksi</td>
+          </tr>
+          <tr>
+            <td><code>/tp [p1] [p2]</code> / <code>/tphere [pemain]</code></td>
+            <td>Teleportasi langsung antar pemain atau menarik pemain ke posisi admin</td>
+          </tr>
+          <tr>
+            <td><code>/broadcast [pesan]</code></td>
+            <td>Mengirim pengumuman resmi server dengan sorotan teks</td>
+          </tr>
+          <tr>
+            <td><code>/tps</code> & <code>/spark health</code></td>
+            <td>Memeriksa performa tick server (target optimal: 20.0 TPS)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2: MULTI-WORLD & WARP -->
+    <div class="card" id="multi-world">
+      <h2>2. Panduan Navigasi & Warp Antar World (Multiverse-Core)</h2>
+      <p>Cycraft SMP menggunakan arsitektur multi-world untuk mengisolasi area lobi cyber hub dari area bertahan hidup (survival).</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Dunia</th>
+            <th>Tipe</th>
+            <th>Peruntukan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cyber_hub</code></td>
+            <td>Flat World</td>
+            <td>Lobi utama server, papan informasi, dan arena registrasi quest</td>
+          </tr>
+          <tr>
+            <td><code>world</code></td>
+            <td>Normal Overworld</td>
+            <td>Dunia survival terbuka untuk penjelajahan dan pengumpulan sumber daya</td>
+          </tr>
+          <tr>
+            <td><code>world_nether</code></td>
+            <td>Nether</td>
+            <td>Dimensi nether, eksplorasi benteng, dan stage tantangan tingkat lanjut</td>
+          </tr>
+          <tr>
+            <td><code>world_the_end</code></td>
+            <td>The End</td>
+            <td>Dimensi akhir untuk tantangan puncak (Ender Dragon & Elytra)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Perintah Navigasi Multiverse-Core (/mv)</h3>
+      <div class="cmd-row">
+        <div class="cmd-text">/mv list</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/mv tp cyber_hub</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/mv tp world</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/mv setspawn</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+
+      <h3>Daftar Warp Resmi Server untuk Seluruh Pemain</h3>
+      <p>Pemain biasa dapat berpindah antar lokasi tanpa perlu menghafal nama dunia dengan perintah warp sederhana:</p>
+      <ul>
+        <li><code>/warp hub</code> : Menuju titik pusat Cyber Hub lobi utama</li>
+        <li><code>/warp quest</code> : Menuju area papan tantangan dan podium lomba</li>
+        <li><code>/warp survival</code> : Menuju titik awal penjelajahan dunia survival</li>
+      </ul>
+
+      <div class="alert-box success">
+        <strong>Status Konfigurasi:</strong> Hak akses <code>essentials.warp</code>, <code>essentials.warps.*</code>, dan <code>multiverse.access.*</code> telah dikonfigurasi aktif pada grup <code>default</code> melalui LuckPerms.
+      </div>
+    </div>
+
+    <!-- SECTION 3: DECENTHOLOGRAMS -->
+    <div class="card" id="hologram">
+      <h2>3. Panduan Setup Hologram Interaktif (DecentHolograms)</h2>
+      <p>DecentHolograms digunakan untuk menyajikan teks informatif melayang dengan dukungan format warna, placeholder nama pemain, dan aksi klik interaktif.</p>
+
+      <h3>Perintah Operasional DecentHolograms (/dh)</h3>
+      <div class="cmd-row">
+        <div class="cmd-text">/dh h create hub_welcome &b&lCYCRAFT SMP</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/dh line add hub_welcome 1 &7Selamat Datang di Server!</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/dh click add hub_welcome LEFT [PLAYER] warp survival</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/dh reload</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+
+      <h3>Template YAML Hologram Siap Pakai</h3>
+      <p>File konfigurasi disimpan di <code>/home/lionelsabdani36/minecraft-server/plugins/DecentHolograms/holograms/</code>:</p>
+      <pre><code>name: cyber_hub_welcome
+location: cyber_hub:0.5:-57.0:0.5
+enabled: true
+display-range: 48
+update-interval: 20
+pages:
+- lines:
+  - content: '&b&l⚡ CYCRAFT SMP ⚡'
+  - content: '&7&oOfficial Crossplay Java & Bedrock'
+  - content: '&e====================================='
+  - content: '&fSelamat Datang di &b&lCyber Hub&r&f!'
+  - content: '&a▶ &fKetik &a/warp survival &funtuk Dunia Survival'
+    actions:
+      LEFT:
+      - '[PLAYER] warp survival'
+  - content: '&b▶ &fKetik &b/warp quest &funtuk Area Quest & Arena'
+    actions:
+      LEFT:
+      - '[PLAYER] warp quest'</code></pre>
+    </div>
+
+    <!-- SECTION 4: QUEST & CTF -->
+    <div class="card" id="quest-ctf">
+      <h2>4. Panduan Desain Quest & Arena Kompetisi (LKS / CTF)</h2>
+      <p>Kurikulum kompetisi dirancang dengan metode Scaffolded Mastery (bertahap dari fondasi hingga analisis tingkat tinggi) oleh Master Guru Judith.</p>
+
+      <h3>3 Tingkat Tantangan Akademik & Siber</h3>
+      <ol>
+        <li><strong>Tier 1 : Reconnaissance & Navigasi Presisi</strong><br>
+        Peserta ditantang membaca koordinat 3D $(X, Y, Z)$ dan menemukan beacon tersembunyi untuk mengambil token bukti awal.</li>
+        <li><strong>Tier 2 : Gerbang Logika Hardware (Redstone Logic Gates)</strong><br>
+        Peserta harus menyusun atau memecahkan kombinasi tuas biner yang memenuhi persamaan logika boolean (AND, OR, XOR) untuk membuka pintu besi brankas.</li>
+        <li><strong>Tier 3 : Kriptografi & Cyber Defense Flag Hunt (LKS Standard)</strong><br>
+        Peserta memecahkan ciphertext (Base64 atau sandi substitusi) di dalam buku catatan rahasia di dimensi Nether untuk menemukan flag kompetisi: <code>Purpur_CTF{...}</code>.</li>
+      </ol>
+
+      <h3>Mekanisme Pembagian Hadiah & Scoreboard</h3>
+      <ul>
+        <li><strong>Kit Pemula:</strong> Pemain dapat mengetik <code>/kit starter</code> untuk memperoleh Pedang Akademik, Beliung Logika, dan bekal dasar.</li>
+        <li><strong>Kit Hadiah Quest:</strong> Pemenang tantangan dapat diklaimkan paket <code>/kit quest_reward</code> (5 Diamond, 10 Emerald, 2 Golden Apple, dan siaran pengumuman juara).</li>
+        <li><strong>Sistem Skor Layar Kanan (Sidebar):</strong>
+          <pre><code>/scoreboard objectives add QuestPoint dummy "§e§lPoin Prestasi"
+/scoreboard objectives setdisplay sidebar QuestPoint
+/scoreboard players add WhiteJack QuestPoint 100</code></pre>
+        </li>
+      </ul>
+
+      <h3>Proteksi Arena dari Kerusakan (WorldGuard)</h3>
+      <p>Agar arena lomba tidak dirusak atau diganggu ledakan monster, lindungi wilayah dengan flag keamanan:</p>
+      <div class="cmd-row">
+        <div class="cmd-text">/rg define arena_quest</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/rg flag arena_quest block-break deny</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/rg flag arena_quest creeper-explosion deny</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-text">/rg flag arena_quest pvp deny</div>
+        <button class="copy-btn" onclick="copySnippet(this)">Salin</button>
+      </div>
+    </div>
+
+    <footer>
+      Dokumentasi Resmi Cycraft SMP &bull; Disusun oleh Judith (Master Guru) &bull; Kolaborasi Tim AI DuckVaulta &bull; 2026
+    </footer>
+  </div>
+
+  <script>
+    function copySnippet(btn) {
+      const text = btn.previousElementSibling.innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = "Tersalin!";
+        btn.style.backgroundColor = "#065f46";
+        btn.style.borderColor = "#10b981";
+        setTimeout(() => {
+          btn.innerText = orig;
+          btn.style.backgroundColor = "";
+          btn.style.borderColor = "";
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>
