@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cycraft SMP: Panduan Visual Anti-Slop & Telemetri Status Siber</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --code-bg: #0f172a;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #065f46;
+      color: #a7f3d0;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .badge-cyber {
+      background-color: #164e63;
+      color: #67e8f9;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+    .nav-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-btn:hover {
+      background-color: var(--card-border);
+      border-color: var(--primary);
+    }
+    .nav-btn.primary {
+      background-color: var(--primary);
+      color: #0f172a;
+      border-color: var(--primary);
+    }
+    .nav-btn.primary:hover {
+      background-color: var(--primary-hover);
+    }
+    section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    p {
+      color: var(--text-main);
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .hud-box {
+      background-color: #050811;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #94a3b8;
+    }
+    .hud-title {
+      color: #06b6d4;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #334155;
+    }
+    .hud-header {
+      color: #38bdf8;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+    .hud-val-green {
+      color: #10b981;
+      font-weight: bold;
+    }
+    .hud-val-white {
+      color: #f8fafc;
+    }
+    .hud-val-cyan {
+      color: #22d3ee;
+    }
+    .hud-val-amber {
+      color: #f59e0b;
+    }
+    .hud-separator {
+      color: #475569;
+      text-align: center;
+      margin: 6px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--card-border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #0f172a;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #1a2234;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background-color: var(--code-bg);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .footer-note {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge badge-cyber">Standar Visual Anti-Slop Cycraft SMP</span>
+      <h1>Panduan Visual Anti-Slop & Telemetri Status Siber</h1>
+      <p class="subtitle">Disusun oleh: Judith (Master Guru & Mentor Akademik / Kompetisi) | Kolaborasi Tim AI Multi-Agent</p>
+      <div class="nav-bar">
+        <a href="index.html" class="nav-btn">Portal Minecraft</a>
+        <a href="admin-guide.html" class="nav-btn">Panduan Admin OP</a>
+        <a href="#scoreboard" class="nav-btn primary">Spesifikasi Scoreboard</a>
+        <a href="#pedagogy" class="nav-btn">Pedagogi Sistem</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>1. Filosofi First Principles: Observabilitas vs Visual Slop</h2>
+      <p>
+        Observabilitas sistem adalah kemampuan memahami keadaan internal sistem komputasi melalui data eksternal yang dipancarkan secara runtime. Pada Cycraft SMP, telemetri in-game dirancang dengan inspirasi instrumen kokpit jet tempur: menyajikan data kritis dengan waktu baca di bawah 250 milidetik tanpa polusi visual.
+      </p>
+      <p>
+        Standar Anti-Slop mengeliminasi lima jebakan distraktor umum:
+      </p>
+      <ol>
+        <li><strong>Eliminasi Animasi Rainbow RGB</strong>: Mencegah kelelahan mata dan pemborosan bandwidth paket jaringan.</li>
+        <li><strong>Zero Em-Dash Policy</strong>: Melarang pemisah em-dash acak dan buzzword pemasaran klise.</li>
+        <li><strong>Batas Lebar 28 Karakter</strong>: Menjamin tata letak tidak terpotong pada layar ponsel Bedrock Edition.</li>
+        <li><strong>Zero-Lag Refresh Budget</strong>: Interval pembaruan minimal 20 tick (1 detik) untuk mencegah micro-stuttering.</li>
+        <li><strong>Hierarki Tipografi Semantik</strong>: Memisahkan label metrik abu-abu dengan nilai telemetri berstatus warna.</li>
+      </ol>
+    </section>
+
+    <section id="scoreboard">
+      <h2>2. Perbandingan Visual: Tampilan Telemetri Anti-Slop</h2>
+      <div class="grid-2">
+        <div>
+          <p><strong>Scoreboard Sidebar (Cyber Hub):</strong></p>
+          <div class="hud-box">
+            <div class="hud-title">CYCRAFT | TELEMETRY</div>
+            <div class="hud-header">[ INFRASTRUKTUR ]</div>
+            <div>TPS: <span class="hud-val-green">20.0</span> | <span class="hud-val-green">18ms</span></div>
+            <div>RAM: <span class="hud-val-white">1420MB</span></div>
+            <div>Online: <span class="hud-val-green">4</span> Pemain</div>
+            <div class="hud-header">[ OPERATOR ]</div>
+            <div>User: <span class="hud-val-white">WhiteJack</span></div>
+            <div>Role: <span class="hud-val-cyan">admin</span></div>
+            <div>Sektor: <span class="hud-val-white">world</span></div>
+            <div class="hud-header">[ LAB SIBER ]</div>
+            <div>Status: <span class="hud-val-green">SIAP</span> | <span class="hud-val-cyan">B-51</span></div>
+            <div>LKS CTF: <span class="hud-val-amber">Skolastik</span></div>
+            <div class="hud-separator">--------------------</div>
+            <div style="text-align: center; color: #64748b;">mc.duckvaulta.ai.id</div>
+          </div>
+        </div>
+        <div>
+          <p><strong>Tablist Header & Footer:</strong></p>
+          <div class="hud-box">
+            <div class="hud-title">CYCRAFT SMP :: CROSSPLAY HUB</div>
+            <div style="text-align: center; margin-bottom: 8px;">Telemetri Siber & Observabilitas Runtime</div>
+            <div class="hud-separator">====================</div>
+            <div style="text-align: center; color: #cbd5e1; margin: 12px 0;">[ DAFTAR PEMAIN LINTAS PLATFORM ]</div>
+            <div class="hud-separator">====================</div>
+            <div>TPS: <span class="hud-val-green">20.0</span> | Ping: <span class="hud-val-green">18ms</span> | Online: <span class="hud-val-white">4</span></div>
+            <div>Memory: <span class="hud-val-white">1420/2800 MB</span></div>
+            <div>Akses: <span class="hud-val-cyan">34.135.45.195</span> | Java: <span class="hud-val-white">25565</span> | Bedrock: <span class="hud-val-white">19132</span></div>
+            <div>Portal: <span class="hud-val-white">https://duckvaulta.ai.id</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Matriks Arsitektur Telemetri & Mapping Placeholder</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Metrik</th>
+            <th>Placeholder TAB</th>
+            <th>Format Tampilan</th>
+            <th>Interval</th>
+            <th>Peran Pedagogis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>server_tps</code></td>
+            <td><code>%server-tps%</code></td>
+            <td><code>&7TPS: &a%server-tps%</code></td>
+            <td>20 tick (1s)</td>
+            <td>Beban komputasi runtime VPS</td>
+          </tr>
+          <tr>
+            <td><code>player_ping</code></td>
+            <td><code>%ping%</code></td>
+            <td><code>&7Ping: &a%ping%&8ms</code></td>
+            <td>20 tick (1s)</td>
+            <td>Observasi latensi jaringan RTT</td>
+          </tr>
+          <tr>
+            <td><code>server_ram</code></td>
+            <td><code>%memory-used%</code></td>
+            <td><code>&7RAM: &f%memory-used%&8MB</code></td>
+            <td>40 tick (2s)</td>
+            <td>Perilaku JVM Garbage Collection</td>
+          </tr>
+          <tr>
+            <td><code>player_role</code></td>
+            <td><code>%group%</code></td>
+            <td><code>&7Role: &b%group%</code></td>
+            <td>100 tick (5s)</td>
+            <td>Penerapan hak akses RBAC</td>
+          </tr>
+          <tr>
+            <td><code>world_sector</code></td>
+            <td><code>%world%</code></td>
+            <td><code>&7Sektor: &f%world%</code></td>
+            <td>60 tick (3s)</td>
+            <td>Struktur isolasi multi-world</td>
+          </tr>
+          <tr>
+            <td><code>cyber_lab</code></td>
+            <td>Statis / Vault</td>
+            <td><code>&7Status: &aSIAP &8| &bB-51</code></td>
+            <td>100 tick (5s)</td>
+            <td>Progress kurikulum LKS CTF</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="pedagogy">
+      <h2>4. Aspek Pedagogis untuk Murid (White Jack)</h2>
+      <p>
+        Bagi White Jack, membaca HUD Cycraft SMP adalah latihan langsung penalaran komputasi:
+      </p>
+      <ul>
+        <li><strong>Diferensiasi Masalah</strong>: Mampu membedakan lonjakan latensi jaringan (ping tinggi) dari kemacetan siklus CPU server (TPS rendah).</li>
+        <li><strong>Alokasi Sumber Daya</strong>: Memahami dinamika heap memori Purpur saat pemain menjelajah chunk baru via Chunky.</li>
+        <li><strong>Normalisasi Data</strong>: Memahami pentingnya prefix titik pada pemain Bedrock untuk mencegah collision namespace.</li>
+      </ul>
+    </section>
+
+    <div class="footer-note">
+      Cycraft SMP Telemetry Standard | Disusun oleh Judith Guru | Duckvaulta Portal &copy; 2026
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+{
+  "specification_version": "1.0.0",
+  "project": "Cycraft SMP Crossplay & Cyber Hub Telemetry",
+  "author": "Judith (Master Guru & Mentor Akademik / Kompetisi)",
+  "team_collaboration": {
+    "leader_omnirush": "High-level orchestration and core system deployment",
+    "charlie_trend_hunter": "Scoreboard architecture recon and crossplay telemetry layout",
+    "alex_fullstack_dev": "TAB v6.2.1 and PlaceholderAPI pipeline implementation",
+    "athena_security_engineer": "Packet rate audit and placeholder vulnerability hardening",
+    "julius_qa_engineer": "Zero-lag TPS verification and Bedrock display sync validation",
+    "judith_guru": "Visual anti-slop guidelines, pedagogy matrix, and telemetry design"
+  },
+  "visual_antislop_standards": {
+    "zero_em_dash_policy": "Strict prohibition of em-dash and double-hyphens. Use brackets, pipes, colons, or middle dots.",
+    "typography_rules": {
+      "max_scoreboard_line_length": 30,
+      "max_title_length": 24,
+      "case_convention": "Sentence case or Upper Snake Case for telemetry keys; clean numeric for values",
+      "font_formatting": "Strictly avoid obfuscated text, italic clutter, or excessive bolding"
+    },
+    "color_palette_cyber_tactical": {
+      "background_border": {
+        "hex": "#334155",
+        "legacy_code": "&8",
+        "role": "Frame boundaries and visual grouping separators"
+      },
+      "primary_brand": {
+        "hex": "#06b6d4",
+        "legacy_code": "&b",
+        "role": "Server identity, section highlights, and major headers"
+      },
+      "telemetry_healthy": {
+        "hex": "#10b981",
+        "legacy_code": "&a",
+        "role": "Optimal TPS (20.0), low ping (<50ms), secure status"
+      },
+      "telemetry_warning": {
+        "hex": "#f59e0b",
+        "legacy_code": "&e",
+        "role": "Sub-optimal TPS (18.0-19.9), medium ping (50-120ms)"
+      },
+      "telemetry_danger": {
+        "hex": "#ef4444",
+        "legacy_code": "&c",
+        "role": "Degraded TPS (<18.0), high ping (>120ms), security alerts"
+      },
+      "muted_label": {
+        "hex": "#94a3b8",
+        "legacy_code": "&7",
+        "role": "Metric labels and static structural text"
+      },
+      "bright_value": {
+        "hex": "#f8fafc",
+        "legacy_code": "&f",
+        "role": "Numeric data points, player names, and coordinates"
+      }
+    },
+    "animation_policy": {
+      "rainbow_gradients": "FORBIDDEN",
+      "rapid_color_shifting": "FORBIDDEN",
+      "allowed_animations": "Subtle single-character telemetry pulse or stable monochromatic glow with interval >= 1000ms"
+    }
+  },
+  "telemetry_metrics_matrix": [
+    {
+      "metric_id": "server_tps",
+      "category": "infrastructure_health",
+      "placeholder": "%server-tps%",
+      "papi_fallback": "%server_tps_1%",
+      "display_format": "&7TPS: &a%server-tps%",
+      "refresh_interval_ticks": 20,
+      "packet_weight": "low",
+      "pedagogical_relevance": "SRE observability baseline; teaches real-time hardware load monitoring"
+    },
+    {
+      "metric_id": "server_memory",
+      "category": "infrastructure_health",
+      "placeholder": "%memory-used%",
+      "papi_fallback": "%server_ram_used%",
+      "display_format": "&7RAM: &f%memory-used%&7/&8%memory-max% MB",
+      "refresh_interval_ticks": 40,
+      "packet_weight": "low",
+      "pedagogical_relevance": "Demonstrates heap allocation and JVM garbage collection in action"
+    },
+    {
+      "metric_id": "player_ping",
+      "category": "network_telemetry",
+      "placeholder": "%ping%",
+      "papi_fallback": "%player_ping%",
+      "display_format": "&7Ping: &a%ping%&8ms",
+      "refresh_interval_ticks": 20,
+      "packet_weight": "medium",
+      "pedagogical_relevance": "Round-trip network latency awareness for responsive red-teaming execution"
+    },
+    {
+      "metric_id": "player_platform",
+      "category": "crossplay_telemetry",
+      "placeholder": "%player-version%",
+      "papi_fallback": "%floodgate_device%",
+      "display_format": "&7Client: &b%player-version%",
+      "refresh_interval_ticks": 200,
+      "packet_weight": "very_low",
+      "pedagogical_relevance": "Heterogeneous system integration; highlights protocol bridging between Java and Bedrock"
+    },
+    {
+      "metric_id": "player_role",
+      "category": "access_control",
+      "placeholder": "%group%",
+      "papi_fallback": "%luckperms_primary_group_name%",
+      "display_format": "&7Rank: &b%group%",
+      "refresh_interval_ticks": 100,
+      "packet_weight": "very_low",
+      "pedagogical_relevance": "Role-Based Access Control (RBAC) principle reinforcement"
+    },
+    {
+      "metric_id": "world_location",
+      "category": "spatial_telemetry",
+      "placeholder": "%world%",
+      "papi_fallback": "%multiverse_world_alias%",
+      "display_format": "&7Sector: &f%world%",
+      "refresh_interval_ticks": 60,
+      "packet_weight": "low",
+      "pedagogical_relevance": "Spatial awareness and multi-instance containerization visualization"
+    },
+    {
+      "metric_id": "player_coordinates",
+      "category": "spatial_telemetry",
+      "placeholder": "%player_x%, %player_y%, %player_z%",
+      "papi_fallback": "%player_x_int% %player_y_int% %player_z_int%",
+      "display_format": "&7Loc: &f%player_x%&7, &f%player_y%&7, &f%player_z%",
+      "refresh_interval_ticks": 20,
+      "packet_weight": "medium",
+      "pedagogical_relevance": "Vector mathematics and discrete 3D Cartesian coordinates"
+    },
+    {
+      "metric_id": "cyber_defense_level",
+      "category": "lks_ctf_curriculum",
+      "placeholder": "CTF-LKS",
+      "papi_fallback": "%vault_eco_balance_formatted%",
+      "display_format": "&7Lab: &bCyLab-Batch51",
+      "refresh_interval_ticks": 100,
+      "packet_weight": "very_low",
+      "pedagogical_relevance": "Gamified progress tracking for White Jack across vulnerability exploitation modules"
+    }
+  ],
+  "crossplay_ergonomics": {
+    "bedrock_mobile_constraints": {
+      "max_horizontal_characters": 28,
+      "hud_safe_zone_margin": "10% margin padding to avoid touch D-pad and jump button obstruction",
+      "floodgate_prefix_handling": "Bedrock names start with dot prefix; allocate 17 characters for username fields",
+      "legacy_formatting_fallback": "Strict support for standard ampersand formatting codes to prevent raw hex leakage on Bedrock"
+    },
+    "performance_packet_budget": {
+      "scoreboard_tick_interval": 20,
+      "tablist_tick_interval": 20,
+      "actionbar_tick_interval": 40,
+      "max_bytes_per_second_per_player": 2048,
+      "anti_lag_safeguard": "Never poll database or asynchronous web endpoints on main server thread"
+    }
+  },
+  "pedagogy_evaluation_rubric": {
+    "dimensions": [
+      {
+        "name": "Cognitive Clarity",
+        "weight": 25,
+        "criteria": "Minimal visual noise; metrics readable within 250 milliseconds during active gameplay"
+      },
+      {
+        "name": "Observability Precision",
+        "weight": 25,
+        "criteria": "Accurate representation of TPS, memory, latency, and operational health without stale caching"
+      },
+      {
+        "name": "Crossplay Parity",
+        "weight": 25,
+        "criteria": "Flawless rendering on both Java PC widescreen and Bedrock mobile 16:9 vertical/horizontal viewports"
+      },
+      {
+        "name": "Educational Alignment",
+        "weight": 25,
+        "criteria": "Seamless reinforcement of SRE, CTF, and system administration principles for student White Jack"
+      }
+    ],
+    "target_score": 100
+  }
+}

@@ -1,0 +1,86 @@
+# Cycraft SMP Anti-Slop Scoreboard and Tablist Configuration
+# Designed by: Judith (Master Guru & Mentor Akademik / Kompetisi)
+# Standards: Zero Em-Dash, High Signal-to-Noise Ratio, Crossplay Ergonomics
+
+header-footer:
+  enabled: true
+  disable-condition: "%world%=disabledworld"
+  designs:
+    default:
+      header:
+        - ""
+        - "&b&lCYCRAFT SMP &8:: &fCROSSPLAY HUB"
+        - "&7Telemetri Siber & Observabilitas Runtime"
+        - ""
+      footer:
+        - ""
+        - "&7TPS: &a%server-tps% &8| &7Ping: &a%ping%&8ms &8| &7Online: &f%online%"
+        - "&7Memory: &f%memory-used%&7/&8%memory-max% MB"
+        - "&7Akses: &b34.135.45.195 &8| &7Java: &f25565 &8| &7Bedrock: &f19132"
+        - "&7Portal: &fhttps://duckvaulta.ai.id"
+        - ""
+
+tablist-name-formatting:
+  enabled: true
+  anti-override: true
+  disable-condition: "%world%=disabledworld"
+
+scoreboard-teams:
+  enabled: true
+  enable-collision: true
+  invisible-nametags: false
+  sorting-types:
+    - "GROUPS:owner,admin,mod,helper,vip,default"
+    - "PLACEHOLDER_A_TO_Z:%player%"
+  case-sensitive-sorting: true
+  can-see-friendly-invisibles: false
+  disable-condition: "%world%=disabledworld"
+
+playerlist-objective:
+  enabled: true
+  value: "%ping%"
+  fancy-value: "&a%ping%&7ms"
+  title: "&aPing"
+
+belowname-objective:
+  enabled: false
+  number: "%health%"
+  text: "&cHealth"
+
+scoreboard:
+  enabled: true
+  toggle-command: /sb
+  remember-toggle-choice: true
+  hidden-by-default: false
+  delay-on-join-milliseconds: 0
+  scoreboards:
+    cyber-hub:
+      title: "&b&lCYCRAFT &8| &f&lTELEMETRY"
+      lines:
+        - "&8[ &3INFRASTRUKTUR &8]"
+        - "&7TPS: &a%server-tps% &8| &a%ping%&7ms"
+        - "&7RAM: &f%memory-used%&8MB"
+        - "&7Online: &a%online% &7Pemain"
+        - ""
+        - "&8[ &3OPERATOR &8]"
+        - "&7User: &f%player%"
+        - "&7Role: &b%group%"
+        - "&7Sektor: &f%world%"
+        - ""
+        - "&8[ &3LAB SIBER &8]"
+        - "&7Status: &aSIAP &8| &bB-51"
+        - "&7LKS CTF: &eSkolastik"
+        - ""
+        - "&8&m                      "
+        - "&7mc.duckvaulta.ai.id"
+
+bossbar:
+  enabled: false
+
+layout:
+  enabled: false
+
+placeholders:
+  date-format: "dd.MM.yyyy"
+  time-format: "HH:mm:ss"
+  time-offset: 7
