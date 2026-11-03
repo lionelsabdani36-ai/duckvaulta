@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "task_id": "t_40c9ea60",
+  "server": "DuckVaulta Minecraft SMP",
+  "host": "34.135.45.195",
+  "engine": "Purpur 1.21.4 (Java 21 OpenJDK)",
+  "geyser_bridge": {
+    "status": "PASS",
+    "bedrock_address": "0.0.0.0",
+    "bedrock_port": 19132,
+    "nethernet_webrtc_port": 19133,
+    "transport": "both",
+    "java_remote_address": "127.0.0.1",
+    "java_remote_port": 25565,
+    "auth_type": "floodgate",
+    "passthrough_motd": true,
+    "passthrough_player_counts": true,
+    "show_coordinates": true,
+    "cooldown_type": "crosshair"
+  },
+  "floodgate": {
+    "status": "PASS",
+    "key_file": "key.pem",
+    "key_size_bytes": 16,
+    "username_prefix": ".",
+    "replace_spaces": true,
+    "player_link_enabled": true
+  },
+  "server_properties": {
+    "status": "PASS",
+    "online_mode": false,
+    "sync_chunk_writes": false,
+    "view_distance": 8,
+    "simulation_distance": 6,
+    "network_compression_threshold": 256,
+    "enforce_secure_profile": false,
+    "server_port": 25565,
+    "enable_rcon": true,
+    "rcon_port": 25575,
+    "enable_query": true,
+    "query_port": 25565,
+    "max_players": 25
+  },
+  "performance_tuning": {
+    "status": "PASS",
+    "purpur_alternate_keepalive": true,
+    "purpur_villager_lobotomize": true,
+    "spigot_merge_radius": {
+      "item": 4.0,
+      "exp": 6.0
+    },
+    "spigot_entity_activation_range": {
+      "animals": 16,
+      "monsters": 24,
+      "villagers": 16,
+      "raiders": 48,
+      "misc": 8,
+      "water": 12,
+      "flying_monsters": 48
+    },
+    "paper_autosave_interval_ticks": 6000,
+    "paper_redstone_implementation": "ALTERNATE_CURRENT",
+    "paper_monster_despawn_ranges": {
+      "soft": 32,
+      "hard": 96
+    }
+  },
+  "startup_script": {
+    "status": "PASS",
+    "executable": true,
+    "aikar_g1gc_flags": true,
+    "heap_allocation": "-Xms4G -Xmx4G"
+  },
+  "live_probes": {
+    "tps": [20.0, 20.0, 20.0, 20.0],
+    "ports": {
+      "tcp_25565": "LISTEN",
+      "udp_25565": "UNCONN (Query)",
+      "udp_19132": "UNCONN (RakNet Bedrock)",
+      "udp_19133": "UNCONN (NetherNet WebRTC)",
+      "tcp_19132": "LISTEN (Signaling)"
+    }
+  },
+  "omnirush_executor_approval": "APPROVED"
+}
