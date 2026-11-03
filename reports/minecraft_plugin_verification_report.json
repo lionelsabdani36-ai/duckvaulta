@@ -1,307 +1,69 @@
 {
-  "timestamp": "2026-11-03T14:44:17.651883Z",
-  "host": "34.135.45.195",
-  "environment": "Purpur 1.21.4 (OpenJDK 21.0.13)",
-  "plugins_audit": {
-    "Chunky.jar": {
-      "status": "PASS",
-      "jar_name": "Chunky.jar",
-      "plugin_name": "Chunky",
-      "version": "1.4.40",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "2a5477fc80f71012e15ade1ce34dbeb836e17623b28db112492c0f1443c09721",
-      "size_bytes": 296244,
-      "classes_inspected": 137,
-      "max_bytecode_version": 65,
-      "all_bytecode_versions": [
-        52,
-        65
-      ],
-      "compatible_with_java21": true
-    },
-    "DecentHolograms.jar": {
-      "status": "PASS",
-      "jar_name": "DecentHolograms.jar",
-      "plugin_name": "DecentHolograms",
-      "version": "2.8.17",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "89ebf7900853a8506f1adff172af7dc6dde40406632b3ba8090db3cad99f839d",
-      "size_bytes": 1347995,
-      "classes_inspected": 575,
-      "max_bytecode_version": 52,
-      "all_bytecode_versions": [
-        52
-      ],
-      "compatible_with_java21": true
-    },
-    "EssentialsX.jar": {
-      "status": "PASS",
-      "jar_name": "EssentialsX.jar",
-      "plugin_name": "Essentials",
-      "version": "2.22.0",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "bda4685105977fca2e209820a9f0ad24275bd103390a03236f38e59bfdac58e6",
-      "size_bytes": 4861125,
-      "classes_inspected": 2149,
-      "max_bytecode_version": 60,
-      "all_bytecode_versions": [
-        51,
-        52,
-        53,
-        54,
-        60
-      ],
-      "compatible_with_java21": true
-    },
-    "Geyser-Spigot.jar": {
-      "status": "FAIL_JAVA_VERSION",
-      "jar_name": "Geyser-Spigot.jar",
-      "plugin_name": "Geyser-Spigot",
-      "version": "2.12.1-SNAPSHOT",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "2a8af1fc256864f4d76af219366bf28efa1558cacb6bb06cf0b1639c4c3e241d",
-      "size_bytes": 52192378,
-      "classes_inspected": 19150,
-      "max_bytecode_version": 69,
-      "all_bytecode_versions": [
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        59,
-        60,
-        61,
-        65,
-        69
-      ],
-      "compatible_with_java21": false
-    },
-    "LuckPerms.jar": {
-      "status": "PASS",
-      "jar_name": "LuckPerms.jar",
-      "plugin_name": "LuckPerms",
-      "version": "5.5.71",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "49cecb66fa1fd22a133039a490e9c1e5095a238e7cd66eb9d2a16fe6c897550d",
-      "size_bytes": 1501521,
-      "classes_inspected": 196,
-      "max_bytecode_version": 55,
-      "all_bytecode_versions": [
-        52,
-        55
-      ],
-      "compatible_with_java21": true
-    },
-    "Multiverse-Core.jar": {
-      "status": "PASS",
-      "jar_name": "Multiverse-Core.jar",
-      "plugin_name": "Multiverse-Core",
-      "version": "5.8.2",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "792252b6bbcf17c94ab8385e595281c830d7a40c946aea1832d8a010702bb630",
-      "size_bytes": 4631727,
-      "classes_inspected": 2324,
-      "max_bytecode_version": 61,
-      "all_bytecode_versions": [
-        49,
-        50,
-        51,
-        52,
-        53,
-        55,
-        61
-      ],
-      "compatible_with_java21": true
-    },
-    "Vault.jar": {
-      "status": "PASS",
-      "jar_name": "Vault.jar",
-      "plugin_name": "Vault",
-      "version": "1.7.3-b131",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "a6b5ed97f43a5cf5bbaf00a7c8cd23c5afc9bd003f849875af8b36e6cf77d01d",
-      "size_bytes": 272259,
-      "classes_inspected": 126,
-      "max_bytecode_version": 52,
-      "all_bytecode_versions": [
-        52
-      ],
-      "compatible_with_java21": true
-    },
-    "ViaBackwards.jar": {
-      "status": "PASS",
-      "jar_name": "ViaBackwards.jar",
-      "plugin_name": "ViaBackwards",
-      "version": "5.12.3-SNAPSHOT",
-      "api_version": "1.13",
-      "dependencies": "[ViaVersion]",
-      "sha256": "908b0da88ecd83b3569bd727a13d4b9cb2dea646e7c797f82ae0907d88bece8c",
-      "size_bytes": 1439656,
-      "classes_inspected": 610,
-      "max_bytecode_version": 61,
-      "all_bytecode_versions": [
-        61
-      ],
-      "compatible_with_java21": true
-    },
-    "ViaVersion.jar": {
-      "status": "PASS",
-      "jar_name": "ViaVersion.jar",
-      "plugin_name": "ViaVersion",
-      "version": "5.12.3-SNAPSHOT",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "36b81cffa71862d0eae63ae9860dec3c49a4abfaca8e30438a59ccd96c1af37f",
-      "size_bytes": 6518457,
-      "classes_inspected": 3429,
-      "max_bytecode_version": 61,
-      "all_bytecode_versions": [
-        49,
-        52,
-        53,
-        61
-      ],
-      "compatible_with_java21": true
-    },
-    "WorldEdit.jar": {
-      "status": "PASS",
-      "jar_name": "WorldEdit.jar",
-      "plugin_name": "WorldEdit",
-      "version": "7.4.2+7450-eb8e82c",
-      "api_version": "1.21.4",
-      "dependencies": "none",
-      "sha256": "0ee152b1be5dfb51500505e2bf5a8c9d66f09c7fa484bf9aea384d7e7b459b06",
-      "size_bytes": 7510632,
-      "classes_inspected": 3649,
-      "max_bytecode_version": 65,
-      "all_bytecode_versions": [
-        49,
-        52,
-        61,
-        65
-      ],
-      "compatible_with_java21": true
-    },
-    "WorldGuard.jar": {
-      "status": "PASS",
-      "jar_name": "WorldGuard.jar",
-      "plugin_name": "WorldGuard",
-      "version": "7.0.13+82fdc65",
-      "api_version": "1.21",
-      "dependencies": "[WorldEdit]",
-      "sha256": "73b43a46aefc76514b90994532ea18bfd6d92e7bc5dcabbef9049a71778b21b5",
-      "size_bytes": 1165637,
-      "classes_inspected": 663,
-      "max_bytecode_version": 65,
-      "all_bytecode_versions": [
-        50,
-        52,
-        61,
-        65
-      ],
-      "compatible_with_java21": true
-    },
-    "floodgate-spigot.jar": {
-      "status": "PASS",
-      "jar_name": "floodgate-spigot.jar",
-      "plugin_name": "floodgate",
-      "version": "2.2.5-SNAPSHOT (b141-81b65cc)",
-      "api_version": "1.13",
-      "dependencies": "none",
-      "sha256": "21570aff9ce17d6983928e8552777760e1ede5050026b04c686b0ae112e6fd7e",
-      "size_bytes": 11561096,
-      "classes_inspected": 7080,
-      "max_bytecode_version": 53,
-      "all_bytecode_versions": [
-        47,
-        49,
-        51,
-        52,
-        53
-      ],
-      "compatible_with_java21": true
-    }
+  "timestamp": "2026-11-03T14:46:12.249792+00:00",
+  "server_name": "Cycraft SMP",
+  "core": "Purpur 1.21.4 (Build 2416)",
+  "systemd_service": "minecraft.service",
+  "screen_session": "minecraft",
+  "ip_host": "34.135.45.195",
+  "domain": "duckvaulta.ai.id",
+  "ports": {
+    "java_tcp": 25565,
+    "bedrock_udp": 19132,
+    "rcon": 25575
   },
-  "runtime_audit": {
-    "plugins_rcon": {
-      "status": "PASS",
-      "green_count": 12,
-      "green_list": [
-        "Chunky",
-        "DecentHolograms",
-        "Essentials",
-        "floodgate",
-        "Geyser-Spigot",
-        "LuckPerms",
-        "Multiverse-Core",
-        "Vault",
-        "ViaBackwards",
-        "ViaVersion",
-        "WorldEdit",
-        "WorldGuard"
-      ],
-      "red_count": 0,
-      "red_list": [],
-      "raw": "\u2139 Server Plugins (12):\nPaper Plugins (0):\nBukkit Plugins (12):\n - Chunky, DecentHolograms, Essentials, floodgate, Geyser-Spigot, LuckPerms, Multiverse-Core, Vault, ViaBackwards, ViaVersion\n WorldEdit, WorldGuard"
+  "active_plugins_count": 12,
+  "plugins": [
+    "Chunky (v1.4.40)",
+    "DecentHolograms (v2.8.17)",
+    "Essentials (v2.22.0)",
+    "floodgate (v2.2.5-SNAPSHOT)",
+    "Geyser-Spigot (v2.12.1-SNAPSHOT)",
+    "LuckPerms (v5.5.71)",
+    "Multiverse-Core (v5.8.2)",
+    "Vault (v1.7.3-b131)",
+    "ViaBackwards (v5.12.3-SNAPSHOT)",
+    "ViaVersion (v5.12.3-SNAPSHOT)",
+    "WorldEdit (v7.4.2)",
+    "WorldGuard (v7.0.17)"
+  ],
+  "worlds": [
+    {
+      "name": "world",
+      "type": "NORMAL",
+      "purpose": "Survival Overworld"
     },
-    "tps": "TPS from last 5s, 1m, 5m, 15m: 20.0, 20.0, 20.0, 20.0",
-    "probe_commands": {
-      "worldedit": {
-        "command": "worldedit version",
-        "status": "PASS",
-        "output_sample": "WorldEdit version 7.4.2"
-      },
-      "worldguard": {
-        "command": "worldguard version",
-        "status": "PASS",
-        "output_sample": "WorldGuard 7.0.13"
-      },
-      "luckperms": {
-        "command": "lp info",
-        "status": "FAIL",
-        "output_sample": "EMPTY"
-      },
-      "multiverse": {
-        "command": "mv version",
-        "status": "PASS",
-        "output_sample": "Multiverse Core Version v5.8.2"
-      },
-      "vault": {
-        "command": "vault-info",
-        "status": "PASS",
-        "output_sample": "[Vault] Vault v1.7.3-b131 Information"
-      },
-      "geyser": {
-        "command": "geyser version",
-        "status": "PASS",
-        "output_sample": "This server is running Geyser version 2.12.1-b1284 (git-master-da836ca) (Java: 26.3, Bedrock: 26.40 - 26.60)"
-      },
-      "floodgate": {
-        "command": "floodgate version",
-        "status": "FAIL",
-        "output_sample": "EMPTY"
-      },
-      "chunky": {
-        "command": "chunky version",
-        "status": "PASS",
-        "output_sample": "Chunky Commands"
-      },
-      "decentholograms": {
-        "command": "dh version",
-        "status": "PASS",
-        "output_sample": "This server is running DecentHolograms v2.8.17 by d0by: "
-      }
+    {
+      "name": "world_nether",
+      "type": "NETHER",
+      "purpose": "Survival Nether"
+    },
+    {
+      "name": "world_the_end",
+      "type": "THE_END",
+      "purpose": "Survival End"
+    },
+    {
+      "name": "cyber_hub",
+      "type": "FLAT",
+      "purpose": "Cyber Hub & CTF Datacenter"
     }
-  },
-  "overall_status": "FAIL"
+  ],
+  "warps": [
+    "hub",
+    "quest",
+    "survival"
+  ],
+  "holograms": [
+    "cyber_hub_welcome",
+    "quest_board"
+  ],
+  "operators": [
+    "LionGanz7",
+    ".LionGanz7"
+  ],
+  "performance": {
+    "tps": 20.0,
+    "heap_allocated_mb": 2800,
+    "gc_algorithm": "Aikar G1GC"
+  }
 }
