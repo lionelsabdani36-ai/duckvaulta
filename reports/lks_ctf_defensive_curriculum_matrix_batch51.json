@@ -1,0 +1,305 @@
+{
+  "schema_version": "2026.2",
+  "document_title": "Pedagogical CTF Curriculum Synthesis & LKS Defensive Hardening Matrix (Batch 51: Heap Memory Safety & Exploitation)",
+  "mentor": {
+    "name": "Judith",
+    "role": "Master Guru & Mentor Akademik / Kompetisi",
+    "mentee": "Arielwin & White Jack",
+    "target_level": "Seleksi Tim 2 & LKS Cyber Security Nasional (Gold Medalist Standard)",
+    "objective": "Membimbing siswa mencapai Total Concept Mastery 100% pada arsitektur memori heap glibc, controlled heap buffer overflow, pembajakan function pointer, Use-After-Free, tcache recycling, dan remediasi defensif standar industri."
+  },
+  "batch_metadata": {
+    "batch_number": 51,
+    "target_platform": "CyLab Security Academy (Binary Exploitation & Memory Safety)",
+    "total_challenges": 3,
+    "total_score_points": 300,
+    "completion_rate": "100%",
+    "date_synthesized": "2026-11-03",
+    "target_challenges": [
+      439,
+      435,
+      440
+    ]
+  },
+  "pedagogical_pillars": [
+    {
+      "pillar": 1,
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi Komputasi)",
+      "description": "Membongkar struktur alokasi heap glibc malloc, alinyemen chunk minimum 32-byte pada x86-64, dan antrean tcache LIFO dari prinsip kerja komputasi mendasar."
+    },
+    {
+      "pillar": 2,
+      "name": "Metode Socratic & Scaffolding Bertingkat",
+      "description": "Menyajikan pertanyaan pancingan bertingkat (Tier 1-3) saat siswa menemui kebingungan kalkulasi offset atau kegagalan penulisan pointer eksekusi."
+    },
+    {
+      "pillar": 3,
+      "name": "Bedah Anatomi Distraktor (Jebakan Soal HOTS)",
+      "description": "Mengupas tuntas miskonsepsi umum seperti salah hitung padding chunk header, format string scanf null-byte truncation, dan asumsi keliru bahwa free() mengenolkan memori."
+    },
+    {
+      "pillar": 4,
+      "name": "Siklus Belajar Adaptif (Diagnosa -> Kristalisasi -> Drilling Bertingkat -> Verifikasi 100%)",
+      "description": "Menuntun proses belajar melalui 3 level drilling: Controlled Overflow (Fondasi), Function Pointer Hijacking (HOTS), dan Use-After-Free Tcache (Ekstrem)."
+    },
+    {
+      "pillar": 5,
+      "name": "Evaluasi Berbasis IRT (Item Response Theory) & Rubrik LKS Skill 54",
+      "description": "Memodelkan probabilitas keberhasilan siswa menggunakan model 3PL dan 4 pilar rubrik penilaian teknis standar LKS Cyber Security Nasional."
+    }
+  ],
+  "cognitive_distribution": {
+    "C2_Understanding": 0,
+    "C3_Applying": 0,
+    "C4_Analyzing": 1,
+    "C5_Evaluating": 2
+  },
+  "domain_distribution": {
+    "Domain_A_Heap_Memory_Layout_And_Alignment": "Chall 439",
+    "Domain_B_Control_Flow_Hijacking_Heap": "Chall 435",
+    "Domain_C_Lifecycle_Use_After_Free_Tcache": "Chall 440",
+    "Domain_D_Defensive_Hardening_Secure_Coding": "Chall 439, Chall 435, Chall 440"
+  },
+  "modules": [
+    {
+      "module_id": "MOD-01",
+      "challenge_id": 439,
+      "name": "heap 1",
+      "category": "Binary Exploitation & Controlled Heap Overflow",
+      "points": 100,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-122: Heap-based Buffer Overflow",
+      "verified_flag": "academy{starting_to_get_the_hang_9727cc8d}",
+      "first_principles_theory": "Glibc malloc pada arsitektur x86-64 menetapkan batas chunk minimum sebesar 0x20 (32 byte desimal), mencakup 16 byte metadata header dan 16 byte user data payload. Alokasi berurutan malloc(5) untuk input_data dan safe_var dialokasikan berdampingan secara kontigu dengan jarak persis 32 byte antar data pengguna. Ketiadaan pembatasan panjang pada scanf(\"%s\") memungkinkan input meluap dari chunk pertama dan menimpa chunk kedua dengan string sasaran pico.",
+      "feynman_analogy": "Seperti dua petak sawah berdampingan yang dibatasi pematang selebar 32 jengkal. Jika petani menyiramkan air tanpa batas di petak pertama, luapan air akan mengalir melewati pematang dan membanjiri petak kedua tepat setelah melampaui 32 jengkal.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Ketika program meminta alokasi 5 byte di sistem Linux 64-bit, berapa ukuran fisik chunk sebenarnya yang dialokasikan oleh pengelola glibc?",
+        "tier_2_structural": "Berapa selisih alamat heksadesimal antara pointer input_data dan pointer safe_var yang ditampilkan oleh menu Print Heap?",
+        "tier_3_breakthrough": "Jika jarak antar pointer adalah tepat 32 byte, berapa byte padding yang wajib dikirimkan sebelum byte pertama string pico mulai menimpa safe_var?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira offset antar alokasi hanya 5 byte sesuai ukuran malloc(5).",
+        "Lupa bahwa string terminator atau newline dari scanf dapat memengaruhi perbandingan strcmp.",
+        "Mengabaikan header chunk memori sebesar 16 byte pada glibc x86-64."
+      ],
+      "blue_team_incident_takeaway": "Penggunaan fungsi input tidak berbatas ukuran pada buffer heap dapat dieksploitasi untuk memodifikasi variabel otorisasi atau status keamanan penting aplikasi.",
+      "defensive_hardening_standard": {
+        "input_validation": "Ganti scanf(\"%s\") dengan fgets(buf, sizeof(buf), stdin) atau batasan eksplisit scanf(\"%4s\").",
+        "compiler_mitigation": "Aktifkan flag proteksi kompilasi -D_FORTIFY_SOURCE=3 dan pengujian AddressSanitizer (-fsanitize=address).",
+        "memory_safety": "Terapkan kontainer berbatas aman seperti std::string atau std::vector pada C++, atau gunakan bahasa memory-safe seperti Rust."
+      },
+      "irt_parameters": {
+        "discrimination_a": 1.85,
+        "difficulty_b": 1.20,
+        "pseudo_guessing_c": 0.05
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SI-16: Memory Protection, SA-8: Security Engineering Principles",
+        "cwe": "CWE-122",
+        "worldskills_skill_54": "Section 2.1: Binary Analysis and Memory Vulnerability Assessment"
+      }
+    },
+    {
+      "module_id": "MOD-02",
+      "challenge_id": 435,
+      "name": "heap 2",
+      "category": "Binary Exploitation & Function Pointer Hijacking",
+      "points": 100,
+      "difficulty": "Medium",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-822: Untrusted Pointer Dereference / CWE-122: Heap-based Buffer Overflow",
+      "verified_flag": "academy{and_down_the_road_we_go_f5e464ff}",
+      "first_principles_theory": "Fungsi check_win() mendereferensikan isi blok memori x sebagai pointer fungsi 32-bit via instruksi movslq (%rax), %rcx diikuti jmp *%rcx. Biner dikompilasi tanpa PIE (non-PIE), sehingga fungsi target win() berada pada alamat statis 0x004011a0. Luapan buffer 32 byte menimpa isi memori x. Representasi byte little-endian 0x004011a0 adalah \\xa0\\x11\\x40\\x00. Pengiriman 3 byte \\xa0\\x11\\x40 dipadukan dengan null-byte terminator otomatis dari scanf(\"%s\") merekonstruksi alamat target secara sempurna.",
+      "feynman_analogy": "Seperti papan petunjuk arah di persimpangan jalan yang angkanya ditempel stiker. Begitu penyerang mengganti stiker angka tujuan dengan alamat gedung rahasia, pengemudi mobil akan langsung meluncur ke gedung rahasia tanpa curiga.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Bagaimana representasi urutan byte dari alamat heksadesimal 0x004011a0 pada arsitektur little-endian x86-64?",
+        "tier_2_structural": "Mengapa pengiriman karakter null byte \\x00 di tengah input scanf(\"%s\") sering kali gagal atau memotong input?",
+        "tier_3_breakthrough": "Apa yang otomatis ditambahkan scanf pada akhir string teks yang dibacanya? Bagaimana memanfaatkan sifat tersebut untuk menuliskan null byte ke-4?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mencoba mengirimkan alamat 64-bit lengkap dengan padding nol di depan yang tertolak oleh scanf.",
+        "Mengira biner memiliki ASLR penuh padahal biner dikompilasi dengan header non-PIE (ET_EXEC).",
+        "Lupa bahwa instruksi movslq melakukan sign-extension terhadap nilai 32-bit ke register 64-bit rcx."
+      ],
+      "blue_team_incident_takeaway": "Menyimpan penunjuk fungsi dinamis di heap tanpa verifikasi integritas Control Flow Integrity (CFI) membuka jalan bagi penyerang untuk membajak alur kontrol program.",
+      "defensive_hardening_standard": {
+        "binary_hardening": "Kompilasi wajib menggunakan Position Independent Executable (-fPIE -pie) agar alamat fungsi diacak oleh ASLR pada setiap eksekusi.",
+        "control_flow_integrity": "Terapkan Clang/GCC CFI (-fsanitize=cfi) atau Intel CET (Control-flow Enforcement Technology) untuk memblokir lompatan fungsi tidak sah.",
+        "input_bounds": "Gunakan pembacaan berbatas buffer fisik (fgets) dan hindari penyimpanan raw function pointer di memori yang dapat ditulis."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.15,
+        "difficulty_b": 1.65,
+        "pseudo_guessing_c": 0.03
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SI-16: Memory Protection, SC-39: Process Isolation",
+        "cwe": "CWE-822, CWE-122",
+        "worldskills_skill_54": "Section 2.1: Control Flow Hijacking and Mitigation"
+      }
+    },
+    {
+      "module_id": "MOD-03",
+      "challenge_id": 440,
+      "name": "heap 3",
+      "category": "Binary Exploitation & Use-After-Free Tcache Recycling",
+      "points": 100,
+      "difficulty": "Medium",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-416: Use After Free",
+      "verified_flag": "academy{now_thats_free_real_estate_6ed71fb5}",
+      "first_principles_theory": "Struktur objek berukuran 35 byte dibebaskan via free(x), namun pointer x tidak disetel ke NULL (dangling pointer). Pada glibc >= 2.26, chunk 35 byte masuk ke antrean tcache bin 0x30 berstruktur LIFO. Ketika alokasi baru diminta dengan ukuran 35 byte, pengelola heap mendaur ulang chunk yang sama persis. Pengguna menuliskan 30 byte padding dan string pico ke field flag. Saat check_win() mendereferensikan dangling pointer x->flag, program menemukan string pico dan mencetak flag kompetisi.",
+      "feynman_analogy": "Seperti seseorang yang mengembalikan kunci kamar hotel nomor 101 ke resepsionis, namun diam-diam menduplikat kunci tersebut. Ketika tamu berikutnya menyewa kamar nomor 101 dan menaruh barang baru di atas meja, pemegang kunci lama dapat masuk kembali dan mengambil barang tersebut.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apa status dari pointer x setelah perintah free(x) dieksekusi tanpa adanya assignment x = NULL?",
+        "tier_2_structural": "Bagaimana sifat antrean glibc tcache dalam melayani permintaan alokasi baru yang memiliki ukuran sama persis dengan chunk yang baru saja dibebaskan?",
+        "tier_3_breakthrough": "Pada offset berapakah field flag berada di dalam struct object? Mengapa menulis 30 karakter padding diikuti string pico langsung menimpa field tersebut?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira memanggil free(x) akan otomatis membersihkan seluruh byte data lama menjadi nol.",
+        "Meminta ukuran alokasi baru yang berbeda sehingga glibc mengambil chunk dari bin lain.",
+        "Lupa bahwa pointer lama x tetap valid menunjuk ke alamat memori heap fisik yang sama."
+      ],
+      "blue_team_incident_takeaway": "Kegagalan pointer grounding pasca-dealokasi membuka risiko fatal eksploitasi Use-After-Free di mana penyerang dapat memanipulasi struktur objek internal aplikasi.",
+      "defensive_hardening_standard": {
+        "pointer_grounding": "Terapkan macro safe-free: #define SAFE_FREE(p) do { if(p){ free(p); (p) = NULL; } } while(0).",
+        "raii_smart_pointers": "Gunakan smart pointer std::unique_ptr pada C++ untuk mengelola siklus hidup objek secara otomatis dan mencegah dangling pointer.",
+        "runtime_sanitizer": "Gunakan AddressSanitizer (-fsanitize=address) pada proses pengujian untuk mendeteksi pelanggaran use-after-free seketika."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.40,
+        "difficulty_b": 1.95,
+        "pseudo_guessing_c": 0.02
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SI-16: Memory Protection, SA-8: Security Engineering Principles",
+        "cwe": "CWE-416",
+        "worldskills_skill_54": "Section 2.1: Dynamic Memory Lifecycle and UAF Analysis"
+      }
+    }
+  ],
+  "heap_security_comparison_matrix": {
+    "architecture_aspects": [
+      {
+        "parameter": "Mekanisme Alokasi Memori",
+        "glibc_malloc_linux": "ptmalloc / dlmalloc berbasis brk/mmap, chunk 16-byte alignment, arena, fastbins, tcache bins.",
+        "windows_heap_manager": "NT Heap / Segment Heap berbasis HeapAlloc/HeapFree, LFH (Low Fragmentation Heap), encoded chunk headers."
+      },
+      {
+        "parameter": "Mekanisme Caching Ringan",
+        "glibc_malloc_linux": "Tcache (Thread-Local Caching, Glibc >= 2.26) struktur singly-linked list LIFO per size bin (maks 7 chunks).",
+        "windows_heap_manager": "Low Fragmentation Heap (LFH) dengan randomisasi alokasi slot untuk mencegah keterprediksian letak chunk."
+      },
+      {
+        "parameter": "Integritas Metadata Pointer",
+        "glibc_malloc_linux": "Safe-Linking (glibc >= 2.32) mengenkripsi pointer next tcache via XOR dengan ASLR heap address (P >> 12).",
+        "windows_heap_manager": "Heap Metadata Encryption via process-wide heap cookie XORing dan encoded entry pointers."
+      },
+      {
+        "parameter": "Mitigasi Eksekusi & Eksploitasi",
+        "glibc_malloc_linux": "NX bit (PT_GNU_STACK), ASLR (mmap_rnd_bits), PIE executable (-fPIE -pie), Full RELRO, AddressSanitizer.",
+        "windows_heap_manager": "DEP (Data Execution Prevention), ASLR, Control Flow Guard (CFG), ACG (Arbitrary Code Guard)."
+      }
+    ]
+  },
+  "arielwin_enrichment_curriculum": {
+    "target_mentee": "Arielwin & White Jack",
+    "current_baseline": "Penguasaan dasar reverse engineering dan seleksi Tim 2",
+    "target_milestone": "Penguasaan 100% Heap Exploitation, Function Pointer Hijack, UAF, dan Defensive Hardening standar LKS Nasional",
+    "four_week_acceleration_plan": [
+      {
+        "week": 1,
+        "theme": "Internals Glibc Malloc & Alinyemen Chunk Rendah",
+        "focus_topics": [
+          "Parsing malloc_chunk, chunk headers, dan perhitungan alinyemen 32/64-bit",
+          "Analisis visual memori heap via GDB GEF (heap chunks, heap bins)",
+          "Kalkulasi offset eksploitasi matematis tanpa bantuan print biner"
+        ],
+        "deliverable": "Membangun modul Python pemeriksa alinyemen heap dan layout parser memory map"
+      },
+      {
+        "week": 2,
+        "theme": "Heap Buffer Overflow & Control Flow Hijacking",
+        "focus_topics": [
+          "Penimpaan pointer fungsi di heap dan redireksi RIP",
+          "Bypassing non-PIE vs modul ter-PIE (information leak via format string)",
+          "Konstruksi payload multi-byte dengan batasan karakter I/O scanf/fgets"
+        ],
+        "deliverable": "Solver otomatis kontrol RIP berbasis heap overflow pada biner simulasi"
+      },
+      {
+        "week": 3,
+        "theme": "Advanced Heap Lifecycle: Use-After-Free & Tcache Manipulation",
+        "focus_topics": [
+          "Identifikasi CWE-416 Use-After-Free dan CWE-415 Double Free",
+          "Analisis internal Tcache bins glibc (LIFO recycling, tcache poisoning)",
+          "Penguasaan teknik fastbin dup dan heap grooming"
+        ],
+        "deliverable": "Laporan forensik heap pasca-dealokasi dan skrip exploit UAF multi-tahap"
+      },
+      {
+        "week": 4,
+        "theme": "Defensive Engineering, Sanitizers, & Memory-Safe Architecture",
+        "focus_topics": [
+          "Instrumentasi AddressSanitizer (ASan) dan Control Flow Integrity (CFI)",
+          "Implementasi safe pointer wrappers di C/C++ dan refaktorisasi ke Rust",
+          "Penyusunan aturan deteksi YARA, Sigma, dan patch biner defensif"
+        ],
+        "deliverable": "Portofolio audit biner lengkap dengan PoC exploit, root cause analysis, dan secure patch"
+      }
+    ],
+    "three_tier_drills": [
+      {
+        "drill_id": "DRILL-01",
+        "level": "Level 1: Fondasi",
+        "title": "Controlled Memory Overwrite & Chunk Alignment",
+        "scenario": "Diberikan biner ELF dengan alokasi heap berdekatan. Menimpa variabel otorisasi dengan menghitung offset alinyemen memori secara manual.",
+        "objective": "Menghitung jarak chunk secara analitis tanpa melihat print address dari biner."
+      },
+      {
+        "drill_id": "DRILL-02",
+        "level": "Level 2: Analisis & HOTS",
+        "title": "Function Pointer Redirection & Little-Endian Encoding",
+        "scenario": "Biner mengalokasikan struct berisi pointer fungsi. Membajak eksekusi ke fungsi rahasia dengan menyusun payload little-endian yang lolos filter I/O.",
+        "objective": "Menyusun payload biner presisi dan membajak RIP eksekusi secara deterministik."
+      },
+      {
+        "drill_id": "DRILL-03",
+        "level": "Level 3: Kombinatorik & Ekstrem",
+        "title": "Use-After-Free & Tcache Struct Reconstruction",
+        "scenario": "Aplikasi membebaskan objek pengguna tanpa pointer grounding. Menggunakan alokasi ulang berukuran identik untuk merekonstruksi objek target.",
+        "objective": "Mengeksekusi siklus free dan realloc terkoordinasi untuk memicu kondisi kemenangan administratif."
+      }
+    ]
+  },
+  "lks_scoring_rubric": {
+    "scoring_system": "Standar LKS Cyber Security Nasional & WorldSkills Skill 54 (Bobot Total 100%)",
+    "pillars": [
+      {
+        "pillar_id": "P-1",
+        "name": "Akurasi Analisis Heap & Root Cause Discovery",
+        "weight_percent": 35,
+        "criteria": "Kemampuan membedah struktur chunk glibc, menghitung alinyemen 32-byte, memetakan disassembly lompatan tak langsung, dan menjelaskan daur ulang tcache LIFO secara presisi."
+      },
+      {
+        "pillar_id": "P-2",
+        "name": "Efisiensi & Reproduksibilitas Solver Script",
+        "weight_percent": 25,
+        "criteria": "Skrip solver Python mandiri, deterministik 100%, terstruktur dengan socket exception handling, dan memvalidasi flag secara otomatis."
+      },
+      {
+        "pillar_id": "P-3",
+        "name": "Ketajaman Rekomendasi Defensif & Blue Team Hardening",
+        "weight_percent": 25,
+        "criteria": "Pemberian solusi pointer grounding aman (SAFE_FREE), konfigurasi compiler hardening (-fPIE, -D_FORTIFY_SOURCE=3, ASan), serta aturan deteksi YARA dan Sigma berstandar industri."
+      },
+      {
+        "pillar_id": "P-4",
+        "name": "Metodologi Dokumentasi & Kepatuhan Anti-Slop",
+        "weight_percent": 15,
+        "criteria": "Kerapian laporan teknis, penerapan kaidah pedagogis Socratic, penjelasan berbasis First Principles, zero em dash, dan bebas dari generalisasi AI tanpa substansi."
+      }
+    ]
+  }
+}
