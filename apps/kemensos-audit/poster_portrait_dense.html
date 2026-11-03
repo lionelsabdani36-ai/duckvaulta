@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Infografis Lengkap: Audit Transparansi Layanan Publik Kemensos RI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1080px;
+      height: 2280px; /* High-density long infographic canvas */
+      background: #080d16;
+      color: #f1f5f9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 45px 45px 35px;
+    }
+
+    /* Ambient cyber gradient glow */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: 200px; left: -100px;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .grid-lines {
+      position: absolute; inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border: 1.5px solid #334155;
+      border-radius: 18px;
+      padding: 24px 28px;
+      position: relative;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
+      border-radius: 18px 18px 0 0;
+    }
+    .badge-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .tag-main {
+      background: #0284c7;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.8px;
+    }
+    .tag-sub {
+      color: #94a3b8;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .title-h1 {
+      font-size: 32px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+    .title-h1 span {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .meta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .meta-item strong { color: #38bdf8; }
+
+    /* Hero Presenter Card */
+    .presenter-card {
+      background: #101726;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .avatar-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      background: #020617;
+    }
+    .avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transform: scale(1.15);
+    }
+    .speech-wrap {
+      flex: 1;
+    }
+    .speech-role {
+      font-size: 12px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+    .speech-bubble {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.45;
+      margin-top: 4px;
+    }
+
+    /* Section Header */
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 2px;
+    }
+    .sec-tag {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .sec-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+    }
+
+    /* Indikator 3-Box Grid */
+    .ind-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .ind-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .ind-box-top {
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .ind-name {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .ind-score {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .score-green { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .score-blue { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+
+    .ind-content {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .ind-subhead {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+      margin-bottom: 2px;
+    }
+    .c-green { color: #34d399; }
+    .c-rose { color: #fb7185; }
+    .c-cyan { color: #38bdf8; }
+
+    /* Case Study Banner */
+    .case-banner {
+      background: #111c2e;
+      border: 1px solid #23354d;
+      border-left: 5px solid #f59e0b;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .case-banner strong { color: #f59e0b; }
+
+    /* 4 Solutions Grid */
+    .sol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .sol-item {
+      background: #10192a;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 18px 20px;
+      position: relative;
+    }
+    .sol-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0; width: 5px;
+      border-radius: 14px 0 0 14px;
+    }
+    .s-1::before { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+    .s-2::before { background: #10b981; box-shadow: 0 0 10px #10b981; }
+    .s-3::before { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+    .s-4::before { background: #a855f7; box-shadow: 0 0 10px #a855f7; }
+
+    .sol-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .sol-idx {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .s-1 .sol-idx { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .s-2 .sol-idx { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .s-3 .sol-idx { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .s-4 .sol-idx { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+    .sol-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .sol-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+    .sol-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .t-blue { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; }
+    .t-green { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .t-amber { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+    .t-purple { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; }
+
+    /* Pancasila & Citizenship Box */
+    .pancasila-card {
+      background: linear-gradient(135deg, #131c2e, #0b1322);
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .p-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+    .p-text {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+    .p-text strong {
+      color: #38bdf8;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #1e293b;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .footer strong { color: #94a3b8; }
+    .verif-badge {
+      background: #020617;
+      border: 1px solid #334155;
+      padding: 5px 12px;
+      border-radius: 6px;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-lines"></div>
+
+  <div class="wrapper">
+    <!-- Header -->
+    <div class="header">
+      <div class="badge-bar">
+        <div class="tag-main">LAPORAN PROYEK KEWARGANEGARAAN</div>
+        <div class="tag-sub">AUDIT TRANSPARANSI LAYANAN PUBLIK</div>
+      </div>
+      <h1 class="title-h1">Evaluasi Keterbukaan Informasi & Pengawalan <span>Bantuan Sosial Kemensos RI</span></h1>
+      <div class="meta-row">
+        <div class="meta-item">🌐 <strong>Lembaga:</strong> Kementerian Sosial RI (kemensos.go.id)</div>
+        <div class="meta-item">⚖️ <strong>Dasar:</strong> UU 14/2008 (KIP) & UU 25/2009 (Pelayanan Publik)</div>
+        <div class="meta-item">📊 <strong>Tahun:</strong> 2026</div>
+      </div>
+    </div>
+
+    <!-- Presenter Card -->
+    <div class="presenter-card">
+      <div class="avatar-circle">
+        <img src="character_hacker.jpg" alt="Cyber Civic Auditor">
+      </div>
+      <div class="speech-wrap">
+        <div class="speech-role">CYBER CIVIC AUDITOR • AGENT NYAWIT (AI TEAM LEAD)</div>
+        <div class="speech-bubble">
+          "Transparansi anggaran bansos Rp 78 Triliun bukan sekadar angka di laporan PDF, melainkan instrumen pemenuhan hak konstitusional fakir miskin sesuai Sila ke-5 Pancasila: Keadilan Sosial bagi Seluruh Rakyat Indonesia!"
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Analisis 3 Indikator -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-tag">LANGKAH 2</div>
+        <div class="sec-title">Analisis Kritis 3 Indikator Keterbukaan Layanan</div>
+      </div>
+      
+      <div class="ind-grid">
+        <!-- Indikator 1 -->
+        <div class="ind-box">
+          <div>
+            <div class="ind-box-top">
+              <div class="ind-name">1. Transparansi Anggaran</div>
+              <div class="ind-score score-green">8.5 / 10</div>
+            </div>
+            <div class="ind-content">
+              <strong>Fakta Lapangan:</strong> Dokumen DIPA 2022-2024, RKA-K/L, LAKIP, dan Laporan Keuangan auditan BPK (predikat WTP) tersedia di portal <code>ppid.kemensos.go.id</code>. Anggaran bansos mencapai Rp 75-80 Triliun/tahun.
+            </div>
+            <div class="ind-subhead c-green">Kelebihan:</div>
+            <div class="ind-content">Meraih predikat *Badan Publik Informatif* dari KIP; dokumen wajib berkala diunggah konsisten.</div>
+            <div class="ind-subhead c-rose">Kekurangan:</div>
+            <div class="ind-content">Format PDF tebal pasif tanpa grafik interaktif; rincian realisasi belanja per desa tidak tersedia terbuka.</div>
+          </div>
+        </div>
+
+        <!-- Indikator 2 -->
+        <div class="ind-box">
+          <div>
+            <div class="ind-box-top">
+              <div class="ind-name">2. Alur Pelayanan DTKS</div>
+              <div class="ind-score score-blue">7.8 / 10</div>
+            </div>
+            <div class="ind-content">
+              <strong>Fakta Lapangan:</strong> Warga bisa cek status bansos di <code>cekbansos.kemensos.go.id</code> hanya dengan KTP. Fitur "Usul-Sanggah" pada mobile app memberi ruang partisipasi aktif publik.
+            </div>
+            <div class="ind-subhead c-green">Kelebihan:</div>
+            <div class="ind-content">Memangkas monopoli calo/perangkat desa karena data penerima dapat diverifikasi langsung oleh warga.</div>
+            <div class="ind-subhead c-rose">Kekurangan:</div>
+            <div class="ind-content">Digital divide pada warga miskin lansia tanpa smartphone; bottleneck verifikasi Musdes/Dinsos daerah lambat.</div>
+          </div>
+        </div>
+
+        <!-- Indikator 3 -->
+        <div class="ind-box">
+          <div>
+            <div class="ind-box-top">
+              <div class="ind-name">3. Penanganan Keluhan</div>
+              <div class="ind-score score-green">8.0 / 10</div>
+            </div>
+            <div class="ind-content">
+              <strong>Fakta Lapangan:</strong> Hotline bebas pulsa 24 jam Command Center 171, integrasi SP4N-LAPOR!, Whistleblowing System (wbs), dan loket tatap muka PPID Salemba.
+            </div>
+            <div class="ind-subhead c-green">Kelebihan:</div>
+            <div class="ind-content">Tim Reaksi Cepat (TRC) merespon laporan darurat anak/bencana dalam hitungan jam pasca telepon 171.</div>
+            <div class="ind-subhead c-rose">Kekurangan:</div>
+            <div class="ind-content">Penyelesaian sanggahan kartu bansos terhenti butuh 30-60 hari; minim umpan balik detail alasan penolakan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case Study Banner -->
+    <div class="case-banner">
+      <strong>Temuan Audit Lapangan & Studi Kasus Riil (BPK & KPK):</strong> 
+      Pemeriksaan BPK sempat menemukan indikasi bansos tidak tepat sasaran senilai ratusan miliar akibat inclusion error (anggota keluarga ASN/pemilik badan usaha masuk DTKS). Kemensos merespons dengan membekukan data anomali dan membuka fitur sanggah, namun efektivitasnya sangat bergantung pada keaktifan Pemda mengupdate SIKS-NG setiap bulan.
+    </div>
+
+    <!-- Section: 4 Solusi Strategis -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-tag">LANGKAH 3</div>
+        <div class="sec-title">Infografis 4 Rekomendasi Solusi & Inovasi Kebijakan</div>
+      </div>
+
+      <div class="sol-grid">
+        <div class="sol-item s-1">
+          <div class="sol-head">
+            <div class="sol-idx">01</div>
+            <div class="sol-name">Dashboard Bansos GIS Interaktif</div>
+          </div>
+          <div class="sol-desc">
+            Mengonversi data PDF DIPA menjadi peta tematik spasial (Open Data). Publik dapat memantau kuota penerima, realisasi anggaran, dan profil bansos per desa/kelurahan secara real-time.
+          </div>
+          <div class="sol-tag t-blue">Dampak: Mencegah Korupsi & Penyunatan Kuota</div>
+        </div>
+
+        <div class="sol-item s-2">
+          <div class="sol-head">
+            <div class="sol-idx">02</div>
+            <div class="sol-name">Omnichannel WA Bot & SMS 1708</div>
+          </div>
+          <div class="sol-desc">
+            Menjawab kesenjangan digital (*digital divide*). Warga lansia dan masyarakat miskin pelosok tanpa smartphone cukup mengirim NIK via SMS bebas pulsa atau chat WA resmi untuk cek bansos.
+          </div>
+          <div class="sol-tag t-green">Dampak: Inklusif untuk Kaum Miskin & Rentan</div>
+        </div>
+
+        <div class="sol-item s-3">
+          <div class="sol-head">
+            <div class="sol-idx">03</div>
+            <div class="sol-name">Tracking Tiket Keluhan (SLA 7 Hari)</div>
+          </div>
+          <div class="sol-desc">
+            Setiap aduan warga mendapatkan resi tiket online dengan update progres via SMS otomatis. Menyertakan alasan objektif berbasis data jika usulan ditolak untuk memulihkan kepercayaan publik.
+          </div>
+          <div class="sol-tag t-amber">Dampak: Transparansi Status & Public Trust</div>
+        </div>
+
+        <div class="sol-item s-4">
+          <div class="sol-head">
+            <div class="sol-idx">04</div>
+            <div class="sol-name">Posko Digital Desa Jemput Bola</div>
+          </div>
+          <div class="sol-desc">
+            Pendamping PKH dan TKSK dibekali tablet pendataan offline-sync untuk verifikasi door-to-door warga pelosok. Menghapus exclusion error (orang berhak tidak dapat) secara permanen.
+          </div>
+          <div class="sol-tag t-purple">Dampak: Validasi Data Faktual & Berkeadilan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pancasila Reflection -->
+    <div class="pancasila-card">
+      <div class="p-icon">🇮🇩</div>
+      <div class="p-text">
+        <strong>Refleksi Kewarganegaraan (Sila ke-5 Pancasila):</strong> 
+        Keterbukaan informasi publik bukan beban birokrasi, melainkan wujud nyata keadilan sosial. Warga negara aktif berhak mengetahui ke mana setiap rupiah anggaran bansos disalurkan, dan pemerintah berkewajiban menghadirkan layanan publik yang transparan, mudah diakses, dan cepat menindaklanjuti keluhan masyarakat.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div>
+        <strong>Praktik Kelompok Pendidikan Kewarganegaraan 2026</strong> • Analisis Transparansi kemensos.go.id
+      </div>
+      <div class="verif-badge">CIVIC AUDIT VERIFIED</div>
+    </div>
+  </div>
+</body>
+</html>
