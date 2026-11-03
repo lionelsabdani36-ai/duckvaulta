@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Infografis Rekomendasi Solusi Layanan Publik Kemensos RI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .header {
+      border-bottom: 2px solid #334155;
+      padding-bottom: 24px;
+    }
+    .badge {
+      display: inline-block;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .title {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+    .subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 30px;
+      margin-top: 36px;
+      flex-grow: 1;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      border-radius: 16px 16px 0 0;
+    }
+    .c1::before { background: #3b82f6; }
+    .c2::before { background: #10b981; }
+    .c3::before { background: #f59e0b; }
+    .c4::before { background: #a855f7; }
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .num {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #93c5fd;
+    }
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .desc {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .footer-tag {
+      align-self: flex-start;
+      margin-top: 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+    }
+    .t1 { background: rgba(59,130,246,0.15); color: #93c5fd; }
+    .t2 { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .t3 { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .t4 { background: rgba(168,85,247,0.15); color: #d8b4fe; }
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+      font-size: 14px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="badge">Langkah 3: Output Infografis Rekomendasi Solusi</div>
+    <div class="title">Rekomendasi Kebijakan & Inovasi Transparansi Kemensos RI</div>
+    <div class="subtitle">Studi Kasus Proyek Kewarganegaraan • Portal kemensos.go.id, ppid.kemensos.go.id, & cekbansos.kemensos.go.id</div>
+  </div>
+
+  <div class="grid">
+    <div class="card c1">
+      <div>
+        <div class="card-top">
+          <div class="num">01</div>
+          <div class="card-title">Dashboard Bansos Interaktif (Open Budget GIS)</div>
+        </div>
+        <div class="desc">
+          Mengonversi dokumen PDF DIPA pasif menjadi peta spasial real-time. Memungkinkan warga dan akademisi mengawasi alokasi dana, realisasi anggaran, serta kuota bantuan sosial PKH dan BPNT hingga tingkat kelurahan dan RT/RW.
+        </div>
+      </div>
+      <div class="footer-tag t1">Dampak: Mencegah Monopoli & Penyunatan Kuota Bansos</div>
+    </div>
+
+    <div class="card c2">
+      <div>
+        <div class="card-top">
+          <div class="num">02</div>
+          <div class="card-title">Omnichannel WhatsApp Bot & SMS Gratis 1708</div>
+        </div>
+        <div class="desc">
+          Menjembatani kesenjangan digital (digital divide) bagi jutaan warga miskin lansia tanpa smartphone. Warga dapat mengecek kelayakan desil dan penerimaan bansos cukup dengan mengetik SMS atau chat WhatsApp terverifikasi.
+        </div>
+      </div>
+      <div class="footer-tag t2">Dampak: Aksesibilitas Universal bagi Kaum Rentan</div>
+    </div>
+
+    <div class="card c3">
+      <div>
+        <div class="card-top">
+          <div class="num">03</div>
+          <div class="card-title">Tracking Tiket Aduan Transparan (SLA 7 Hari)</div>
+        </div>
+        <div class="desc">
+          Modernisasi kanal SP4N-LAPOR! dan Command Center 171 dengan sistem notifikasi progres otomatis via SMS. Memberikan alasan objektif berbasis data aset jika usulan/sanggahan ditolak, menghapus prasangka negatif publik.
+        </div>
+      </div>
+      <div class="footer-tag t3">Dampak: Menumbuhkan Kepercayaan Publik (Public Trust)</div>
+    </div>
+
+    <div class="card c4">
+      <div>
+        <div class="card-top">
+          <div class="num">04</div>
+          <div class="card-title">Posko Digital Desa & Jemput Bola Lapangan</div>
+        </div>
+        <div class="desc">
+          Membekali pendamping sosial PKH dan TKSK dengan gawai tablet pendataan offline-sync. Melakukan audit berkala dari rumah ke rumah untuk memverifikasi data kelayakan, menuntaskan masalah inclusion & exclusion error.
+        </div>
+      </div>
+      <div class="footer-tag t4">Dampak: Penyaluran Bansos Tepat Sasaran & Berkeadilan</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>Kementerian Sosial Republik Indonesia • Implementasi UU No. 14/2008 & UU No. 25/2009</div>
+    <div>Proyek Kewarganegaraan • Praktik Kelompok 2026</div>
+  </div>
+</body>
+</html>
