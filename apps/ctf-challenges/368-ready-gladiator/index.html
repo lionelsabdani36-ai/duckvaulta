@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #368 : Ready Gladiator 0 (CoreWars Lab)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.btn-dl{display:inline-block;text-decoration:none;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:8px 14px;border-radius:6px;font-size:.82rem;font-family:monospace;margin-top:6px}
+textarea{width:100%;min-height:140px;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#a5f3fc;padding:12px;font-family:monospace;font-size:.85rem;resize:vertical;margin-bottom:12px}
+button.submit-btn{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 24px;min-height:44px}
+.term{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;font-family:monospace;font-size:.85rem;min-height:160px;max-height:280px;overflow-y:auto;white-space:pre-wrap;color:#cbd5e1;margin-top:14px}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #368 : REVERSE ENGINEERING (COREWARS MARS)</div>
+    <h1>Ready Gladiator 0 : The Instant Suicide Warrior</h1>
+    <p class="sub">Tantangan Redcode CoreWars MARS arena. Buatlah program petarung (warrior) yang <strong>selalu kalah</strong> dalam 100 ronde pertempuran melawan 'Imp' tanpa pernah menghasilkan hasil seri (no ties).</p>
+    <a href="imp.red" download class="btn-dl">⬇ Download Lawan (imp.red)</a>
+  </div>
+
+  <div class="card">
+    <div class="badge">SIMULATOR COREWARS MARS ENGINE</div>
+    <label style="display:block;font-size:.8rem;font-family:monospace;color:#00d2ff;margin-bottom:6px;">Masukkan Kode Redcode Warrior Kamu:</label>
+    <textarea id="redcodeInput">;redcode
+;name MyWarrior
+;assert 1
+mov 0, 1
+end</textarea>
+    <button class="submit-btn" onclick="battle()">Mulai Pertempuran (100 Ronde)</button>
+
+    <div class="term" id="battleLog">Menunggu warrior masuk arena...</div>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Dalam CoreWars Redcode, instruksi <code>DAT</code> bukanlah opcode yang dapat dieksekusi. Ketika instruksi pointer warrior mengeksekusi <code>DAT</code>, proses langsung dieliminasi (terminasi instan).</li>
+      <li>Jika warrior langsung mati di siklus pertama sementara 'Imp' terus menduplikasi instruksi <code>mov 0, 1</code>, skor pertempuran akan menjadi mutlak 0-100 tanpa tie.</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via tombol di Discord!</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const logBox = document.getElementById("battleLog");
+
+// Obfuscated Base64 Flag
+const _fb = "Q1RGe3IzZGMwZDNfZDR0X3N1MWMxZDNfejNyMF90MTNzXzRjOGV9";
+
+function battle() {
+  const code = document.getElementById("redcodeInput").value.trim().toLowerCase();
+  logBox.textContent = "[+] Merakit warrior ke memory core 8000...\n[+] Lawan: Imp Ex (mov 0, 1)\n";
+
+  setTimeout(() => {
+    // Check if warrior dies instantly: has dat #0, #0 or dat instruction as executable entry
+    const lines = code.split("\n").map(l => l.trim()).filter(l => l && !l.startsWith(";"));
+    const firstOp = lines.length > 0 ? lines[0] : "";
+
+    if (firstOp.startsWith("dat")) {
+      logBox.textContent += "[+] Running 100 rounds in MARS arena...\n";
+      logBox.textContent += "Round 1..100: Warrior 1 terminated on cycle 1.\n";
+      logBox.textContent += "Warrior 1 wins: 0\nWarrior 2 (Imp) wins: 100\nTies: 0\n\n";
+      logBox.textContent += "🎉 YOU DID IT! Warrior kamu selalu kalah tanpa seri!\n";
+      logBox.textContent += "FLAG: " + atob(_fb) + "\n";
+    } else if (code.includes("mov 0, 1")) {
+      logBox.textContent += "[!] Menjalankan 100 ronde...\nWarrior 1 wins: 0\nWarrior 2 wins: 0\nTies: 100\nKalah: Gagal! Pertandingan berakhir seri (ties). Buat warrior yang kalah mutlak tanpa seri!";
+    } else {
+      logBox.textContent += "[!] Warrior kamu bertahan terlalu lama atau menghasilkan seri. Cari instruksi Redcode yang langsung mengeliminasi thread di siklus ke-1!";
+    }
+  }, 400);
+}
+</script>
+</body>
+</html>

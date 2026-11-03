@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #44 : Glory of the Garden (Image Steganography)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.btn-dl{display:inline-block;text-decoration:none;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:8px 14px;border-radius:6px;font-size:.82rem;font-family:monospace;margin-top:6px}
+.img-preview{text-align:center;margin:18px 0}
+.img-preview img{max-width:100%;border-radius:8px;border:1px solid rgba(0,210,255,.3)}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #44 : FORENSICS (IMAGE STEGANOGRAPHY)</div>
+    <h1>Glory of the Garden : EOF Trailer Extraction</h1>
+    <p class="sub">Taman ini menyimpan rahasia lebih dari sekadar piksel gambar biasa. Periksa berkas JPEG ini dengan hex editor atau utilitas baris perintah untuk menemukan flag yang disematkan di balik penutup berkas (End of File).</p>
+    <a href="garden.jpg" download class="btn-dl">⬇ Download Image (garden.jpg)</a>
+    <div class="img-preview">
+      <img src="garden.jpg" alt="Garden Lab Preview">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Format gambar JPEG diakhiri dengan byte signature penutup <strong>End of Image (EOI)</strong> bernilai heksadesimal <code>FF D9</code>.</li>
+      <li>Banyak peramban web dan penampil gambar berhenti membaca setelah marker EOI, sehingga data yang disisipkan setelahnya tidak terlihat secara visual.</li>
+      <li>Gunakan perkakas Linux <code>strings garden.jpg | grep CTF</code> atau hex editor (seperti <code>xxd</code> atau <code>hexedit</code>) untuk mengekstrak teks tersembunyi.</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via tombol di Discord!</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

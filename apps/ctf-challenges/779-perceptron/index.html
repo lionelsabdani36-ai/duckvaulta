@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cysec Lab: Perceptron Convergence & Learning Rate Tuning (ID: 779)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060913;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+    header {
+      max-width: 1000px;
+      margin: 0 auto 16px auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+    }
+    .badge {
+      font-size: 0.72rem;
+      font-family: monospace;
+      font-weight: 700;
+      color: #00d2ff;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    @media (max-width: 860px) {
+      .container { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #0a1122;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      background: #04060d;
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .metric-box {
+      background: #060913;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 0.68rem;
+      font-family: monospace;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .metric-val {
+      font-size: 1.1rem;
+      font-family: monospace;
+      font-weight: 800;
+      color: #00d2ff;
+    }
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    input[type=range] {
+      width: 100%;
+      accent-color: #00d2ff;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+    .input-number {
+      width: 100%;
+      min-height: 44px;
+      background: #060913;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #ffffff;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 8px 12px;
+      outline: none;
+    }
+    .btn {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: #00d2ff;
+      color: #060913;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .rate-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      min-height: 32px;
+    }
+    .rate-chip {
+      font-size: 0.75rem;
+      font-family: monospace;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .flag-banner {
+      display: none;
+      margin-top: 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .flag-code {
+      font-family: monospace;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #10b981;
+      background: #060913;
+      border: 1px dashed rgba(16, 185, 129, 0.4);
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 10px 0;
+      word-break: break-all;
+      user-select: all;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      font-size: 0.75rem;
+      margin-top: 8px;
+      color: #94a3b8;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .square { width: 10px; height: 10px; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <div class="badge">CYSEC CTF LAB #779 : AI FOUNDATIONS</div>
+      <h1 style="font-size: 1.25rem; font-weight: 800; margin-top: 4px;">Perceptron Convergence Lab</h1>
+    </div>
+    <div style="font-size: 0.8rem; color: #94a3b8; font-family: monospace;">
+      Target: 5 Validated Learning Rates &bull; Max: 16 Steps
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- LEFT: 2D VISUALIZATION -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: #ffffff;">Bidang Koordinat &amp; Hyperplane Pemisah</span>
+        <div class="legend">
+          <div class="legend-item"><div class="dot" style="background: #00d2ff; box-shadow: 0 0 6px #00d2ff;"></div> Kelas +1</div>
+          <div class="legend-item"><div class="square" style="background: #ef4444; box-shadow: 0 0 6px #ef4444;"></div> Kelas -1</div>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="cv" width="600" height="600"></canvas>
+      </div>
+
+      <div style="margin-top: 12px; font-size: 0.78rem; color: #94a3b8; line-height: 1.4;">
+        Garis cyan menyajikan decision boundary perceptron: <code style="color: #00d2ff; font-family: monospace;">w₁·x₁ + w₂·x₂ + b = 0</code>. Setiap titik yang salah terklasifikasi akan memicu koreksi bobot secara otomatis.
+      </div>
+    </div>
+
+    <!-- RIGHT: CONTROLS & TELEMETRY -->
+    <div class="card controls">
+      
+      <div class="metric-row">
+        <div class="metric-box">
+          <div class="metric-label">Akurasi Model</div>
+          <div class="metric-val" id="disp-acc">0.0%</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Langkah Iterasi</div>
+          <div class="metric-val" id="disp-step">0 / 16</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="lr-input">
+          <span>Learning Rate (η)</span>
+          <span id="lr-val" style="color: #00d2ff; font-family: monospace;">0.16</span>
+        </label>
+        <input type="range" id="lr-slider" min="0.01" max="1.0" step="0.01" value="0.16" oninput="syncLR(this.value)">
+        <input type="number" id="lr-input" class="input-number" min="0.01" max="5.0" step="0.01" value="0.16" style="margin-top: 8px;" oninput="syncLR(this.value)">
+      </div>
+
+      <button id="btn-train" class="btn btn-primary" onclick="startTraining()">
+        ▶ Latih Perceptron
+      </button>
+
+      <button class="btn btn-secondary" onclick="resetPerceptron()">
+        ⟳ Reset Posisi Awal
+      </button>
+
+      <!-- GOAL PROGRESS -->
+      <div style="background: #060913; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1;">Target 5 Learning Rate:</span>
+          <span id="target-count" style="font-size: 0.85rem; font-family: monospace; font-weight: 800; color: #10b981;">0 / 5</span>
+        </div>
+        <div class="rate-badges" id="rate-list">
+          <span style="font-size: 0.72rem; color: #64748b; font-style: italic;">Belum ada rate yang mencapai akurasi 100%</span>
+        </div>
+      </div>
+
+      <!-- UNLOCKED FLAG BANNER -->
+      <div id="flag-box" class="flag-banner">
+        <div style="font-size: 0.85rem; font-weight: 800; color: #10b981;">🎉 5 LEARNING RATE TERVALIDASI!</div>
+        <div style="font-size: 0.75rem; color: #cbd5e1; margin-top: 4px;">Selamat! Kamu telah membuktikan konvergensi perceptron.</div>
+        <div class="flag-code" id="flag-text">5/5 VALID — ambil flag resmi via Submit Flag di Discord</div>
+        <button class="btn btn-primary" style="margin-top: 8px;" onclick="copyFlag()">
+          📋 Salin &amp; Submit di Discord
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // 2D Linearly Separable Dataset
+    const dataset = [
+      // Class +1
+      { x: 2.0, y: 3.5, label: 1 },
+      { x: 3.5, y: 4.2, label: 1 },
+      { x: -1.0, y: 2.2, label: 1 },
+      { x: -3.0, y: 1.6, label: 1 },
+      { x: 1.0, y: 5.0, label: 1 },
+      { x: -2.0, y: 3.2, label: 1 },
+      { x: 4.0, y: 5.8, label: 1 },
+      { x: 0.0, y: 4.0, label: 1 },
+      // Class -1
+      { x: 3.0, y: 0.5, label: -1 },
+      { x: 1.5, y: -1.0, label: -1 },
+      { x: -2.0, y: -3.0, label: -1 },
+      { x: 0.0, y: -2.0, label: -1 },
+      { x: 4.0, y: 1.2, label: -1 },
+      { x: -4.0, y: -2.0, label: -1 },
+      { x: -1.0, y: -1.5, label: -1 },
+      { x: 2.5, y: -2.5, label: -1 }
+    ];
+
+    let w1 = 0.05, w2 = 0.05, b = 0.0;
+    let isTraining = false;
+    let successfulRates = new Set();
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+
+    function syncLR(val) {
+      val = Math.max(0.01, parseFloat(val) || 0.01);
+      document.getElementById('lr-slider').value = Math.min(1.0, val);
+      document.getElementById('lr-input').value = val;
+      document.getElementById('lr-val').innerText = val.toFixed(2);
+    }
+
+    function toScreen(x, y) {
+      // Map [-6, 6] to [0, width]
+      const scale = cv.width / 12;
+      const sx = cv.width / 2 + x * scale;
+      const sy = cv.height / 2 - y * scale;
+      return { x: sx, y: sy };
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+
+      // Gridlines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.lineWidth = 1;
+      for (let i = -5; i <= 5; i++) {
+        const p1 = toScreen(i, -6);
+        const p2 = toScreen(i, 6);
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+        const h1 = toScreen(-6, i);
+        const h2 = toScreen(6, i);
+        ctx.beginPath(); ctx.moveTo(h1.x, h1.y); ctx.lineTo(h2.x, h2.y); ctx.stroke();
+      }
+
+      // Origin Axes
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 1.5;
+      const ox1 = toScreen(0, -6), ox2 = toScreen(0, 6);
+      ctx.beginPath(); ctx.moveTo(ox1.x, ox1.y); ctx.lineTo(ox2.x, ox2.y); ctx.stroke();
+      const oy1 = toScreen(-6, 0), oy2 = toScreen(6, 0);
+      ctx.beginPath(); ctx.moveTo(oy1.x, oy1.y); ctx.lineTo(oy2.x, oy2.y); ctx.stroke();
+
+      // Decision Boundary: w1*x1 + w2*x2 + b = 0 => x2 = (-w1*x1 - b) / w2
+      if (Math.abs(w2) > 0.0001 || Math.abs(w1) > 0.0001) {
+        ctx.strokeStyle = '#00d2ff';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#00d2ff';
+        ctx.shadowBlur = 8;
+
+        let pA, pB;
+        if (Math.abs(w2) > 0.0001) {
+          const xA = -6, yA = (-w1 * xA - b) / w2;
+          const xB = 6, yB = (-w1 * xB - b) / w2;
+          pA = toScreen(xA, yA);
+          pB = toScreen(xB, yB);
+        } else {
+          const xFixed = -b / w1;
+          pA = toScreen(xFixed, -6);
+          pB = toScreen(xFixed, 6);
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(pA.x, pA.y);
+        ctx.lineTo(pB.x, pB.y);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // Draw Dataset Points
+      for (const p of dataset) {
+        const sc = toScreen(p.x, p.y);
+        if (p.label === 1) {
+          // Class +1 (Cyan Circle)
+          ctx.fillStyle = '#00d2ff';
+          ctx.beginPath();
+          ctx.arc(sc.x, sc.y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Class -1 (Red Square)
+          ctx.fillStyle = '#ef4444';
+          ctx.fillRect(sc.x - 5, sc.y - 5, 10, 10);
+        }
+      }
+    }
+
+    function calculateAccuracy() {
+      let correct = 0;
+      for (const p of dataset) {
+        const pred = (w1 * p.x + w2 * p.y + b) >= 0 ? 1 : -1;
+        if (pred === p.label) correct++;
+      }
+      return correct / dataset.length;
+    }
+
+    function resetPerceptron() {
+      w1 = 0.05;
+      w2 = 0.05;
+      b = 0.0;
+      document.getElementById('disp-acc').innerText = '0.0%';
+      document.getElementById('disp-step').innerText = '0 / 16';
+      draw();
+    }
+
+    async function startTraining() {
+      if (isTraining) return;
+      isTraining = true;
+      document.getElementById('btn-train').disabled = true;
+      document.getElementById('btn-train').innerText = '⏳ Melatih...';
+
+      const lr = parseFloat(document.getElementById('lr-input').value) || 0.16;
+      w1 = 0.05; w2 = 0.05; b = 0.0; // Reset before each learning rate run
+
+      let step = 0;
+      const maxSteps = 16;
+
+      while (step < maxSteps) {
+        step++;
+        let misclassified = false;
+
+        for (const p of dataset) {
+          const pred = (w1 * p.x + w2 * p.y + b) >= 0 ? 1 : -1;
+          if (pred !== p.label) {
+            w1 += lr * p.label * p.x;
+            w2 += lr * p.label * p.y;
+            b += lr * p.label;
+            misclassified = true;
+            break; // Standard perceptron one-by-one stochastic update
+          }
+        }
+
+        const acc = calculateAccuracy();
+        document.getElementById('disp-acc').innerText = (acc * 100).toFixed(1) + '%';
+        document.getElementById('disp-step').innerText = step + ' / ' + maxSteps;
+        draw();
+
+        await new Promise(r => setTimeout(r, 60)); // Smooth animation delay
+
+        if (!misclassified && acc === 1.0) break;
+      }
+
+      const finalAcc = calculateAccuracy();
+      document.getElementById('disp-acc').innerText = (finalAcc * 100).toFixed(1) + '%';
+
+      if (finalAcc === 1.0) {
+        successfulRates.add(lr.toFixed(2));
+        updateSuccessUI();
+      }
+
+      isTraining = false;
+      document.getElementById('btn-train').disabled = false;
+      document.getElementById('btn-train').innerText = '▶ Latih Perceptron';
+    }
+
+    function updateSuccessUI() {
+      const cnt = successfulRates.size;
+      document.getElementById('target-count').innerText = cnt + ' / 5';
+
+      const listDiv = document.getElementById('rate-list');
+      listDiv.innerHTML = '';
+      successfulRates.forEach(r => {
+        const chip = document.createElement('span');
+        chip.className = 'rate-chip';
+        chip.innerText = 'η = ' + r + ' ✓';
+        listDiv.appendChild(chip);
+      });
+
+      if (cnt >= 5) {
+        document.getElementById('flag-box').style.display = 'block';
+      }
+    }
+
+    function copyFlag() {
+      const text = document.getElementById('flag-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Flag berhasil disalin ke clipboard! Silakan klik tombol [ 🚩 Submit Flag (Modal) ] di Discord.');
+      });
+    }
+
+    // Initial Render
+    draw();
+  </script>
+
+</body>
+</html>

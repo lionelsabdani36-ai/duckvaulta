@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #445 : Trickster (Web PNG Upload Lab)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.upload-box{background:#020409;border:2px dashed rgba(0,210,255,.3);border-radius:8px;padding:24px;text-align:center;margin-bottom:16px}
+.file-in{margin:12px 0;color:#94a3b8;font-family:monospace;font-size:.85rem}
+button.up-btn{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 24px;min-height:44px}
+.resp-box{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;min-height:80px;font-family:monospace;font-size:.85rem;white-space:pre-wrap;word-break:break-all;color:#cbd5e1;margin-bottom:16px}
+.term{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:14px;font-family:monospace;font-size:.85rem;min-height:150px;max-height:260px;overflow-y:auto;margin-bottom:12px}
+.tin{display:flex;gap:10px}
+input.in{flex:1;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;padding:10px;font-family:monospace;font-size:.85rem;min-height:40px}
+button.run-btn{background:rgba(0,210,255,.2);color:#00d2ff;border:1px solid rgba(0,210,255,.4);border-radius:6px;font-weight:700;font-size:.85rem;cursor:pointer;padding:10px 16px}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+a.link{color:#00d2ff;text-decoration:none}
+a.link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #445 : WEB EXPLOITATION (FILE UPLOAD BYPASS)</div>
+    <h1>Trickster : Image Processing Portal</h1>
+    <p class="sub">Portal web pemrosesan gambar PNG. Formulir mengklaim hanya menerima berkas gambar PNG murni. Periksa arsitektur web (petunjuk: <a href="robots.txt" target="_blank" class="link">robots.txt</a> &amp; <a href="instructions.txt" target="_blank" class="link">instructions.txt</a>) dan dapatkan Remote Code Execution untuk membaca flag rahasia.</p>
+
+    <div class="upload-box">
+      <p style="font-size:.9rem;color:#e2e8f0;margin-bottom:6px;">Pilih berkas PNG untuk diunggah:</p>
+      <input type="file" id="fileInput" class="file-in"><br>
+      <button class="up-btn" onclick="upload()">Upload File</button>
+    </div>
+
+    <label style="display:block;font-size:.8rem;font-family:monospace;color:#00d2ff;margin-bottom:6px;">Upload Status:</label>
+    <div class="resp-box" id="uploadStatus">Menunggu pemilihan berkas...</div>
+
+    <div id="shellSection" style="display:none;">
+      <label style="display:block;font-size:.8rem;font-family:monospace;color:#10b981;margin-bottom:6px;">Webshell Interactive Console (/uploads/):</label>
+      <div class="term" id="shellTerm">
+        <div style="color:#10b981;">[webshell loaded successfully via polyglot bypass]</div>
+        <div>Ketik command untuk dieksekusi di server (contoh: ls, cat flag.txt, cat /var/www/html/flag.txt):</div>
+      </div>
+      <div class="tin">
+        <input class="in" id="cmdInput" placeholder="ketik perintah...">
+        <button class="run-btn" onclick="execCmd()">Eksekusi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Pemeriksaan ekstensi sering memiliki cacat substring matching (misalnya mencari <code>.png</code> di dalam string nama berkas, bukan ekstensi akhir).</li>
+      <li>Penyematan ekstensi ganda seperti <code>exploit.png.php</code> lolos validasi nama dan tetap dieksekusi oleh Apache/PHP.</li>
+      <li>Untuk melewati validasi Magic Bytes, tambahkan header signature PNG murni <code>\x89PNG\r\n\x1a\n</code> pada awal skrip payload.</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via Discord.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const statusBox = document.getElementById("uploadStatus");
+const shellSection = document.getElementById("shellSection");
+const shellTerm = document.getElementById("shellTerm");
+const cmdInp = document.getElementById("cmdInput");
+
+// Obfuscated Base64 flag
+const _flagB64 = "Q1RGe3RyMWNrc3Qzcl9wbmdfcDBseWdsMHRfcmNlXzNhOGYxY30=";
+
+cmdInp.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") execCmd();
+});
+
+function upload() {
+  const fi = document.getElementById("fileInput");
+  if (!fi.files || fi.files.length === 0) {
+    statusBox.textContent = "Silakan pilih berkas terlebih dahulu.";
+    return;
+  }
+  const file = fi.files[0];
+  const name = file.name.toLowerCase();
+
+  // Validate .png substring requirement
+  if (!name.includes(".png")) {
+    statusBox.textContent = "Error: File harus memiliki format/ekstensi PNG (.png)!";
+    return;
+  }
+
+  // Read file bytes to verify PNG magic bytes
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const arr = new Uint8Array(e.target.result);
+    // PNG magic bytes: 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A or starts with 'PNG'
+    const isPngHeader = (arr.length >= 4 && (
+      (arr[0] === 0x89 && arr[1] === 0x50 && arr[2] === 0x4E && arr[3] === 0x47) ||
+      (arr[0] === 0x50 && arr[1] === 0x4E && arr[2] === 0x47)
+    ));
+
+    if (!isPngHeader) {
+      statusBox.textContent = "Error: File ditolak! Magic bytes tidak cocok dengan signature resmi PNG ('50 4E 47' / '\\x89PNG').";
+      return;
+    }
+
+    statusBox.textContent = "HTTP 200 OK\nFile uploaded successfully and is a valid PNG file.\nStored at: /uploads/" + file.name;
+
+    // Check if filename contains .php to trigger webshell capability
+    if (name.includes(".php")) {
+      shellSection.style.display = "block";
+      printShell("[+] Webshell active at /uploads/" + file.name);
+    } else {
+      shellSection.style.display = "none";
+      statusBox.textContent += "\n(Berkas PNG statis disimpan, tidak dapat dieksekusi sebagai script)";
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function printShell(text) {
+  const d = document.createElement("div");
+  d.textContent = text;
+  shellTerm.appendChild(d);
+  shellTerm.scrollTop = shellTerm.scrollHeight;
+}
+
+function execCmd() {
+  const cmd = cmdInp.value.trim();
+  if (!cmd) return;
+  printShell("$ " + cmd);
+  cmdInp.value = "";
+
+  if (cmd === "ls" || cmd === "ls -la") {
+    printShell("total 24\n-rw-r--r-- 1 www-data www-data  42 Sep 23 05:08 flag.txt\n-rw-r--r-- 1 www-data www-data 1572 Sep 23 00:59 index.php\n-rw-r--r-- 1 www-data www-data  279 Sep 23 00:59 instructions.txt\n-rw-r--r-- 1 www-data www-data  120 Sep 23 00:59 robots.txt\ndrwxr-xr-x 1 www-data root       27 Nov  3 07:04 uploads");
+  } else if (cmd.includes("flag") && (cmd.startsWith("cat") || cmd.startsWith("strings") || cmd.startsWith("more") || cmd.startsWith("less"))) {
+    const flag = atob(_flagB64);
+    printShell("/* " + flag + " */");
+  } else if (cmd === "whoami") {
+    printShell("www-data");
+  } else if (cmd === "id") {
+    printShell("uid=33(www-data) gid=33(www-data) groups=33(www-data)");
+  } else if (cmd === "pwd") {
+    printShell("/var/www/html");
+  } else {
+    printShell("Command executed successfully. (Use 'ls' or 'cat flag.txt' to locate flag)");
+  }
+}
+</script>
+</body>
+</html>

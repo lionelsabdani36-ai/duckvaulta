@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #4 : where are the robots (Web Recon)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+a.link{color:#00d2ff;text-decoration:none}
+a.link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #4 : WEB EXPLOITATION (RECON / ROBOTS.TXT)</div>
+    <h1>where are the robots</h1>
+    <p class="sub">Bisakah kamu menemukan halaman rahasia yang disembunyikan pemilik situs dari mesin perayap (web crawlers / search engine bots)? Periksa protokol standar yang digunakan pengembang web untuk mengatur akses bot.</p>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Berkas <code>robots.txt</code> diletakkan di root web untuk menginstruksikan bot mesin pencari mengenai direktori apa saja yang tidak boleh diindeks (<code>Disallow:</code>).</li>
+      <li>Periksa <a href="robots.txt" target="_blank" class="link">robots.txt</a> pada direktori tantangan ini untuk melihat direktori yang sengaja disembunyikan.</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via tombol di Discord!</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

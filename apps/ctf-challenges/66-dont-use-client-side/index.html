@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cysec Secure Login Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060913;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #0a1122;
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-family: monospace;
+      font-weight: 700;
+      color: #00d2ff;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #060913;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      border-color: #00d2ff;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00d2ff;
+      color: #060913;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .result {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="badge">CHALLENGE #66 : CLIENT-SIDE LOGIC</div>
+    <h1>Secure Authentication Portal</h1>
+    <p>Portal login ini mengklaim validasi kredensial tingkat tinggi tanpa membebani server backend.</p>
+
+    <form onsubmit="verify(); return false;">
+      <input type="password" id="pass" placeholder="Masukkan password verifikasi..." autocomplete="off" />
+      <button type="submit">Verifikasi Akses</button>
+    </form>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    function verify() {
+      var checkpass = document.getElementById("pass").value;
+      var split = 4;
+      var res = document.getElementById("result");
+
+      if (checkpass.substring(0, split) == 'CTF{') {
+        if (checkpass.substring(split*5, split*6) == '3700') {
+          if (checkpass.substring(split, split*2) == 'no_c') {
+            if (checkpass.substring(split*4, split*5) == 'lz_7') {
+              if (checkpass.substring(split*2, split*3) == 'lien') {
+                if (checkpass.substring(split*3, split*4) == 'ts_p') {
+                  if (checkpass.substring(split*6, split*7) == '3cf}') {
+                    res.style.color = '#10b981';
+                    res.innerText = '✅ Access Granted! Flag valid.';
+                    alert('Password Verified! Selamat, kamu berhasil melewati sistem autentikasi!');
+                    return;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      res.style.color = '#ef4444';
+      res.innerText = '❌ Incorrect password. Akses ditolak!';
+      alert('Incorrect password! Coba analisis kembali struktur kode verifikasi.');
+    }
+  </script>
+
+</body>
+</html>

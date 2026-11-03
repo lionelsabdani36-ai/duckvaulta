@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #735 SUDO MAKE ME A SANDWICH - General Skills Easy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:20px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:720px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:16px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.3rem;margin-bottom:6px}
+.sub{font-size:.85rem;color:#94a3b8;margin-bottom:12px;line-height:1.6}
+.term{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:14px;font-family:monospace;font-size:.85rem;min-height:260px;max-height:380px;overflow-y:auto}
+.term .line{margin-bottom:4px;word-break:break-all}
+.term .ps{color:#10b981}
+.term .err{color:#ef4444}
+.term .ok{color:#a5f3fc}
+.tin{display:flex;gap:8px;margin-top:10px}
+input.cmd{flex:1;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;padding:12px;font-family:monospace;font-size:.9rem;min-height:44px}
+button{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 18px;min-height:44px}
+.tips{font-size:.83rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:4px}
+code{background:rgba(0,210,255,.12);padding:1px 5px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="badge">CHALLENGE #735 : LINUX PRIVILEGE</div>
+<h1>SUDO MAKE ME A SANDWICH</h1>
+<p class="sub">Kategori General Skills (Easy). Kamu login sebagai <code>guest</code>. Flag ada di <code>/root/flag.txt</code>. Cari tahu hak aksesmu lalu baca flag dengan hak yang benar.</p>
+</div>
+<div class="card">
+<div class="badge">SIMULASI TERMINAL</div>
+<div class="term" id="term"><div class="line"><span class="ps">guest@lab:~$</span> <span class="ok">Ketik "help" untuk daftar perintah.</span></div></div>
+<div class="tin"><input class="cmd" id="cmd" placeholder="ketik perintah..." autocomplete="off"><button onclick="run()">Jalan</button></div>
+</div>
+<div class="card">
+<div class="badge">MATERI &amp; MITIGASI</div>
+<ul class="tips">
+<li><code>sudo -l</code> melihat perintah apa yang boleh dijalankan sebagai root.</li>
+<li>Entri <code>NOPASSWD</code> artinya perintah itu bisa jalan tanpa password.</li>
+<li>Flag asli TIDAK ditampilkan di halaman ini. Verifikasi via tombol Submit Flag di Discord.</li>
+<li>Mitigasi dunia nyata: batasi sudoers seketat mungkin, NOPASSWD hanya untuk biner spesifik yang aman, audit rutin dengan <code>visudo</code>.</li>
+</ul>
+</div>
+</div>
+<script>
+var term=document.getElementById('term'),inp=document.getElementById('cmd');
+function print(ps,text,cls){var d=document.createElement('div');d.className='line';d.innerHTML='<span class="ps">'+ps+'</span> <span class="'+(cls||'')+'">'+text+'</span>';term.appendChild(d);term.scrollTop=term.scrollHeight;}
+function run(){var c=inp.value.trim();if(!c)return;print('guest@lab:~$',c);inp.value='';handle(c);}
+inp.addEventListener('keydown',function(e){if(e.key==='Enter')run();});
+function handle(c){
+if(c==='help'){print('$','help | whoami | id | sudo -l | ls | cat flag.txt | sudo cat /root/flag.txt','ok');}
+else if(c==='whoami'){print('$','guest','ok');}
+else if(c==='id'){print('$','uid=1000(guest) gid=1000(guest) groups=1000(guest)','ok');}
+else if(c==='ls'){print('$','flag.txt  sandwich.txt','ok');}
+else if(c==='cat sandwich.txt'){print('$','Resep sandwich: roti + selada + keju. Flagnya bukan di sini.','ok');}
+else if(c==='cat flag.txt'||c==='cat /root/flag.txt'){print('$','cat: /root/flag.txt: Permission denied','err');}
+else if(c==='sudo -l'){print('$','User guest may run the following commands:<br>(root) NOPASSWD: /usr/bin/cat /root/flag.txt','ok');}
+else if(c==='sudo cat /root/flag.txt'||c==='sudo /usr/bin/cat /root/flag.txt'){print('$','Flag asli disembunyikan di simulasi ini. Buktikan pemahamanmu: jelaskan perintah mana yang berhasil dan kenapa, lalu submit flag resmi via Discord.','ok');}
+else if(c.indexOf('sudo')===0){print('$','Maaf, perintah sudo itu tidak diizinkan untuk guest. Cek sudo -l.','err');}
+else{print('$','Perintah tidak dikenal: '+c,'err');}
+}
+</script>
+</body>
+</html>

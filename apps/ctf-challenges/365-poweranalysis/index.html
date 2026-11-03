@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerAnalysis Part 2 - DPA Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        
+        .subtitle {
+            color: #ff4444;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: rgba(0, 100, 255, 0.1);
+            border: 1px solid #0088ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #aaddff;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        h2 {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border: 2px solid #00ff88;
+            border-radius: 5px;
+            cursor: crosshair;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00ff88;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #00ffff 0%, #00aaaa 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ff88;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .progress-bar {
+            background: #000;
+            height: 30px;
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88 0%, #00ffff 100%);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .key-display {
+            background: #000;
+            padding: 15px;
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            word-break: break-all;
+            margin: 15px 0;
+        }
+        
+        .correlation-result {
+            background: rgba(255, 68, 68, 0.2);
+            border: 2px solid #ff4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        .success {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+        
+        .hint {
+            background: rgba(255, 200, 0, 0.1);
+            border: 1px solid #ffcc00;
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        .flag-reveal {
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            color: #000;
+            font-size: 2em;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 30px 0;
+            animation: pulse 2s infinite;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ PowerAnalysis: Part 2</h1>
+            <div class="subtitle">🔴 HARD CHALLENGE - Side-Channel Attack Lab</div>
+        </header>
+
+        <div class="info-box">
+            <strong>🎯 Challenge Objective:</strong><br>
+            This embedded system allows you to measure the power consumption of the CPU while running AES-128 encryption. 
+            Your goal is to recover the full 16-byte encryption key by performing <strong>Differential Power Analysis (DPA)</strong> 
+            on the power traces. When you successfully recover all 16 bytes, the flag will be revealed.
+            <br><br>
+            <strong>📚 References:</strong> 
+            <a href="https://en.wikipedia.org/wiki/Power_analysis" target="_blank">Power Analysis Attack</a> | 
+            <a href="https://en.wikipedia.org/wiki/Differential_power_analysis" target="_blank">DPA</a>
+        </div>
+
+        <div class="section">
+            <h2>📊 Power Trace Viewer</h2>
+            <p style="margin-bottom: 10px;">Displaying power consumption during AES encryption (100 traces available)</p>
+            <canvas id="traceCanvas"></canvas>
+            <div class="controls">
+                <div class="control-group">
+                    <label>Trace Number:</label>
+                    <input type="number" id="traceNum" min="0" max="99" value="0">
+                    <button onclick="updateTrace()">View Trace</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Key Recovery Progress</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%;">0/16 Bytes</div>
+            </div>
+            <div class="key-display" id="keyDisplay">
+                ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ??
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Differential Power Analysis</h2>
+            <div class="hint">
+                💡 <strong>Hint:</strong> Focus on the SubBytes operation of AES. Try different key guesses for each byte position 
+                and look for high correlation coefficients. A correlation above 0.7 typically indicates the correct key byte.
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label>Byte Position (0-15):</label>
+                    <input type="number" id="bytePos" min="0" max="15" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Key Guess (Hex, 00-FF):</label>
+                    <input type="text" id="keyGuess" maxlength="2" placeholder="00" value="A3">
+                </div>
+            </div>
+            
+            <button onclick="runDPA()" style="max-width: 400px; margin: 20px auto; display: block;">
+                🔍 Run Correlation Analysis
+            </button>
+            
+            <div id="correlationResult"></div>
+        </div>
+
+        <div id="flagSection"></div>
+    </div>
+
+    <script>
+        // AES S-Box for SubBytes operation
+        const SBOX = [
+            0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+            0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
+            0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
+            0x04, 0xc7, 0x23, 0xc3, 0x18, 0x96, 0x05, 0x9a, 0x07, 0x12, 0x80, 0xe2, 0xeb, 0x27, 0xb2, 0x75,
+            0x09, 0x83, 0x2c, 0x1a, 0x1b, 0x6e, 0x5a, 0xa0, 0x52, 0x3b, 0xd6, 0xb3, 0x29, 0xe3, 0x2f, 0x84,
+            0x53, 0xd1, 0x00, 0xed, 0x20, 0xfc, 0xb1, 0x5b, 0x6a, 0xcb, 0xbe, 0x39, 0x4a, 0x4c, 0x58, 0xcf,
+            0xd0, 0xef, 0xaa, 0xfb, 0x43, 0x4d, 0x33, 0x85, 0x45, 0xf9, 0x02, 0x7f, 0x50, 0x3c, 0x9f, 0xa8,
+            0x51, 0xa3, 0x40, 0x8f, 0x92, 0x9d, 0x38, 0xf5, 0xbc, 0xb6, 0xda, 0x21, 0x10, 0xff, 0xf3, 0xd2,
+            0xcd, 0x0c, 0x13, 0xec, 0x5f, 0x97, 0x44, 0x17, 0xc4, 0xa7, 0x7e, 0x3d, 0x64, 0x5d, 0x19, 0x73,
+            0x60, 0x81, 0x4f, 0xdc, 0x22, 0x2a, 0x90, 0x88, 0x46, 0xee, 0xb8, 0x14, 0xde, 0x5e, 0x0b, 0xdb,
+            0xe0, 0x32, 0x3a, 0x0a, 0x49, 0x06, 0x24, 0x5c, 0xc2, 0xd3, 0xac, 0x62, 0x91, 0x95, 0xe4, 0x79,
+            0xe7, 0xc8, 0x37, 0x6d, 0x8d, 0xd5, 0x4e, 0xa9, 0x6c, 0x56, 0xf4, 0xea, 0x65, 0x7a, 0xae, 0x08,
+            0xba, 0x78, 0x25, 0x2e, 0x1c, 0xa6, 0xb4, 0xc6, 0xe8, 0xdd, 0x74, 0x1f, 0x4b, 0xbd, 0x8b, 0x8a,
+            0x70, 0x3e, 0xb5, 0x66, 0x48, 0x03, 0xf6, 0x0e, 0x61, 0x35, 0x57, 0xb9, 0x86, 0xc1, 0x1d, 0x9e,
+            0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
+            0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16
+        ];
+
+        // Secret key (hidden from user)
+        const SECRET_KEY = [0xA3, 0x5F, 0x2C, 0x89, 0xD1, 0x47, 0xB8, 0x0E, 
+                           0x6A, 0xC2, 0x93, 0x1D, 0xF5, 0x38, 0x7B, 0xE4];
+        
+        // Generate 100 random plaintexts
+        const NUM_TRACES = 100;
+        const plaintexts = [];
+        const powerTraces = [];
+        
+        // User's recovered key
+        let recoveredKey = new Array(16).fill(null);
+        
+        // Initialize simulation
+        function init() {
+            for (let i = 0; i < NUM_TRACES; i++) {
+                const pt = new Array(16).fill(0).map(() => Math.floor(Math.random() * 256));
+                plaintexts.push(pt);
+                powerTraces.push(generatePowerTrace(pt));
+            }
+            updateTrace();
+            loadProgress();
+        }
+        
+        // Generate simulated power trace for AES encryption
+        function generatePowerTrace(plaintext) {
+            const trace = [];
+            const traceLength = 1000;
+            
+            // Simulate power consumption during AES rounds
+            for (let i = 0; i < traceLength; i++) {
+                let power = 50 + Math.random() * 10; // Base noise
+                
+                // Add peaks for SubBytes operation (where leakage occurs)
+                const roundPos = Math.floor(i / (traceLength / 16));
+                if (i % (traceLength / 16) < 10) {
+                    // Calculate actual intermediate value
+                    const byteIdx = roundPos % 16;
+                    const intermediate = SBOX[plaintext[byteIdx] ^ SECRET_KEY[byteIdx]];
+                    
+                    // Power consumption proportional to Hamming weight
+                    const hammingWeight = intermediate.toString(2).split('1').length - 1;
+                    power += hammingWeight * 5 + Math.random() * 3;
+                }
+                
+                trace.push(power);
+            }
+            
+            return trace;
+        }
+        
+        // Draw power trace on canvas
+        function updateTrace() {
+            const canvas = document.getElementById('traceCanvas');
+            const ctx = canvas.getContext('2d');
+            const traceNum = parseInt(document.getElementById('traceNum').value) || 0;
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const trace = powerTraces[traceNum];
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            
+            for (let i = 0; i < trace.length; i++) {
+                const x = (i / trace.length) * width;
+                const y = height - ((trace[i] / 100) * height);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            
+            ctx.stroke();
+            
+            // Draw round markers
+            ctx.strokeStyle = '#ff4444';
+            ctx.lineWidth = 1;
+            for (let r = 1; r < 16; r++) {
+                const x = (r / 16) * width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+        }
+        
+        // Run DPA correlation analysis
+        function runDPA() {
+            const bytePos = parseInt(document.getElementById('bytePos').value);
+            const keyGuessHex = document.getElementById('keyGuess').value.trim().toUpperCase();
+            
+            if (bytePos < 0 || bytePos > 15) {
+                alert('Byte position must be between 0 and 15');
+                return;
+            }
+            
+            if (!/^[0-9A-F]{1,2}$/.test(keyGuessHex)) {
+                alert('Key guess must be hex (00-FF)');
+                return;
+            }
+            
+            const keyGuess = parseInt(keyGuessHex, 16);
+            
+            // Calculate correlation
+            const correlation = calculateCorrelation(bytePos, keyGuess);
+            const isCorrect = keyGuess === SECRET_KEY[bytePos];
+            
+            const resultDiv = document.getElementById('correlationResult');
+            
+            if (isCorrect) {
+                recoveredKey[bytePos] = keyGuess;
+                resultDiv.className = 'correlation-result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>HIGH CORRELATION DETECTED!</strong><br>
+                    Byte ${bytePos}: Key = 0x${keyGuessHex} | Correlation: ${correlation.toFixed(4)}<br>
+                    This is likely the correct key byte!
+                `;
+                saveProgress();
+                updateKeyDisplay();
+                checkComplete();
+            } else {
+                resultDiv.className = 'correlation-result';
+                resultDiv.innerHTML = `
+                    ❌ Low Correlation<br>
+                    Byte ${bytePos}: Key = 0x${keyGuessHex} | Correlation: ${correlation.toFixed(4)}<br>
+                    Try a different guess.
+                `;
+            }
+        }
+        
+        // Calculate correlation coefficient (simplified DPA)
+        function calculateCorrelation(bytePos, keyGuess) {
+            let sumXY = 0, sumX = 0, sumY = 0, sumX2 = 0, sumY2 = 0;
+            const n = NUM_TRACES;
+            
+            for (let i = 0; i < n; i++) {
+                const intermediate = SBOX[plaintexts[i][bytePos] ^ keyGuess];
+                const hammingWeight = intermediate.toString(2).split('1').length - 1;
+                
+                // Sample power at the relevant time point
+                const timePoint = Math.floor((bytePos / 16) * powerTraces[i].length) + 5;
+                const power = powerTraces[i][timePoint];
+                
+                sumXY += hammingWeight * power;
+                sumX += hammingWeight;
+                sumY += power;
+                sumX2 += hammingWeight * hammingWeight;
+                sumY2 += power * power;
+            }
+            
+            const numerator = n * sumXY - sumX * sumY;
+            const denominator = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+            
+            const correlation = Math.abs(numerator / denominator);
+            
+            // Add realistic noise
+            const noise = (Math.random() - 0.5) * 0.15;
+            const isCorrect = keyGuess === SECRET_KEY[bytePos];
+            
+            return isCorrect ? Math.min(0.75 + Math.random() * 0.2, 0.95) : Math.max(correlation * 0.3 + noise, 0.05);
+        }
+        
+        // Update key display
+        function updateKeyDisplay() {
+            const keyStr = recoveredKey.map(b => b === null ? '??' : b.toString(16).toUpperCase().padStart(2, '0')).join(' ');
+            document.getElementById('keyDisplay').textContent = keyStr;
+            
+            const recovered = recoveredKey.filter(b => b !== null).length;
+            const progressBar = document.getElementById('progressBar');
+            const percent = (recovered / 16) * 100;
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = `${recovered}/16 Bytes`;
+        }
+        
+        // Check if all bytes recovered
+        function checkComplete() {
+            if (recoveredKey.every(b => b !== null)) {
+                const flagSection = document.getElementById('flagSection');
+                flagSection.innerHTML = `
+                    <div class="flag-reveal">
+                        🎉 KEY RECOVERED! 🎉<br>
+                        Kunci 16 byte lengkap. Flag resmi ambil via Submit Flag di Discord.
+                    </div>
+                `;
+                flagSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Save/load progress
+        function saveProgress() {
+            localStorage.setItem('poweranalysis_key', JSON.stringify(recoveredKey));
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('poweranalysis_key');
+            if (saved) {
+                recoveredKey = JSON.parse(saved);
+                updateKeyDisplay();
+                checkComplete();
+            }
+        }
+        
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>

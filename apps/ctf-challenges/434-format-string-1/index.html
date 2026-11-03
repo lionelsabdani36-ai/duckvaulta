@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #434 : format string 1 (Stack Memory Inspection)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.dl-bar{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.btn-dl{text-decoration:none;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:8px 14px;border-radius:6px;font-size:.82rem;font-family:monospace;transition:all .2s}
+.btn-dl:hover{background:rgba(0,210,255,.2)}
+.term{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;font-family:monospace;font-size:.85rem;min-height:220px;max-height:360px;overflow-y:auto;margin-bottom:14px}
+.line{margin-bottom:4px;word-break:break-all}
+.ps{color:#10b981}
+.err{color:#ef4444}
+.ok{color:#a5f3fc}
+.tin{display:flex;gap:10px}
+input.in{flex:1;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;padding:12px;font-family:monospace;font-size:.9rem;min-height:44px}
+button{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 20px;min-height:44px}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #434 : BINARY EXPLOITATION (64-BIT STACK LEAK)</div>
+    <h1>format string 1 : Stack Leaker</h1>
+    <p class="sub">Aplikasi restoran membaca resep dan flag rahasia ke dalam buffer stack sebelum meminta pesanan tamu. Karena pemanggilan <code>printf(buf)</code> tidak menggunakan format string statis, kamu dapat mengeksploitasi format specifier untuk membocorkan qword memori stack x86_64.</p>
+    <div class="dl-bar">
+      <a href="format-string-1" download class="btn-dl">⬇ Download ELF Binary (format-string-1)</a>
+      <a href="format-string-1.c" download class="btn-dl">⬇ Download Source Code (format-string-1.c)</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">SIMULASI BINARY RUNTIME (AMD64 SYSTEM V ABI)</div>
+    <div class="term" id="term">
+      <div class="line"><span class="ps">[server]$</span> ./format-string-1</div>
+      <div class="line">Give me your order and I'll read it back to you:</div>
+    </div>
+    <div class="tin">
+      <input class="in" id="order" placeholder="contoh: %14$lx.%15$lx.%16$lx.%17$lx.%18$lx" autocomplete="off">
+      <button onclick="run()">Kirim Order</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Di arsitektur x86_64 ABI, 5 argumen pertama printf diteruskan via register (RSI, RDX, RCX, R8, R9), sedangkan argumen ke-6 dan seterusnya dibaca dari stack pointer (RSP).</li>
+      <li>Specifier <code>%p</code> atau <code>%lx</code> mencetak nilai pointer/integer heksadesimal dari stack frame.</li>
+      <li>Urutan byte di memori x86_64 adalah <strong>little-endian</strong>. Balik urutan byte per qword 8-byte untuk mendapatkan teks flag yang benar!</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via Discord.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const term = document.getElementById("term");
+const inp = document.getElementById("order");
+
+// Stack memory simulation map
+const stackMap = {
+  1: "7f9e4210a400",
+  2: "0",
+  3: "0",
+  4: "a",
+  5: "400",
+  6: "7fffde401820",
+  7: "0",
+  8: "0",
+  9: "7f9e42138bc0",
+  10: "7fffde4019a8",
+  11: "7f9e421160d7",
+  12: "4",
+  13: "0",
+  14: "5f746d667b465443", // CTF{fmt_
+  15: "735f676e31727473", // str1ng_s
+  16: "34336c5f6b633474", // t4ck_l34
+  17: "5f74316234365f6b", // k_64b1t_
+  18: "7d633265386437",   // 7d8e2c}\0
+  19: "7fffde401ad8",
+  20: "7fffde401ae0"
+};
+
+function print(text, cls) {
+  const d = document.createElement("div");
+  d.className = "line " + (cls || "");
+  d.textContent = text;
+  term.appendChild(d);
+  term.scrollTop = term.scrollHeight;
+}
+
+inp.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") run();
+});
+
+function run() {
+  const val = inp.value.trim();
+  if (!val) return;
+  print("> " + val, "ok");
+  inp.value = "";
+
+  // Evaluate format string specifiers
+  let out = val.replace(/%(\d+)\$([lpx]+)/g, function(match, idx, type) {
+    const num = parseInt(idx, 10);
+    return stackMap[num] || "0";
+  });
+
+  // Evaluate generic sequential %lx or %p
+  let counter = 1;
+  out = out.replace(/%([lpx]+)/g, function(match, type) {
+    const val = stackMap[counter] || "0";
+    counter++;
+    return val;
+  });
+
+  print("Here's your order: " + out);
+  print("Bye!");
+}
+</script>
+</body>
+</html>

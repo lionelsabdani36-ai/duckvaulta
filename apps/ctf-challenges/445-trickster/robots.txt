@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /ctf-challenges/445-trickster/instructions.txt
+Disallow: /ctf-challenges/445-trickster/uploads/

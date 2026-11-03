@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #376 : SOAP Corporate Portal (XXE Lab)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.item-btn{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:14px;color:#fff;cursor:pointer;text-align:left;transition:all .2s}
+.item-btn:hover{border-color:#00d2ff;background:rgba(0,210,255,.05)}
+.item-btn h3{font-size:.95rem;margin-bottom:4px;color:#00d2ff}
+.item-btn span{font-size:.8rem;color:#94a3b8}
+.xml-box{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;margin-bottom:16px}
+.xml-box label{display:block;font-size:.8rem;font-family:monospace;color:#00d2ff;margin-bottom:8px}
+textarea{width:100%;min-height:140px;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#a5f3fc;padding:12px;font-family:monospace;font-size:.85rem;resize:vertical}
+.actions{display:flex;gap:10px}
+button.submit-btn{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 24px;min-height:44px}
+button.reset-btn{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.2);border-radius:6px;font-size:.9rem;cursor:pointer;padding:12px 18px;min-height:44px}
+.resp-box{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;min-height:90px;font-family:monospace;font-size:.85rem;white-space:pre-wrap;word-break:break-all;color:#cbd5e1}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #376 : WEB EXPLOITATION (XXE)</div>
+    <h1>SOAP - Corporate Data XML Portal</h1>
+    <p class="sub">Portal web internal perusahaan untuk verifikasi detail inventaris dan akun staf menggunakan backend parser XML. Proyek ini dibangun terburu-buru tanpa audit keamanan. Dapatkan akses ke berkas konfigurasi sistem <code>/etc/passwd</code> untuk menemukan flag kompetisi.</p>
+    
+    <div class="grid">
+      <div class="item-btn" onclick="setPayload(1)">
+        <h3>Item #1 : Executive</h3>
+        <span>Audit Divisi Direksi</span>
+      </div>
+      <div class="item-btn" onclick="setPayload(2)">
+        <h3>Item #2 : Engineering</h3>
+        <span>Infrastruktur Cloud</span>
+      </div>
+      <div class="item-btn" onclick="setPayload(3)">
+        <h3>Item #3 : Security</h3>
+        <span>Red Team &amp; Pentest</span>
+      </div>
+    </div>
+
+    <div class="xml-box">
+      <label>HTTP POST PAYLOAD (/data) [Content-Type: application/xml]:</label>
+      <textarea id="xmlInput"><?xml version="1.0" encoding="UTF-8"?>
+<data><ID>1</ID></data></textarea>
+      <div class="actions" style="margin-top:12px;">
+        <button class="submit-btn" onclick="sendXml()">Kirim XML ke /data</button>
+        <button class="reset-btn" onclick="resetPayload()">Reset</button>
+      </div>
+    </div>
+
+    <label style="display:block;font-size:.8rem;font-family:monospace;color:#00d2ff;margin-bottom:6px;">HTTP Server Response:</label>
+    <div class="resp-box" id="output">Menunggu pengiriman request...</div>
+  </div>
+
+  <div class="card">
+    <div class="badge">ANALISIS &amp; SILABUS LKS</div>
+    <ul class="tips">
+      <li>Kerentanan <strong>XML External Entity (XXE)</strong> terjadi ketika parser XML backend mengevaluasi deklarasi <code>DOCTYPE</code> dan <code>ENTITY SYSTEM</code> eksternal.</li>
+      <li>Contoh payload referensi entitas sistem: <code>&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt; ]&gt;</code> lalu panggil <code>&amp;xxe;</code> di dalam tag nilai data.</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit jawabanmu via tombol di Discord!</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// Obfuscated simulated shadow passwd structure
+const _p1 = "cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaA==";
+const _p2 = "Zml4ZWQ6eDoxMDAwOjEwMDA6Rml4ZWQgVXNlcjovaG9tZS91c2VyOi9iaW4vYmFzaA==";
+const _p3 = "Y3RmX2RhZW1vbjp4OjEwMDE6Q1RGe3h4ZV9zMDRwX3htbF8zeHRfM250MXR5XzhmOWMyYTFlfQ==";
+
+function setPayload(id) {
+  document.getElementById("xmlInput").value = '<?xml version="1.0" encoding="UTF-8"?>\n<data><ID>' + id + '</data>';
+}
+
+function resetPayload() {
+  setPayload(1);
+  document.getElementById("output").textContent = "Menunggu pengiriman request...";
+}
+
+function sendXml() {
+  const raw = document.getElementById("xmlInput").value.trim();
+  const out = document.getElementById("output");
+  
+  if (!raw.includes("<data>") || !raw.includes("</data>")) {
+    out.textContent = "HTTP 400 Bad Request: Format XML tidak valid.";
+    return;
+  }
+
+  // Check XXE SYSTEM entity extraction for /etc/passwd
+  const hasDoctype = /<!DOCTYPE\s+[\w\-]+/i.test(raw);
+  const hasEntity = /<!ENTITY\s+(\w+)\s+SYSTEM\s+["'](file:\/\/\/etc\/passwd|\/etc\/passwd)["']\s*>/i.test(raw);
+  
+  if (hasDoctype && hasEntity) {
+    const match = raw.match(/<!ENTITY\s+(\w+)\s+SYSTEM/i);
+    const entityName = match ? match[1] : "xxe";
+    if (raw.includes("&" + entityName + ";")) {
+      const line1 = atob(_p1);
+      const line2 = atob(_p2);
+      const line3 = atob(_p3);
+      out.textContent = "HTTP 200 OK (Content-Type: text/plain)\n" +
+                        "Invalid ID: " + line1 + "\n" +
+                        "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\n" +
+                        "bin:x:2:2:bin:/bin:/usr/sbin/nologin\n" +
+                        "www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\n" +
+                        line2 + "\n" +
+                        line3 + "\n";
+      return;
+    }
+  }
+
+  // Normal ID processing
+  const m = raw.match(/<ID>(\d+)<\/ID>/);
+  if (m) {
+    const id = m[1];
+    if (id === "1") {
+      out.textContent = "HTTP 200 OK\nDivisi: Executive Suite\nLead: Chief Information Officer\nStatus: Aktif";
+    } else if (id === "2") {
+      out.textContent = "HTTP 200 OK\nDivisi: Cloud Engineering\nLead: Lead SRE Architect\nStatus: Aktif";
+    } else if (id === "3") {
+      out.textContent = "HTTP 200 OK\nDivisi: Cyber Security\nLead: Offensive Security Auditor\nStatus: Aktif";
+    } else {
+      out.textContent = "HTTP 200 OK\nRecord ID " + id + " tidak ditemukan dalam database.";
+    }
+  } else {
+    out.textContent = "HTTP 200 OK\nNilai ID entri tidak dikenali atau kosong.";
+  }
+}
+</script>
+</body>
+</html>

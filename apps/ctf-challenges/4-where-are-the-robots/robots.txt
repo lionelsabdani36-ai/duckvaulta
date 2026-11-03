@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /ctf-challenges/4-where-are-the-robots/80291_classified.html
+Disallow: /80291_classified.html

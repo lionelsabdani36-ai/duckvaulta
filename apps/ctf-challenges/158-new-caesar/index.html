@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #158 New Caesar - Cryptography Medium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:20px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:720px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:16px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.3rem;margin-bottom:6px}
+.sub{font-size:.85rem;color:#94a3b8;margin-bottom:12px;line-height:1.5}
+code.ct{display:block;background:#060913;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:14px;font-family:monospace;font-size:1rem;word-break:break-all;color:#a5f3fc;margin:12px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+textarea{width:100%;min-height:72px;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;padding:10px;font-family:monospace;font-size:.9rem}
+button{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 18px;min-height:44px}
+button.ghost{background:transparent;color:#00d2ff;border:1px solid rgba(0,210,255,.4)}
+a.btn{display:inline-block;background:#00d2ff;color:#060913;border-radius:6px;font-weight:700;font-size:.9rem;padding:12px 18px;text-decoration:none;min-height:44px}
+.out{background:#060913;border:1px solid rgba(16,185,129,.35);border-radius:6px;padding:12px;font-family:monospace;font-size:.9rem;word-break:break-all;margin-top:12px;min-height:48px}
+.tips{font-size:.83rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:4px}
+pre{background:#060913;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:12px;font-size:.78rem;overflow-x:auto;color:#c4b5fd}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="badge">CHALLENGE #158 : NEW CAESAR</div>
+<h1>Brand New Encryption</h1>
+<p class="sub">Kategori Cryptography (Medium). Cipher custom dua lapis. Ciphertext ditemukan, file enkripsi tersedia. Bungkus jawaban dengan <code>CTF{...}</code>.</p>
+<code class="ct" id="ct">cbdabldadbplblcnpfpnpapapecpcn</code>
+<div class="row">
+<button class="ghost" onclick="copyCt()">Salin Ciphertext</button>
+<a class="btn" href="./new_caesar.py" download>Unduh new_caesar.py</a>
+</div>
+</div>
+<div class="card">
+<div class="badge">CARA KERJA CIPHER</div>
+<ul class="tips">
+<li>Lapis 1 Base16: tiap byte plaintext jadi 2 huruf (a = 0 sampai p = 15).</li>
+<li>Lapis 2 additive key: tiap simbol digeser maju sejauh offset rahasia.</li>
+<li>Baca <code>new_caesar.py</code>, identifikasi offset, balikkan kedua lapis.</li>
+</ul>
+</div>
+<div class="card">
+<div class="badge">ANALISIS FREKUENSI</div>
+<textarea id="inp">cbdabldadbplblcnpfpnpapapecpcn</textarea>
+<div class="row"><button onclick="freq()">Hitung Frekuensi</button></div>
+<div class="out" id="out">-</div>
+<p class="sub" style="margin-top:10px">Tool ini hanya bantu analisis. Dekripsi penuh kerjakan sendiri dengan Python lalu submit via Discord.</p>
+</div>
+</div>
+<script>
+function copyCt(){navigator.clipboard.writeText(document.getElementById('ct').innerText);alert('Ciphertext disalin');}
+function freq(){var t=document.getElementById('inp').value;var m={};for(var i=0;i<t.length;i++){m[t[i]]=(m[t[i]]||0)+1;}var s=Object.keys(m).sort().map(function(k){return k+': '+m[k];});document.getElementById('out').innerText='Panjang: '+t.length+'\n'+s.join('  ');}
+</script>
+</body>
+</html>

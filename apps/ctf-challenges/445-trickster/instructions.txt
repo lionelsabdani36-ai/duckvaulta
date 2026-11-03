@@ -1,0 +1,5 @@
+Specification for PNG Images processing:
+- Allow users to upload PNG images.
+- Look for ".png" in the submitted filename.
+- Ensure magic bytes match PNG signature (hex: 50 4E 47 / \x89PNG\r\n\x1a\n).
+- After validation, store files in uploads/ so administrator can process them.

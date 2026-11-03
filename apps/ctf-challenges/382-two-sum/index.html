@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Challenge #382 : two-sum (Integer Overflow Lab)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060913;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:24px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:760px}
+.card{background:#0a1122;border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:28px;margin-bottom:18px}
+.badge{display:inline-block;font-size:.72rem;font-family:monospace;font-weight:700;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+h1{font-size:1.35rem;margin-bottom:8px;color:#fff}
+p.sub{font-size:.88rem;color:#94a3b8;line-height:1.6;margin-bottom:16px}
+.term{background:#020409;border:1px solid rgba(0,210,255,.3);border-radius:8px;padding:16px;font-family:monospace;font-size:.85rem;min-height:220px;max-height:360px;overflow-y:auto;margin-bottom:14px}
+.line{margin-bottom:4px;word-break:break-all}
+.ps{color:#10b981}
+.err{color:#ef4444}
+.ok{color:#a5f3fc}
+.tin{display:flex;gap:10px}
+input.in{flex:1;background:#060913;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#fff;padding:12px;font-family:monospace;font-size:.9rem;min-height:44px}
+button{background:#00d2ff;color:#060913;border:none;border-radius:6px;font-weight:700;font-size:.9rem;cursor:pointer;padding:12px 20px;min-height:44px}
+.btn-dl{display:inline-block;text-decoration:none;color:#00d2ff;background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);padding:8px 14px;border-radius:6px;font-size:.82rem;font-family:monospace;margin-top:6px}
+.btn-dl:hover{background:rgba(0,210,255,.2)}
+.tips{font-size:.84rem;color:#94a3b8;line-height:1.6}
+.tips li{margin-left:18px;margin-bottom:6px}
+code{background:rgba(0,210,255,.12);color:#38bdf8;padding:2px 6px;border-radius:4px;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="badge">CHALLENGE #382 : BINARY EXPLOITATION (C OVERFLOW)</div>
+    <h1>two-sum : Signed Integer Overflow</h1>
+    <p class="sub">Tantangan kalkulasi logika biner C 32-bit. Masukkan dua bilangan bulat positif <code>n1</code> dan <code>n2</code> sedemikian rupa sehingga memenuhi paradoks: <code>n1 > n1 + n2 OR n2 > n1 + n2</code>.</p>
+    <a href="vuln.c" download class="btn-dl">⬇ Download Source Code (vuln.c)</a>
+  </div>
+
+  <div class="card">
+    <div class="badge">SIMULASI BINARY RUNTIME (ELF 32/64-BIT)</div>
+    <div class="term" id="term">
+      <div class="line"><span class="ps">[server]$</span> ./two-sum</div>
+      <div class="line">Condition: n1 > n1 + n2 OR n2 > n1 + n2</div>
+      <div class="line">What two positive numbers can make this possible? (Pisahkan dengan spasi, contoh: 10 20):</div>
+    </div>
+    <div class="tin">
+      <input class="in" id="nums" placeholder="contoh: 2147483647 1" autocomplete="off">
+      <button onclick="run()">Kirim Input</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge">TEORI ARITMETIKA &amp; LKS</div>
+    <ul class="tips">
+      <li>Tipe data signed 32-bit integer di C memiliki batas nilai maksimum <code>INT_MAX = 2147483647</code> ($2^{31}-1$).</li>
+      <li>Dalam representasi Two's Complement, penjumlahan yang melampaui <code>INT_MAX</code> akan membalik sign-bit menjadi 1 (angka negatif).</li>
+      <li>Flag resmi berformat <code>CTF{...}</code>. Submit flag yang berhasil kamu peroleh via Discord.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const term = document.getElementById("term");
+const inp = document.getElementById("nums");
+
+// Obfuscated XOR payload for flag
+const _enc = [33, 54, 36, 25, 22, 21, 82, 61, 17, 23, 15, 61, 81, 80, 0, 83, 22, 61, 83, 12, 22, 81, 5, 81, 16, 61, 82, 20, 81, 16, 4, 14, 82, 21, 61, 91, 1, 83, 3, 86, 7, 85, 4, 31];
+const _xorKey = 98; // Key
+
+function print(text, cls) {
+  const d = document.createElement("div");
+  d.className = "line " + (cls || "");
+  d.textContent = text;
+  term.appendChild(d);
+  term.scrollTop = term.scrollHeight;
+}
+
+inp.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") run();
+});
+
+function run() {
+  const val = inp.value.trim();
+  if (!val) return;
+  print("> " + val, "ok");
+  inp.value = "";
+
+  const parts = val.split(/\s+/);
+  if (parts.length < 2) {
+    print("Format salah! Harap masukkan dua angka dipisah spasi.", "err");
+    return;
+  }
+
+  const n1 = parseInt(parts[0], 10);
+  const n2 = parseInt(parts[1], 10);
+
+  if (isNaN(n1) || isNaN(n2)) {
+    print("Input harus berupa bilangan bulat!", "err");
+    return;
+  }
+
+  print("You entered " + n1 + " and " + n2);
+
+  // 32-bit signed integer addition simulation using bitwise OR
+  const sum32 = (n1 + n2) | 0;
+
+  if (n1 > 0 && n2 > 0 && sum32 < 0) {
+    print("You triggered signed integer overflow! (sum32 = " + sum32 + ")", "ok");
+    // Decrypt flag
+    const flagStr = _enc.map(c => String.fromCharCode(c ^ _xorKey)).join("");
+    print("YOUR FLAG IS: " + flagStr, "ok");
+  } else if (n1 <= 0 || n2 <= 0) {
+    print("Kedua angka harus bernilai POSITIF (> 0)!", "err");
+  } else {
+    print("No overflow. Sum32 = " + sum32 + ". Coba nilai yang lebih mendekati INT_MAX.", "err");
+  }
+}
+</script>
+</body>
+</html>
