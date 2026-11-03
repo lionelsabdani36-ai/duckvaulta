@@ -1,0 +1,82 @@
+{
+  "timestamp": "2026-11-03T16:05:00Z",
+  "source": {
+    "instagram_url": "https://www.instagram.com/p/Dem91ptkrhe/?img_index=7&xtok=MXU3ZWtqZngwdHl5Yw==",
+    "author": "Jeon (@djeonail) | Automation Enthusiast",
+    "topic": "6 Skill Anti-Slop Biar Hasil AI Nggak Kelihatan Pasaran"
+  },
+  "status": "fully_applied_and_operational",
+  "skills_matrix": [
+    {
+      "id": 1,
+      "name": "impeccable",
+      "repository": "https://github.com/pbakaus/impeccable",
+      "category": "design-and-ui",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/design-and-ui/impeccable",
+      "cli_bin": "/home/lionelsabdani36/.local/bin/impeccable",
+      "role": "Frontend design audit, anti-pattern detection & UI polish",
+      "features": "24 commands (polish, audit, critique, animate, etc.), 59 design detection rules, local telemetry disabled"
+    },
+    {
+      "id": 2,
+      "name": "better-icons",
+      "repository": "https://github.com/better-auth/better-icons",
+      "category": "design-and-ui",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/design-and-ui/better-icons",
+      "cli_bin": "/home/lionelsabdani36/.local/bin/better-icons",
+      "role": "Real vector SVG icons retrieval via Iconify API (no emoji/fake icons)",
+      "features": "Access to 200,000+ icons across 150+ libraries (Lucide, Heroicons, Material Design, Tabler, Phosphor)"
+    },
+    {
+      "id": 3,
+      "name": "hallmark",
+      "repository": "https://github.com/Nutlope/hallmark",
+      "category": "design-and-ui",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/design-and-ui/hallmark",
+      "script_entry": "/home/lionelsabdani36/.hermes/skills/design-and-ui/hallmark/scripts/sloplint.mjs",
+      "role": "Together AI anti-slop design system & AST static linter",
+      "features": "21 curated design aesthetics, 57 anti-slop tests, non-destructive audit mode"
+    },
+    {
+      "id": 4,
+      "name": "taste-skill",
+      "repository": "https://github.com/Leonxlnx/taste-skill",
+      "category": "design-and-ui",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/design-and-ui/taste-skill",
+      "script_entry": "/home/lionelsabdani36/.hermes/skills/design-and-ui/taste-skill/scripts/inspect.mjs",
+      "role": "Art direction from 247 Awwwards curated sites & browser visual inspector",
+      "features": "Strict house style enforcement, screenshot look-and-fix loop, zero AI generic gradients/cards"
+    },
+    {
+      "id": 5,
+      "name": "stop-slop",
+      "repository": "https://github.com/hardikpandya/stop-slop",
+      "category": "creative",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/creative/stop-slop",
+      "role": "Prose de-slopping, elimination of predictable LLM structures",
+      "features": "Zero em-dashes, no binary contrasts, no throat-clearing clichés, 5-dimension scoring (threshold >= 35/50)"
+    },
+    {
+      "id": 6,
+      "name": "humanizer",
+      "repository": "https://github.com/blader/humanizer",
+      "category": "creative",
+      "installed_path": "/home/lionelsabdani36/.hermes/skills/creative/humanizer",
+      "role": "Preserves authentic human voice while eliminating Wikipedia AI writing signs",
+      "features": "26 AI writing pattern detectors, natural pacing, contextual tone adjustment"
+    }
+  ],
+  "team_roles": {
+    "leader_david": "High-level orchestration, policy enforcement, zero-slop verification",
+    "charlie_trend_hunter": "Taxonomy & market intelligence from Instagram/GitHub ecosystem",
+    "alex_fullstack_dev": "Frontend architecture, CSS design token standard, SVG icon integration",
+    "athena_security_engineer": "Telemetry privacy audit, sandbox enforcement, local execution hardening",
+    "julius_qa_engineer": "AST linting & E2E compliance validation against 59 rules and 57 tests",
+    "judith_guru": "Anti-slop copywriting standards & pedagogy curriculum for all agent personas",
+    "omnirush_executor": "Autonomous coding agent test validation and CLI verification"
+  },
+  "automation": {
+    "pipeline_script": "/home/lionelsabdani36/duckvaulta/scripts/anti-slop-check.sh",
+    "verification_status": "PASSING_ALL_CHECKS"
+  }
+}
