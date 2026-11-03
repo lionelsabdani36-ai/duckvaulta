@@ -1,0 +1,149 @@
+cycraft-title:
+  change-interval: 300
+  texts:
+  - '&b&lCYCRAFT &f&lSMP'
+  - '&3&lCYCRAFT &b&lSMP'
+  - '&f&lCYCRAFT &b&lSMP'
+  - '&b&lCYCRAFT &f&lSMP'
+cycraft-host:
+  change-interval: 400
+  texts:
+  - '&7duckvaulta.ai.id'
+  - '&bduckvaulta.ai.id'
+  - '&3duckvaulta.ai.id'
+  - '&bduckvaulta.ai.id'
+MyAnimation1:
+  change-interval: 100
+  texts:
+  - '&d-&3--------------'
+  - '&3-&d-&3-------------'
+  - '&3--&d-&3------------'
+  - '&3---&d-&3-----------'
+  - '&3----&d-&3----------'
+  - '&3-----&d-&3---------'
+  - '&3------&d-&3--------'
+  - '&3-------&d-&3-------'
+  - '&3--------&d-&3------'
+  - '&3---------&d-&3-----'
+  - '&3----------&d-&3----'
+  - '&3-----------&d-&3---'
+  - '&3------------&d-&3--'
+  - '&3-------------&d-&3-'
+  - '&3--------------&d-'
+  - '&3-------------&d-&3-'
+  - '&3------------&d-&3--'
+  - '&3-----------&d-&3---'
+  - '&3----------&d-&3----'
+  - '&3---------&d-&3-----'
+  - '&3--------&d-&3------'
+  - '&3-------&d-&3-------'
+  - '&3------&d-&3--------'
+  - '&3-----&d-&3---------'
+  - '&3----&d-&3----------'
+  - '&3---&d-&3-----------'
+  - '&3--&d-&3------------'
+  - '&3-&d-&3-------------'
+  - '&d-&3--------------'
+ServerName:
+  change-interval: 300
+  texts:
+  - '&c&lServerName'
+  - '&c&n&lServerName'
+  - '&b&lServerName'
+  - '&b&l&nServerName'
+  - '&e&lServerName'
+  - '&e&n&lServerName'
+web:
+  change-interval: 200
+  texts:
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&6w&eww.domain.com'
+  - '&ew&6w&ew.domain.com'
+  - '&eww&6w&e.domain.com'
+  - '&ewww&6.&edomain.com'
+  - '&ewww.&6d&eomain.com'
+  - '&ewww.d&6o&emain.com'
+  - '&ewww.do&6m&eain.com'
+  - '&ewww.dom&6a&ein.com'
+  - '&ewww.doma&6i&en.com'
+  - '&ewww.domai&6n&e.com'
+  - '&ewww.domain&6.&ecom'
+  - '&ewww.domain.&6c&eom'
+  - '&ewww.domain.c&6o&em'
+  - '&ewww.domain.co&6m'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+  - '&ewww.domain.com'
+vote:
+  change-interval: 1000
+  texts:
+  - '&avote.domain.com'
+  - '&a&nvote.domain.com'
+  - '&5vote.domain.com'
+  - '&5&nvote.domain.com'
+Welcome:
+  change-interval: 400
+  texts:
+  - '&7&lW_'
+  - '&7&lW_'
+  - '&7&lWe_'
+  - '&7&lWel_'
+  - '&7&lWelc_'
+  - '&7&lWelco_'
+  - '&7&lWelcom_'
+  - '&7&lWelcome_'
+  - '&7&lWelcome_'
+  - '&7&lWelcome_'
+  - '&7&lWelcome_'
+  - '&7&lWelcom_'
+  - '&7&lWelco_'
+  - '&7&lWelc_'
+  - '&7&lWel_'
+  - '&7&lWe_'
+  - '&7&lW_'
+  - '&7&lW_'
+time:
+  change-interval: 3000
+  texts:
+  - '&7Time &b%time%'
+  - '&7Date &b%date%'
+barcolors:
+  change-interval: 1000
+  texts:
+  - RED
+  - BLUE
+  - GREEN
+  - YELLOW
+cyber_title:
+  change-interval: 350
+  texts:
+  - <#00FFA3>&lCYBER HUB</#00E5FF>
+  - <#00F5B4>&lCYBER HUB</#00D4FF>
+  - <#00EAA5>&lCYBER HUB</#00BFFF>
+  - <#00FFA3>&lCYBER HUB</#00E5FF>
+survival_title:
+  change-interval: 350
+  texts:
+  - <#00FFA3>&lCYCRAFT SMP</#00E5FF>
+  - <#00F5B4>&lCYCRAFT SMP</#00D4FF>
+  - <#00EAA5>&lCYCRAFT SMP</#00BFFF>
+  - <#00FFA3>&lCYCRAFT SMP</#00E5FF>
+status_dot:
+  change-interval: 800
+  texts:
+  - '&a●'
+  - '&2●'
+cyber_domain:
+  change-interval: 500
+  texts:
+  - '&3duckvaulta.ai.id'
+  - '&bduckvaulta.ai.id'
+  - '&3duckvaulta.ai.id'

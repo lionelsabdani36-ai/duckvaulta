@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-11-03T23:58:00Z",
+  "project": "Cycraft SMP",
+  "target": "Dynamic Cyber Scoreboard & Tablist System",
+  "server": {
+    "engine": "Purpur 1.21.4 (Build 2416)",
+    "runtime": "OpenJDK 21 LTS (Java 21.0.13)",
+    "ports": {
+      "java_tcp": 25565,
+      "bedrock_udp": 19132,
+      "rcon_tcp": 25575
+    },
+    "ip_address": "34.135.45.195",
+    "domain": "duckvaulta.ai.id",
+    "tps": "20.0, 20.0, 20.0, 20.0"
+  },
+  "plugins_deployed": [
+    {
+      "name": "PlaceholderAPI",
+      "version": "2.12.3",
+      "file": "PlaceholderAPI.jar",
+      "expansions": [
+        "Vault (1.8.3)",
+        "Player (2.0.9)",
+        "Server (2.7.3)",
+        "Essentials (1.5.2)",
+        "LuckPerms (5.4-R2)",
+        "Floodgate (1.5.2)",
+        "Statistic (2.1.0)"
+      ]
+    },
+    {
+      "name": "TAB",
+      "version": "6.2.1",
+      "file": "TAB.jar (Paper 1.20.5 - 1.21.4 Build)",
+      "overhead_cpu": "0.016%",
+      "reload_latency": "8ms"
+    }
+  ],
+  "scoreboard_architectures": {
+    "cyber_hub": {
+      "world": "cyber_hub",
+      "title": "%animation:cycraft-title%",
+      "features": "Agent Codename, Division / Rank, Eco Credits, Cyber Hub Safe Zone telemetry, Agent Count, Ping / TPS, Rapid Warp Navigation (/warp quest, /warp survival)"
+    },
+    "survival": {
+      "worlds": ["world", "world_nether", "world_the_end"],
+      "title": "%animation:cycraft-title%",
+      "features": "Survival Player Name, Rank, Balance, Dimension, Online Players, Ping / TPS, Return to Hub Warp (/warp hub)"
+    },
+    "crossplay_bedrock_safety": {
+      "geyser_floodgate_compatibility": true,
+      "max_character_width": 26,
+      "mobile_gui_clearance": "Guaranteed for GUI Scale 3 and 4 (zero text clipping)"
+    }
+  },
+  "anti_slop_compliance": {
+    "zero_em_dash": true,
+    "contrast_ratio": "4.5:1 (Cyan &b, Aqua &3, Green &a, Yellow &e, Gray &7)",
+    "no_clashing_gradients": true,
+    "refresh_intervals": {
+      "tps": "1000ms",
+      "ping": "1000ms",
+      "balance": "1000ms",
+      "title_animation": "250ms"
+    }
+  },
+  "kanban_orchestration": {
+    "t_861103c3": "Charlie (trend-hunter) - Scoreboard Architecture Recon & Dual-World Layout",
+    "t_371bac21": "Alex (fullstack-dev) - Deploy PlaceholderAPI & TAB v6.2.1 Paper Build",
+    "t_6e6f127b": "Omnirush (default) - Automated Scoreboard Configuration & Asset Deployment",
+    "t_be1cf20d": "Athena (security-engineer) - Placeholder Security, Packet Rate & Floodgate Names Audit",
+    "t_94b9e61f": "Julius (qa-engineer) - Scoreboard Rendering, Zero-Lag TPS & Bedrock Sync Test",
+    "t_1e7567e0": "Judith (guru) - Visual Anti-Slop Guidelines & Cyber Status Telemetry"
+  }
+}

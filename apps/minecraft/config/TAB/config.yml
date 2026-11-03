@@ -1,0 +1,288 @@
+header-footer:
+  enabled: true
+  designs:
+    default:
+      header:
+      - ''
+      - '<#00FFA3>&lCYCRAFT SMP</#00E5FF> &8:: &f&lCROSSPLAY NETWORK'
+      - '&7Cyber Hub & Survival Telemetry | &bduckvaulta.ai.id'
+      - ''
+      footer:
+      - ''
+      - '&7TPS: &a%tps% &8| &7Ping: &a%ping%&7ms &8| &7Online: &f%online%&8/&7%server_max_players%'
+      - '&7Memory: &f%memory-used%&7/&8%memory-max% MB &8| &7Java: &f25565 &8| &7Bedrock:
+        &f19132'
+      - '&7Portal: &bhttps://duckvaulta.ai.id'
+      - ''
+tablist-name-formatting:
+  enabled: true
+  disable-condition: '%world%=disabledworld'
+scoreboard-teams:
+  enabled: true
+  enable-collision: true
+  invisible-nametags: false
+  sorting-types:
+  - GROUPS:owner,admin,mod,helper,builder,vip,default
+  - PLACEHOLDER_A_TO_Z:%player%
+  case-sensitive-sorting: true
+  can-see-friendly-invisibles: false
+  disable-condition: '%world%=disabledworld'
+playerlist-objective:
+  enabled: true
+  value: '%ping%'
+  fancy-value: '&7Ping: %ping%'
+  title: TAB
+  render-type: INTEGER
+  disable-condition: '%world%=disabledworld'
+belowname-objective:
+  enabled: false
+  value: '%health%'
+  fancy-value: '&c%health%'
+  fancy-value-default: NPC
+  title: '&cHealth'
+  disable-condition: '%world%=disabledworld'
+  view-distance: 10
+prevent-spectator-effect:
+  enabled: false
+bossbar:
+  enabled: false
+  toggle-command: /bossbar
+  remember-toggle-choice: false
+  hidden-by-default: false
+  bars:
+    ServerInfo:
+      style: PROGRESS
+      color: '%animation:barcolors%'
+      progress: '100'
+      text: '&fWebsite: &bwww.domain.com'
+scoreboard:
+  enabled: true
+  toggle-command: /sb
+  remember-toggle-choice: true
+  hidden-by-default: false
+  delay-on-join-milliseconds: 0
+  scoreboards:
+    cyber_hub_java:
+      display-condition: '%world%=cyber_hub;%player-version-id%>=765;%bedrock%=false'
+      title: <#00FFA3>&lCYBER HUB</#00E5FF> &8| &fduckvaulta
+      lines:
+      - '&8&m────────────────────'
+      - '* &7User&8:||&f%player%'
+      - '* &7Rank&8:||&b%vault_prefix%'
+      - '* &7Client&8:||&a[JAVA]'
+      - ''
+      - '* &7Server&8:||&aCycraft SMP'
+      - '* &7Online&8:||&f%online% &7players'
+      - '* &7Latency&8:||&f%ping%&7ms'
+      - '* &7TPS&8:||&a%tps%'
+      - '&8&m────────────────────'
+      - '* &7Quest&8:||&e/warp quest'
+      - '* &7SMP&8:||&e/warp survival'
+      - '&8&m────────────────────'
+      - '&3duckvaulta.ai.id'
+    cyber_hub_bedrock:
+      display-condition: '%world%=cyber_hub'
+      title: '&b&lCYBER HUB &8| &fduckvaulta'
+      lines:
+      - '&8&m────────────────────'
+      - ' &8> &7User&8: &f%player%'
+      - ' &8> &7Rank&8: &b%vault_prefix%'
+      - ' &8> &7Client&8: &e%condition:device_badge%'
+      - ' '
+      - ' &8> &7Server&8: &aCycraft SMP'
+      - ' &8> &7Online&8: &f%online% &7players'
+      - ' &8> &7Latency&8: &f%ping%&7ms'
+      - ' &8> &7TPS&8: &a%tps%'
+      - '&8&m────────────────────'
+      - ' &8> &7Quest&8: &e/warp quest'
+      - ' &8> &7SMP&8: &e/warp survival'
+      - '&8&m────────────────────'
+      - '&3duckvaulta.ai.id'
+    survival_java:
+      display-condition: '%player-version-id%>=765;%bedrock%=false'
+      title: <#00FFA3>&lCYCRAFT SMP</#00E5FF> &8| &a&lSURVIVAL
+      lines:
+      - '&8&m────────────────────'
+      - '* &7Player&8:||&f%player%'
+      - '* &7Balance&8:||&6$%vault_eco_balance_formatted%'
+      - '* &7Rank&8:||&b%vault_prefix%'
+      - ''
+      - '* &7Coords&8:||&f%player_x%&7, &f%player_y%&7, &f%player_z%'
+      - '* &7World&8:||&b%world%'
+      - ''
+      - '* &7PvP K/D&8:||&c%statistic_player_kills%&7/&4%statistic_deaths%'
+      - '* &7TPS&8:||&a%tps%'
+      - '* &7Ping&8:||&a%ping%&7ms'
+      - '&8&m────────────────────'
+      - '* &7Hub&8:||&e/warp hub'
+      - '&8&m────────────────────'
+      - '&3duckvaulta.ai.id'
+    survival_bedrock:
+      display-condition: '%bedrock%=true'
+      title: '&a&lCYCRAFT SMP &8| &fSurvival'
+      lines:
+      - '&8&m────────────────────'
+      - ' &8> &7Player&8: &f%player%'
+      - ' &8> &7Balance&8: &6$%vault_eco_balance_formatted%'
+      - ' &8> &7Rank&8: &b%vault_prefix%'
+      - ' '
+      - ' &8> &7Pos&8: &f%player_x%&7, &f%player_y%&7, &f%player_z%'
+      - ' &8> &7World&8: &b%world%'
+      - ' '
+      - ' &8> &7PvP K/D&8: &c%statistic_player_kills%&7/&4%statistic_deaths%'
+      - ' &8> &7TPS&8: &a%tps%'
+      - ' &8> &7Ping&8: &a%ping%&7ms'
+      - '&8&m────────────────────'
+      - ' &8> &7Hub&8: &e/warp hub'
+      - '&8&m────────────────────'
+      - '&3duckvaulta.ai.id'
+    scoreboard:
+      title: '&b&lCYCRAFT SMP &8| &fTelemetri'
+      lines:
+      - '&8&m────────────────────'
+      - ' &8> &7Pemain&8: &f%player%'
+      - ' &8> &7Role&8: &b%group%'
+      - ' &8> &7Saldo&8: &6$%vault_eco_balance_formatted%'
+      - ' '
+      - ' &8> &7Dunia&8: &e%world%'
+      - ' &8> &7Online&8: &f%online%&8/&7%server_max_players%'
+      - ' &8> &7Ping&8: &a%ping%&7ms &8| &7TPS&8: &a%tps%'
+      - '&8&m────────────────────'
+      - ' &8> &7Hub&8: &e/warp hub'
+      - '&8&m────────────────────'
+      - '&3duckvaulta.ai.id'
+layout:
+  enabled: false
+  direction: COLUMNS
+  default-skin: mineskin:37e93c8e12cd426cb28fce31969e0674
+  enable-remaining-players-text: true
+  remaining-players-text: '... and %s more'
+  empty-slot-ping-value: 1000
+  layouts:
+    default:
+      slot-count: 80
+      fixed-slots:
+      - '1|&3Website&f:'
+      - 2|&bmyserver.net
+      - '3|&8&m                       '
+      - '4|&3Name&f:'
+      - 5|&b%player%
+      - '7|&3Rank&f:'
+      - '8|Rank: %group%'
+      - '10|&3World&f:'
+      - 11|&b%world%
+      - '13|&3Time&f:'
+      - 14|&b%time%
+      - '21|&3Teamspeak&f:'
+      - 22|&bts.myserver.net
+      - '23|&8&m                       '
+      - '41|&3Store&f:'
+      - 42|&bshop.myserver.net
+      - '43|&8&m                       '
+      groups:
+        staff:
+          display-condition: permission:tab.staff
+          slots:
+          - 24-40
+        players:
+          slots:
+          - 44-80
+ping-spoof:
+  enabled: false
+  value: 0
+global-playerlist:
+  enabled: false
+  display-others-as-spectators: false
+  display-vanished-players-as-spectators: true
+  isolate-unlisted-servers: false
+  update-latency: false
+  spy-servers:
+  - spyserver1
+  - spyserver2
+  server-groups:
+    lobbies:
+    - lobby1
+    - lobby2
+    group2:
+    - server1
+    - server2
+placeholders:
+  date-format: dd.MM.yyyy
+  time-format: '[HH:mm:ss / h:mm a]'
+  time-offset: 0
+  register-tab-expansion: false
+  locale: en-US
+placeholder-output-replacements:
+  '%essentials_vanished%':
+    'yes': '&7| Vanished'
+    'no': ''
+conditions:
+  device_badge:
+    conditions:
+    - '%bedrock%=true'
+    'true': '&b[BEDROCK]'
+    'false': '&a[JAVA]'
+  platform:
+    conditions:
+    - '%bedrock%=true'
+    'true': '&b%floodgate_device%'
+    'false': '&aJava'
+placeholder-refresh-intervals:
+  default-refresh-interval: 500
+  '%tps%': 1000
+  '%server_tps%': 1000
+  '%server_tps_colored%': 1000
+  '%server_online%': 1000
+  '%ping%': 1000
+  '%player_ping%': 1000
+  '%vault_eco_balance_formatted%': 1000
+  '%statistic_player_kills%': 2000
+  '%statistic_deaths%': 2000
+assign-groups-by-permissions: false
+primary-group-finding-list:
+- Owner
+- Admin
+- Mod
+- Helper
+- default
+permission-refresh-interval: 1000
+debug: false
+mysql:
+  enabled: false
+  host: 127.0.0.1
+  port: 3306
+  database: tab
+  username: user
+  password: password
+  useSSL: true
+proxy-support:
+  enabled: true
+  channel-name-suffix: custom
+  type: PLUGIN
+  plugin:
+    name: RedisBungee
+  redis:
+    url: redis://:password@localhost:6379/0
+  rabbitmq:
+    exchange: plugin
+    url: amqp://guest:guest@localhost:5672/%2F
+components:
+  minimessage-support: true
+  disable-shadow-for-heads: true
+config-version: 7
+per-world-playerlist:
+  enabled: false
+  allow-bypass-permission: false
+  ignore-effect-in-worlds:
+  - ignoredworld
+  - build
+  shared-playerlist-world-groups:
+    lobby:
+    - lobby1
+    - lobby2
+    minigames:
+    - paintball
+    - bedwars
+compensate-for-packetevents-bug: false
+use-bukkit-permissions-manager: false
+use-online-uuid-in-tablist: true

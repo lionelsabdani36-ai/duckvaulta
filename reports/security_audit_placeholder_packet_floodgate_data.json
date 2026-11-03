@@ -1,0 +1,683 @@
+{
+  "timestamp": 1793749975.2002487,
+  "task_id": "t_be1cf20d",
+  "lead_auditor": "Athena (@security-engineer)",
+  "key_hashes": {
+    "floodgate_key": "186635bf76b2626700ae4021ec0d97cae7a8106dd9b0ec0c6a0b0eaef0a4d7f0",
+    "geyser_key": "186635bf76b2626700ae4021ec0d97cae7a8106dd9b0ec0c6a0b0eaef0a4d7f0"
+  },
+  "placeholder_security": {
+    "timestamp": 1793749975.0945156,
+    "audit": "Placeholder Security & Injection Analysis",
+    "papi_config": {
+      "config_file": "/home/lionelsabdani36/minecraft-server/plugins/PlaceholderAPI/config.yml",
+      "exists": true,
+      "settings": {
+        "check_updates": true,
+        "cloud_enabled": true,
+        "detect_malicious_expansions": true,
+        "use_adventure_provided_replacer": false,
+        "debug": false
+      },
+      "audit_checks": {
+        "detect_malicious_expansions_enabled": true,
+        "cloud_download_posture": "MONITORED"
+      }
+    },
+    "expansions_audit": {
+      "expansions_dir": "/home/lionelsabdani36/minecraft-server/plugins/PlaceholderAPI/expansions",
+      "count": 7,
+      "expansions": [
+        {
+          "name": "Expansion-essentials.jar",
+          "size_bytes": 11566,
+          "class_count": 1,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-floodgate.jar",
+          "size_bytes": 10094,
+          "class_count": 5,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-luckperms.jar",
+          "size_bytes": 18961,
+          "class_count": 10,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-player.jar",
+          "size_bytes": 22463,
+          "class_count": 6,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-server.jar",
+          "size_bytes": 20218,
+          "class_count": 6,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-statistic.jar",
+          "size_bytes": 13805,
+          "class_count": 4,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        },
+        {
+          "name": "Expansion-vault.jar",
+          "size_bytes": 10873,
+          "class_count": 4,
+          "status": "CLEAN",
+          "dangerous_findings": []
+        }
+      ]
+    },
+    "tab_intervals_audit": {
+      "config_file": "/home/lionelsabdani36/minecraft-server/plugins/TAB/config.yml",
+      "exists": true,
+      "refresh_intervals": {
+        "default-refresh-interval": 500,
+        "%server_uptime%": 1000,
+        "%server_tps_1_colored%": 1000,
+        "%server_unique_joins%": 5000,
+        "%player_health%": 200,
+        "%player_ping%": 1000,
+        "%vault_prefix%": 1000,
+        "%rel_factionsuuid_relation_color%": 1000
+      },
+      "risk_assessment": [
+        {
+          "placeholder": "default-refresh-interval",
+          "interval_ms": 500,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%server_uptime%",
+          "interval_ms": 1000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%server_tps_1_colored%",
+          "interval_ms": 1000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%server_unique_joins%",
+          "interval_ms": 5000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%player_health%",
+          "interval_ms": 200,
+          "risk": "MEDIUM",
+          "reason": "Interval < 500ms should be restricted to essential UI elements."
+        },
+        {
+          "placeholder": "%player_ping%",
+          "interval_ms": 1000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%vault_prefix%",
+          "interval_ms": 1000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        },
+        {
+          "placeholder": "%rel_factionsuuid_relation_color%",
+          "interval_ms": 1000,
+          "risk": "SAFE",
+          "reason": "Interval >= 500ms provides optimal performance/telemetry balance."
+        }
+      ]
+    },
+    "injection_tests": [
+      {
+        "test": "Valid Server Online",
+        "payload": "%server_online%",
+        "output": "0\n\u0000\u0000",
+        "elapsed_ms": 1.31,
+        "is_safe": true
+      },
+      {
+        "test": "Valid Server TPS",
+        "payload": "%server_tps%",
+        "output": "\u00a7a20.0\u00a77, \u00a7a20.0\u00a77, \u00a7a*20.0\u00a77, \u00a7a*20.0\n\u0000\u0000",
+        "elapsed_ms": 0.86,
+        "is_safe": true
+      },
+      {
+        "test": "Valid Server Version",
+        "payload": "%server_version%",
+        "output": "1.21.4\n\u0000\u0000",
+        "elapsed_ms": 0.85,
+        "is_safe": true
+      },
+      {
+        "test": "Empty Placeholder Escape",
+        "payload": "%%",
+        "output": "%%\n\u0000\u0000",
+        "elapsed_ms": 0.82,
+        "is_safe": true
+      },
+      {
+        "test": "Invalid Placeholder Fallback",
+        "payload": "%invalid_placeholder_probe%",
+        "output": "%invalid_placeholder_probe%\n\u0000\u0000",
+        "elapsed_ms": 0.96,
+        "is_safe": true
+      },
+      {
+        "test": "Nested Placeholder Injection",
+        "payload": "%server_%server_online%%",
+        "output": "%server_%server_online%%\n\u0000\u0000",
+        "elapsed_ms": 0.94,
+        "is_safe": true
+      },
+      {
+        "test": "MiniMessage RunCommand Injection",
+        "payload": "<click:run_command:/op>CLICK_ME</click>",
+        "output": "<click:run_command:/op>CLICK_ME</click>\n\u0000\u0000",
+        "elapsed_ms": 0.84,
+        "is_safe": true
+      },
+      {
+        "test": "Multiple Encapsulated Percent",
+        "payload": "%%%server_online%%%",
+        "output": "%%0%%\n\u0000\u0000",
+        "elapsed_ms": 0.88,
+        "is_safe": true
+      },
+      {
+        "test": "Arbitrary Scripting Expansion Probe",
+        "payload": "%javascript_test_eval%",
+        "output": "%javascript_test_eval%\n\u0000\u0000",
+        "elapsed_ms": 0.93,
+        "is_safe": true
+      }
+    ]
+  },
+  "packet_rate": {
+    "timestamp": 1793749975.1480198,
+    "audit": "Packet Rate & Network DoS Resilience",
+    "paper_packet_limiter": {
+      "config_file": "/home/lionelsabdani36/minecraft-server/config/paper-global.yml",
+      "exists": true,
+      "packet_limiter": {
+        "all-packets": {
+          "action": "KICK",
+          "interval": 7.0,
+          "max-packet-rate": 500.0
+        },
+        "kick-message": "<red><lang:disconnect.exceeded_packet_rate>",
+        "overrides": {
+          "ServerboundPlaceRecipePacket": {
+            "action": "DROP",
+            "interval": 4.0,
+            "max-packet-rate": 5.0
+          }
+        }
+      },
+      "spam_limiter": {
+        "incoming-packet-threshold": 300,
+        "recipe-spam-increment": 1,
+        "recipe-spam-limit": 20,
+        "tab-spam-increment": 1,
+        "tab-spam-limit": 500
+      },
+      "verdict": {
+        "all_packets_rate": 500.0,
+        "all_packets_interval": 7.0,
+        "all_packets_action": "KICK",
+        "rate_within_safe_bounds": true,
+        "recipe_flood_mitigated": true,
+        "status": "HARDENED"
+      }
+    },
+    "geyser_packet_threshold": {
+      "config_file": "/home/lionelsabdani36/minecraft-server/plugins/Geyser-Spigot/config.yml",
+      "exists": true,
+      "advanced": {
+        "scoreboard-packet-threshold": 20,
+        "add-team-suggestions": false
+      },
+      "verdict": {
+        "scoreboard_threshold_value": 20,
+        "scoreboard_protection_active": true,
+        "team_suggestions_bloat": "HARDENED",
+        "recommendation": "Set add-team-suggestions: false to prevent TAB sorting teams from spamming Bedrock auto-complete packets."
+      }
+    },
+    "scoreboard_packet_math_model": {
+      "title_interval_ms": 350,
+      "title_packets_per_sec": 2.86,
+      "coord_interval_ms": 500,
+      "coord_packets_per_sec": 4.0,
+      "telemetry_interval_ms": 1000,
+      "telemetry_packets_per_sec": 3.0,
+      "total_packets_per_player_sec": 9.86,
+      "geyser_safety_threshold_pps": 20.0,
+      "geyser_headroom_pps": 10.14,
+      "geyser_throttle_triggered": false,
+      "server_outbound_20_players_pps": 197.14,
+      "status": "OPTIMAL_ZERO_LAG"
+    },
+    "live_socket_probes": {
+      "tcp_25565_java_slp": {
+        "status": "OPEN",
+        "rtt_ms": 2.38,
+        "has_json": true,
+        "preview": "{\"version\":{\"name\":\"Purpur 1.21.4\",\"protocol\":765},\"description\":{\"text\":\"\",\"extra\":[{\"text\":\"Cycraft SMP \",\"bold\":true,\"color\":\"aqua\"},{\"text\":\"| \",\""
+      },
+      "udp_19132_bedrock_raknet": {
+        "status": "OPEN",
+        "rtt_ms": 0.85,
+        "packet_id": "0x1c",
+        "server_name": "Cycraft SMP | Java & Bedrock Crossplay",
+        "protocol_version": "2225",
+        "game_version": "26.60",
+        "online_players": "0",
+        "max_players": "25"
+      },
+      "rcon_telemetry": {
+        "server_tps": "\u00a7a20.0\u00a77, \u00a7a20.0\u00a77, \u00a7a*20.0\u00a77, \u00a7a*20.0\n\u0000\u0000",
+        "server_online": "0\n\u0000\u0000",
+        "server_uptime": "5m 13s\n\u0000\u0000"
+      }
+    }
+  },
+  "floodgate_names": {
+    "timestamp": 1793749975.1954901,
+    "audit": "Floodgate Names, Identity Hardening & Crossplay Formatting",
+    "floodgate_config": {
+      "config_file": "/home/lionelsabdani36/minecraft-server/plugins/floodgate/config.yml",
+      "exists": true,
+      "settings": {
+        "username-prefix": ".",
+        "replace-spaces": true,
+        "key-file-name": "key.pem",
+        "player-link-enabled": true,
+        "require-link": false,
+        "enable-global-linking": true
+      },
+      "verdict": {
+        "prefix": ".",
+        "prefix_guarantees_zero_collision": true,
+        "prefix_standard": true,
+        "replace_spaces_active": true,
+        "space_injection_mitigated": true,
+        "account_takeover_prevention": "ENFORCED"
+      }
+    },
+    "key_permissions": {
+      "floodgate_key": {
+        "path": "/home/lionelsabdani36/minecraft-server/plugins/floodgate/key.pem",
+        "exists": true,
+        "mode": "0o600",
+        "size_bytes": 16
+      },
+      "geyser_key": {
+        "path": "/home/lionelsabdani36/minecraft-server/plugins/Geyser-Spigot/key.pem",
+        "exists": true,
+        "mode": "0o600",
+        "size_bytes": 16
+      },
+      "keys_identical": true,
+      "mode_secure": true
+    },
+    "command_tokenization_simulation": [
+      {
+        "gamertag": "Steve Pro",
+        "unreplaced": {
+          "name": ".Steve Pro",
+          "command": "/kick .Steve Pro Violation of rules",
+          "target_parsed": ".Steve",
+          "reason_parsed": "Pro Violation of rules",
+          "is_corrupted": true
+        },
+        "replaced": {
+          "name": ".Steve_Pro",
+          "command": "/kick .Steve_Pro Violation of rules",
+          "target_parsed": ".Steve_Pro",
+          "reason_parsed": "Violation of rules",
+          "is_corrupted": false
+        }
+      },
+      {
+        "gamertag": "Cyber Agent 007",
+        "unreplaced": {
+          "name": ".Cyber Agent 007",
+          "command": "/kick .Cyber Agent 007 Violation of rules",
+          "target_parsed": ".Cyber",
+          "reason_parsed": "Agent 007 Violation of rules",
+          "is_corrupted": true
+        },
+        "replaced": {
+          "name": ".Cyber_Agent_007",
+          "command": "/kick .Cyber_Agent_007 Violation of rules",
+          "target_parsed": ".Cyber_Agent_007",
+          "reason_parsed": "Violation of rules",
+          "is_corrupted": false
+        }
+      },
+      {
+        "gamertag": "Admin Killer 99",
+        "unreplaced": {
+          "name": ".Admin Killer 99",
+          "command": "/kick .Admin Killer 99 Violation of rules",
+          "target_parsed": ".Admin",
+          "reason_parsed": "Killer 99 Violation of rules",
+          "is_corrupted": true
+        },
+        "replaced": {
+          "name": ".Admin_Killer_99",
+          "command": "/kick .Admin_Killer_99 Violation of rules",
+          "target_parsed": ".Admin_Killer_99",
+          "reason_parsed": "Violation of rules",
+          "is_corrupted": false
+        }
+      },
+      {
+        "gamertag": "Space  DoubleSpace",
+        "unreplaced": {
+          "name": ".Space  DoubleSpace",
+          "command": "/kick .Space  DoubleSpace Violation of rules",
+          "target_parsed": ".Space",
+          "reason_parsed": " DoubleSpace Violation of rules",
+          "is_corrupted": true
+        },
+        "replaced": {
+          "name": ".Space__DoubleSpace",
+          "command": "/kick .Space__DoubleSpace Violation of rules",
+          "target_parsed": ".Space__DoubleSpace",
+          "reason_parsed": "Violation of rules",
+          "is_corrupted": false
+        }
+      }
+    ],
+    "scoreboard_bedrock_line_budget": [
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&b\u25cf &fInformasi Agen",
+        "rendered_len": 16,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Nama: &f%player%",
+        "rendered_len": 25,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Divisi: &b%group%",
+        "rendered_len": 16,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Saldo: &a$%money%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&3\u25cf &fCyber Hub Ops",
+        "rendered_len": 15,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Zona: &bCyber Hub &7(Safe)",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Agen: &f%online%&8/&7%server_max_players%",
+        "rendered_len": 12,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Ping: &a%ping%&7ms &8| &7TPS: &a%tps%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&e\u25cf &fNavigasi",
+        "rendered_len": 10,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Lomba: &f/warp quest",
+        "rendered_len": 20,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "  &7Survival: &f/warp survival",
+        "rendered_len": 26,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "cyber_hub",
+        "template": "&7%animation:cycraft-host%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&a\u25cf &fProfil Survival",
+        "rendered_len": 17,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Nama: &f%player%",
+        "rendered_len": 25,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Pangkat: &b%group%",
+        "rendered_len": 17,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Saldo: &a$%money%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&2\u25cf &fKondisi Alam",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Dunia: &e%world%",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Online: &f%online%&8/&7%server_max_players%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "  &7Ping: &a%ping%&7ms &8| &7TPS: &a%tps%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&7Ke Cyber Hub: &f/warp hub",
+        "rendered_len": 23,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "survival",
+        "template": "&7%animation:cycraft-host%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&b\u25cf &fInformasi Pemain",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Nama: &f%player%",
+        "rendered_len": 25,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Role: &b%group%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Saldo: &a$%money%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&3\u25cf &fStatus Server",
+        "rendered_len": 15,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Dunia: &e%world%",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Online: &f%online%&8/&7%server_max_players%",
+        "rendered_len": 14,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "  &7Ping: &a%ping%&7ms &8| &7TPS: &a%tps%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "",
+        "rendered_len": 0,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&7Server: &bCySec Community",
+        "rendered_len": 23,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&8&m------------------",
+        "rendered_len": 18,
+        "safe_for_bedrock_mobile": true
+      },
+      {
+        "scoreboard": "scoreboard",
+        "template": "&7%animation:cycraft-host%",
+        "rendered_len": 24,
+        "safe_for_bedrock_mobile": true
+      }
+    ],
+    "floodgate_placeholder_probes": {
+      "%floodgate_device%": "\u0000\u0000",
+      "%floodgate_device_os%": "\u0000\u0000",
+      "%floodgate_xuid%": "\u0000\u0000",
+      "%floodgate_bedrock%": "\u0000\u0000"
+    }
+  }
+}
