@@ -1,0 +1,320 @@
+{
+  "schema_version": "2026.2",
+  "document_title": "Pedagogical CTF Curriculum Synthesis & LKS Defensive Hardening Matrix (Batch 46: Binary Security PE/ELF & Defense)",
+  "mentor": {
+    "name": "Judith",
+    "role": "Master Guru & Mentor Akademik / Kompetisi",
+    "mentee": "Arielwin",
+    "target_level": "Seleksi Tim 2 & LKS Cyber Security Nasional (Gold Medalist Standard)",
+    "objective": "Membimbing siswa Arielwin mencapai Total Concept Mastery 100% pada keamanan biner PE/ELF, dekonstruksi alur eksekusi, remediasi defensif tingkat lanjut, dan eliminasi ketergantungan pada runtime failure."
+  },
+  "batch_metadata": {
+    "batch_number": 46,
+    "target_platform": "CyLab Security Academy (Binary Security & Instrumentation)",
+    "total_challenges": 3,
+    "total_score_points": 1000,
+    "completion_rate": "100%",
+    "date_synthesized": "2026-11-03",
+    "target_challenges": [
+      699,
+      700,
+      276
+    ]
+  },
+  "pedagogical_pillars": [
+    {
+      "pillar": 1,
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi Komputasi)",
+      "description": "Membongkar struktur biner PE/ELF dan algoritma verifikasi hingga ke tingkat representasi memori, struktur header, dan aljabar biner tanpa mengandalkan skrip jadi."
+    },
+    {
+      "pillar": 2,
+      "name": "Metode Socratic & Scaffolding Bertingkat",
+      "description": "Membimbing siswa Arielwin melalui pertanyaan pancingan 3-tier saat menghadapi runtime error agar menemukan sendiri akar masalah tanpa langsung disodorkan kunci jawaban."
+    },
+    {
+      "pillar": 3,
+      "name": "Bedah Anatomi Distraktor (Jebakan Soal HOTS)",
+      "description": "Mengidentifikasi dan membedah jebakan pengalih perhatian seperti runtime path failure, unroutable network IP, dan ilusi kompleksitas MD5 collision."
+    },
+    {
+      "pillar": 4,
+      "name": "Siklus Belajar Adaptif (Diagnosa -> Kristalisasi -> Drilling Bertingkat -> Verifikasi 100%)",
+      "description": "Menguji pemahaman awal Arielwin, mengkristalkan prinsip kerja biner, melatih pemecahan masalah bertingkat (Level 1-3), dan verifikasi sintesis mandiri."
+    },
+    {
+      "pillar": 5,
+      "name": "Evaluasi Berbasis IRT (Item Response Theory) & Rubrik LKS Skill 54",
+      "description": "Mengukur performa penalaran siswa menggunakan model 3PL dan 4 pilar rubrik penilaian teknis standar LKS Cyber Security Nasional."
+    }
+  ],
+  "cognitive_distribution": {
+    "C2_Understanding": 0,
+    "C3_Applying": 0,
+    "C4_Analyzing": 1,
+    "C5_Evaluating": 2
+  },
+  "domain_distribution": {
+    "Domain_A_Binary_PE32_Reversing": "Chall 699, Chall 700",
+    "Domain_B_Binary_ELF64_Reversing": "Chall 276",
+    "Domain_C_Defensive_Hardening_Secure_Coding": "Chall 699, Chall 700, Chall 276",
+    "Domain_D_Detection_Engineering_Blue_Team": "Chall 699, Chall 700, Chall 276"
+  },
+  "modules": [
+    {
+      "module_id": "MOD-01",
+      "challenge_id": 699,
+      "name": "Binary Instrumentation 3",
+      "category": "Reverse Engineering & Binary Instrumentation",
+      "points": 300,
+      "difficulty": "Hard",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-200: Information Exposure Through Data Section String Fragmentation / CWE-703: Improper Handling of Exceptional Conditions",
+      "verified_flag": "academy{411_4r3_4p15_n07h1n9_3l53_34f98e4f}",
+      "first_principles_theory": "Format Portable Executable (PE32+) membungkus kode mesin dan data ke dalam struktur terorganisir. Pada biner ini, stub luar berfungsi sebagai dekompresor stream LZMA yang terletak pada offset 0x6000 (magic bytes 5D 00 00 10 00). Payload PE32+ internal sebesar 2,34 MB dirancang untuk menuliskan flag ke file C:\\random\\output_flag.txt. Ketika direktori absolut tersebut tidak ditemukan di sistem Windows, pemanggilan API CreateFileW/fopen gagal dan program berhenti. Namun, data flag tidak dihasilkan secara kriptografis runtime melainkan disimpan dalam 5 fragmen Base64 statis pada segmen .rdata/.data.",
+      "feynman_analogy": "Seperti seorang kurir yang membawa paket tersegel ke alamat rumah fiktif. Ketika kurir tersebut mengeluh bahwa rumahnya tidak ada dan menolak meletakkan paket di tanah, bukan berarti paket itu lenyap. Paket tersebut tetap berada di dalam tas kurir dan dapat dibaca langsung dengan memeriksa bawaannya tanpa perlu mendirikan rumah fiktif tersebut.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Ketika program bin-ins.exe mengeluarkan pesan [!] Failed to open output file, apakah kode yang bertugas menyusun teks flag sudah dieksekusi atau belum?",
+        "tier_2_structural": "Jika kamu membuka berkas PE internal hasil dekompresi LZMA menggunakan Ghidra atau disassembler, di mana referensi teks output_flag.txt berada? Variabel buffer apa yang dipersiapkan sebelum pemanggilan fungsi penulisan berkas?",
+        "tier_3_breakthrough": "Periksa byte di dekat buffer penulisan pada segmen data. Ada 5 string ASCII yang menyerupai karakter Base64 berurutan. Apa hasil dekode jika kelima potongan string tersebut digabungkan secara presisi?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira bahwa biner harus berhasil dijalankan secara dinamis di lingkungan Windows asli dengan membuat folder C:\\random secara manual.",
+        "Terjebak mencoba melakukan dynamic binary instrumentation (DBI) rumit menggunakan Frida atau PIN padahal artefak flag dapat diekstraksi secara statis.",
+        "Mengabaikan layer kompresi LZMA pada offset 0x6000 dan mengira biner terenkripsi menggunakan proteksi packer komersial VM-based."
+      ],
+      "blue_team_incident_takeaway": "Aplikasi tidak boleh menyimpan rahasia penting dalam bentuk fragmen teks biasa di segmen data. Kegagalan penanganan berkas (unhandled file path error) mengekspos alur kerja internal aplikasi kepada analis tanpa memerlukan privilege escalation.",
+      "defensive_hardening_standard": {
+        "file_io_resilience": "Gunakan API resolusi jalur dinamis Windows seperti SHGetKnownFolderPath (FOLDERID_RoamingAppData) atau GetTempPath2W dengan penanganan error INVALID_HANDLE_VALUE yang aman.",
+        "secret_protection": "Terapkan enkripsi rahasia saat diam (at rest) menggunakan Windows DPAPI (CryptProtectData) atau kunci sesi ephemeral dari server otentikasi mTLS.",
+        "compilation_mitigation": "Aktifkan flag /DYNAMICBASE (ASLR), /HIGHENTROPYVA, /NXCOMPAT (DEP), serta hapus simbol referensi string melalui compile-time string encryption template."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.15,
+        "difficulty_b": 1.85,
+        "pseudo_guessing_c": 0.05
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SC-13: Cryptographic Protection, SI-11: Error Handling",
+        "cwe": "CWE-200, CWE-703",
+        "worldskills_skill_54": "Section 2.1: Binary Analysis and Reverse Engineering"
+      }
+    },
+    {
+      "module_id": "MOD-02",
+      "challenge_id": 700,
+      "name": "Binary Instrumentation 4",
+      "category": "Reverse Engineering & Network Socket Instrumentation",
+      "points": 300,
+      "difficulty": "Hard",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-312: Cleartext Storage of Sensitive Information in Executable / CWE-798: Use of Hard-coded Credentials",
+      "verified_flag": "academy{n3tw0rk_1s_4P1s_4S_W311_3a23cea2}",
+      "first_principles_theory": "Aplikasi Windows socket biner menginisialisasi pustaka Winsock via WSAStartup dan membuat soket TCP menggunakan socket() serta connect(). Pada biner ini, sasaran koneksi di-hardcode ke alamat IPv4 privat RFC 1918 (192.168.29.25). Karena alamat tersebut berada di segmen jaringan laboratorium terisolasi yang tidak dapat dirutekan di internet publik, upaya koneksi selalu berakhir dengan Connection failed. Di balik kegagalan jaringan tersebut, biner memuat mekanisme validasi kunci statis key3a23cea2 dan menyimpan data flag dalam 5 fragmen Base64 di segmen data respons keberhasilan.",
+      "feynman_analogy": "Seperti sebuah brankas mainan yang dilengkapi bel panggilan ke kantor rahasia yang sudah tutup. Brankas menolak terbuka jika bel tidak dijawab. Namun ketika brankas dibongkar dengan obeng, kombinasi angka brankas dan hadiah di dalamnya ternyata sudah tertulis di balik dinding logamnya.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Alamat IP 192.168.29.25 termasuk dalam kelas IP apa? Mengapa koneksi langsung dari mesin kamu ke IP tersebut dipastikan gagal?",
+        "tier_2_structural": "Jika koneksi soket hanya berperan sebagai pemicu (trigger), di mana kode program memvalidasi apakah koneksi berhasil atau gagal? Apa yang terjadi jika fungsi verifikasi lisensi dijalankan tanpa memedulikan return code dari connect()?",
+        "tier_3_breakthrough": "Telusuri string referensi Congratulations! Here is your flag. Struktur data apa yang dibaca oleh fungsi tersebut sesaat sebelum menampilkan pesan sukses?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira server laboratorium CyLab sedang down dan menunggu instance online tanpa menganalisis kode biner secara statis.",
+        "Mencoba melakukan ARP spoofing, TUN/TAP virtual interface, atau routing manipulasi ke subnet 192.168.29.0/24 padahal server eksternal tersebut tidak diperlukan.",
+        "Terjebak mencoba membedah seluruh pustaka Winsock daripada melacak referensi string lisensi dan respons flag."
+      ],
+      "blue_team_incident_takeaway": "Ketergantungan klien pada alamat jaringan hardcoded tanpa skema failover, enkripsi transport (TLS), dan otentikasi timbal balik (mTLS) merupakan celah arsitektur fatal. Data sensitif tidak boleh dikirimkan atau disimpan di sisi klien secara statis.",
+      "defensive_hardening_standard": {
+        "network_architecture": "Gunakan komunikasi aman berbasis TLS 1.3 dengan verifikasi sertifikat x509 yang ketat (certificate pinning) dan domain dinamis terkelola (FQDN ber-DNSSEC).",
+        "client_defense": "Terapkan prinsip Zero-Trust: klien tidak boleh menyimpan flag atau data sensitif sebelum diotentikasi dan diverifikasi oleh backend yang sah.",
+        "anti_tampering": "Gunakan Control Flow Guard (CFG), Intel CET (Indirect Branch Tracking), dan deteksi API hooking untuk mencegah bypassing pengecekan koneksi jaringan."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.2,
+        "difficulty_b": 1.9,
+        "pseudo_guessing_c": 0.05
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SC-8: Transmission Confidentiality, IA-2: Identification and Authentication",
+        "cwe": "CWE-312, CWE-798",
+        "worldskills_skill_54": "Section 2.2: Network Security and Protocol Analysis"
+      }
+    },
+    {
+      "module_id": "MOD-03",
+      "challenge_id": 276,
+      "name": "Keygenme",
+      "category": "Reverse Engineering & Cryptographic License Verification",
+      "points": 400,
+      "difficulty": "Hard",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-208: Observable Timing Discrepancy / CWE-328: Use of Weak Hash (MD5) in Licensing Verification",
+      "verified_flag": "academy{br1ng_y0ur_0wn_k3y_5b5d983e}",
+      "first_principles_theory": "Format biner ELF 64-bit Linux mengikuti System V AMD64 ABI. Fungsi verifikasi lisensi check_key (offset 0x1209) mengalokasikan stack frame lokal dan membaca input lisensi sepanjang 36 byte (cmp rax, 0x24). Program menyusun kunci referensi di stack secara deterministik: menyalin prefix 27 byte academy{br1ng_y0ur_0wn_k3y_, menghitung MD5 dari prefix dan suffix '}', lalu mengambil 8 karakter heksadesimal berdasarkan offset statis dari digest MD5. Selanjutnya, loop komparasi membandingkan input pengguna karakter demi karakter (byte-by-byte comparison) dengan buffer target.",
+      "feynman_analogy": "Seperti gembok kombinasi yang membuat suara 'klik' berbeda saat setiap digit angka yang diputar cocok dengan angka rahasia. Karena pembuat gembok menggunakan rumus matematika tetap dari tulisan di depan gembok untuk menentukan kombinasinya, siapa pun yang membaca rumusnya dapat langsung memutar angka kombinasi tanpa perlu menebak.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Mengapa program langsung menolak input yang panjangnya kurang atau lebih dari 36 karakter pada awal fungsi check_key?",
+        "tier_2_structural": "Fungsi memanggil MD5_Init, MD5_Update, dan MD5_Final dari pustaka OpenSSL. Dua string apa yang di-hash oleh fungsi tersebut, dan ke mana hasil digest-nya disimpan?",
+        "tier_3_breakthrough": "Lihat instruksi movzx sebelum pengisian buffer di rbp-0x15 hingga rbp-0xd. Indeks ke berapa saja dari hasil hash MD5 pertama dan kedua yang disalin ke dalam kunci lisensi?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira harus mencari pre-image atau collision kriptografi pada fungsi hash MD5.",
+        "Mengira algoritma keygen melibatkan nilai acak (random/seed) waktu runtime, padahal seluruh perhitungan hash bersifat deterministik 100%.",
+        "Terjebak mencoba melakukan brute-force 36 karakter ASCII secara acak di terminal yang membutuhkan waktu komputasi tak hingga."
+      ],
+      "blue_team_incident_takeaway": "Penggunaan algoritma hash usang (MD5) untuk verifikasi integritas serta komparasi byte-per-byte non-konstan (CWE-208) membuka celah timing attack dan reverse engineering trivial. Logika lisensi lokal tanpa server validation sangat rentan terhadap keygen generator.",
+      "defensive_hardening_standard": {
+        "asymmetric_licensing": "Ganti validasi kunci simetris/hash lokal dengan verifikasi tanda tangan digital asimetris (misal Ed25519 atau RSA-PSS) di mana aplikasi hanya menyimpan kunci publik.",
+        "constant_time_comparison": "Gunakan fungsi komparasi konstan (Constant-Time memory comparison) seperti CRYPTO_memcmp atau sodium_memcmp untuk mengeliminasi variasi waktu respons per byte.",
+        "elf_hardening": "Kompilasi dengan proteksi penuh: Full RELRO (-Wl,-z,relro,-z,now), Stack Canary (-fstack-protector-strong), PIE (-fPIE -pie), dan bersihkan tabel simbol debugging via strip --strip-all."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.4,
+        "difficulty_b": 2.1,
+        "pseudo_guessing_c": 0.04
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SA-8: Security Engineering Principles, SC-12: Cryptographic Key Establishment",
+        "cwe": "CWE-208, CWE-328",
+        "worldskills_skill_54": "Section 2.1: Reverse Engineering and Binary Exploitation Mitigation"
+      }
+    }
+  ],
+  "binary_security_comparison_matrix": {
+    "architecture_aspects": [
+      {
+        "parameter": "Magic Header Signature",
+        "windows_pe32_plus": "IMAGE_DOS_HEADER: e_magic = 0x5A4D ('MZ'), e_lfanew -> PE Signature 0x00004550 ('PE\\0\\0')",
+        "linux_elf_64": "Elf64_Ehdr: e_ident = 0x7F 'E' 'L' 'F' (0x7F454C46), EI_CLASS = 2 (64-bit)"
+      },
+      {
+        "parameter": "Calling Convention (x86-64)",
+        "windows_pe32_plus": "Microsoft x64: RCX, RDX, R8, R9, Float via XMM0-XMM3. Wajib alokasi Shadow Space 32 bytes (0x20) oleh caller.",
+        "linux_elf_64": "System V AMD64 ABI: RDI, RSI, RDX, RCX, R8, R9, Float via XMM0-XMM7. Memiliki Red Zone 128 bytes di bawah RSP."
+      },
+      {
+        "parameter": "Section Header & Code Segment",
+        "windows_pe32_plus": "IMAGE_SECTION_HEADER (.text, .data, .rdata, .pdata). Alignment diatur SectionAlignment vs FileAlignment.",
+        "linux_elf_64": "Elf64_Shdr (.text, .rodata, .data, .bss, .got, .plt). Program Header Table (PT_LOAD, PT_GNU_STACK, PT_GNU_RELRO)."
+      },
+      {
+        "parameter": "Memory Execution Protection",
+        "windows_pe32_plus": "DEP (Data Execution Prevention) / NXCOMPAT flag pada DllCharacteristics.",
+        "linux_elf_64": "NX (No-Execute) dikendalikan melalui flag p_flags pada segment PT_GNU_STACK (R+W tanpa E)."
+      },
+      {
+        "parameter": "Address Randomization",
+        "windows_pe32_plus": "ASLR / DYNAMICBASE dan HIGHENTROPYVA pada DllCharacteristics.",
+        "linux_elf_64": "PIE (Position Independent Executable) dengan e_type = ET_DYN dan flag -fPIE -pie."
+      },
+      {
+        "parameter": "Stack Protection",
+        "windows_pe32_plus": "MSVC Buffer Security Check (/GS): __security_cookie pada stack frame prolog dan epilog.",
+        "linux_elf_64": "GCC/Clang Stack Canary: __stack_chk_fail dipicu jika fs:0x28 (canary value) terkorupsi."
+      },
+      {
+        "parameter": "Global Table Integrity",
+        "windows_pe32_plus": "CFG (Control Flow Guard) memvalidasi bitmap target pemanggilan fungsi tidak langsung.",
+        "linux_elf_64": "RELRO (Relocation Read-Only): Full RELRO memetakan .got menjadi read-only setelah resolusi simbol binding."
+      }
+    ]
+  },
+  "arielwin_enrichment_curriculum": {
+    "target_mentee": "Arielwin",
+    "current_baseline": "Penguasaan dasar reverse engineering dan seleksi Tim 2",
+    "target_milestone": "Penguasaan 100% Reverse Engineering PE/ELF, Binary Instrumentation, dan Defensive Remediation standar LKS Nasional",
+    "four_week_acceleration_plan": [
+      {
+        "week": 1,
+        "theme": "Anatomi Header Biner & Rekonstruksi Struktur Memori",
+        "focus_topics": [
+          "Parsing header PE32+ (DOS, File Header, Optional Header, Data Directories) menggunakan pefile dan C struct",
+          "Parsing header ELF64 (Elf64_Ehdr, Program Header Table, Section Header Table) menggunakan readelf dan pyelftools",
+          "Analisis calling convention: Shadow space Windows x64 vs System V AMD64 register passing"
+        ],
+        "deliverable": "Membangun parser header biner mandiri dalam bahasa Python tanpa modul eksternal"
+      },
+      {
+        "week": 2,
+        "theme": "Deobfuskasi Biner, Unpacking, & Handling Custom Stream",
+        "focus_topics": [
+          "Identifikasi signature stream terkompresi (LZMA, zlib, UPX, custom xor overlay) pada file biner",
+          "Teknik memory dumping proses aktif dan rekonstruksi Import Address Table (IAT)",
+          "Analisis penanganan jalur file dan decoupling dependensi lingkungan (handling unreachable path)"
+        ],
+        "deliverable": "Ekstraksi dan rekonstruksi payload PE terkompresi dari raw binary overlay secara otomatis"
+      },
+      {
+        "week": 3,
+        "theme": "Dynamic Binary Instrumentation & Socket Network Simulation",
+        "focus_topics": [
+          "Instrumentasi dinamis menggunakan Frida: hooking fungsi I/O file (CreateFileW, ReadFile) dan Winsock (connect, send)",
+          "Simulasi soket lokal untuk memotong lalu lintas data ke IP non-routable (192.168.x.x)",
+          "Bypassing kontrol alur integritas biner via patching register assembly (ZF, EAX, RAX)"
+        ],
+        "deliverable": "Menulis skrip Frida untuk menangkap token dan data runtime tanpa menyentuh kode sumber biner"
+      },
+      {
+        "week": 4,
+        "theme": "Kriptanalisis Lisensi Biner & Remediasi Defensif Standar Industri",
+        "focus_topics": [
+          "Rekonstruksi algoritma keygen dari stack disassembly dan operasi hash deterministik",
+          "Audit kerentanan timing attack (CWE-208) pada komparasi byte lisensi",
+          "Implementasi mitigasi industri: Constant-Time verification, asymmetric digital signature (Ed25519), dan Full RELRO/CET"
+        ],
+        "deliverable": "Menghasilkan modul keygen mandiri dan patch biner defensif berbasis Ed25519"
+      }
+    ],
+    "three_tier_drills": [
+      {
+        "drill_id": "DRILL-01",
+        "level": "Level 1: Fondasi",
+        "title": "Ekstraksi String Biner Terfragmentasi & Rekonstruksi Base64",
+        "scenario": "Diberikan biner PE stripped di mana string penting dipecah ke dalam array karakter berjarak 16 byte di segmen .rdata.",
+        "objective": "Menulis skrip pembaca seksi .rdata untuk mengekstrak dan menyusun kembali fragmen tanpa menjalankan biner."
+      },
+      {
+        "drill_id": "DRILL-02",
+        "level": "Level 2: Analisis & HOTS",
+        "title": "Bypassing Network Check & Patching Winsock Return Code",
+        "scenario": "Diberikan biner yang melakukan panggilan connect() ke IP remote. Jika koneksi gagal, program melakukan exit(1).",
+        "objective": "Menggunakan GDB/x64dbg atau binary patcher untuk mengubah instruksi jne menjadi nop atau jmp, serta memetakan segmen data sukses."
+      },
+      {
+        "drill_id": "DRILL-03",
+        "level": "Level 3: Kombinatorik & Ekstrem",
+        "title": "Keygen Generator dengan Rekonstruksi Hash Digest & Anti-Debugging Check",
+        "scenario": "Biner ELF 64-bit memverifikasi lisensi dengan kombinasi hash SHA-256 dan MD5, disertai pengecekan ptrace(PTRACE_TRACEME, 0, 1, 0).",
+        "objective": "Menetralkan anti-debugging call, merekonstruksi kalkulasi digest secara matematis, dan membangun solver otomatis."
+      }
+    ]
+  },
+  "lks_scoring_rubric": {
+    "scoring_system": "Standar LKS Cyber Security Nasional & WorldSkills Skill 54 (Bobot Total 100%)",
+    "pillars": [
+      {
+        "pillar_id": "P-1",
+        "name": "Akurasi Analisis Biner & Root Cause Discovery",
+        "weight_percent": 35,
+        "criteria": "Kemampuan mengidentifikasi arsitektur biner (PE32+/ELF64), membongkar lapisan proteksi/kompresi (LZMA), memetakan stack frame, dan menemukan akar kerentanan tanpa terdistraksi error runtime palsu."
+      },
+      {
+        "pillar_id": "P-2",
+        "name": "Efisiensi & Reproduksibilitas Solver / Eksploitasi",
+        "weight_percent": 25,
+        "criteria": "Skrip solver ditulis secara bersih, independen dari lingkungan proprietary, beroperasi deterministik, dan terdokumentasi dengan alur logika yang dapat diuji ulang 100%."
+      },
+      {
+        "pillar_id": "P-3",
+        "name": "Ketajaman Rekomendasi Defensif & Blue Team Hardening",
+        "weight_percent": 25,
+        "criteria": "Pemberian solusi remediasi nyata berstandar industri (NIST, FIPS, CWE): proteksi enclave, digital signature asimetris, mitigasi compiler ASLR/DEP/RELRO/CET, dan aturan deteksi YARA/Sigma."
+      },
+      {
+        "pillar_id": "P-4",
+        "name": "Metodologi Dokumentasi & Kepatuhan Anti-Slop",
+        "weight_percent": 15,
+        "criteria": "Kerapian laporan teknis, penerapan kaidah pedagogis Socratic, penjelasan berbasis First Principles, zero em dash, dan bebas dari generalisasi AI tanpa substansi."
+      }
+    ]
+  }
+}
