@@ -1,0 +1,73 @@
+{
+  "project": "Cycraft SMP",
+  "version": "2.0-ENTERPRISE-HARDENED",
+  "status": "PRODUCTION_READY",
+  "server": {
+    "engine": "Purpur 1.21.4 (OpenJDK 21 LTS)",
+    "host": "duckvaulta.ai.id",
+    "ports": {
+      "java_tcp": 25565,
+      "bedrock_udp": 19132
+    },
+    "tps": 20.0,
+    "active_plugins_count": 23
+  },
+  "architecture_upgrades": {
+    "sector_1_central_citadel": {
+      "coordinates": "0, 64, 0 to 0, 110, 0",
+      "levels": [
+        "L1 Grand Lobby (Y=64): Quartz & Cyan marble, reception, cyber trees, netherite beacon",
+        "L2 CSOC Server Vault (Y=74): Bookshelf server racks, copper bulbs, overhead cabling",
+        "L3 Panoramic Sky Lounge (Y=83): Cantilevered 360-degree glass balcony",
+        "L4 Rooftop Helipad & Radar (Y=91-110): Landing pad, runway perimeter lights, lightning antennas"
+      ]
+    },
+    "sector_2_sky_highways": {
+      "width_blocks": 7,
+      "safety_railing": "Double-height polished deepslate and tinted glass barrier wall with end-rod illumination",
+      "fall_prevention": "100% enclosed pathing connecting Nexus to North, East, and South sectors"
+    },
+    "sector_3_cysec_quest_complex": {
+      "coordinates": "0, 68, -65",
+      "features": "Brutalist enclosed bunker, airlock gate, workstation bank, dais stage for FancyNpcs Quest Master"
+    },
+    "sector_4_battle_colosseum_2": {
+      "coordinates": "75, 65, 0 (Span: 48 to 102)",
+      "features": "10-block deepslate blast walls, tiered grandstands, Red & Blue team tactical bunkers, KotH beacon dais"
+    },
+    "sector_5_sanctuary_survival_spawn": {
+      "coordinates": "64, 84, -96 in Overworld",
+      "features": "Protected glass canopy pavilion, welcome hologram, starter kit dispenser, safe landing pad"
+    }
+  },
+  "security_hardening": {
+    "coreprotect": {
+      "version": "24.1",
+      "storage": "SQLite",
+      "features": ["Block place/break audit", "Container transaction logs", "Explosion rollback", "WorldEdit integration"]
+    },
+    "griefprevention": {
+      "version": "16.18.6",
+      "hardening": ["HoppersRequireBuildTrust: true", "LockWoodenDoors: true", "LockTrapDoors: true", "PreventTheft: true"]
+    },
+    "anti_void_watchdog": {
+      "engine": "CycraftCyberQuest v1.1.0 Native Task",
+      "frequency_ms": 250,
+      "trigger_y": 48.0,
+      "action": "Immediate velocity cancel, zero fall-distance, teleport to Nexus Spawn, sound/message notification"
+    },
+    "worldguard": {
+      "regions": ["__global__ (cyber_skyblock)", "cyber_arena", "survival_spawn (world)"],
+      "strict_flags": ["build: DENY", "pvp: DENY", "tnt: DENY", "creeper-explosion: DENY", "fall-damage: DENY", "chest-access: DENY"]
+    },
+    "worldborder": {
+      "skyblock_radius_blocks": 400,
+      "survival_radius_blocks": 8000
+    }
+  },
+  "documentation": {
+    "pdf_guide": "https://duckvaulta.ai.id/downloads/cycraft_smp_command_guide.pdf",
+    "pages": 3,
+    "handbook_md": "/var/www/duckvaulta/apps/minecraft/docs/CYCRAFT_SMP_PLAYER_HANDBOOK.md"
+  }
+}
