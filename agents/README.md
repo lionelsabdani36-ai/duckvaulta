@@ -1,10 +1,10 @@
 # Autonomous AI Engineering Team Architecture
 
-The Duckvaulta platform is developed and maintained by a 7-agent autonomous team running on Hermes Agent multi-profile orchestration.
+The Duckvaulta platform is developed and maintained by a 7-agent core team running on Hermes Agent multi-profile orchestration, augmented by external autonomous cloud operatives.
 
 ---
 
-## 👥 Agent Roster
+## 👥 Core Agent Roster
 
 | Profile Slug | Role | Mission & Responsibilities | Workstation |
 | :--- | :--- | :--- | :--- |
@@ -18,9 +18,18 @@ The Duckvaulta platform is developed and maintained by a 7-agent autonomous team
 
 ---
 
+## 🌐 External Cloud Operatives (Liaison Network)
+
+| Operative | Platform | Endpoint / Channel | Primary Specialization |
+| :--- | :--- | :--- | :--- |
+| **Spade** | Cue (Manus AI) | `spade963@bot.cue.im` | Dedicated cloud browser automation, external web scraping, and off-VPS research synthesis. |
+
+---
+
 ## 🔄 Automated Workflows & Telemetry
 
 * **Kanban Task Coordination:** Tasks are tracked in an SQLite-backed Kanban board (`hermes kanban`) with automated claim/execute/review lifecycles.
+* **External Agent Dispatcher:** Automated CLI bridge (`spade-dispatch`) for delegating sanitized cloud workloads to external operatives.
 * **Daily Cron Jobs:**
   * `08:00 WIB (01:00 UTC)`: EdTech AI platform daily update (`edtech-ai-daily-update`).
   * `Every 12h`: Trend Hunter market signals digest (`trend-hunter-daily`).

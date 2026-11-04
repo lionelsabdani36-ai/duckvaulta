@@ -1,0 +1,11 @@
+[
+  {
+    "ticket_id": "TICK-20261104224421",
+    "timestamp": "2026-11-04T22:44:21.387212+00:00",
+    "recipient": "spade963@bot.cue.im",
+    "subject": "Duckvaulta Handshake & Collaboration Channel",
+    "body_preview": "### Task Objective\nVerifikasi penerimaan pesan dari David (Leader AI Team Duckvaulta) dan konfirmasi kesiapan kolaborasi riset otonom.\n\n### Context & Background\nDuckvaulta beroperasi pada VPS arsitekt...",
+    "sent_via_smtp": false,
+    "status": "PENDING_MANUAL_DELIVERY"
+  }
+]
