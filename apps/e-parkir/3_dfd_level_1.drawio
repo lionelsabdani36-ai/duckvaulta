@@ -38,7 +38,7 @@
         <mxCell id="ds_transactions" value="&lt;b&gt;D5: Data Transaksi (transactions)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="880" y="960" width="250" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="p1_0" value="&lt;b&gt;1.0&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Autentikasi &amp;&lt;br/&gt;Kelola Petugas" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontColor=#1e3a8a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
+        <mxCell id="p1_0" value="&lt;b&gt;1.0&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Autentikasi &amp;amp;&lt;br/&gt;Kelola Master (Petugas &amp;amp; Tarif)" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontColor=#1e3a8a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1420" y="140" width="190" height="85" as="geometry" />
         </mxCell>
         <mxCell id="d1_ent_sa" value="&lt;b&gt;SUPER ADMIN&lt;/b&gt;&lt;br/&gt;(Administrator Sistem)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ccfbf1;strokeColor=#0f766e;fontColor=#134e4a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
@@ -56,10 +56,10 @@
         <mxCell id="p5_0" value="&lt;b&gt;5.0&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Pengolahan &amp;&lt;br/&gt;Cetak Laporan" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontColor=#1e3a8a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="880" y="1140" width="250" height="85" as="geometry" />
         </mxCell>
-        <mxCell id="d1_c1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=0;exitY=0.35;entryX=1;entryY=0.35;" edge="1" parent="1" source="d1_ent_sa" target="p1_0" value="Kredensial &amp; CRUD Petugas">
+        <mxCell id="d1_c1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=0;exitY=0.35;entryX=1;entryY=0.35;" edge="1" parent="1" source="d1_ent_sa" target="p1_0" value="Kredensial, CRUD Petugas &amp;amp; Tarif">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d1_c2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=1;exitY=0.7;entryX=0;entryY=0.7;" edge="1" parent="1" source="p1_0" target="d1_ent_sa" value="Status &amp; Audit Log Petugas">
+        <mxCell id="d1_c2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=1;exitY=0.7;entryX=0;entryY=0.7;" edge="1" parent="1" source="p1_0" target="d1_ent_sa" value="Status Petugas, Tarif &amp;amp; Audit Log">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="d1_c3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;" edge="1" parent="1" source="d1_ent_petugas" target="p1_0" value="Login &amp; Forget Password">
@@ -229,6 +229,17 @@
               <mxPoint x="2080" y="1210" />
               <mxPoint x="2080" y="180" />
               <mxPoint x="1980" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d1_c29" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=0.1;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1_0" target="ds_rates" value="Kelola / Update Tarif Kendaraan">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="225" />
+              <mxPoint x="1440" y="250" />
+              <mxPoint x="1200" y="250" />
+              <mxPoint x="1200" y="720" />
+              <mxPoint x="1005" y="720" />
             </Array>
           </mxGeometry>
         </mxCell>

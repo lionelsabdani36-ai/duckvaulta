@@ -50,13 +50,13 @@
         <mxCell id="p4_1" value="&lt;b&gt;4.1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Identifikasi &amp; Scan Masuk&lt;br/&gt;(Token / Kartu)" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontColor=#1e3a8a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="380" y="790" width="200" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d4_ds_tickets" value="&lt;b&gt;D1: Data Parkir Masuk (tickets)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+        <mxCell id="d4_ds_tickets" value="&lt;b&gt;D3: Data Parkir Masuk (tickets)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="360" y="970" width="240" height="45" as="geometry" />
         </mxCell>
         <mxCell id="p4_2" value="&lt;b&gt;4.2&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Kalkulasi Tarif Parkir&lt;br/&gt;(Kategori, Nopol, Durasi)" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;fontColor=#1e3a8a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="760" y="790" width="210" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d4_ds_rates" value="&lt;b&gt;D3: Data Tarif Kendaraan (rates)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+        <mxCell id="d4_ds_rates" value="&lt;b&gt;D4: Data Tarif Kendaraan (rates)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="745" y="970" width="240" height="45" as="geometry" />
         </mxCell>
         <mxCell id="d4_ds_members" value="&lt;b&gt;D2: Data Member (members)&lt;/b&gt;" style="shape=partialRectangle;top=0;bottom=0;left=0;right=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#78350f;fontStyle=1;fontSize=11;strokeWidth=2;" vertex="1" parent="1">

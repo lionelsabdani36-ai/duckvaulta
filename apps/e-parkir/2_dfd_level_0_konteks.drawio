@@ -44,10 +44,10 @@
         <mxCell id="ent_sa" value="&lt;b&gt;SUPER ADMIN&lt;/b&gt;&lt;br/&gt;(Administrator Sistem)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ccfbf1;strokeColor=#0f766e;fontColor=#134e4a;fontStyle=1;fontSize=11;strokeWidth=2;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1310" y="760" width="230" height="85" as="geometry" />
         </mxCell>
-        <mxCell id="lbl_sa_in" value="&lt;b&gt;Data Masukan:&lt;/b&gt;&lt;br/&gt;• Kredensial Login Super Admin&lt;br/&gt;• CRUD Akun Petugas (C/R/U/D)&lt;br/&gt;• Parameter Laporan Global" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontColor=#1e3a8a;align=left;spacingLeft=12;spacingRight=12;fontSize=10;strokeWidth=1.5;shadow=1;" vertex="1" parent="1">
-          <mxGeometry x="1020" y="690" width="230" height="75" as="geometry" />
+        <mxCell id="lbl_sa_in" value="&lt;b&gt;Data Masukan:&lt;/b&gt;&lt;br/&gt;• Kredensial Login Super Admin&lt;br/&gt;• CRUD Akun Petugas (C/R/U/D)&lt;br/&gt;• Kelola Tarif Kendaraan (C/U/D)&lt;br/&gt;• Parameter Laporan Global" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;fontColor=#1e3a8a;align=left;spacingLeft=12;spacingRight=12;fontSize=10;strokeWidth=1.5;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="680" width="230" height="85" as="geometry" />
         </mxCell>
-        <mxCell id="lbl_sa_out" value="&lt;b&gt;Data Keluaran:&lt;/b&gt;&lt;br/&gt;• Dashboard Super Admin&lt;br/&gt;• Data Status Akun Petugas&lt;br/&gt;• Laporan Konsolidasi Seluruh Petugas" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#22c55e;fontColor=#14532d;align=left;spacingLeft=12;spacingRight=12;fontSize=10;strokeWidth=1.5;shadow=1;" vertex="1" parent="1">
+        <mxCell id="lbl_sa_out" value="&lt;b&gt;Data Keluaran:&lt;/b&gt;&lt;br/&gt;• Dashboard Super Admin&lt;br/&gt;• Status Akun Petugas &amp;amp; Tarif&lt;br/&gt;• Laporan Konsolidasi Seluruh Petugas" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#22c55e;fontColor=#14532d;align=left;spacingLeft=12;spacingRight=12;fontSize=10;strokeWidth=1.5;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1020" y="830" width="230" height="75" as="geometry" />
         </mxCell>
         <mxCell id="d0_c1a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#475569;strokeWidth=1.5;fontSize=10;fontColor=#0f172a;labelBackgroundColor=#ffffff;labelBorderColor=#cbd5e1;spacing=3;jumpStyle=arc;jumpSize=6;exitX=1;exitY=0.25;entryX=0;entryY=0.5;" edge="1" parent="1" source="ent_nm" target="lbl_nm_in">
