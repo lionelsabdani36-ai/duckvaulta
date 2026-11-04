@@ -1,0 +1,1413 @@
+{
+  "suite": "Draw.io XML, Geometry & Zero-Collision QA Verification Suite",
+  "auditor": "Julius (qa-engineer)",
+  "task_id": "t_e4afd0f2",
+  "timestamp": 1793767200,
+  "summary": {
+    "total_tests": 233,
+    "passed": 233,
+    "failed": 0,
+    "warnings": 0,
+    "pass_rate": "100.00%"
+  },
+  "results": [
+    {
+      "category": "XML Schema",
+      "name": "File exists: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Well-formed XML parse: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root tag is <mxfile>: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid host attribute in <mxfile>: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid version attribute in <mxfile>: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram count (1) for 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=1600, h=2500) in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "File exists: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Well-formed XML parse: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root tag is <mxfile>: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid host attribute in <mxfile>: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid version attribute in <mxfile>: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram count (1) for 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=1600, h=1000) in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "File exists: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Well-formed XML parse: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root tag is <mxfile>: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid host attribute in <mxfile>: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid version attribute in <mxfile>: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram count (1) for 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=2300, h=1400) in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "File exists: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Well-formed XML parse: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root tag is <mxfile>: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid host attribute in <mxfile>: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid version attribute in <mxfile>: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram count (1) for 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=2200, h=1450) in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "File exists: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Well-formed XML parse: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root tag is <mxfile>: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid host attribute in <mxfile>: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Valid version attribute in <mxfile>: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram count (4) for eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=1600, h=2500) in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=1600, h=1000) in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=2300, h=1400) in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Diagram non-empty ID and Name in eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "mxGraphModel present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Canvas dimensions valid (w=2200, h=1450) in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Root model cell present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 0 present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "XML Schema",
+      "name": "Layer 1 (parent='0') present in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '1. Flowchart E-Parkir' (47 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '1. Flowchart E-Parkir' (43 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '2. DFD Level 0 (Konteks)' (15 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '2. DFD Level 0 (Konteks)' (16 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '3. DFD Level 1' (17 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '3. DFD Level 1' (29 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '4. DFD Level 2' (23 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '4. DFD Level 2' (25 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '1. Flowchart E-Parkir' (47 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '1. Flowchart E-Parkir' (43 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '2. DFD Level 0 (Konteks)' (15 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '2. DFD Level 0 (Konteks)' (16 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '3. DFD Level 1' (17 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '3. DFD Level 1' (29 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "No duplicate cell IDs in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Dups: set()"
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Vertices exist in '4. DFD Level 2' (23 nodes)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "Edges exist in '4. DFD Level 2' (25 connections)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Referential Integrity",
+      "name": "All edges properly connected in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Dangling: []"
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Node count match for '1. Flowchart E-Parkir' (47)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Edge count match for '1. Flowchart E-Parkir' (43)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Node count match for '2. DFD Level 0 (Konteks)' (15)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Edge count match for '2. DFD Level 0 (Konteks)' (16)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Node count match for '3. DFD Level 1' (17)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Edge count match for '3. DFD Level 1' (29)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Node count match for '4. DFD Level 2' (23)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Multi-page Parity",
+      "name": "Edge count match for '4. DFD Level 2' (25)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices have valid positive dimensions in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Invalid: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices contained within canvas bounds in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "OOB: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices have valid positive dimensions in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Invalid: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices contained within canvas bounds in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "OOB: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices have valid positive dimensions in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Invalid: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices contained within canvas bounds in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "OOB: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices have valid positive dimensions in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Invalid: []"
+    },
+    {
+      "category": "Geometry",
+      "name": "All vertices contained within canvas bounds in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "OOB: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Zero peer node-to-node collision in '1. Flowchart E-Parkir' (41 active nodes)",
+      "status": "PASS",
+      "details": "Collisions: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Edge jumpStyle=arc active on all edges in '1. Flowchart E-Parkir' (43 edges)",
+      "status": "PASS",
+      "details": "Missing jump: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Label background shields active for text edges in '1. Flowchart E-Parkir'",
+      "status": "PASS",
+      "details": "Missing shields: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Zero peer node-to-node collision in '2. DFD Level 0 (Konteks)' (12 active nodes)",
+      "status": "PASS",
+      "details": "Collisions: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Edge jumpStyle=arc active on all edges in '2. DFD Level 0 (Konteks)' (16 edges)",
+      "status": "PASS",
+      "details": "Missing jump: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Label background shields active for text edges in '2. DFD Level 0 (Konteks)'",
+      "status": "PASS",
+      "details": "Missing shields: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Zero peer node-to-node collision in '3. DFD Level 1' (15 active nodes)",
+      "status": "PASS",
+      "details": "Collisions: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Edge jumpStyle=arc active on all edges in '3. DFD Level 1' (29 edges)",
+      "status": "PASS",
+      "details": "Missing jump: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Label background shields active for text edges in '3. DFD Level 1'",
+      "status": "PASS",
+      "details": "Missing shields: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Zero peer node-to-node collision in '4. DFD Level 2' (19 active nodes)",
+      "status": "PASS",
+      "details": "Collisions: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Edge jumpStyle=arc active on all edges in '4. DFD Level 2' (25 edges)",
+      "status": "PASS",
+      "details": "Missing jump: []"
+    },
+    {
+      "category": "Zero-Collision",
+      "name": "Label background shields active for text edges in '4. DFD Level 2'",
+      "status": "PASS",
+      "details": "Missing shields: []"
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Entity 'ent_nm' exists in Level 0 Context Diagram",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Entity 'ent_m' exists in Level 0 Context Diagram",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Entity 'ent_petugas' exists in Level 0 Context Diagram",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Entity 'ent_sa' exists in Level 0 Context Diagram",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Central process 0.0 'dfd0_p0' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Super Admin input includes 'Kelola Tarif Kendaraan'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 0",
+      "name": "Super Admin output includes 'Status Akun Petugas & Tarif'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 1",
+      "name": "Data Store D1 (ds_users) present",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 1",
+      "name": "Data Store D2 (ds_members) present",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 1",
+      "name": "Data Store D3 (ds_tickets) present",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 1",
+      "name": "Data Store D4 (ds_rates) present",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 1",
+      "name": "Data Store D5 (ds_transactions) present",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Semantics",
+      "name": "Zero DFD syntax rule violations (no direct Entity-Store or Entity-Entity)",
+      "status": "PASS",
+      "details": "Violations: []"
+    },
+    {
+      "category": "Miracle Elimination",
+      "name": "D4 Rates (ds_rates) has write flow (Writes=1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle Elimination",
+      "name": "D4 Rates (ds_rates) has read flow (Reads=1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle & Black Hole",
+      "name": "Data Store D1 balanced (Reads: 1, Writes: 1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle & Black Hole",
+      "name": "Data Store D2 balanced (Reads: 3, Writes: 1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle & Black Hole",
+      "name": "Data Store D3 balanced (Reads: 1, Writes: 1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle & Black Hole",
+      "name": "Data Store D4 balanced (Reads: 1, Writes: 1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Miracle & Black Hole",
+      "name": "Data Store D5 balanced (Reads: 1, Writes: 1)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Process Balance",
+      "name": "Process p1_0 balanced I/O (Inputs: 3, Outputs: 3)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Process Balance",
+      "name": "Process p2_0 balanced I/O (Inputs: 2, Outputs: 2)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Process Balance",
+      "name": "Process p3_0 balanced I/O (Inputs: 3, Outputs: 3)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Process Balance",
+      "name": "Process p4_0 balanced I/O (Inputs: 5, Outputs: 3)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Process Balance",
+      "name": "Process p5_0 balanced I/O (Inputs: 3, Outputs: 2)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Engineering",
+      "name": "Flow d1_c29 exists in DFD Level 1",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Engineering",
+      "name": "d1_c29 source is p1_0",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Engineering",
+      "name": "d1_c29 target is ds_rates",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Engineering",
+      "name": "d1_c29 label mentions Tarif",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p2_1 present in Zone 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p2_2 present in Zone 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p2_3 present in Zone 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p2_4 present in Zone 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p4_1 present in Zone 4",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p4_2 present in Zone 4",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p4_3 present in Zone 4",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Sub-process p4_4 present in Zone 4",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Tickets data store labeled as D3 in Level 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "DFD Level 2",
+      "name": "Rates data store labeled as D4 in Level 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "In-Gate start reaches parking entry (in_enter_park)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "In-Gate Member path reachable (p_scan_card_in)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "In-Gate Non-Member path reachable (p_press_ticket)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "In-Gate Ticket printing reachable (in_print_ticket)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "In-Gate Barrier opens (in_open_barrier)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate arrival reaches exit finish (out_finish)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Member scan reachable (out_member_scan)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Non-Member ticket handoff reachable (out_hand_ticket)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Tariff fee calculation reachable (out_calc_fee)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Payment cash processing reachable (out_pay_cash)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Invoice printing reachable (out_print_inv)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Out-Gate Barrier open reachable (out_barrier_open)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash retry loop node 'out_check_cash' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash retry loop node 'out_cash_less' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash retry loop node 'conn_a_src' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash retry loop node 'conn_a_tgt' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash retry loop node 'out_pay_cash' exists",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Flowchart Logic",
+      "name": "Cash underpayment routes to connector [A] (conn_a_src)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 1_flowchart_eparkir.drawio",
+      "status": "PASS",
+      "details": "app=95b3e4f9 www=95b3e4f9"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 2_dfd_level_0_konteks.drawio",
+      "status": "PASS",
+      "details": "app=c12f8c7f www=c12f8c7f"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 3_dfd_level_1.drawio",
+      "status": "PASS",
+      "details": "app=00db13a6 www=00db13a6"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 4_dfd_level_2.drawio",
+      "status": "PASS",
+      "details": "app=52915147 www=52915147"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": "app=50424559 www=50424559"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 1_flowchart_eparkir.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 1_flowchart_eparkir.svg",
+      "status": "PASS",
+      "details": "app=b7e7508b www=b7e7508b"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 2_dfd_level_0_konteks.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 2_dfd_level_0_konteks.svg",
+      "status": "PASS",
+      "details": "app=f897550b www=f897550b"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 3_dfd_level_1.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 3_dfd_level_1.svg",
+      "status": "PASS",
+      "details": "app=6ec346b1 www=6ec346b1"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: 4_dfd_level_2.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for 4_dfd_level_2.svg",
+      "status": "PASS",
+      "details": "app=9ff290bb www=9ff290bb"
+    },
+    {
+      "category": "Web Sync",
+      "name": "File exists in app & www dirs: index.html",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Web Sync",
+      "name": "SHA-256 parity for index.html",
+      "status": "PASS",
+      "details": "app=140a28ca www=140a28ca"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for /",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'text/html' for /",
+      "status": "PASS",
+      "details": "Got: text/html"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for /",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for 1_flowchart_eparkir.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'image/svg+xml' for 1_flowchart_eparkir.svg",
+      "status": "PASS",
+      "details": "Got: image/svg+xml"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for 1_flowchart_eparkir.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for 2_dfd_level_0_konteks.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'image/svg+xml' for 2_dfd_level_0_konteks.svg",
+      "status": "PASS",
+      "details": "Got: image/svg+xml"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for 2_dfd_level_0_konteks.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for 3_dfd_level_1.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'image/svg+xml' for 3_dfd_level_1.svg",
+      "status": "PASS",
+      "details": "Got: image/svg+xml"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for 3_dfd_level_1.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for 4_dfd_level_2.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'image/svg+xml' for 4_dfd_level_2.svg",
+      "status": "PASS",
+      "details": "Got: image/svg+xml"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for 4_dfd_level_2.svg",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "HTTP 200 OK for eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "MIME type 'application/octet-stream' for eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": "Got: application/octet-stream"
+    },
+    {
+      "category": "HTTPS Probe",
+      "name": "Non-empty payload for eparkir_all_diagrams.drawio",
+      "status": "PASS",
+      "details": ""
+    }
+  ]
+}
