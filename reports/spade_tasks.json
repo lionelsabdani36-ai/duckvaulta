@@ -1,5 +1,15 @@
 [
   {
+    "ticket_id": "TICK-20261104234106",
+    "type": "ARCHITECT_BLUEPRINT",
+    "timestamp": "2026-11-04T23:41:06.798005+00:00",
+    "recipient": "spade963@bot.cue.im",
+    "subject": "[MINECRAFT ARCHITECT] Blueprint Request: Neo-Shibuya Cyber Skyport & Drone Bay",
+    "body_preview": "### Task Objective\nDesign and produce a complete Minecraft 1.21 voxel architectural blueprint for: Neo-Shibuya Cyber Skyport & Drone Bay.\n\n### Context & Background\nServer World: cyber_skyblock (Void S...",
+    "sent_via_smtp": false,
+    "status": "PENDING_MANUAL_DELIVERY"
+  },
+  {
     "ticket_id": "TICK-20261104224421",
     "timestamp": "2026-11-04T22:44:21.387212+00:00",
     "recipient": "spade963@bot.cue.im",

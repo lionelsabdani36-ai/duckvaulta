@@ -22,7 +22,7 @@ The Duckvaulta platform is developed and maintained by a 7-agent core team runni
 
 | Operative | Platform | Endpoint / Channel | Primary Specialization |
 | :--- | :--- | :--- | :--- |
-| **Spade** | Cue (Manus AI) | `spade963@bot.cue.im` | Dedicated cloud browser automation, external web scraping, and off-VPS research synthesis. |
+| **Spade** | Cue (Manus AI) | `spade963@bot.cue.im` | Chief Architect for Cycraft SMP (3D voxel blueprints) and external cloud browser automation. |
 
 ---
 

@@ -110,25 +110,27 @@ def send_via_smtp(subject: str, body: str) -> bool:
         print(f"[!] SMTP Error: {e}", file=sys.stderr)
         return False
 
-def cmd_send(args):
-    subject = sanitize_text(args.subject)
-    raw_body = build_payload(args.goal, args.context, args.constraints, args.format)
+def dispatch_task(subject: str, goal: str, context: str = "", constraints: str = "", expected_format: str = "", task_type: str = "GENERAL"):
+    subject_clean = sanitize_text(subject)
+    raw_body = build_payload(goal, context, constraints, expected_format)
     sanitized_body = sanitize_text(raw_body)
     ticket_id = f"TICK-{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M%S')}"
 
     print("==================================================")
     print(f"DISPATCHING TASK TO SPADE ({SPADE_EMAIL})")
+    print(f"Type      : {task_type}")
     print(f"Ticket ID : {ticket_id}")
-    print(f"Subject   : {subject}")
+    print(f"Subject   : {subject_clean}")
     print("==================================================")
     
-    sent = send_via_smtp(subject, sanitized_body)
+    sent = send_via_smtp(subject_clean, sanitized_body)
     
     task_record = {
         "ticket_id": ticket_id,
+        "type": task_type,
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "recipient": SPADE_EMAIL,
-        "subject": subject,
+        "subject": subject_clean,
         "body_preview": sanitized_body[:200] + ("..." if len(sanitized_body) > 200 else ""),
         "sent_via_smtp": sent,
         "status": "DISPATCHED" if sent else "PENDING_MANUAL_DELIVERY"
@@ -140,13 +142,40 @@ def cmd_send(args):
     else:
         print("[*] Direct SMTP relay not configured. Pre-formatted delivery packet ready:\n")
         print("--- SUBJECT ---")
-        print(subject)
+        print(subject_clean)
         print("\n--- BODY ---")
         print(sanitized_body)
         print("\n--- 1-CLICK MAILTO LINK ---")
-        mailto_link = f"mailto:{SPADE_EMAIL}?subject={quote(subject)}&body={quote(sanitized_body)}"
+        mailto_link = f"mailto:{SPADE_EMAIL}?subject={quote(subject_clean)}&body={quote(sanitized_body)}"
         print(mailto_link)
         print("\n[i] Ticket logged to reports/spade_tasks.json")
+
+def cmd_send(args):
+    dispatch_task(args.subject, args.goal, args.context, args.constraints, args.format, "GENERAL")
+
+def cmd_architect(args):
+    subject = f"[MINECRAFT ARCHITECT] Blueprint Request: {args.project}"
+    goal = f"Design and produce a complete Minecraft 1.21 voxel architectural blueprint for: {args.project}."
+    context = (
+        f"Server World: cyber_skyblock (Void Skyblock Environment)\n"
+        f"Target Coordinates: {args.location}\n"
+        f"Dimensions / Footprint: {args.size}\n"
+        f"Aesthetic Theme: {args.style}\n"
+        f"Recommended Block Palette: Cyan stained glass, polished deepslate, sea lanterns, copper bulbs, smooth quartz, chiseled books."
+    )
+    constraints = (
+        "1. Minecraft version: Purpur 1.21.4 native blocks.\n"
+        "2. Do not use destructive or illegal blocks (no bedrock, barrier, command blocks, moving pistons).\n"
+        "3. Enclose all vertical shafts and drop zones to prevent players falling into the void.\n"
+        "4. Include interactive aesthetic elements (lighting switches, stairs, workstations)."
+    )
+    expected_format = (
+        "Output:\n"
+        "1. Concept summary and architectural lore.\n"
+        "2. Voxel layer breakdown.\n"
+        "3. Concrete Minecraft /fill and /setblock commands or a Python generator script producing .mcfunction files."
+    )
+    dispatch_task(subject, goal, context, constraints, expected_format, "ARCHITECT_BLUEPRINT")
 
 def cmd_list(args):
     tasks = load_tasks()
@@ -156,12 +185,14 @@ def cmd_list(args):
     print(f"Logged Spade Tasks ({len(tasks)} entries):")
     for t in tasks[:args.limit]:
         status_badge = "[SENT]" if t.get("sent_via_smtp") else "[PENDING]"
-        print(f" {status_badge} {t.get('ticket_id')} | {t.get('timestamp')[:19]} | {t.get('subject')}")
+        ttype = t.get("type", "GEN")
+        print(f" {status_badge} [{ttype}] {t.get('ticket_id')} | {t.get('timestamp')[:19]} | {t.get('subject')}")
 
 def main():
     parser = argparse.ArgumentParser(description="Spade Agent Bridge (Cue by Manus)")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
+    # General send
     send_p = subparsers.add_parser("send", help="Dispatch a task to Spade")
     send_p.add_argument("--subject", "-s", required=True, help="Task title / subject line")
     send_p.add_argument("--goal", "-g", required=True, help="Task goal / main prompt")
@@ -170,6 +201,15 @@ def main():
     send_p.add_argument("--format", default="", help="Required deliverable format")
     send_p.set_defaults(func=cmd_send)
 
+    # Architect blueprint dispatch
+    arch_p = subparsers.add_parser("architect", help="Request a Minecraft architectural blueprint from Spade")
+    arch_p.add_argument("--project", "-p", required=True, help="Project name (e.g. 'Neo-Shibuya Skyport')")
+    arch_p.add_argument("--location", "-l", default="cyber_skyblock (X=0, Y=105, Z=0)", help="Target build coordinates")
+    arch_p.add_argument("--size", "-s", default="40x40x50", help="Footprint bounds (e.g. 40x40x50)")
+    arch_p.add_argument("--style", default="Cyberpunk Brutalist Neon", help="Architectural aesthetic style")
+    arch_p.set_defaults(func=cmd_architect)
+
+    # List tasks
     list_p = subparsers.add_parser("list", help="List recent task dispatches")
     list_p.add_argument("--limit", "-n", type=int, default=10, help="Max records to show")
     list_p.set_defaults(func=cmd_list)
