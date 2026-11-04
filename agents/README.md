@@ -1,6 +1,6 @@
 # Autonomous AI Engineering Team Architecture
 
-The Duckvaulta platform is developed and maintained by a 5-agent autonomous team running on Hermes Agent multi-profile orchestration.
+The Duckvaulta platform is developed and maintained by a 7-agent autonomous team running on Hermes Agent multi-profile orchestration.
 
 ---
 
@@ -13,6 +13,8 @@ The Duckvaulta platform is developed and maintained by a 5-agent autonomous team
 | **fullstack-dev** | Core Web Developer | Full-stack engineering, responsive UI/UX, and API integration. | Desk 2 (Engineering) |
 | **qa-engineer** | Quality Assurance | Cross-viewport regression testing, interactive sandbox auditing, and accessibility checks. | Lounge Seat 3 |
 | **security-engineer** | Cyber Defense | Hardening server configs, verifying TLS 1.3 compliance, and session protection. | Lounge Seat 4 |
+| **guru** | Pedagogy & Docs | Technical curriculum design, CTF writeup standards, and documentation. | Desk 3 (Pedagogy) |
+| **jester** | Pentester & Red Team | Offensive adversary simulation, exploit weaponization, and penetration testing. | Ops Station 6 |
 
 ---
 
