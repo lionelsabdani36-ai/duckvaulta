@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-11-04T11:05:00Z",
+  "project": "Cycraft SMP (Minecraft Crossplay Java & Bedrock)",
+  "vps_host": "34.135.45.195",
+  "domain": "duckvaulta.ai.id",
+  "java_port": 25565,
+  "bedrock_port": 19132,
+  "expansion_features": {
+    "world_generation": {
+      "world_name": "cyber_skyblock",
+      "generator": "VoidGen 1.1",
+      "style": "Pure Void Skyblock (Zero other blocks in the world)",
+      "gamerules": {
+        "doDaylightCycle": false,
+        "time": 18000,
+        "doWeatherCycle": false,
+        "doMobSpawning": false,
+        "keepInventory": true
+      }
+    },
+    "architectural_districts": {
+      "nexus_spawn": {
+        "coordinates": "0.5, 65.0, 0.5",
+        "description": "Octagonal central metropolitan floating plaza with Cyber Core Beacon, Polished Deepslate, Cyan Concrete circuits, and 4 light towers."
+      },
+      "quest_district": {
+        "coordinates": "0.5, 67.0, -56.0",
+        "description": "Suspended high-tech laboratory and skyscraper facade with Hacker Terminal podium, DecentHolograms quest board, and FancyNpcs Quest Master."
+      },
+      "battle_colosseum": {
+        "coordinates": "65.0, 65.0, 0.0",
+        "description": "32x32 Octagonal Cyber CTF Battle Colosseum with 4 corner beacon towers, Red and Blue hacker spawn pods, spectator galleries, and PvP active zone."
+      },
+      "portal_gateway": {
+        "coordinates": "0.5, 65.0, 50.0",
+        "description": "Floating survival transport gateway with crying obsidian arch and direct links to /warp survival and /rtp."
+      }
+    },
+    "cyber_quest_engine": {
+      "plugin": "CycraftCyberQuest v1.0.0",
+      "runtime": "Java 21 LTS (Purpur 1.21.4 native)",
+      "features": [
+        "/challenge - view active cybersecurity challenges",
+        "/submit <flag> - submit CTF flags for automated payout",
+        "/ctfstats - view player solved missions and hacker profile"
+      ],
+      "active_challenges": [
+        "SQLI-01: Web Recon: SQLi Auth Bypass (500 CyBits, 50 Claim Blocks, 5 Diamonds)",
+        "ROT13-02: Kriptografi: Caesar Cipher Matrix (750 CyBits, 75 Claim Blocks, 8 Diamonds)",
+        "REV-03: Reverse Engineering: Memory Guard Bypass (1000 CyBits, 100 Claim Blocks, 10 Diamonds)",
+        "NET-04: Network Forensics: Wireshark Packet Dump (1200 CyBits, 120 Claim Blocks, 12 Diamonds)",
+        "SUID-05: Linux Hardening: SUID Privilege Escalation (1500 CyBits, 150 Claim Blocks, 16 Diamonds)"
+      ]
+    },
+    "npc_interaction": {
+      "plugin": "FancyNpcs 2.10.1-java21+2",
+      "npc_name": "quest_master",
+      "display_name": "⚡ CYSEC QUEST MASTER ⚡",
+      "glow_color": "Aqua",
+      "action": "Right-click executes /challenge with sounds and visual feedback"
+    },
+    "survival_random_spawn": {
+      "plugin": "AsyncRTP 2.3-BETA",
+      "command": "/rtp or /wild",
+      "characteristics": "Asynchronous chunk scanning, zero server tick stall, surface safe-landing filter (no oceans, no lava), 60s cooldown"
+    },
+    "land_claiming_anti_chaos": {
+      "plugin": "GriefPrevention 16.18.6",
+      "tool": "Golden Shovel (/kit starter)",
+      "mechanism": "Claim rectangular plots, prevent griefing, stealing, griefing, and animal slaughter. Initial 100 blocks + 100 blocks/hour + Quest bonus blocks"
+    },
+    "legitimate_war_system": {
+      "plugin": "SimpleClans 2.19.2",
+      "status": "war-enabled: true",
+      "protocol": "Bilateral consent required (/clan war declare <clan> -> /clan war accept), formal scoreboard KDR logging, legal PvP engagement"
+    }
+  },
+  "kanban_orchestration": {
+    "t_cycraft_01": "Charlie (trend-hunter) - Architectural Design & Palette",
+    "t_cycraft_02": "Alex (fullstack-dev) - Deploy Core Plugins",
+    "t_cycraft_03": "Omnirush (default) - Void World Gen & Metropolitan Skyblock Construction",
+    "t_cycraft_04": "Alex (fullstack-dev) - CycraftCyberQuest Engine",
+    "t_cycraft_05": "Athena (security-engineer) - Security Hardening & Protection Rules",
+    "t_cycraft_06": "Julius (qa-engineer) - QA Verification Suite",
+    "t_cycraft_07": "Judith (guru) - Player Handbook"
+  }
+}

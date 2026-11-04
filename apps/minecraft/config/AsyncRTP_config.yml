@@ -1,0 +1,247 @@
+# ============================================================================
+#  AsyncRTP - random teleport that never stalls the server tick
+#
+#  Chunks are loaded and generated through Paper's asynchronous chunk API, off
+#  the main thread. Only the block check on the already loaded chunk runs on
+#  the tick, and it costs a few hundred block reads at most.
+#
+#  Every value below can be changed. Anything you delete falls back to the
+#  built-in default, so a short config is a valid config.
+# ============================================================================
+
+# Which language file to use: "de" loads messages_de.yml, "en" loads messages_en.yml.
+# Copy one of them to messages_<code>.yml to add your own.
+language: en
+
+
+# ----------------------------------------------------------------------------
+#  Defaults - apply to everyone without a matching group below
+# ----------------------------------------------------------------------------
+defaults:
+  # Seconds between two teleports. 300 = five minutes.
+  cooldown-seconds: 300
+
+  # Seconds the player must stand still before the teleport fires. 0 = instant.
+  warmup-seconds: 3
+
+  # Abort the warmup when the player walks away or gets hit.
+  cancel-on-move: true
+  cancel-on-damage: true
+
+  # How many candidate spots to check before giving up.
+  # Each attempt loads one chunk, so keep this moderate on rented hardware.
+  max-attempts: 8
+
+  # Seconds of damage immunity right after arriving, so nobody dies to a
+  # creeper they could not see coming. 0 disables it.
+  invulnerable-seconds: 3
+
+  # Charge the cooldown even when no spot was found. Off by default, because
+  # a failed search is not the player's fault.
+  count-failed-attempts: false
+
+  # Refuse the teleport when the inventory is completely full.
+  require-free-inventory-slot: false
+
+  # Price per teleport. Needs economy.enabled and Vault. 0 = free.
+  cost: 0.0
+
+
+# ----------------------------------------------------------------------------
+#  Rank overrides
+#
+#  A player gets the first group whose permission they hold, checked from the
+#  highest priority down. Any value left out here falls back to 'defaults'.
+# ----------------------------------------------------------------------------
+groups:
+  vip:
+    permission: asyncrtp.group.vip
+    priority: 10
+    cooldown-seconds: 120
+    warmup-seconds: 1
+    max-radius: 4000
+    cost: 0.0
+  staff:
+    permission: asyncrtp.group.staff
+    priority: 100
+    cooldown-seconds: 0
+    warmup-seconds: 0
+
+
+# ----------------------------------------------------------------------------
+#  Teleport on join
+# ----------------------------------------------------------------------------
+on-join:
+  enabled: false
+  # true  = only the very first time a player connects
+  # false = every single join
+  first-join-only: true
+  world: world
+  # Wait this many ticks after joining (20 ticks = 1 second) so the client
+  # has finished loading before it gets moved.
+  delay-ticks: 40
+  # Skip players who already have a respawn point set.
+  only-without-bed: false
+  # Send the join-teleported message.
+  message: true
+
+
+# ----------------------------------------------------------------------------
+#  Prepared destinations
+#
+#  A background task verifies a few spots per world while the server idles.
+#  When a player runs /rtp the destination is usually ready, which turns a
+#  multi second search into an instant teleport.
+# ----------------------------------------------------------------------------
+queue:
+  enabled: true
+  # Ticks between two refill runs. One location is prepared per run and world,
+  # so the cost stays spread out. 100 ticks = 5 seconds.
+  refill-interval-ticks: 100
+
+
+# ----------------------------------------------------------------------------
+#  Economy (optional, needs Vault)
+# ----------------------------------------------------------------------------
+economy:
+  enabled: false
+
+
+# ----------------------------------------------------------------------------
+#  Sounds, particles and the arrival title
+# ----------------------------------------------------------------------------
+effects:
+  sound:
+    enabled: true
+    depart: ENTITY_ENDERMAN_TELEPORT
+    arrive: ENTITY_PLAYER_LEVELUP
+    volume: 0.7
+    pitch: 1.0
+  particles:
+    enabled: true
+    type: PORTAL
+    count: 40
+  title:
+    enabled: true
+
+
+# ----------------------------------------------------------------------------
+#  Values inherited by every world entry below
+# ----------------------------------------------------------------------------
+world-defaults:
+  enabled: true
+
+  # CIRCLE spreads players evenly across a ring, SQUARE fills a box.
+  shape: CIRCLE
+
+  # Take the centre and the outer limit from the world border instead of the
+  # values below. Handy when the border moves.
+  use-world-border: false
+
+  center-x: 0
+  center-z: 0
+  min-radius: 250
+  max-radius: 2000
+
+  # Only accept landing spots between these heights.
+  min-y: 45
+  max-y: 250
+
+  # SURFACE        - uses the height map, right for the overworld
+  # NETHER         - walks up from the floor, so nobody lands on the bedrock roof
+  # HIGHEST_SOLID  - ignores the height map and takes the topmost solid block
+  #                  between min-y and max-y
+  search-mode: SURFACE
+
+  # Blocks of free space needed above the ground block.
+  required-headroom: 2
+
+  # No block from hazard-blocks may be within this many blocks of the landing
+  # spot, from one block below the ground up to the top of the headroom.
+  # 0 disables the check, 7 is the maximum.
+  hazard-radius: 2
+
+  hazard-blocks:
+    - LAVA
+    - WATER
+    - FIRE
+    - SOUL_FIRE
+    - CACTUS
+    - MAGMA_BLOCK
+    - CAMPFIRE
+    - SOUL_CAMPFIRE
+    - SWEET_BERRY_BUSH
+    - POWDER_SNOW
+
+  # How many verified spots to keep ready for this world. Each one is checked
+  # again right before a player is sent there.
+  queue-size: 6
+
+  blocked-ground:
+    - LAVA
+    - WATER
+    - MAGMA_BLOCK
+    - CACTUS
+    - FIRE
+    - SOUL_FIRE
+    - CAMPFIRE
+    - SOUL_CAMPFIRE
+    - POWDER_SNOW
+    - SWEET_BERRY_BUSH
+    - WITHER_ROSE
+    - POINTED_DRIPSTONE
+
+  # Names without the "minecraft:" prefix.
+  blocked-biomes:
+    - ocean
+    - deep_ocean
+    - cold_ocean
+    - deep_cold_ocean
+    - frozen_ocean
+    - deep_frozen_ocean
+    - lukewarm_ocean
+    - deep_lukewarm_ocean
+    - warm_ocean
+    - river
+    - frozen_river
+
+  # When this list has entries, ONLY these biomes are accepted and
+  # blocked-biomes is ignored. Leave empty to allow everything else.
+  allowed-biomes: []
+
+
+# ----------------------------------------------------------------------------
+#  Per world settings
+#
+#  Worlds that are not listed here reject /rtp. Every key from world-defaults
+#  can be repeated inside a world to override it.
+# ----------------------------------------------------------------------------
+worlds:
+  world:
+    enabled: true
+    center-x: 0
+    center-z: 0
+    min-radius: 250
+    max-radius: 2000
+    search-mode: SURFACE
+
+  world_nether:
+    enabled: false
+    center-x: 0
+    center-z: 0
+    min-radius: 100
+    max-radius: 500
+    search-mode: NETHER
+    min-y: 32
+    max-y: 100
+    blocked-ground:
+      - LAVA
+      - MAGMA_BLOCK
+      - FIRE
+      - SOUL_FIRE
+    hazard-blocks:
+      - LAVA
+      - FIRE
+      - SOUL_FIRE
+      - MAGMA_BLOCK
+    blocked-biomes: []

@@ -1,0 +1,31 @@
+name: quest_board
+location: cyber_skyblock:0.5:70.5:-56.0
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&b&l⚡ CYSEC QUEST TERMINAL ⚡'
+    height: 0.35
+  - content: '&7&nInteraksi NPC Quest Master di Bawah'
+    height: 0.28
+  - content: '&8-------------------------------------'
+    height: 0.25
+  - content: '&e▶ [KLIK KANAN NPC] &funtuk Membuka Menu Misi'
+    height: 0.3
+    actions:
+      LEFT:
+      - '[PLAYER] challenge'
+      RIGHT:
+      - '[PLAYER] challenge'
+  - content: '&a▶ Format Kirim Flag: &b/submit &e<flag>'
+    height: 0.3
+  - content: '&d▶ Hadiah: &e+CyBits &7| &a+Claim Blocks &7| &b+Berlian'
+    height: 0.28
+  - content: '&8-------------------------------------'
+    height: 0.25
+  - content: '&7Ketik &f/ctfstats &7untuk melihat riwayat misi Anda!'
+    height: 0.28

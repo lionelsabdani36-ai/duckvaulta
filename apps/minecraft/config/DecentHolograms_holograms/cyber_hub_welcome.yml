@@ -1,0 +1,45 @@
+name: cyber_hub_welcome
+location: cyber_skyblock:0.5:67.8:0.5
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&b&l⚡ CYCRAFT METROPOLITAN SKYBLOCK ⚡'
+    height: 0.35
+  - content: '&7&oCrossplay Java (25565) & Bedrock (19132)'
+    height: 0.28
+  - content: '&3====================================='
+    height: 0.25
+  - content: '&fSelamat Datang di &b&lCyber Hub Central Nexus&r&f!'
+    height: 0.32
+  - content: '&7Dunia Eksplorasi, Keamanan Siber & Pertarungan Sah'
+    height: 0.28
+  - content: '&a▶ &fSurvival RTP: &a/rtp &fatau &a/warp survival'
+    height: 0.3
+    actions:
+      LEFT:
+      - '[PLAYER] rtp'
+      RIGHT:
+      - '[PLAYER] rtp'
+  - content: '&b▶ &fCyber Quest: &b/challenge &fatau &b/warp quest'
+    height: 0.3
+    actions:
+      LEFT:
+      - '[PLAYER] warp quest'
+      RIGHT:
+      - '[PLAYER] warp quest'
+  - content: '&c▶ &fBattle Colosseum: &c/warp arena'
+    height: 0.3
+    actions:
+      LEFT:
+      - '[PLAYER] warp arena'
+      RIGHT:
+      - '[PLAYER] warp arena'
+  - content: '&3====================================='
+    height: 0.25
+  - content: '&dProteksi Tanah: &e/claim &7(Golden Shovel) | &dClan War: &e/clan war'
+    height: 0.28

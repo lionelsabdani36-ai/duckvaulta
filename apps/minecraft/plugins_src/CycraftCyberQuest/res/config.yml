@@ -1,0 +1,51 @@
+# Cycraft SMP - Cyber Challenges Configuration
+challenges:
+  sqli-01:
+    name: "Web Recon: SQLi Auth Bypass"
+    category: "Web Security"
+    description: "Portal admin pos parkir rentan terhadap serangan SQL Injection pada field login. Temukan payload standar yang mengembalikan nilai true konstan."
+    hint: "' OR '1'='1"
+    flag: "CYBER{sql_injection_bypass_2026}"
+    reward_cybits: 500
+    reward_claim_blocks: 50
+    reward_diamonds: 5
+
+  rot13-02:
+    name: "Kriptografi: Caesar Cipher Matrix"
+    category: "Cryptography"
+    description: "Intercept transmisi radio terenkripsi ROT13: 'CYPENIS_SYNT_TRLFRE_NYTBEVGUZ'. Dekripsi pesan tersebut ke plain-text aslinya."
+    hint: "Gunakan pergeseran alfabet N=13"
+    flag: "CYBER{FLAG_GEYSER_ALGORITHM}"
+    reward_cybits: 750
+    reward_claim_blocks: 75
+    reward_diamonds: 8
+
+  rev-03:
+    name: "Reverse Engineering: Memory Guard Bypass"
+    category: "Reverse Engineering"
+    description: "Binary proteksi register EAX memvalidasi serial key. Ubah instruksi conditional jump JNE (0x75) menjadi NOP (0x90) untuk bypass."
+    hint: "Opcode 0x90 NOP instruction"
+    flag: "CYBER{reverse_engineering_eax_bypass}"
+    reward_cybits: 1000
+    reward_claim_blocks: 100
+    reward_diamonds: 10
+
+  net-04:
+    name: "Network Forensics: Wireshark Packet Dump"
+    category: "Network Forensics"
+    description: "Analisis capture pcap stream port 21 untuk menemukan kredensial autentikasi plaintext yang bocor di jaringan internal."
+    hint: "Follow TCP Stream FTP auth command"
+    flag: "CYBER{ftp_plaintext_credentials_exposed}"
+    reward_cybits: 1200
+    reward_claim_blocks: 120
+    reward_diamonds: 12
+
+  suid-05:
+    name: "Linux Hardening: SUID Privilege Escalation"
+    category: "System Hardening"
+    description: "Temukan binary executable dengan izin bit SUID aktif pada sistem Linux yang dapat dieksploitasi untuk mendapatkan shell root."
+    hint: "find / -perm -4000 2>/dev/null"
+    flag: "CYBER{suid_privilege_escalation_secured}"
+    reward_cybits: 1500
+    reward_claim_blocks: 150
+    reward_diamonds: 16

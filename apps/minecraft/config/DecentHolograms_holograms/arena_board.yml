@@ -1,0 +1,28 @@
+name: arena_board
+location: cyber_skyblock:65.0:68.2:0.0
+enabled: true
+display-range: 48
+update-range: 48
+update-interval: 20
+facing: 0.0
+down-origin: false
+pages:
+- lines:
+  - content: '&c&l⚔ CYBER CTF BATTLE COLOSSEUM ⚔'
+    height: 0.35
+  - content: '&7&oZona Pertarungan Kompetitif & Clan War Resmi'
+    height: 0.28
+  - content: '&4====================================='
+    height: 0.25
+  - content: '&fAturan Arena: &cPVP Aktif &7| &aKeepInventory Aktif'
+    height: 0.3
+  - content: '&e▶ Deklarasi Perang Sah: &f/clan war declare <clan>'
+    height: 0.3
+  - content: '&a▶ Terima Tantangan Perang: &f/clan war accept'
+    height: 0.3
+  - content: '&7-------------------------------------'
+    height: 0.25
+  - content: '&bTerminal Hacker: 4 Menara Sudut Menyimpan Beacon Node'
+    height: 0.28
+  - content: '&4====================================='
+    height: 0.25

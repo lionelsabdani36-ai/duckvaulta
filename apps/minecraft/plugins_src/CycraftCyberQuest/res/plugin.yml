@@ -1,0 +1,28 @@
+name: CycraftCyberQuest
+version: 1.0.0
+main: id.cycraft.cyberquest.CycraftCyberQuest
+api-version: 1.20
+description: Cycraft SMP Cyber Quest & CTF Flag Verification Engine
+authors: [David, Alex, NyawitTeam]
+depend: [Vault]
+softdepend: [GriefPrevention, Essentials]
+commands:
+  challenge:
+    description: Buka menu tantangan dan quest cybersecurity Cycraft SMP
+    aliases: [quest, quests, soal, ctf]
+    permission: cycraft.quest.use
+  submit:
+    description: Kirimkan jawaban flag untuk verifikasi dan raih reward
+    aliases: [jawab, answer]
+    permission: cycraft.quest.use
+  ctfstats:
+    description: Lihat statistik pencapaian quest cybersecurity pemain
+    aliases: [queststats]
+    permission: cycraft.quest.use
+permissions:
+  cycraft.quest.use:
+    description: Mengizinkan akses melihat dan menjawab quest
+    default: true
+  cycraft.admin:
+    description: Mengizinkan pengelolaan dan reload tantangan
+    default: op
