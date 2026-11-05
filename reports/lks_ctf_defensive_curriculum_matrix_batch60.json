@@ -1,0 +1,347 @@
+{
+  "schema_version": "2026.2",
+  "document_title": "Pedagogical CTF Curriculum Synthesis & LKS Defensive Hardening Matrix (Batch 60: Multi-Architecture Reversing, POSIX IPC Concurrency & Arithmetic Bounds)",
+  "mentor": {
+    "name": "Judith",
+    "role": "Master Guru & Mentor Akademik / Kompetisi",
+    "mentee": "Arielwin & White Jack",
+    "target_level": "Seleksi Tim 2 & LKS Cyber Security Nasional (Gold Medalist Standard)",
+    "objective": "Membimbing siswa mencapai Total Concept Mastery 100% pada analisis reverse engineering lintas arsitektur (x86 vs ARM64), konkurensi memori bersama POSIX MAP_SHARED, manipulasi bitwise popcount, aritmatika modular integer overflow, dan remediasi defensif standar industri NIST SP 800-53."
+  },
+  "batch_metadata": {
+    "batch_number": 60,
+    "target_platform": "CyLab Security Academy (Reverse Engineering & Binary Concurrency)",
+    "total_challenges": 3,
+    "total_score_points": 740,
+    "completion_rate": "100%",
+    "date_synthesized": "2026-11-05",
+    "target_challenges": [
+      24,
+      150,
+      106
+    ]
+  },
+  "pedagogical_pillars": [
+    {
+      "pillar": 1,
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi Komputasi)",
+      "description": "Membongkar cara kerja pohon proses fork(), semantik pemetaan memori bersama MAP_SHARED, instruksi conditional branch carry clear (bcc) ARM64, serta dekomposisi ekstraksi bit popcount tanpa ketergantungan pada emulator biner."
+    },
+    {
+      "pillar": 2,
+      "name": "Metode Socratic & Scaffolding Bertingkat",
+      "description": "Menyajikan pertanyaan pancingan bertingkat (Tier 1 Orientasi, Tier 2 Struktural, Tier 3 Pencerahan) saat siswa menemui kebingungan perilaku konkurensi fork atau interpretasi nilai bertanda (two s complement)."
+    },
+    {
+      "pillar": 3,
+      "name": "Bedah Anatomi Distraktor (Jebakan Soal HOTS)",
+      "description": "Mengupas tuntas miskonsepsi umum seperti mengabaikan eksponensial pembiakan proses 2^N, tertukar antara perbandingan bertanda vs tak bertanda pada instruksi bcc ARM64, serta kelalaian format padding heksadesimal 32-bit."
+    },
+    {
+      "pillar": 4,
+      "name": "Siklus Belajar Adaptif (Diagnosa -> Kristalisasi -> Drilling Bertingkat -> Verifikasi 100%)",
+      "description": "Menuntun proses belajar melalui 3 level drilling: x86 IPC Concurrency Wrap-around (Fondasi), ARM64 Modular Addition Loop (Analisis/HOTS), dan ARM64 Bitwise Popcount Extraction (Kombinatorik/Ekstrem)."
+    },
+    {
+      "pillar": 5,
+      "name": "Evaluasi Berbasis IRT (Item Response Theory) & Rubrik LKS Skill 54",
+      "description": "Memodelkan probabilitas penguasaan siswa menggunakan model psikometrik 3PL dan 4 pilar rubrik penilaian teknis standar LKS Cyber Security Nasional."
+    }
+  ],
+  "cognitive_distribution": {
+    "C2_Understanding": 0,
+    "C3_Applying": 0,
+    "C4_Analyzing": 1,
+    "C5_Evaluating": 2
+  },
+  "domain_distribution": {
+    "Domain_A_Process_Concurrency_And_Shared_Memory": "Chall 24",
+    "Domain_B_ARM64_Unsigned_Loop_Arithmetic": "Chall 150",
+    "Domain_C_ARM64_Bitwise_Manipulation_Popcount": "Chall 106",
+    "Domain_D_Defensive_Hardening_NIST_Compliance": "Chall 24, Chall 150, Chall 106"
+  },
+  "modules": [
+    {
+      "module_id": "MOD-01",
+      "challenge_id": 24,
+      "name": "Forky",
+      "category": "Reverse Engineering & Process Concurrency",
+      "points": 500,
+      "difficulty": "Medium",
+      "bloom_level": "C4 - Analyzing",
+      "cwe": "CWE-190: Integer Overflow or Wraparound / CWE-362: Race Condition",
+      "verified_flag": "academy{-721750240}",
+      "first_principles_theory": "Sistem operasi Linux mengalokasikan memori bersama anonim via mmap dengan bendera MAP_SHARED | MAP_ANONYMOUS berukuran 4 byte yang diinisialisasi nilai 0x3B9ACA00 (1.000.000.000 desimal). Eksekusi berurutan 4 kali fork() menghasilkan pembelahan proses eksponensial sebanyak 2^4 = 16 proses konkuren. Setiap proses menambahkan konstanta 0x499602D2 (1.234.567.890 desimal) ke memori bersama fisik yang sama. Total akumulasi 20.753.086.240 melampaui batas 32-bit (modulo 2^32 = 3.573.217.056 atau 0xD4FCEF20), yang pada representasi komplemen dua (two s complement) bernilai -721.750.240.",
+      "feynman_analogy": "Seperti sebuah papan tulis bersama di aula (MAP_SHARED) yang mencatat angka awal 1 Miliar. Setiap orang yang masuk menggandakan diri menjadi 2 orang secara berulang selama 4 putaran hingga menjadi 16 orang. Masing-masing menambahkan 1,23 Miliar ke angka di papan tulis tersebut. Kalkulator kasir yang hanya sanggup membaca 32 bit bertanda akan memutar jarum angka melampaui angka positif maksimum dan berakhir di angka minus 721 Juta.",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Berapa kali pemanggilan fork() dilakukan secara berurutan, dan berapa total proses yang aktif mengeksekusi instruksi penambahan?",
+        "tier_2_structural": "Mengapa penambahan yang dilakukan oleh child process dapat langsung terbaca oleh parent process tanpa pipa (pipe) atau socket IPC biasa?",
+        "tier_3_breakthrough": "Ketika nilai 20.753.086.240 disimpan dalam register EAX 32-bit bertanda (signed integer), berapakah representasi bilangan desimal bertanda yang dicetak oleh program?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira fork() hanya menghasilkan 4 atau 5 proses (penjumlahan linier alih-alih eksponensial 2^4).",
+        "Mengira alokasi mmap mengalami copy-on-write seperti memori stack biasa (mengabaikan flag MAP_SHARED).",
+        "Menyerahkan nilai heksadesimal atau unsigned 3.573.217.056 padahal fungsi doNothing() menerima signed int bertanda minus."
+      ],
+      "blue_team_incident_takeaway": "Penggunaan memori bersama antar-proses tanpa mekanisme sinkronisasi primitif (mutex atau atomic) dan tanpa validasi batas integer menimbulkan anomali data serta kegagalan integritas komputasi sistem.",
+      "defensive_hardening_standard": {
+        "concurrency_safety": "Gunakan operasi atomik C11 (atomic_fetch_add) atau semafor POSIX (sem_wait / sem_post) untuk memastikan isolasi mutlak dan mencegah pembacaan data korup.",
+        "overflow_checking": "Terapkan pengecekan luapan integer bawaan kompiler seperti __builtin_add_overflow sebelum melakukan penyimpanan ke memori.",
+        "process_containment": "Batasi pembiakan proses liar menggunakan cgroups pids.max atau rlimit RLIMIT_NPROC untuk memitigasi serangan Fork Bomb."
+      },
+      "irt_parameters": {
+        "discrimination_a": 1.95,
+        "difficulty_b": 1.35,
+        "pseudo_guessing_c": 0.04
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SI-16: Memory Protection, SC-39: Process Isolation, SA-8: Security Engineering Principles",
+        "cwe": "CWE-190, CWE-362",
+        "worldskills_skill_54": "Section 2.1: Binary Analysis and Concurrency Integrity Assessment"
+      }
+    },
+    {
+      "module_id": "MOD-02",
+      "challenge_id": 150,
+      "name": "ARMssembly 2",
+      "category": "Reverse Engineering & ARM64 Assembly Arithmetic",
+      "points": 110,
+      "difficulty": "Hard",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-190: Integer Overflow or Wraparound / CWE-681: Incorrect Conversion between Numeric Types",
+      "verified_flag": "academy{e815ef32}",
+      "first_principles_theory": "Pada arsitektur ARMv8-A 64-bit (AArch64), fungsi func1 menginisialisasi akumulator ke 0 dan melakukan perulangan penambahan berulang 3 sebanyak arg kali. Instruksi perbandingan cmp w1, w0 yang diikuti bcc .L3 (branch carry clear) bertindak sebagai evaluasi perbandingan unsigned (w1 < w0). Dengan argumen a = 2.729.572.966, perulangan setara dengan perkalian modular (2.729.572.966 * 3) mod 2^32 = 8.188.718.898 mod 4.294.967.296 = 3.893.751.602, yang dalam heksadesimal 32-bit adalah 0xe815ef32.",
+      "feynman_analogy": "Seperti meteran bensin mekanik 32-bit yang diputar maju sebanyak 2,72 Miliar langkah, di mana tiap langkah memajukan angka sebanyak 3 unit. Total angka yang dimasukkan melampaui kapasitas maksimal putaran meteran (4,29 Miliar), sehingga gir meteran berputar melingkar dan berhenti di sisa angka 3,89 Miliar (0xe815ef32).",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Perhatikan instruksi bcc .L3 pada arsitektur ARM. Apakah bcc menguji nilai signed atau unsigned melalui Carry Flag?",
+        "tier_2_structural": "Apa yang dilakukan instruksi str wzr, [sp, 24] terhadap register frame stack lokal? Apa fungsi register khusus wzr pada AArch64?",
+        "tier_3_breakthrough": "Berapa kali loop .L3 dieksekusi untuk argumen a = 2729572966? Bagaimana merumuskan operasi loop penambahan ini ke dalam operasi aritmatika modular satu langkah?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira bcc adalah perbandingan signed sehingga menganggap nilai 2.729.572.966 bernilai negatif dan loop langsung selesai seketika.",
+        "Mencoba menjalankan emulasi manual per instruksi satu demi satu yang memakan waktu hingga miliaran iterasi.",
+        "Lupa memformat keluaran menjadi string heksadesimal huruf kecil 8 digit tanpa prefix 0x."
+      ],
+      "blue_team_incident_takeaway": "Pengabaian semantik unsigned branching pada arsitektur RISC modern dapat menyebabkan kesalahan fatal dalam verifikasi batas kuota atau loop buffer aplikasi.",
+      "defensive_hardening_standard": {
+        "safe_arithmetic": "Terapkan fungsi perkalian aman seperti mul_overflow atau gunakan tipe data 64-bit eksplisit (uint64_t) sebelum melakukan operasi perkalian besar.",
+        "compiler_optimization": "Aktifkan flag optimasi kompiler -O2/-O3 agar kompiler mengenali pola akumulasi loop dan mengubahnya menjadi instruksi mul tunggal yang lebih aman dan cepat.",
+        "static_bounds_checking": "Sertakan validasi pra-kondisi: if (arg > UINT32_MAX / 3) { report_overflow_error(); }."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.1,
+        "difficulty_b": 1.6,
+        "pseudo_guessing_c": 0.03
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SI-16: Memory Protection, SA-11: Developer Testing and Evaluation",
+        "cwe": "CWE-190, CWE-681",
+        "worldskills_skill_54": "Section 2.1: Reverse Engineering and Assembly Instruction Disassembly"
+      }
+    },
+    {
+      "module_id": "MOD-03",
+      "challenge_id": 106,
+      "name": "ARMssembly 3",
+      "category": "Reverse Engineering & ARM64 Bitwise Manipulation",
+      "points": 130,
+      "difficulty": "Hard",
+      "bloom_level": "C5 - Evaluating",
+      "cwe": "CWE-682: Incorrect Calculation / CWE-190: Integer Overflow",
+      "verified_flag": "academy{00000024}",
+      "first_principles_theory": "Fungsi func1 mengimplementasikan algoritma penghitungan bit aktif (Population Count / Hamming Weight) pada bilangan 32-bit. Pada setiap iterasi, instruksi and w0, w0, 1 menguji bit terendah (LSB). Jika bernilai 1, fungsi memanggil func2(acc) yang menambahkan nilai 3 ke akumulator. Selanjutnya instruksi lsr w0, w0, 1 menggeser representasi bit ke kanan sebesar 1 posisi. Perulangan berlanjut hingga seluruh bit tergeser habis (w0 == 0). Nilai akhir sama dengan popcount(a) * 3. Untuk a = 605030239 (biner: 0b100100000100000000011101011111, memiliki 12 bit bernilai 1), hasil akhir adalah 12 * 3 = 36 desimal = 0x24 heksadesimal, diformat 8 digit menjadi academy{00000024}.",
+      "feynman_analogy": "Seperti 32 pintu putar sensor cahaya. Setiap kali mobil sensor melewati pintu yang lampunya menyala (bit 1), bel alarm berbunyi 3 kali. Jika dari 32 pintu hanya ada 12 pintu yang lampunya menyala, maka total bunyi bel yang tercatat tepat 36 kali (0x00000024).",
+      "socratic_scaffolding": {
+        "tier_1_orientation": "Apa tujuan dari operasi logika and w0, w0, 1 terhadap sebuah register biner pada AArch64?",
+        "tier_2_structural": "Bagaimana pengaruh pergeseran logika kanan lsr w0, w0, 1 terhadap representasi bilangan biner pada setiap putaran perulangan?",
+        "tier_3_breakthrough": "Berapa jumlah total bit bernilai 1 pada bilangan desimal 605030239? Jika setiap bit 1 memicu penambahan 3 via func2, berapa nilai akhir yang dikembalikan?"
+      },
+      "common_misconceptions_and_distractors": [
+        "Mengira func2 melakukan hashing kriptografi yang rumit padahal hanya sub-rutin penambahan konstanta 3.",
+        "Salah menghitung jumlah bit 1 karena melakukan konversi biner secara manual tanpa alat bantu presisi.",
+        "Lupa menambahkan padding nol di depan angka hex 24 sehingga menghasilkan string tidak valid berukuran kurang dari 8 karakter."
+      ],
+      "blue_team_incident_takeaway": "Implementasi algoritma pemrosesan bit rahasia yang melibatkan branching kondisional (beq .L5) membuka celah serangan saluran samping (timing & power side-channel analysis).",
+      "defensive_hardening_standard": {
+        "constant_time_intrinsics": "Gunakan instruksi bawaan perangkat keras yang beroperasi konstan seperti __builtin_popcount atau instruksi vektor SIMD ARM64 cnt.",
+        "branchless_programming": "Hilangkan branch yang bergantung pada data rahasia guna mencegah kebocoran informasi melalui analisis selisih waktu eksekusi.",
+        "compiler_vectorization": "Aktifkan instruksi NEON SIMD (-march=armv8-a+simd) agar operasi bitwise diproses secara paralel pada level register 128-bit."
+      },
+      "irt_parameters": {
+        "discrimination_a": 2.3,
+        "difficulty_b": 1.85,
+        "pseudo_guessing_c": 0.02
+      },
+      "compliance_mapping": {
+        "nist_sp_800_53": "SA-8: Security Engineering Principles, SC-13: Cryptographic Protection",
+        "cwe": "CWE-682, CWE-190",
+        "worldskills_skill_54": "Section 2.1: Binary Decompilation and Algorithmic Reconstruction"
+      }
+    }
+  ],
+  "architecture_comparison_matrix": {
+    "comparison_dimensions": [
+      {
+        "dimension": "Model Eksekusi & Set Instruksi",
+        "x86_32_intel": "CISC, instruksi panjang variabel (1-15 byte), register terbatas (EAX, EBX, ECX, EDX, ESI, EDI, EBP, ESP).",
+        "armv8_a_64bit": "RISC (Load/Store), instruksi fixed-length 32-bit, 31 register serbaguna (X0-X30, W0-W30) ditambah WZR/XZR."
+      },
+      {
+        "dimension": "Konvensi Pemanggilan (Calling Convention)",
+        "x86_32_intel": "cdecl: argumen diteruskan via stack (kanan ke kiri), pemanggil membersihkan stack, nilai kembali di EAX.",
+        "armv8_a_64bit": "AAPCS64: 8 argumen pertama diteruskan via register X0-X7 (W0-W7), return address di X30 (LR), nilai kembali di X0/W0."
+      },
+      {
+        "dimension": "Evaluasi Percabangan Kondisional",
+        "x86_32_intel": "EFLAGS register: JB/JNAE (unsigned), JL/JNGE (signed) berdasarkan perpaduan flag CF, ZF, SF, OF.",
+        "armv8_a_64bit": "PSTATE register: BCC (Branch Carry Clear / unsigned lower), BLT (Branch Less Than / signed) eksplisit."
+      },
+      {
+        "dimension": "Operasi Bitwise Popcount",
+        "x86_32_intel": "Instruksi POPCNT (ekstensi SSE4.2), atau emulasi loop manual berbasis register bitwise.",
+        "armv8_a_64bit": "Instruksi SIMD/NEON CNT (Count bits set) per byte, atau loop serial berbasis LSR dan AND."
+      }
+    ]
+  },
+  "ai_team_orchestration": {
+    "batch_code": "Batch 60",
+    "lead_mentor": "Judith (guru)",
+    "roster": [
+      {
+        "profile": "trend-hunter (Charlie)",
+        "task_id": "t_6a028d25",
+        "role": "Intelligence Scout & Target Discovery",
+        "contribution": "Mengidentifikasi 3 tantangan unsolved berstandar LKS: Chall 24 (Forky), Chall 150 (ARMssembly 2), Chall 106 (ARMssembly 3)."
+      },
+      {
+        "profile": "security-engineer (Athena)",
+        "task_id": "t_ed37ea9c",
+        "role": "Exploit Analysis & Root Cause Auditor",
+        "contribution": "Audit mendalam POSIX MAP_SHARED wrap-around, semantik perulangan unsigned bcc, dan dekomposisi Hamming weight popcount."
+      },
+      {
+        "profile": "fullstack-dev (Alex)",
+        "task_id": "t_d8fe50b6",
+        "role": "Solvers & Writeups Deployment Specialist",
+        "contribution": "Mengembangkan skrip solver standalone berpresisi tinggi dan modul writeup markdown berstandar NIST SP 800-115."
+      },
+      {
+        "profile": "default (David / Omnirush)",
+        "task_id": "t_c5085f8b",
+        "role": "Omnirush Automated Execution Lead",
+        "contribution": "Eksekusi otomatis seluruh skrip solver dan verifikasi test harness live tanpa kegagalan."
+      },
+      {
+        "profile": "qa-engineer (Julius)",
+        "task_id": "t_547c5c48",
+        "role": "Quality Assurance & Git Repository Sync",
+        "contribution": "Validasi submisi 3 flag ke API platform dengan status 201 correct: True, update README, dan sync commit Git 8b145e8."
+      },
+      {
+        "profile": "guru (Judith)",
+        "task_id": "t_730cd051",
+        "role": "Master Guru & Pedagogical LKS Synthesizer",
+        "contribution": "Sintesis kurikulum bimbingan teknis LKS, dekomposisi First Principles, panduan remediasi defensif NIST, dan matriks akselerasi siswa."
+      }
+    ]
+  },
+  "arielwin_enrichment_curriculum": {
+    "target_mentee": "Arielwin & White Jack",
+    "current_baseline": "Penguasaan Reverse Engineering x86 dan Seleksi Tim 2",
+    "target_milestone": "Penguasaan 100% Multi-Architecture Assembly (x86 & ARM64), Concurrency Memory Safety, dan Blue Team Defensive Hardening",
+    "four_week_acceleration_plan": [
+      {
+        "week": 1,
+        "theme": "Sistem Operasi POSIX & Keamanan Memori Bersama (Shared Memory Concurrency)",
+        "focus_topics": [
+          "Analisis pohon proses fork() dan relasi memori virtual mmap",
+          "Identifikasi race conditions dan wrap-around integer komplemen dua (two s complement)",
+          "Implementasi penguncian atomik dan sinkronisasi POSIX semaphore"
+        ],
+        "deliverable": "Membangun simulasi audit konkurensi memori bersama dan alat mitigasi race condition"
+      },
+      {
+        "week": 2,
+        "theme": "Fondasi Arsitektur ARMv8-A (AArch64) & Calling Convention",
+        "focus_topics": [
+          "Membedah struktur instruksi load/store AArch64 dan register file W0-W30 / X0-X30",
+          "Analisis PSTATE flag dan evaluasi percabangan unsigned (BCC) vs signed (BLT)",
+          "Rekonstruksi aljabar modular dari loop assembly tanpa ketergantungan debugging dinamis"
+        ],
+        "deliverable": "Solver otomatis pemetaan loop aritmatika ARM64 berbasis formulasi aljabar modular"
+      },
+      {
+        "week": 3,
+        "theme": "Manipulasi Bitwise Tingkat Lanjut & Analisis Serangan Saluran Samping",
+        "focus_topics": [
+          "Algoritma ekstraksi bit, Hamming weight, dan Population Count pada ARM64",
+          "Identifikasi kelemahan timing side-channel pada branch berbasis bit rahasia",
+          "Pemanfaatan instruksi perangkat keras SIMD/NEON untuk pemrosesan bit konstan"
+        ],
+        "deliverable": "Laporan komparasi keamanan algoritma bitwise serial vs branchless constant-time"
+      },
+      {
+        "week": 4,
+        "theme": "Defensive Hardening, Safe Coding Standards, & Kepatuhan NIST SP 800-53",
+        "focus_topics": [
+          "Implementasi safe arithmetic libraries dan macro deteksi integer overflow",
+          "Konfigurasi compiler flags hardening (-fPIE, -Wconversion, UndefinedBehaviorSanitizer)",
+          "Penyusunan aturan deteksi YARA dan Sigma untuk monitoring integritas proses biner"
+        ],
+        "deliverable": "Portofolio lengkap audit biner multi-arsitektur dengan modul hardening dan compliance notes"
+      }
+    ],
+    "three_tier_drills": [
+      {
+        "drill_id": "DRILL-01",
+        "level": "Level 1: Fondasi",
+        "title": "x86 Process Tree & Signed Integer Wrap-around",
+        "scenario": "Diberikan biner simulasi yang menjalankan N kali fork() pada memori bersama mmap. Siswa diminta menghitung nilai desimal bertanda akhir secara analitis.",
+        "objective": "Menghitung total proses eksponensial 2^N dan mengonversi hasil penjumlahan ke nilai signed 32-bit presisi."
+      },
+      {
+        "drill_id": "DRILL-02",
+        "level": "Level 2: Analisis & HOTS",
+        "title": "ARM64 Unsigned Loop Reconstruction & Modular Reduction",
+        "scenario": "Diberikan kode perakitan AArch64 yang memproses input 32-bit via loop bcc bertahap. Siswa menyusun rumus aljabar tertutup untuk menemukan flag seketika.",
+        "objective": "Mereduksi ribuan iterasi assembly menjadi formulasi matematika modular satu langkah."
+      },
+      {
+        "drill_id": "DRILL-03",
+        "level": "Level 3: Kombinatorik & Ekstrem",
+        "title": "ARM64 Bitwise Popcount Extraction & Constant-Time Refactoring",
+        "scenario": "Diberikan rutinitas ekstraksi bit biner yang rentan timing attack. Siswa merekonstruksi fungsi ke dalam format constant-time dan menghitung nilai flag.",
+        "objective": "Menghitung populasi bit secara deterministik dan merancang kode perbaikan bebas percabangan data rahasia."
+      }
+    ]
+  },
+  "lks_scoring_rubric": {
+    "scoring_system": "Standar LKS Cyber Security Nasional & WorldSkills Skill 54 (Bobot Total 100%)",
+    "pillars": [
+      {
+        "pillar_id": "P-1",
+        "name": "Akurasi Analisis Biner & Pemahaman Multi-Arsitektur",
+        "weight_percent": 35,
+        "criteria": "Kemampuan membedah pohon proses x86, memetakan register AArch64, menganalisis unsigned condition flags, dan menguraikan algoritma popcount dari First Principles."
+      },
+      {
+        "pillar_id": "P-2",
+        "name": "Efisiensi & Reproduksibilitas Solver Script",
+        "weight_percent": 25,
+        "criteria": "Skrip solver Python mandiri, deterministik 100%, terstruktur rapi dengan modular math, dan menghasilkan flag yang terverifikasi."
+      },
+      {
+        "pillar_id": "P-3",
+        "name": "Ketajaman Rekomendasi Defensif & Blue Team Hardening",
+        "weight_percent": 25,
+        "criteria": "Penyusunan solusi mitigasi atomic primitives, perbaikan safe arithmetic C/Rust, eliminasi timing side-channels, dan pemetaan standar NIST SP 800-53."
+      },
+      {
+        "pillar_id": "P-4",
+        "name": "Metodologi Dokumentasi & Kepatuhan Anti-Slop",
+        "weight_percent": 15,
+        "criteria": "Kerapian format teknis, penerapan kaidah pedagogis Socratic, analogi Feynman yang aplikatif, zero em dash, dan bebas dari generalisasi AI tanpa substansi."
+      }
+    ]
+  }
+}

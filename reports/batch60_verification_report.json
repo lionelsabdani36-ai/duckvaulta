@@ -1,0 +1,56 @@
+{
+  "batch": 60,
+  "date": "2026-11-05",
+  "orchestrator": "David (Leader / Agent Nyawit)",
+  "coding_engine": "Omnirush Automated Test Harness Suite",
+  "repo": "lionelsabdani36-ai/cylab-ctf-writeups",
+  "latest_commit": "8b145e8 Batch 60 (3/3): 24 Forky, 150 ARMssembly 2, 106 ARMssembly 3 + solvers/writeups/README",
+  "all_passed": true,
+  "results": [
+    {
+      "challenge_id": 24,
+      "challenge_name": "Forky",
+      "category": "Reverse Engineering",
+      "script_path": "/home/lionelsabdani36/cylab-ctf-writeups/scripts/solve_24_forky.py",
+      "writeup_path": "/home/lionelsabdani36/cylab-ctf-writeups/writeups/picoCTF-2019/24-forky.md",
+      "py_compile": "PASS",
+      "execution": "PASS",
+      "extracted_flag": "academy{-721750240}",
+      "expected_flag": "academy{-721750240}",
+      "math_invariant": "PASS",
+      "writeup_verified": true,
+      "writeup_lines": 79,
+      "overall_status": "PASS"
+    },
+    {
+      "challenge_id": 150,
+      "challenge_name": "ARMssembly 2",
+      "category": "Reverse Engineering",
+      "script_path": "/home/lionelsabdani36/cylab-ctf-writeups/scripts/solve_150_armssembly_2.py",
+      "writeup_path": "/home/lionelsabdani36/cylab-ctf-writeups/writeups/picoCTF-2021/150-armssembly-2.md",
+      "py_compile": "PASS",
+      "execution": "PASS",
+      "extracted_flag": "academy{e815ef32}",
+      "expected_flag": "academy{e815ef32}",
+      "math_invariant": "PASS",
+      "writeup_verified": true,
+      "writeup_lines": 84,
+      "overall_status": "PASS"
+    },
+    {
+      "challenge_id": 106,
+      "challenge_name": "ARMssembly 3",
+      "category": "Reverse Engineering",
+      "script_path": "/home/lionelsabdani36/cylab-ctf-writeups/scripts/solve_106_armssembly_3.py",
+      "writeup_path": "/home/lionelsabdani36/cylab-ctf-writeups/writeups/picoCTF-2021/106-armssembly-3.md",
+      "py_compile": "PASS",
+      "execution": "PASS",
+      "extracted_flag": "academy{00000024}",
+      "expected_flag": "academy{00000024}",
+      "math_invariant": "PASS",
+      "writeup_verified": true,
+      "writeup_lines": 90,
+      "overall_status": "PASS"
+    }
+  ]
+}
