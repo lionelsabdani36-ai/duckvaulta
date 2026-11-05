@@ -1,0 +1,672 @@
+{
+  "schema_version": "2026.3",
+  "document_title": "Grand Sprint Master Pedagogical Curriculum & Defensive Hardening Matrix (LKS Cyber Security & WorldSkills Skill 54)",
+  "mentor": {
+    "name": "Judith",
+    "role": "Master Guru & Mentor Akademik / Kompetisi",
+    "mentee": "White Jack & Arielwin",
+    "target_level": "Seleksi Tim Nasional & LKS Cyber Security 2026 (Gold Medalist Standard)",
+    "objective": "Membimbing White Jack & Arielwin menguasai Total Concept Mastery 100% pada 130 tantangan kurikulum CyLab Security Academy, membongkar seluruh jebakan distraktor HOTS, menuntaskan 19 tantangan Tier 1 Medium Sweep, dan mengamankan akselerasi scheduler cron tuntas sebelum target besok jam 9 pagi."
+  },
+  "sprint_metadata": {
+    "sprint_name": "CyLab Grand Sprint 2026",
+    "target_platform": "CyLab Security Academy (picoCTF Core Archive)",
+    "total_challenges_in_catalog": 208,
+    "backported_solved_challenges": 78,
+    "active_remaining_challenges": 130,
+    "tier_1_medium_sweep_count": 19,
+    "tier_2_forensics_crypto_count": 35,
+    "tier_3_reverse_engineering_count": 23,
+    "tier_4_interactive_pwn_web_count": 53,
+    "date_initiated": "2026-11-05T09:51:00+00:00",
+    "deadline_target": "2026-11-06T09:00:00+00:00",
+    "time_window_hours": 23.0,
+    "status": "ACCELERATED_EXECUTION"
+  },
+  "cron_acceleration_telemetry": {
+    "job_id": "a6487bf3f3be",
+    "job_name": "cylab-daily-ctf-solver",
+    "workdir": "/home/lionelsabdani36/cylab-ctf-writeups",
+    "delivery_target": "discord:1561251399176814652",
+    "previous_schedule": "0 0,4,8,12,16,20 * * * (every 4 hours / 6 runs per day)",
+    "accelerated_schedule": "every 30m (48 runs per 24 hours / 46 runs in 23h window)",
+    "average_execution_duration_minutes": 12.5,
+    "safe_idle_buffer_minutes": 17.5,
+    "modules_per_batch": 3,
+    "total_execution_slots_before_deadline": 46,
+    "total_capacity_modules": 138,
+    "required_backlog_clearance": 130,
+    "capacity_margin_percent": 106.15,
+    "eta_completion": "2026-11-06T07:30:00+00:00 (1.5 hours ahead of 09:00 AM deadline)",
+    "operational_verdict": "SCHEDULE ACCELERATION VERIFIED & ACTIVATED"
+  },
+  "pedagogical_pillars": [
+    {
+      "pillar": 1,
+      "name": "Anti-Hafalan Buta (First Principles & Intuisi Komputasi)",
+      "description": "Membongkar setiap konsep keamanan siber dari akar matematis dan arsitektural: cara kerja word size EVM 256-bit pada underflow/overflow, struktur stack frame CISC x86 vs RISC ARM64, vektor instruksi ROP gadget, algoritma ekstraksi LSB, serta operator query NoSQL tanpa pernah menghafal payload secara mekanis."
+    },
+    {
+      "pillar": 2,
+      "name": "Metode Socratic & Scaffolding Bertingkat",
+      "description": "Menyediakan pertanyaan pancingan tiga tingkat (Tier 1 Orientasi Premis, Tier 2 Analisis Struktural, Tier 3 Pencerahan Teknis) ketika siswa mengalami kebuntuan logika, sehingga pemahaman lahir dari penalaran mandiri."
+    },
+    {
+      "pillar": 3,
+      "name": "Bedah Anatomi Distraktor (Jebakan Soal HOTS)",
+      "description": "Menganalisis pola kesalahan kognitif dan jebakan pengecoh yang sengaja ditanam pembuat soal: seperti salah mengira integer overflow mustahil pada Solidity modern, mengabaikan non-executable stack (NX) saat menyuntikkan shellcode, atau terjebak regex parsing saat melakukan NoSQL injection."
+    },
+    {
+      "pillar": 4,
+      "name": "Siklus Belajar Adaptif (Diagnosa -> Kristalisasi -> Drilling Bertingkat -> Verifikasi 100%)",
+      "description": "Alur pembelajaran berjenjang: Diagnosa pemahaman awal, Kristalisasi prinsip dasar sistem, Drilling bertingkat 3 level (Level 1 Fondasi, Level 2 Analisis HOTS, Level 3 Kombinatorik/Ekstrem), dan ditutup dengan sintesis verifikasi mandiri 100% oleh siswa."
+    },
+    {
+      "pillar": 5,
+      "name": "Evaluasi Berbasis IRT (Item Response Theory) & Rubrik LKS Skill 54",
+      "description": "Pemodelan psikometrik kemampuan siswa dengan fungsi logistik 3 parameter (daya pembeda a, tingkat kesulitan b, faktor tebakan c) serta kalibrasi terhadap 4 standar penilaian resmi WorldSkills Skill 54 Cyber Security."
+    }
+  ],
+  "tier_strategic_breakdown": {
+    "tier_1_medium_sweep": {
+      "count": 19,
+      "objective": "Menuntaskan seluruh tantangan tingkat Medium yang mencakup spektrum luas: Blockchain, Web, Binary, Reverse, dan Forensics sebagai fondasi akselerasi.",
+      "priority": "HIGH_IMMEDIATE"
+    },
+    "tier_2_forensics_crypto": {
+      "count": 35,
+      "objective": "Analisis mendalam kriptografi terapan (Lattice reduction, Coppersmith attack, PRNG breaking) dan rekonstruksi forensik statis (disk image, memory dump, network artifacts).",
+      "priority": "SCHEDULED_BATCH"
+    },
+    "tier_3_reverse_engineering": {
+      "count": 23,
+      "objective": "Dekomposisi bytecode virtual machine, binary unpacking, JIT deobfuscation, dan automated symbolic constraint solving (angr/Z3).",
+      "priority": "SCHEDULED_BATCH"
+    },
+    "tier_4_interactive_pwn_web_chain": {
+      "count": 53,
+      "objective": "Eksploitasi biner dinamis (Heap exploitation, Format string, Kernel space) dan rantai serangan web kompleks (SSRF to RCE, Deserialization, WebSocket hijacks).",
+      "priority": "SCHEDULED_BATCH"
+    }
+  },
+  "curriculum_modules": [
+    {
+      "module_id": "LKS-MOD-01",
+      "challenge_id": 760,
+      "challenge_name": "Smart_Overflow",
+      "domain": "Blockchain & Smart Contract Security",
+      "category": "Blockchain",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-190: Integer Overflow or Wraparound",
+        "CWE-682: Incorrect Calculation"
+      ],
+      "swc_id": "SWC-101: Integer Overflow and Underflow",
+      "irt_parameters": {
+        "discrimination_a": 1.85,
+        "difficulty_b": 1.15,
+        "pseudo_guessing_c": 0.05
+      },
+      "core_concept": "Underflow/overflow pada representasi uint256 EVM tanpa perlindungan SafeMath atau compiler Solidity <0.8.0. Nilai saldo 0 dikurangi 1 membungkus menjadi 2^256 - 1.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Berapa kapasitas penyimpanan maksimum dari tipe data unsigned integer 256-bit di dalam Ethereum Virtual Machine?",
+        "tier_2_analisis": "Apa yang terjadi secara biner ketika operasi pengurangan dilakukan pada variabel bertipe uint256 yang bernilai 0 di Solidity versi lama tanpa pustaka SafeMath?",
+        "tier_3_pencerahan": "Bagaimana cara mentransfer token dengan nilai sedemikian rupa sehingga kondisi pemeriksaan require(balance >= amount) tetap lolos namun menghasilkan saldo raksasa?"
+      },
+      "distractor_anatomy": "Peserta sering terjebak berasumsi bahwa kontrak pintar modern otomatis kebal overflow tanpa memeriksa pragma solidity versi compiler yang digunakan dalam source code.",
+      "defensive_remediation": "Terapkan Solidity versi >=0.8.0 yang memiliki built-in checked arithmetic revert, atau gunakan pustaka SafeMath dari OpenZeppelin jika memelihara basis kode lama.",
+      "nist_controls": [
+        "SI-10: Information Input Validation",
+        "SC-28: Protection of Information at Rest"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-02",
+      "challenge_id": 754,
+      "challenge_name": "Autorev 1",
+      "domain": "Reverse Engineering & Symbolic Execution",
+      "category": "Reverse Engineering",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-682: Incorrect Calculation",
+        "CWE-807: Reliance on Untrusted Inputs in a Security Decision"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 2.1,
+        "difficulty_b": 1.4,
+        "pseudo_guessing_c": 0.02
+      },
+      "core_concept": "Automated control flow analysis dan constraint solving. Ratusan fungsi percabangan linier yang memeriksa karakter input satu per satu dapat dipecahkan secara instan menggunakan symbolic execution engine (angr/Z3) atau dekompilasi AST.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Jika sebuah biner memiliki 50 rantai percabangan if-else bersarang, apakah realistis menganalisisnya secara manual di debugger?",
+        "tier_2_analisis": "Pola operasi apa yang dikenakan pada setiap karakter input dalam fungsi verifikasi (apakah operasi XOR konstan, permutasi, atau penambahan modular)?",
+        "tier_3_pencerahan": "Bagaimana cara memanfaatkan symbolic execution angr untuk mendefinisikan flag sebagai BitVector dan mengeksplorasi path state hingga mencapai address sukses?"
+      },
+      "distractor_anatomy": "Peserta menghabiskan waktu berjam-jam melakukan stepping manual di GDB/Ghidra untuk setiap fungsi, alih-alih mengabstraksikan struktur logika percabangan ke dalam script otomatis.",
+      "defensive_remediation": "Implementasikan algoritma kriptografi satu arah (hashing cryptographically secure seperti SHA-256) untuk verifikasi lisensi, bukan pemeriksaan karakter komparatif terbuka.",
+      "nist_controls": [
+        "SA-11: Developer Testing and Evaluation",
+        "SC-13: Cryptographic Protection"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-03",
+      "challenge_id": 733,
+      "challenge_name": "offset-cycle",
+      "domain": "Binary Exploitation & Stack Integrity",
+      "category": "Binary Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-121: Stack-based Buffer Overflow",
+        "CWE-676: Use of Potentially Dangerous Function"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.95,
+        "difficulty_b": 1.25,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Perhitungan offset presisi pada stack frame menggunakan De Bruijn cyclic pattern. Penulisan melampaui buffer lokal menimpa base pointer (RBP) dan return address (RIP).",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Berapa ukuran buffer lokal yang dialokasikan di stack, dan fungsi input apa yang digunakan (apakah gets(), fgets(), atau read())?",
+        "tier_2_analisis": "Bagaimana cara menghasilkan pola De Bruijn unik (cyclic pattern) untuk menemukan titik pasti di mana RIP tertimpa crash?",
+        "tier_3_pencerahan": "Setelah offset diketahui, bagaimana kita membelokkan alur eksekusi ke win-function atau fungsi target?"
+      },
+      "distractor_anatomy": "Menebak-nebak padding secara manual dengan trial and error huruf AAAA yang memakan waktu dan berisiko salah alignment 8-byte/16-byte pada arsitektur x86_64.",
+      "defensive_remediation": "Gunakan compiler flag -fstack-protector-all / -fstack-protector-strong untuk menyisipkan stack canary, aktifkan ASLR dan PIE, serta ganti fungsi berbahaya dengan fungsi bounded input (fgets, snprintf).",
+      "nist_controls": [
+        "SI-16: Memory Protection",
+        "SA-8: Security Engineering Principles"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-04",
+      "challenge_id": 723,
+      "challenge_name": "Access_Control",
+      "domain": "Blockchain & Smart Contract Security",
+      "category": "Blockchain",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-284: Improper Access Control",
+        "CWE-285: Improper Authorization"
+      ],
+      "swc_id": "SWC-105: Unprotected Ether Withdrawal / SWC-106: Unprotected SELFDESTRUCT",
+      "irt_parameters": {
+        "discrimination_a": 1.7,
+        "difficulty_b": 1.05,
+        "pseudo_guessing_c": 0.05
+      },
+      "core_concept": "Kerentanan kontrol akses pada fungsi kritis smart contract yang tidak dilengkapi modifier onlyOwner atau menggunakan inisialisasi constructor usang.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Fungsi mana di dalam kontrak yang memberikan wewenang untuk membaca flag atau mengubah status kepemilikan?",
+        "tier_2_analisis": "Apakah fungsi tersebut memiliki modifier pembatas akses (seperti onlyOwner) atau visibilitasnya terekspos sebagai public/external?",
+        "tier_3_pencerahan": "Bagaimana cara memanggil fungsi setter atau constructor initializer tiruan dari wallet penyerang untuk mengklaim peran admin?"
+      },
+      "distractor_anatomy": "Fokus mencari kerentanan reentrancy atau integer overflow yang kompleks, padahal kerentanan utama adalah murni ketiadaan modifier otorisasi.",
+      "defensive_remediation": "Terapkan OpenZeppelin Ownable/AccessControl standard dengan modifier yang ketat pada setiap state-changing function.",
+      "nist_controls": [
+        "AC-3: Access Enforcement",
+        "AC-6: Least Privilege"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-05",
+      "challenge_id": 529,
+      "challenge_name": "Pico Bank",
+      "domain": "Reverse Engineering & Logic Analysis",
+      "category": "Reverse Engineering",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-287: Improper Authentication",
+        "CWE-682: Incorrect Calculation"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.8,
+        "difficulty_b": 1.2,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Dekomposisi algoritma validasi PIN dan alur transaksi perbankan. Membedah logika komparasi heksadesimal dan bypass autentikasi.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Di mana letak percabangan verifikasi PIN atau akun di dalam graph kontrol fungsi main?",
+        "tier_2_analisis": "Apakah PIN dibandingkan langsung dengan nilai plaintext terenkode atau ditransformasikan melalui fungsi hash/XOR kustom?",
+        "tier_3_pencerahan": "Bagaimana cara membalikkan (invert) fungsi transformasi untuk menemukan PIN yang memenuhi persamaan secara deterministik?"
+      },
+      "distractor_anatomy": "Mencoba brute-force PIN dari luar melalui interface jaringan yang terkena rate limit, alih-alih mengekstrak kondisi validasi langsung dari biner.",
+      "defensive_remediation": "Lakukan autentikasi berbasis server-side hashing dengan PBKDF2/Argon2id dan implementasikan hardware security module (HSM) untuk operasi perbankan.",
+      "nist_controls": [
+        "IA-2: Identification and Authentication",
+        "IA-5: Authenticator Management"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-06",
+      "challenge_id": 494,
+      "challenge_name": "Pachinko",
+      "domain": "Web Application & Client-Server Synchronization",
+      "category": "Web Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-602: Client-Side Enforcement of Server-Side Security",
+        "CWE-345: Insufficient Verification of Data Authenticity"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.75,
+        "difficulty_b": 1.3,
+        "pseudo_guessing_c": 0.05
+      },
+      "core_concept": "Manipulasi logika game berbasis browser. Skor dan status kemenangan dihitung di sisi client JavaScript dan dikirimkan tanpa enkripsi/HMAC ke server API.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Periksa network tab: request apa yang dikirimkan ke server ketika bola pachinko menyentuh target kemenangan?",
+        "tier_2_analisis": "Apakah server memvalidasi lintasan fisik bola atau hanya menerima payload JSON skor akhir dari client?",
+        "tier_3_pencerahan": "Bagaimana cara merekonstruksi HTTP POST request dengan skor kemenangan sempurna secara langsung via script Python requests?"
+      },
+      "distractor_anatomy": "Mencoba memainkan game secara visual berulang kali untuk mendapatkan keberuntungan acak, alih-alih mengaudit traffic jaringan HTTP/WebSocket.",
+      "defensive_remediation": "Pindahkan validasi state permainan sepenuhnya ke sisi server (authoritative server architecture) dan tanda tangani transaksi dengan cryptographic token.",
+      "nist_controls": [
+        "SI-10: Information Input Validation",
+        "SC-8: Transmission Confidentiality and Integrity"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-07",
+      "challenge_id": 489,
+      "challenge_name": "hash-only-2",
+      "domain": "Binary Exploitation & Command Injection",
+      "category": "Binary Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-78: OS Command Injection",
+        "CWE-88: Improper Neutralization of Argument Delimiters"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 2.05,
+        "difficulty_b": 1.35,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Command injection melalui pemanggilan fungsi utilitas hashing via system() atau popen(). Eksploitasi variabel lingkungan PATH atau argumen metacharacter shell.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Bagaimana biner menjalankan utilitas hashing di sistem (apakah menggunakan path absolut seperti /usr/bin/md5sum atau path relatif md5sum)?",
+        "tier_2_analisis": "Jika path relatif digunakan, bagaimana pengaruh variabel lingkungan PATH penyerang terhadap eksekusi biner SUID tersebut?",
+        "tier_3_pencerahan": "Bagaimana cara membuat file executable palsu bernama utilitas tersebut di direktori /tmp dan mengarahkan PATH ke /tmp?"
+      },
+      "distractor_anatomy": "Mencoba merusak hash kriptografis biner itu sendiri (collision attack), padahal celah keamanan terletak pada invocasi shell perintah eksternal.",
+      "defensive_remediation": "Gunakan execve() dengan path absolut dan array argumen terisolasi tanpa melalui shell sh -c, serta bersihkan variabel lingkungan lingkungan.",
+      "nist_controls": [
+        "SI-10: Information Input Validation",
+        "CM-7: Least Functionality"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-08",
+      "challenge_id": 487,
+      "challenge_name": "hash-only-1",
+      "domain": "Binary Exploitation & Privilege Boundary",
+      "category": "Binary Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-78: OS Command Injection",
+        "CWE-250: Execution with Unnecessary Privileges"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.9,
+        "difficulty_b": 1.15,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Injeksi perintah berbasis string formatting pada biner dengan bit SUID. Penyerang menyisipkan karakter pemisah perintah shell (; | & ).",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Apakah biner mengizinkan user memasukkan nama file untuk di-hash?",
+        "tier_2_analisis": "Bagaimana string nama file tersebut dikonstruksikan ke dalam perintah shell sebelum dipanggil oleh system()?",
+        "tier_3_pencerahan": "Karakter apa yang dapat disisipkan pada nama file agar shell mengeksekusi perintah cat flag.txt setelah perintah hashing?"
+      },
+      "distractor_anatomy": "Mengira harus melakukan buffer overflow pada input string nama file, padahal buffer aman namun eksekusi perintah shell tidak disanitasi.",
+      "defensive_remediation": "Hindari penggunaan system(). Gunakan API library hashing bawaan (seperti OpenSSL EVP) di dalam kode C tanpa meluncurkan subprocess.",
+      "nist_controls": [
+        "SI-10: Information Input Validation",
+        "AC-6: Least Privilege"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-09",
+      "challenge_id": 481,
+      "challenge_name": "flags are stepic",
+      "domain": "Digital Forensics & Steganography",
+      "category": "Forensics",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-312: Cleartext Storage of Sensitive Information"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.7,
+        "difficulty_b": 1.1,
+        "pseudo_guessing_c": 0.05
+      },
+      "core_concept": "Penyembunyian pesan rahasia di dalam pixel gambar menggunakan algoritma Least Significant Bit (LSB) modul Python stepic. Rekonstruksi bit tersembunyi pada saluran warna RGB.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Format file gambar apa yang disediakan, dan mengapa petunjuk soal secara eksplisit menyebut kata stepic?",
+        "tier_2_analisis": "Bagaimana pustaka Python stepic menyematkan data biner ke dalam komponen warna piksel gambar PNG?",
+        "tier_3_pencerahan": "Tuliskan satu baris script Python menggunakan modul PIL dan stepic untuk mengekstrak pesan terenkode!"
+      },
+      "distractor_anatomy": "Menjalankan tool steganografi generik seperti steghide (yang dirancang untuk format JPEG DCT) pada gambar PNG tanpa memahami perbedaan algoritma LSB.",
+      "defensive_remediation": "Lakukan sanitasi metadata dan re-kompresi gambar pada pipeline upload aplikasi web untuk menghancurkan payload steganografi LSB yang tidak sah.",
+      "nist_controls": [
+        "SC-8: Transmission Confidentiality and Integrity",
+        "SI-10: Information Input Validation"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-10",
+      "challenge_id": 480,
+      "challenge_name": "WebSockFish",
+      "domain": "Web Application & Real-time Protocols",
+      "category": "Web Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-345: Insufficient Verification of Data Authenticity",
+        "CWE-602: Client-Side Enforcement of Security"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.85,
+        "difficulty_b": 1.35,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Inspeksi dan manipulasi frame WebSocket dua arah (bidirectional WS protocol). Mengintervensi komunikasi permainan catur antara client dan engine bot Stockfish.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Bagaimana browser berkomunikasi dengan backend catur (apakah melalui HTTP polling atau persistent WebSocket connection)?",
+        "tier_2_analisis": "Format pesan apa yang dikirimkan melalui WebSocket frame untuk setiap langkah bidak catur (format FEN atau UCI move)?",
+        "tier_3_pencerahan": "Bagaimana cara mengirimkan frame WebSocket palsu yang mendeklarasikan kondisi skakmat atau mengubah posisi papan secara ilegal?"
+      },
+      "distractor_anatomy": "Mencoba mengalahkan bot catur dengan kemampuan bermain manual tanpa memeriksa celah protokol transmisi di level transport WebSocket.",
+      "defensive_remediation": "Validasi legalitas setiap pergerakan bidak catur di sisi server menggunakan engine catur internal sebelum memperbarui state papan.",
+      "nist_controls": [
+        "SC-8: Transmission Confidentiality and Integrity",
+        "AC-3: Access Enforcement"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-11",
+      "challenge_id": 479,
+      "challenge_name": "Quantum Scrambler",
+      "domain": "Reverse Engineering & Cryptographic Permutation",
+      "category": "Reverse Engineering",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-327: Use of a Broken or Risky Cryptographic Algorithm",
+        "CWE-682: Incorrect Calculation"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 2.0,
+        "difficulty_b": 1.45,
+        "pseudo_guessing_c": 0.02
+      },
+      "core_concept": "Dekomposisi algoritma permutasi dan substitusi deterministik yang disamarkan dengan istilah quantum scrambling. Rekonstruksi tabel permutasi terbalik (inverse permutation).",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Apakah proses enkripsi yang disebut quantum ini melibatkan operasi non-deterministik atau sebenarnya algoritma deterministik murni?",
+        "tier_2_analisis": "Petakan langkah demi langkah pergeseran indeks karakter: bagaimana posisi karakter ke-i dipindahkan ke posisi ke-j?",
+        "tier_3_pencerahan": "Bagaimana cara membuat fungsi invers matematis P^-1(x) untuk mengembalikan teks teracak ke urutan karakter flag asli?"
+      },
+      "distractor_anatomy": "Terintimidasi oleh jargon fisika kuantum dalam deskripsi soal, padahal struktur algoritma di dalam kode hanyalah permutasi matriks 2D biasa.",
+      "defensive_remediation": "Gunakan standar kriptografi teruji (seperti AES-GCM) daripada merancang algoritma cipher kustom (rolling your own crypto).",
+      "nist_controls": [
+        "SC-13: Cryptographic Protection",
+        "SA-8: Security Engineering Principles"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-12",
+      "challenge_id": 454,
+      "challenge_name": "Bitlocker-2",
+      "domain": "Digital Forensics & Volume Decryption",
+      "category": "Forensics",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-312: Cleartext Storage of Sensitive Information",
+        "CWE-522: Insufficiently Protected Credentials"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.95,
+        "difficulty_b": 1.4,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Forensik disk volume BitLocker Windows tingkat lanjut. Ekstraksi VMK (Volume Master Key) dan FVEK (Full Volume Encryption Key) dari file dump memori atau unallocated space untuk me-mount partisi terenkripsi via dislocker.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Artefak apa saja yang disediakan dalam file zip bukti forensik (apakah disk image raw dan file memori/hiberfil.sys)?",
+        "tier_2_analisis": "Di mana struktur kunci BitLocker disimpan saat volume sedang dibuka di sistem operasi Windows?",
+        "tier_3_pencerahan": "Perintah dislocker apa yang digunakan untuk me-mount volume terenkripsi ke direktori Linux setelah kunci pemulihan ditemukan?"
+      },
+      "distractor_anatomy": "Mencoba melakukan brute-force kata sandi BitLocker secara langsung pada header volume yang akan memakan waktu ribuan tahun.",
+      "defensive_remediation": "Simpan Recovery Key BitLocker secara terpusat di Active Directory / Azure AD dengan proteksi TPM 2.0 PIN dan aktifkan pembersihan memori saat hibernate/shutdown.",
+      "nist_controls": [
+        "SC-28: Protection of Information at Rest",
+        "IA-5: Authenticator Management"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-13",
+      "challenge_id": 453,
+      "challenge_name": "Bitlocker-1",
+      "domain": "Digital Forensics & Password Carving",
+      "category": "Forensics",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-521: Weak Password Requirements",
+        "CWE-312: Cleartext Storage of Sensitive Information"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.8,
+        "difficulty_b": 1.15,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Pencarian kunci pemulihan 48-digit numerik BitLocker dari file teks atau artefak log yang tersimpan di partisi eksternal yang tidak terenkripsi.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Format kunci pemulihan standar BitLocker terdiri dari berapa digit angka dan dipisahkan oleh karakter apa (misal: 6 digit x 8 blok)?",
+        "tier_2_analisis": "Gunakan pola regex apa untuk memindai seluruh string pada image disk untuk menemukan pola kunci pemulihan tersebut?",
+        "tier_3_pencerahan": "Setelah kunci 48-digit ditemukan, jalankan utilitas dislocker-fuse dengan parameter -p untuk mendekripsi volume!"
+      },
+      "distractor_anatomy": "Menghabiskan waktu menganalisis struktur data internal file NTFS padahal kunci tersimpan secara plaintext di dalam catatan teks pengguna yang ceroboh.",
+      "defensive_remediation": "Terapkan kebijakan larangan menyimpan kunci pemulihan dalam bentuk file teks lokal dan wajibkan enkripsi endpoint terpusat.",
+      "nist_controls": [
+        "IA-5: Authenticator Management",
+        "SC-28: Protection of Information at Rest"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-14",
+      "challenge_id": 443,
+      "challenge_name": "No Sql Injection",
+      "domain": "Web Application & Database Security",
+      "category": "Web Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-943: Improper Neutralization of Special Elements in Data Query Logic",
+        "CWE-89: SQL Injection"
+      ],
+      "owasp_id": "A03:2021-Injection",
+      "irt_parameters": {
+        "discrimination_a": 2.15,
+        "difficulty_b": 1.25,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Injeksi operator query NoSQL (MongoDB/Mongoose). Menembus autentikasi login dengan mengganti nilai string password menjadi objek operator  (not equal) atau  (greater than) pada payload JSON.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Bagaimana form login mengirimkan data ke backend (apakah application/x-www-form-urlencoded atau application/json)?",
+        "tier_2_analisis": "Apa yang terjadi pada query MongoDB db.users.find({user: u, pass: p}) jika parameter pass diisi dengan {\"\": \"invalid\"}?",
+        "tier_3_pencerahan": "Bagaimana cara memodifikasi request di Burp Suite atau Python requests untuk mengirimkan payload JSON operator injection?"
+      },
+      "distractor_anatomy": "Mencoba memasukkan payload SQL injection tradisional seperti ' OR 1=1 -- yang tidak akan dievaluasi oleh query engine MongoDB.",
+      "defensive_remediation": "Wajibkan sanitasi tipe data (type casting) pada parameter input, gunakan express-mongo-sanitize untuk membersihkan simbol $, atau validasi skema input dengan Zod/Joi.",
+      "nist_controls": [
+        "SI-10: Information Input Validation",
+        "AC-3: Access Enforcement"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-15",
+      "challenge_id": 378,
+      "challenge_name": "Specialer",
+      "domain": "General Skills & Restricted Shell Escape",
+      "category": "General Skills",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-250: Execution with Unnecessary Privileges",
+        "CWE-265: Privilege / Sandbox Escape"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.9,
+        "difficulty_b": 1.3,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Escape dari restricted bash jail environment (rbash) di mana karakter alfanumerik atau perintah standar difilter. Pemanfaatan shell expansion (, , 0) dan built-in shell redirection.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Karakter dan perintah apa saja yang diblokir oleh skrip filter input di sesi SSH?",
+        "tier_2_analisis": "Variabel khusus apa yang disediakan oleh Bash secara bawaan yang dapat menghasilkan angka atau string tanpa mengetik karakter terlarang?",
+        "tier_3_pencerahan": "Bagaimana cara menyusun sintaks eksekusi shell menggunakan ekspansi parameter dan wildcard untuk membaca isi flag.txt?"
+      },
+      "distractor_anatomy": "Berusaha keras memanggil utilitas Linux standar seperti cat, ls, nano yang langsung ditolak oleh filter kata kunci.",
+      "defensive_remediation": "Gunakan runtime isolation berbasis container (seperti gVisor atau Docker dengan seccomp profile ketat) daripada mengandalkan restricted shell berbasis filter karakter.",
+      "nist_controls": [
+        "AC-6: Least Privilege",
+        "SC-7: Boundary Protection"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-16",
+      "challenge_id": 355,
+      "challenge_name": "Java Code Analysis!?!",
+      "domain": "Web Application & Cryptographic Token Security",
+      "category": "Web Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-326: Inadequate Encryption Strength",
+        "CWE-345: Insufficient Verification of Data Authenticity"
+      ],
+      "owasp_id": "A02:2021-Cryptographic Failures",
+      "irt_parameters": {
+        "discrimination_a": 2.1,
+        "difficulty_b": 1.35,
+        "pseudo_guessing_c": 0.03
+      },
+      "core_concept": "Audit source code Java Spring Boot. Menemukan secret key penandatanganan JWT yang di-hardcode atau lemah, memalsukan token role Admin (role=Admin), dan mengakses endpoint istimewa.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Dalam file Java controller/service mana proses verifikasi JWT dilakukan?",
+        "tier_2_analisis": "Apakah nilai secret key untuk HMAC-SHA256 didefinisikan secara statis di dalam source code repository atau application.properties?",
+        "tier_3_pencerahan": "Bagaimana cara menggunakan pustaka PyJWT untuk menandatangani payload baru dengan role Admin menggunakan secret yang ditemukan?"
+      },
+      "distractor_anatomy": "Mencoba mencari celah Java Deserialization kompleks, padahal kerentanan utama adalah token signing secret yang terekspos secara plaintext di kode.",
+      "defensive_remediation": "Simpan cryptographic keys di Secret Manager eksternal (seperti HashiCorp Vault / AWS Secrets Manager) dan lakukan rotasi token asimetris (RS256) secara berkala.",
+      "nist_controls": [
+        "SC-12: Cryptographic Key Establishment and Management",
+        "IA-5: Authenticator Management"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-17",
+      "challenge_id": 284,
+      "challenge_name": "Operation Oni",
+      "domain": "Digital Forensics & Disk Partition Analysis",
+      "category": "Forensics",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-312: Cleartext Storage of Sensitive Information",
+        "CWE-522: Insufficiently Protected Credentials"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.85,
+        "difficulty_b": 1.2,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Investigasi forensik citra disk raw/E01 Linux. Identifikasi tabel partisi MBR/GPT, mounting partisi root ext4, dan ekstraksi private key SSH (id_ed25519 / id_rsa) yang tertinggal di direktori pengguna.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Perintah apa yang digunakan untuk memeriksa tabel partisi pada file disk image (fdisk -l atau mmls)?",
+        "tier_2_analisis": "Berapa sector offset dari partisi Linux root, dan bagaimana menghitung byte offset untuk me-mount partisi menggunakan mount -o loop,offset=N?",
+        "tier_3_pencerahan": "Di mana lokasi file kunci SSH di direktori home pengguna (/root/.ssh/ atau /home/user/.ssh/), dan bagaimana menggunakannya untuk login ke server target?"
+      },
+      "distractor_anatomy": "Mencoba membuka file raw disk langsung dengan teks editor biasa yang menyebabkan crash memori, atau salah menghitung sector offset partisi.",
+      "defensive_remediation": "Enkripsi penuh disk (LUKS) pada server Linux, nonaktifkan autentikasi berbasis file kunci tanpa passphrase, dan terapkan pembersihan berkala pada file sementara.",
+      "nist_controls": [
+        "SC-28: Protection of Information at Rest",
+        "AC-17: Remote Access"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-18",
+      "challenge_id": 133,
+      "challenge_name": "Binary Gauntlet 3",
+      "domain": "Binary Exploitation & Modern Mitigations",
+      "category": "Binary Exploitation",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-121: Stack-based Buffer Overflow",
+        "CWE-676: Use of Potentially Dangerous Function"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 2.2,
+        "difficulty_b": 1.5,
+        "pseudo_guessing_c": 0.02
+      },
+      "core_concept": "Eksploitasi biner pada sistem dengan proteksi No-Execute (NX enabled). Shellcode tidak dapat dieksekusi di stack, menuntut teknik Return-Oriented Programming (ROP) atau ret2libc untuk memanggil system(\"/bin/sh\").",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Periksa proteksi biner menggunakan checksec: apakah stack executable (NX disabled) atau non-executable (NX enabled)?",
+        "tier_2_analisis": "Jika NX aktif, ke mana alur eksekusi harus diarahkan untuk memperoleh shell tanpa mengeksekusi stack?",
+        "tier_3_pencerahan": "Bagaimana cara membocorkan alamat libc (libc leak) via puts/printf untuk menghitung libc base address, lalu menyusun ROP chain: POP RDI gadget -> pointer \"/bin/sh\" -> system()?"
+      },
+      "distractor_anatomy": "Menghabiskan waktu menyuntikkan shellcode ke buffer stack yang pasti akan langsung mengalami Segmentation Fault karena proteksi halaman NX.",
+      "defensive_remediation": "Aktifkan mitigasi lengkap: Full RELRO, Stack Canary (-fstack-protector-all), PIE, NX, serta compiler Control Flow Guard (CFG / Intel CET).",
+      "nist_controls": [
+        "SI-16: Memory Protection",
+        "SA-8: Security Engineering Principles"
+      ]
+    },
+    {
+      "module_id": "LKS-MOD-19",
+      "challenge_id": 116,
+      "challenge_name": "speeds and feeds",
+      "domain": "Reverse Engineering & Industrial IoT (G-code)",
+      "category": "Reverse Engineering",
+      "difficulty_tier": "Medium",
+      "cwe": [
+        "CWE-682: Incorrect Calculation"
+      ],
+      "irt_parameters": {
+        "discrimination_a": 1.75,
+        "difficulty_b": 1.25,
+        "pseudo_guessing_c": 0.04
+      },
+      "core_concept": "Rekayasa balik sinyal mesin CNC / 3D Printer. Aliran instruksi koordinat G-code (G00, G01) yang merepresentasikan pergerakan mata pahat diproyeksikan ke bidang 2D/3D untuk memvisualisasikan karakter teks flag.",
+      "scaffolding_tiers": {
+        "tier_1_orientasi": "Periksa output teks yang diterima dari koneksi socket: apakah berformat baris instruksi seperti G1 X10.5 Y20.3 Z-1.0 F300?",
+        "tier_2_analisis": "Apa arti dari perintah G00 (gerak cepat/travel tanpa memotong) vs G01 (gerak interpolasi linier/pemotongan material)?",
+        "tier_3_pencerahan": "Bagaimana cara menulis skrip Python menggunakan matplotlib untuk mem-plot titik-titik koordinat X dan Y saat Z < 0 (fase memotong)?"
+      },
+      "distractor_anatomy": "Mengira teks G-code adalah cipher teks terenkripsi yang harus dipecahkan dengan analisis frekuensi kriptografis, padahal merupakan instruksi geometris fisik.",
+      "defensive_remediation": "Terapkan enkripsi dan integritas saluran transmisi pada jaringan manufaktur industri (OT/SCADA) untuk mencegah penyadapan instruksi produksi.",
+      "nist_controls": [
+        "SC-8: Transmission Confidentiality and Integrity",
+        "CP-2: Contingency Plan"
+      ]
+    }
+  ],
+  "defensive_hardening_framework": {
+    "standards_compliance": [
+      "NIST SP 800-115 (Technical Guide to Information Security Testing and Assessment)",
+      "NIST SP 800-53 Rev. 5",
+      "ISO/IEC 27001:2022 A.8.25 Secure Coding"
+    ],
+    "core_mitigations": [
+      {
+        "domain": "Smart Contract Architecture",
+        "mitigation_pattern": "OpenZeppelin SafeMath & Solidity >=0.8.0 built-in overflow checks; Checks-Effects-Interactions pattern for reentrancy prevention."
+      },
+      {
+        "domain": "Memory & Binary Execution",
+        "mitigation_pattern": "Compiler flags -fPIE -pie -Wl,-z,relro,-z,now -fstack-protector-strong -D_FORTIFY_SOURCE=2; non-executable stack (NX) enforcement."
+      },
+      {
+        "domain": "Application Input & Database Query",
+        "mitigation_pattern": "Strict schema validation via Zod/Joi; parameter type casting; banning $ and . operators from unescaped NoSQL inputs; parameterized queries."
+      },
+      {
+        "domain": "Endpoint & Credential Forensics",
+        "mitigation_pattern": "Full Disk Encryption (BitLocker/LUKS) with TPM 2.0 hardware binding; elimination of plaintext recovery keys; ephemeral session token invalidation."
+      }
+    ]
+  }
+}
