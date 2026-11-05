@@ -1,0 +1,11 @@
+{
+  "hostname": "duckvaulta.ai.id",
+  "ip_address": "34.135.45.195",
+  "provider": "Google Cloud Platform (GCP) Compute Engine",
+  "specs": "AMD EPYC 9B14 4 vCPU, 15GB RAM, 79GB NVMe (Debian 13)",
+  "provision_date": "2026-10-14",
+  "expiry_date": "2026-11-14",
+  "billing_cycle": "Monthly (30/31 days)",
+  "channel_id": "1561251399176814652",
+  "warn_threshold_days": [7, 5, 3, 2, 1, 0]
+}
