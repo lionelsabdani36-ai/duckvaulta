@@ -63,7 +63,7 @@ public class CycraftCyberQuest extends JavaPlugin implements CommandExecutor, Ta
         // Periodic safety watchdog for void skyblock
         Bukkit.getScheduler().runTaskTimer(this, this::checkVoidFallingPlayers, 10L, 5L);
 
-        getLogger().info("CycraftCyberQuest v1.7.0 with Instant Direct RTP Engine active!");
+        getLogger().info("CycraftCyberQuest v1.7.5 with Ultra-Responsive Portal & Instant RTP Gateway active!");
     }
 
     @Override
@@ -185,7 +185,6 @@ public class CycraftCyberQuest extends JavaPlugin implements CommandExecutor, Ta
             player.sendMessage(ChatColor.YELLOW + "Mencari safe zone instan di alam liar Survival Overworld...");
             player.sendMessage(ChatColor.DARK_AQUA + "==================================================");
 
-            // Directly execute AsyncRTP from console to teleport player to pre-cached safe surface chunk in world
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rtp " + player.getName() + " world world");
         }
     }
@@ -197,7 +196,7 @@ public class CycraftCyberQuest extends JavaPlugin implements CommandExecutor, Ta
         event.setCancelled(true);
 
         long now = System.currentTimeMillis();
-        if (portalCooldowns.containsKey(player.getUniqueId()) && (now - portalCooldowns.get(player.getUniqueId()) < 3000)) {
+        if (portalCooldowns.containsKey(player.getUniqueId()) && (now - portalCooldowns.get(player.getUniqueId()) < 2500)) {
             return;
         }
         portalCooldowns.put(player.getUniqueId(), now);
@@ -205,7 +204,8 @@ public class CycraftCyberQuest extends JavaPlugin implements CommandExecutor, Ta
         String worldName = player.getWorld().getName();
         if (worldName.equalsIgnoreCase("cyber_skyblock")) {
             player.sendTitle(ChatColor.AQUA + "" + ChatColor.BOLD + "🌌 SANCTUARY SURVIVAL 🌌",
-                             ChatColor.YELLOW + "Teleportasi instan ke alam liar...", 5, 30, 10);
+                             ChatColor.YELLOW + "Teleportasi instan ke alam liar via Portal...", 5, 30, 10);
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rtp " + player.getName() + " world world");
         } else if (worldName.equalsIgnoreCase("world")) {
             World targetWorld = Bukkit.getWorld("cyber_skyblock");
@@ -220,38 +220,58 @@ public class CycraftCyberQuest extends JavaPlugin implements CommandExecutor, Ta
         }
     }
 
-    // Spatial Portal Trigger
+    // Spatial & Physical Block Portal Trigger: Instant Zero-Delay Detection on Step
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerMove(PlayerMoveEvent event) {
+        Location to = event.getTo();
+        if (to == null) return;
         Player player = event.getPlayer();
-        Location loc = player.getLocation();
-        String worldName = loc.getWorld().getName();
+        String worldName = to.getWorld().getName();
 
         long now = System.currentTimeMillis();
-        if (portalCooldowns.containsKey(player.getUniqueId()) && (now - portalCooldowns.get(player.getUniqueId()) < 3000)) {
+        if (portalCooldowns.containsKey(player.getUniqueId()) && (now - portalCooldowns.get(player.getUniqueId()) < 2500)) {
             return;
         }
 
         if (worldName.equalsIgnoreCase("cyber_skyblock")) {
-            boolean inLobbyPortal = (loc.getX() >= -2.5 && loc.getX() <= 2.5 &&
-                                     loc.getY() >= 64.0 && loc.getY() <= 70.0 &&
-                                     loc.getZ() >= 9.5 && loc.getZ() <= 12.5);
+            Block blockAtFeet = to.getBlock();
+            Block blockAtEyes = to.clone().add(0, 1, 0).getBlock();
 
-            boolean inHighwayPortal = (loc.getX() >= -5.0 && loc.getX() <= 5.0 &&
-                                       loc.getY() >= 64.0 && loc.getY() <= 74.0 &&
-                                       loc.getZ() >= 62.0 && loc.getZ() <= 68.0);
+            // 1. Direct Block Collision check: touching any nether_portal block
+            boolean touchesPortalBlock = (blockAtFeet.getType() == Material.NETHER_PORTAL ||
+                                          blockAtEyes.getType() == Material.NETHER_PORTAL ||
+                                          blockAtFeet.getType() == Material.END_PORTAL ||
+                                          blockAtEyes.getType() == Material.END_PORTAL);
 
-            if (inLobbyPortal || inHighwayPortal) {
+            // 2. Spatial coordinates check: Lobby Stargate Alcove (Z: 9..13)
+            boolean inLobbyPortal = (to.getX() >= -3.0 && to.getX() <= 3.0 &&
+                                     to.getY() >= 64.0 && to.getY() <= 72.0 &&
+                                     to.getZ() >= 9.0 && to.getZ() <= 13.0);
+
+            // 3. Spatial coordinates check: South Highway Grand Stargate (Z: 61..70)
+            boolean inHighwayPortal = (to.getX() >= -6.0 && to.getX() <= 6.0 &&
+                                       to.getY() >= 64.0 && to.getY() <= 75.0 &&
+                                       to.getZ() >= 61.0 && to.getZ() <= 70.0);
+
+            if (touchesPortalBlock || inLobbyPortal || inHighwayPortal) {
                 portalCooldowns.put(player.getUniqueId(), now);
                 player.sendTitle(ChatColor.AQUA + "" + ChatColor.BOLD + "🌌 SANCTUARY SURVIVAL 🌌",
-                                 ChatColor.YELLOW + "Teleportasi instan ke alam liar...", 5, 30, 10);
+                                 ChatColor.YELLOW + "Teleportasi instan ke alam liar via Portal...", 5, 30, 10);
+                player.playSound(to, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+                player.playSound(to, Sound.BLOCK_PORTAL_TRAVEL, 0.7f, 1.2f);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rtp " + player.getName() + " world world");
             }
         } else if (worldName.equalsIgnoreCase("world")) {
-            if (loc.getX() >= 60.0 && loc.getX() <= 69.0 &&
-                loc.getY() >= 82.0 && loc.getY() <= 90.0 &&
-                loc.getZ() >= -108.0 && loc.getZ() <= -102.0) {
+            Block blockAtFeet = to.getBlock();
+            Block blockAtEyes = to.clone().add(0, 1, 0).getBlock();
+            boolean touchesPortalBlock = (blockAtFeet.getType() == Material.NETHER_PORTAL ||
+                                          blockAtEyes.getType() == Material.NETHER_PORTAL);
 
+            boolean inReturnZone = (to.getX() >= 58.0 && to.getX() <= 70.0 &&
+                                    to.getY() >= 80.0 && to.getY() <= 92.0 &&
+                                    to.getZ() >= -110.0 && to.getZ() <= -100.0);
+
+            if (touchesPortalBlock || inReturnZone) {
                 World targetWorld = Bukkit.getWorld("cyber_skyblock");
                 if (targetWorld != null) {
                     portalCooldowns.put(player.getUniqueId(), now);
