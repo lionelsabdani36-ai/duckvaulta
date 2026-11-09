@@ -12,6 +12,11 @@ if [ -f /var/www/duckvaulta/index.html ]; then
     cp /var/www/duckvaulta/index.html "$REPO_DIR/apps/portal/index.html"
     cp -r /var/www/duckvaulta/assets/* "$REPO_DIR/apps/portal/assets/" 2>/dev/null || true
 fi
+mkdir -p "$REPO_DIR/apps/ctf-tools"
+if [ -f /var/www/duckvaulta/ctf-toolkit.html ]; then
+    cp /var/www/duckvaulta/ctf-toolkit.html "$REPO_DIR/apps/ctf-tools/index.html"
+    cp /var/www/duckvaulta/ctf-toolkit.html "$REPO_DIR/apps/portal/ctf-toolkit.html"
+fi
 if [ -d /var/www/edtech ]; then
     cp /var/www/edtech/*.html "$REPO_DIR/apps/edtech/" 2>/dev/null || true
     cp -r /var/www/edtech/assets/* "$REPO_DIR/apps/edtech/assets/" 2>/dev/null || true

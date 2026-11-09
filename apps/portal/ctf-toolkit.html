@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyLab CTF OmniTool : Duckvaulta Hardened Toolkit</title>
+  <meta name="description" content="CyLab CTF OmniTool by Duckvaulta: Suite analisis, dekripsi, esolang interpreter, dan forensik digital interaktif terpadu.">
+  <link rel="icon" type="image/png" href="/assets/duck-emblem.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #060913;
+      --bg-surface: #0a1122;
+      --bg-card: #0d172a;
+      --bg-card-hover: #13223d;
+      --bg-input: #080f1e;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.16);
+      --border-accent: rgba(0, 210, 255, 0.4);
+
+      --cyan-primary: #00d2ff;
+      --cyan-muted: #0099cc;
+      --amber-accent: #f59e0b;
+      --emerald-live: #10b981;
+      --rose-accent: #f43f5e;
+      --purple-accent: #a855f7;
+
+      --text-white: #ffffff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-white);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-medium);
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-white);
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-title span {
+      color: var(--cyan-primary);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .header-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald-live);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--emerald-live);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald-live);
+    }
+
+    /* Navigation Tabs */
+    .tab-bar {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      min-height: 44px;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-card);
+      color: var(--text-white);
+      border-color: var(--border-medium);
+    }
+
+    .tab-btn.active {
+      background: rgba(0, 210, 255, 0.12);
+      color: var(--cyan-primary);
+      border-color: var(--cyan-primary);
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Subtool Grid */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .tool-grid { grid-template-columns: 1fr; }
+      header { padding: 12px 16px; }
+      .container { padding: 16px; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card:hover {
+      border-color: var(--border-medium);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    input[type="text"], input[type="number"], select, textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-white);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+      border-color: var(--cyan-primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.btn {
+      background: rgba(0, 210, 255, 0.15);
+      border: 1px solid var(--cyan-primary);
+      color: var(--cyan-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      min-width: 44px;
+      transition: all 0.15s ease;
+    }
+
+    button.btn:hover {
+      background: var(--cyan-primary);
+      color: #000;
+    }
+
+    button.btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-medium);
+      color: var(--text-secondary);
+    }
+
+    button.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+    }
+
+    /* Output Box */
+    .output-box {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-white);
+      word-break: break-all;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .output-box.has-flag {
+      border-color: var(--emerald-live);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .flag-highlight {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      font-weight: bold;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--emerald-live);
+      color: #34d399;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 1000;
+    }
+
+    footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      padding: 20px 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    footer a { color: var(--cyan-primary); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="/index.html" class="brand">
+      <img src="/assets/duck-emblem.png" alt="Duckvaulta">
+      <div class="brand-title">CYLAB <span>CTF OMNITOOL</span></div>
+    </a>
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span class="header-badge">510+ ALGORITMA AKTIF</span>
+      <span class="header-badge" style="border-color: rgba(0, 210, 255, 0.3); color: var(--cyan-primary); background: rgba(0, 210, 255, 0.1);">RANK #1 GETSFLAG ENGINE</span>
+      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 6px 12px; text-decoration: none;">Kembali ke Portal</a>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tab-universal')">Universal Auto-Detect</button>
+    <button class="tab-btn" onclick="switchTab('tab-crypto')">Kriptografi Klasik & Modern</button>
+    <button class="tab-btn" onclick="switchTab('tab-encoding')">Encoding & Transformasi</button>
+    <button class="tab-btn" onclick="switchTab('tab-esolang')">Esolangs & Virtual Machines</button>
+    <button class="tab-btn" onclick="switchTab('tab-math')">Matematika & Sekuens</button>
+    <button class="tab-btn" onclick="switchTab('tab-audio')">Audio & Sinyal Frekuensi</button>
+    <button class="tab-btn" onclick="switchTab('tab-forensics')">Forensik Berkas & Stego</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- ==================== TAB 1: UNIVERSAL AUTO-DETECT ==================== -->
+    <div id="tab-universal" class="tab-panel active">
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div class="card-title">Universal Multi-Decoder & Flag Extractor</div>
+          <span class="card-badge">Instant Brute Force</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px;">
+          Tempel string ciphertext, hexdump, base64, base85, atau susunan teks terobfuskasi apa pun. Sistem akan mengeksekusi puluhan decoder paralel secara simultan dan mencari format flag <code>GETSFLAG{...}</code> atau pola flag kustom.
+        </p>
+        <div class="form-group">
+          <label>Input Ciphertext / Data Terenkode:</label>
+          <textarea id="univ-input" placeholder="Tempel ciphertext atau data di sini... Contoh: R0VUU0ZMQUd7dW5pdmVyc2FsX3NvbHZlcn0="></textarea>
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="runUniversalScan()">Jalankan Multi-Decoder Scan</button>
+          <button class="btn btn-secondary" onclick="loadUnivSample(1)">Sample Base64</button>
+          <button class="btn btn-secondary" onclick="loadUnivSample(2)">Sample Hex</button>
+          <button class="btn btn-secondary" onclick="loadUnivSample(3)">Sample Caesar ROT13</button>
+          <button class="btn btn-secondary" onclick="loadUnivSample(4)">Sample Z85</button>
+        </div>
+        <div class="form-group" style="margin-top: 12px;">
+          <label>Hasil Temuan Flag & Ekstraksi:</label>
+          <div id="univ-output" class="output-box">Menunggu input...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: CRYPTOGRAPHY ==================== -->
+    <div id="tab-crypto" class="tab-panel">
+      <div class="tool-grid">
+
+        <!-- Caesar & ROT Brute Force -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Caesar / ROT Brute-Forcer (1-25)</div>
+            <span class="card-badge">Classic</span>
+          </div>
+          <div class="form-group">
+            <label>Input Teks:</label>
+            <textarea id="caesar-input" placeholder="Contoh: TRGFSYNT{pnrfne_ebg13}"></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveCaesar()">Brute-Force Semua Shift (1-25)</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('caesar-input').value='TRGFSYNT{pnrfne_ebg13}'">Sample</button>
+          </div>
+          <div class="output-box" id="caesar-output">Hasil akan muncul di sini...</div>
+        </div>
+
+        <!-- Vigenere Cipher -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Vigenère Cipher Solver</div>
+            <span class="card-badge">Polyalphabetic</span>
+          </div>
+          <div class="form-group">
+            <label>Ciphertext:</label>
+            <input type="text" id="vig-input" placeholder="Ciphertext..." value="OIXYDVNI{kce_wgppae}">
+          </div>
+          <div class="form-group">
+            <label>Kunci (Key):</label>
+            <input type="text" id="vig-key" placeholder="Kunci..." value="KEY">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveVigenere(false)">Dekripsi</button>
+            <button class="btn btn-secondary" onclick="solveVigenere(true)">Enkripsi</button>
+          </div>
+          <div class="output-box" id="vig-output">Hasil dekripsi...</div>
+        </div>
+
+        <!-- XOR Solver -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">XOR Multi-Mode Solver</div>
+            <span class="card-badge">Stream & Byte</span>
+          </div>
+          <div class="form-group">
+            <label>Input (Hex atau String):</label>
+            <input type="text" id="xor-input" placeholder="Hex string: 17150403061c1117..." value="17150403061c11172b3d332f0f283f221d">
+          </div>
+          <div class="form-group">
+            <label>Kunci (Key - String atau Hex):</label>
+            <input type="text" id="xor-key" placeholder="Kosongkan untuk Brute Force Single Byte (0-255)..." value="">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveXor()">Eksekusi XOR / Auto-Bruteforce</button>
+          </div>
+          <div class="output-box" id="xor-output">Hasil XOR...</div>
+        </div>
+
+        <!-- Atbash & Affine -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Atbash & Affine Cipher</div>
+            <span class="card-badge">Substitution</span>
+          </div>
+          <div class="form-group">
+            <label>Input Teks:</label>
+            <input type="text" id="atbash-input" placeholder="Teks..." value="TVTHUOZT{zgyzhy_xrkzi}">
+          </div>
+          <div class="form-group" style="display: flex; gap: 8px;">
+            <div style="flex: 1;">
+              <label>Affine a (harus ganjil & coprim 26):</label>
+              <input type="number" id="affine-a" value="5">
+            </div>
+            <div style="flex: 1;">
+              <label>Affine b:</label>
+              <input type="number" id="affine-b" value="8">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveAtbash()">Dekripsi Atbash</button>
+            <button class="btn btn-secondary" onclick="solveAffine()">Dekripsi Affine</button>
+          </div>
+          <div class="output-box" id="atbash-output">Hasil dekripsi...</div>
+        </div>
+
+        <!-- Rail Fence Transposition -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Rail Fence Transposition</div>
+            <span class="card-badge">Transposition</span>
+          </div>
+          <div class="form-group">
+            <label>Ciphertext:</label>
+            <input type="text" id="rf-input" placeholder="Teks..." value="GTA{ae_ea}ESLGmcrlfn">
+          </div>
+          <div class="form-group">
+            <label>Jumlah Rails:</label>
+            <input type="number" id="rf-rails" value="3" min="2" max="20">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveRailFence()">Dekripsi Rail Fence</button>
+            <button class="btn btn-secondary" onclick="bruteRailFence()">Brute Force Rails (2-16)</button>
+          </div>
+          <div class="output-box" id="rf-output">Hasil dekripsi...</div>
+        </div>
+
+        <!-- RSA Mathematical Solver -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">RSA Key & Parameter Solver</div>
+            <span class="card-badge">Asymmetric</span>
+          </div>
+          <div class="form-group">
+            <label>p (Prime 1):</label>
+            <input type="text" id="rsa-p" placeholder="p..." value="61">
+          </div>
+          <div class="form-group">
+            <label>q (Prime 2):</label>
+            <input type="text" id="rsa-q" placeholder="q..." value="53">
+          </div>
+          <div class="form-group">
+            <label>e (Public Exponent):</label>
+            <input type="text" id="rsa-e" placeholder="e..." value="17">
+          </div>
+          <div class="form-group">
+            <label>c (Ciphertext integer atau list integer dipisah spasi):</label>
+            <input type="text" id="rsa-c" placeholder="c..." value="2790">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveRSA()">Hitung Private Key (d) & Dekripsi</button>
+          </div>
+          <div class="output-box" id="rsa-output">Hasil kalkulasi RSA...</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: ENCODING & TRANSFORMS ==================== -->
+    <div id="tab-encoding" class="tab-panel">
+      <div class="tool-grid">
+
+        <!-- Universal Base Multi-Decoder -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Rangkaian Base Decoder</div>
+            <span class="card-badge">Base16 s.d. Base85</span>
+          </div>
+          <div class="form-group">
+            <label>Payload Terenkode:</label>
+            <textarea id="base-input" placeholder="Masukkan Base16, Base32, Base45, Base58, Base62, Base64, Base85, Z85..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeBase('hex')">Hex (16)</button>
+            <button class="btn" onclick="decodeBase('b32')">Base32</button>
+            <button class="btn" onclick="decodeBase('b45')">Base45</button>
+            <button class="btn" onclick="decodeBase('b58')">Base58</button>
+            <button class="btn" onclick="decodeBase('b62')">Base62</button>
+            <button class="btn" onclick="decodeBase('b64')">Base64</button>
+            <button class="btn" onclick="decodeBase('b85')">Base85</button>
+            <button class="btn" onclick="decodeBase('z85')">Z85 (ZMQ)</button>
+          </div>
+          <div class="output-box" id="base-output">Hasil dekode...</div>
+        </div>
+
+        <!-- UUencode, XXencode & yEnc -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">UUencode, XXencode & yEnc</div>
+            <span class="card-badge">Binary Framing</span>
+          </div>
+          <div class="form-group">
+            <label>Input Stream:</label>
+            <textarea id="framing-input" placeholder="Masukkan teks UUencode, XXencode, atau yEnc (=ybegin ... =yend)..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeUU()">Decode UUencode</button>
+            <button class="btn" onclick="decodeXX()">Decode XXencode</button>
+            <button class="btn" onclick="decodeYEnc()">Decode yEnc</button>
+          </div>
+          <div class="output-box" id="framing-output">Hasil dekode...</div>
+        </div>
+
+        <!-- Zero-Width & Invisible Stego -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Zero-Width Space & Unicode Stego</div>
+            <span class="card-badge">Invisible</span>
+          </div>
+          <div class="form-group">
+            <label>Teks berisi karakter tidak terlihat (ZWSP, ZWNJ, ZWJ):</label>
+            <textarea id="zw-input" placeholder="Tempel teks di sini..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeZeroWidth()">Ekstrak Bit Zero-Width</button>
+            <button class="btn btn-secondary" onclick="decodeUnicodeTags()">Ekstrak Unicode Tags (U+E0000)</button>
+          </div>
+          <div class="output-box" id="zw-output">Hasil ekstraksi stego...</div>
+        </div>
+
+        <!-- Braille, Tap Code, NATO & Morse -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Sinyal Taktis & Sandi Klasik</div>
+            <span class="card-badge">Signals</span>
+          </div>
+          <div class="form-group">
+            <label>Input (Braille, Tap Code 5x5, Morse teks, atau NATO Phonetic):</label>
+            <textarea id="tactical-input" placeholder="Contoh Tap Code: 22 15 44 43 21 31 11 22..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeBraille()">Braille Mask</button>
+            <button class="btn" onclick="decodeTapCode()">Tap Code 5x5</button>
+            <button class="btn" onclick="decodeMorseText()">Morse Teks</button>
+            <button class="btn" onclick="decodeNATO()">NATO Phonetic</button>
+          </div>
+          <div class="output-box" id="tactical-output">Hasil dekode sandi...</div>
+        </div>
+
+        <!-- Periodic Table & 7-Segment -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Unsur Kimia & 7-Segment Display</div>
+            <span class="card-badge">Logic</span>
+          </div>
+          <div class="form-group">
+            <label>Input Formula Unsur Kimia atau Konfigurasi 7-Segment:</label>
+            <input type="text" id="chem-input" placeholder="Contoh Kimia: B O Be Al C O B N... / 7-Segment: 071 069 084...">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeChemical()">Decode Kimia (Z-1 Hex)</button>
+            <button class="btn" onclick="decode7Segment()">Decode 7-Segment</button>
+            <button class="btn btn-secondary" onclick="decodeT9()">Decode T9 Keypad</button>
+          </div>
+          <div class="output-box" id="chem-output">Hasil dekode...</div>
+        </div>
+
+        <!-- Roman & Bacon -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Angka Romawi & Baconian Cipher</div>
+            <span class="card-badge">Historical</span>
+          </div>
+          <div class="form-group">
+            <label>Input Romawi (dipisah spasi) atau Baconian AB/Case:</label>
+            <textarea id="roman-input" placeholder="LXXI LXIX LXXXIV LXXXIII... atau AAAAA BAABA..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="decodeRoman()">Romawi ke Karakter ASCII</button>
+            <button class="btn" onclick="decodeBacon()">Decode Baconian (AB)</button>
+            <button class="btn btn-secondary" onclick="decodeBaconCase()">Baconian Case (Besar/Kecil)</button>
+          </div>
+          <div class="output-box" id="roman-output">Hasil dekode...</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: ESOLANGS & VIRTUAL MACHINES ==================== -->
+    <div id="tab-esolang" class="tab-panel">
+      <div class="tool-grid">
+
+        <!-- Brainfuck & Ook! Simulator -->
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-header">
+            <div class="card-title">Brainfuck, Ook! & Spoon Simulator (30.000 Sel)</div>
+            <span class="card-badge">Turing Complete</span>
+          </div>
+          <div class="form-group">
+            <label>Source Code Esolang:</label>
+            <textarea id="bf-code" style="height: 120px;" placeholder="Kode Brainfuck (+-<>[],.), Ook! (Ook. Ook?), atau Spoon bitstream (100101...)..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Standard Input (Opsional):</label>
+            <input type="text" id="bf-stdin" placeholder="Input stdin...">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="runBF()">Jalankan Brainfuck</button>
+            <button class="btn btn-secondary" onclick="runOok()">Transpile & Jalankan Ook!</button>
+            <button class="btn btn-secondary" onclick="runSpoon()">Transpile & Jalankan Spoon</button>
+            <button class="btn btn-secondary" onclick="loadBFHello()">Load Sample Brainfuck</button>
+          </div>
+          <div class="output-box" id="bf-output">Keluaran program esolang...</div>
+        </div>
+
+        <!-- Befunge-93 2D Grid -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Befunge-93 2D Grid Interpreter</div>
+            <span class="card-badge">2D Stack Matrix</span>
+          </div>
+          <div class="form-group">
+            <label>Grid Matrix (80x25):</label>
+            <textarea id="befunge-code" style="height: 100px; font-family: monospace;" placeholder='">"dirg_egnufeb_acm{GALFSTEG",,,,,,,,,,,,,,,,,,,,,,,,,,@'></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="runBefunge()">Jalankan Befunge-93</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('befunge-code').value='\"}dirg_egnufeb_acm{GALFSTEG\",,,,,,,,,,,,,,,,,,,,,,,,,,@'">Sample</button>
+          </div>
+          <div class="output-box" id="befunge-output">Keluaran Befunge...</div>
+        </div>
+
+        <!-- Deadfish Simulator -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Deadfish Language Simulator</div>
+            <span class="card-badge">Accumulator (288 / -1 Reset)</span>
+          </div>
+          <div class="form-group">
+            <label>Instruksi Deadfish (i = inc, d = dec, s = square, o = output):</label>
+            <textarea id="deadfish-code" placeholder="iissso..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="runDeadfish()">Eksekusi Deadfish</button>
+          </div>
+          <div class="output-box" id="deadfish-output">Keluaran Deadfish...</div>
+        </div>
+
+        <!-- Whitespace Language -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Whitespace Language Interpreter</div>
+            <span class="card-badge">Space / Tab / LF</span>
+          </div>
+          <div class="form-group">
+            <label>Whitespace Source (atau upload file .ws):</label>
+            <textarea id="ws-code" placeholder="Gunakan spasi, tab, dan newline..."></textarea>
+            <input type="file" id="ws-file" accept=".ws,.txt" style="margin-top: 6px;" onchange="loadWSFile(event)">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="runWhitespace()">Eksekusi Whitespace</button>
+          </div>
+          <div class="output-box" id="ws-output">Keluaran Whitespace...</div>
+        </div>
+
+        <!-- Custom Stack VM -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Stack VM Bytecode Runner</div>
+            <span class="card-badge">PUSH / ADD / SUB / EMIT</span>
+          </div>
+          <div class="form-group">
+            <label>Assembly Instructions:</label>
+            <textarea id="stackvm-code" placeholder="PUSH 71&#10;EMIT&#10;PUSH 69&#10;EMIT..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="runStackVM()">Eksekusi Stack VM</button>
+          </div>
+          <div class="output-box" id="stackvm-output">Keluaran VM...</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: MATH & SEQUENCES ==================== -->
+    <div id="tab-math" class="tab-panel">
+      <div class="tool-grid">
+
+        <!-- Collatz Sequence -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Collatz Stopping Time Solver</div>
+            <span class="card-badge">3n + 1</span>
+          </div>
+          <div class="form-group">
+            <label>Daftar Bilangan (dipisah spasi atau baris):</label>
+            <textarea id="collatz-input" placeholder="Masukkan daftar angka Collatz..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Transformasi Karakter:</label>
+            <select id="collatz-mode">
+              <option value="sub1">chr(steps - 1) [MCA Standard]</option>
+              <option value="direct">chr(steps) [Direct ASCII]</option>
+              <option value="add31">chr(steps + 31) [MCB Standard]</option>
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveCollatz()">Hitung Langkah & Ekstrak String</button>
+          </div>
+          <div class="output-box" id="collatz-output">Hasil Collatz...</div>
+        </div>
+
+        <!-- Fibonacci Sequence Index -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Fibonacci Number-to-Index Mapper</div>
+            <span class="card-badge">Golden Ratio</span>
+          </div>
+          <div class="form-group">
+            <label>Daftar Bilangan Fibonacci (dipisah spasi):</label>
+            <textarea id="fib-input" placeholder="Contoh: 190392490709135 12586269025..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveFibonacci()">Cari Indeks Fibonacci & Konversi ke Karakter</button>
+          </div>
+          <div class="output-box" id="fib-output">Hasil Fibonacci...</div>
+        </div>
+
+        <!-- RPN Evaluator -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">RPN (Reverse Polish Notation) Stack</div>
+            <span class="card-badge">Stack Math</span>
+          </div>
+          <div class="form-group">
+            <label>Ekspresi RPN (per baris atau token dipisah spasi):</label>
+            <textarea id="rpn-input" placeholder="Contoh per baris:&#10;50 21 +&#10;100 31 -"></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveRPN()">Evaluasi RPN ke Karakter ASCII</button>
+          </div>
+          <div class="output-box" id="rpn-output">Hasil RPN...</div>
+        </div>
+
+        <!-- GF(2) Linear SAT / Parity Solver -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">GF(2) Gaussian Elimination Solver</div>
+            <span class="card-badge">SAT & Linear Constraints</span>
+          </div>
+          <div class="form-group">
+            <label>Vektor b (stream bit 0 dan 1):</label>
+            <input type="text" id="gf2-b" placeholder="Contoh b: 1011001...">
+          </div>
+          <div class="form-group">
+            <label>Matriks A (baris flat bit string N x N):</label>
+            <textarea id="gf2-a" placeholder="Contoh A: 101010110..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveGF2()">Selesaikan Sistem Linear GF(2)</button>
+          </div>
+          <div class="output-box" id="gf2-output">Solusi bitstream & flag...</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 6: AUDIO & SIGNALS ==================== -->
+    <div id="tab-audio" class="tab-panel">
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <div class="card-title">Audio Signal Analyzer & Demodulator</div>
+          <span class="card-badge">Web Audio API</span>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px;">
+          Unggah berkas audio (.wav) untuk mengekstrak nada DTMF, sinyal telegrafi Morse CW, FSK modem, atau modulasi frekuensi diskrit langsung di browser.
+        </p>
+        <div class="form-group">
+          <label>Pilih File Audio WAV:</label>
+          <input type="file" id="audio-file" accept=".wav" onchange="loadAudioFile(event)">
+        </div>
+        <div class="btn-row">
+          <button class="btn" onclick="decodeAudioDTMF()">Decode DTMF (Tombol Telepon)</button>
+          <button class="btn" onclick="decodeAudioMorse()">Decode CW Morse Audio</button>
+          <button class="btn" onclick="decodeAudioToneByte()">Decode Nada Tunggal ($300 + 10 \times \text{ASCII}$)</button>
+          <button class="btn" onclick="decodeAudioToneNibble()">Decode Tangga Nada ($400 + 120 \times \text{nibble}$)</button>
+          <button class="btn" onclick="decodeAudioFSK()">Decode 2FSK Modem (1000/1800 Hz)</button>
+          <button class="btn" onclick="decodeAudio4FSK()">Decode 4FSK (800/1200/1600/2000 Hz)</button>
+        </div>
+        <div class="form-group" style="margin-top: 14px;">
+          <label>Informasi Berkas Audio & Spektrum Frekuensi:</label>
+          <div id="audio-info" style="font-family: var(--font-mono); font-size: 12px; color: var(--cyan-primary); margin-bottom: 8px;">Tidak ada berkas yang dimuat.</div>
+          <div id="audio-output" class="output-box">Keluaran analisis sinyal audio...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 7: FORENSICS & STEGO ==================== -->
+    <div id="tab-forensics" class="tab-panel">
+      <div class="tool-grid">
+
+        <!-- Hexdump Reassembler -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Hexdump / xxd Reassembler</div>
+            <span class="card-badge">Binary Recovery</span>
+          </div>
+          <div class="form-group">
+            <label>Teks Hexdump Kanonikal / xxd:</label>
+            <textarea id="hexdump-input" style="height: 120px;" placeholder="00000000: 4745 5453 464c 4147 7b68 6578 5f78 7864  GETSFLAG{hex_xxd&#10;00000010: 5f73 7479 6c65 5f64 756d 707d            _style_dump}"></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="reassembleHexdump()">Rakit Ulang Binary / ASCII</button>
+          </div>
+          <div class="output-box" id="hexdump-output">Hasil rakitan...</div>
+        </div>
+
+        <!-- Shuffled Struct Record Unpacker -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Shuffled Record Unpacker</div>
+            <span class="card-badge">Firmware Binary</span>
+          </div>
+          <div class="form-group">
+            <label>Hex Data Berkas Rekaman (LREC / FREC):</label>
+            <textarea id="record-input" placeholder="4c52454321001b00630500..."></textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="unpackShuffledRecords()">Urutkan Rekaman Berdasarkan Index</button>
+            <button class="btn btn-secondary" onclick="unpackBigEndianUtf16()">Decode Big-Endian UTF-16</button>
+          </div>
+          <div class="output-box" id="record-output">Hasil rekaman terurut...</div>
+        </div>
+
+        <!-- PNG Chunk & Stego Inspector -->
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-header">
+            <div class="card-title">PNG, JPEG & Office Metadata Stego Extractor</div>
+            <span class="card-badge">File Carving & Metadata</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 14px;">
+            Unggah berkas PNG, JPEG, GIF, PDF, atau DOCX/XLSX. Modul akan memindai seluruh blok metadata tersembunyi (tEXt, zTXt, iTXt, private chunks, JPEG COM markers, EXIF UserComment, IEND/EOI trailing data, serta struktur ZIP internal).
+          </p>
+          <div class="form-group">
+            <label>Pilih File untuk Diinspeksi:</label>
+            <input type="file" id="stego-file" onchange="inspectStegoFile(event)">
+          </div>
+          <div class="output-box" id="stego-output" style="max-height: 280px;">Menunggu unggahan berkas...</div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <strong>CyLab CTF OmniTool</strong> : Hardened AI-Engineered Security Suite.
+    </div>
+    <div>
+      Sovereign Intelligence by <a href="https://duckvaulta.ai.id">Duckvaulta</a>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast">Flag disalin ke clipboard!</div>
+
+  <!-- ==================== CORE JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg || 'Flag disalin ke clipboard!';
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function formatFlagOutput(text) {
+      const flagRegex = /GETSFLAG\{[^\}]+\}/g;
+      const matches = text.match(flagRegex);
+      if (matches) {
+        return text.replace(flagRegex, (m) => `<span class="flag-highlight" onclick="navigator.clipboard.writeText('${m}'); showToast('Flag ${m} disalin!');" title="Klik untuk Salin">${m}</span>`);
+      }
+      return text;
+    }
+
+    // ==================== TAB 1: UNIVERSAL MULTI-DECODER ====================
+    function runUniversalScan() {
+      const raw = document.getElementById('univ-input').value.trim();
+      if (!raw) {
+        document.getElementById('univ-output').innerText = 'Input kosong!';
+        return;
+      }
+
+      let findings = [];
+
+      // 1. Direct search
+      const direct = raw.match(/GETSFLAG\{[^\}]+\}/g);
+      if (direct) findings.push(`[Direct Text] -> ${direct.join(', ')}`);
+
+      // 2. Base64
+      try {
+        const b64 = atob(raw.replace(/\s+/g, ''));
+        const m = b64.match(/GETSFLAG\{[^\}]+\}/g);
+        if (m) findings.push(`[Base64] -> ${m.join(', ')}`);
+        else if (b64.length > 4 && /^[\x20-\x7E\r\n\t]+$/.test(b64)) {
+          findings.push(`[Base64 Decoded Text] -> ${b64.slice(0, 100)}`);
+        }
+      } catch (e) {}
+
+      // 3. Hex
+      const cleanHex = raw.replace(/[^0-9a-fA-F]/g, '');
+      if (cleanHex.length >= 8 && cleanHex.length % 2 === 0) {
+        let hexStr = '';
+        for (let i = 0; i < cleanHex.length; i += 2) {
+          hexStr += String.fromCharCode(parseInt(cleanHex.substr(i, 2), 16));
+        }
+        const m = hexStr.match(/GETSFLAG\{[^\}]+\}/g);
+        if (m) findings.push(`[Hex/Base16] -> ${m.join(', ')}`);
+        else if (/^[\x20-\x7E]+$/.test(hexStr)) {
+          findings.push(`[Hex Decoded Text] -> ${hexStr.slice(0, 100)}`);
+        }
+      }
+
+      // 4. Caesar Shifts
+      for (let s = 1; s <= 25; s++) {
+        let rot = '';
+        for (let i = 0; i < raw.length; i++) {
+          const c = raw.charCodeAt(i);
+          if (c >= 65 && c <= 90) rot += String.fromCharCode(((c - 65 + s) % 26) + 65);
+          else if (c >= 97 && c <= 122) rot += String.fromCharCode(((c - 97 + s) % 26) + 97);
+          else rot += raw[i];
+        }
+        const m = rot.match(/GETSFLAG\{[^\}]+\}/g);
+        if (m) findings.push(`[Caesar Shift +${s}] -> ${m.join(', ')}`);
+      }
+
+      // 5. Z85 (ZeroMQ)
+      try {
+        const z85chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#";
+        const z85map = {};
+        for (let i = 0; i < z85chars.length; i++) z85map[z85chars[i]] = i;
+        if (raw.length % 5 === 0) {
+          let bytes = [];
+          for (let i = 0; i < raw.length; i += 5) {
+            let val = 0;
+            for (let j = 0; j < 5; j++) val = val * 85 + z85map[raw[i + j]];
+            bytes.push((val >> 24) & 0xff, (val >> 16) & 0xff, (val >> 8) & 0xff, val & 0xff);
+          }
+          const z85Str = String.fromCharCode(...bytes);
+          const m = z85Str.match(/GETSFLAG\{[^\}]+\}/g);
+          if (m) findings.push(`[Z85 ZeroMQ] -> ${m.join(', ')}`);
+        }
+      } catch (e) {}
+
+      // 6. Atbash
+      let atbash = '';
+      for (let i = 0; i < raw.length; i++) {
+        const c = raw.charCodeAt(i);
+        if (c >= 65 && c <= 90) atbash += String.fromCharCode(90 - (c - 65));
+        else if (c >= 97 && c <= 122) atbash += String.fromCharCode(122 - (c - 97));
+        else atbash += raw[i];
+      }
+      const mAtbash = atbash.match(/GETSFLAG\{[^\}]+\}/g);
+      if (mAtbash) findings.push(`[Atbash Cipher] -> ${mAtbash.join(', ')}`);
+
+      const outEl = document.getElementById('univ-output');
+      if (findings.length > 0) {
+        outEl.classList.add('has-flag');
+        outEl.innerHTML = findings.map(f => formatFlagOutput(f)).join('\n');
+      } else {
+        outEl.classList.remove('has-flag');
+        outEl.innerText = 'Tidak ditemukan pola flag langsung. Coba periksa di tab spesifik (Kriptografi, Esolang, atau Forensik).';
+      }
+    }
+
+    function loadUnivSample(type) {
+      const el = document.getElementById('univ-input');
+      if (type === 1) el.value = 'R0VUU0ZMQUd7dW5pdmVyc2FsX2Jhc2U2NF9zb2x2ZXJ9';
+      if (type === 2) el.value = '47455453464c41477b756e6976657273616c5f6865787d';
+      if (type === 3) el.value = 'TRGFSYNT{pnrfne_ebg13_qrpbqrq}';
+      if (type === 4) el.value = 'nm=HW.H1b-b1!o3AU&>4c.7+3w';
+      runUniversalScan();
+    }
+
+    // ==================== TAB 2: CRYPTOGRAPHY ====================
+    function solveCaesar() {
+      const raw = document.getElementById('caesar-input').value;
+      let res = [];
+      let foundFlag = false;
+      for (let s = 1; s <= 25; s++) {
+        let shifted = '';
+        for (let i = 0; i < raw.length; i++) {
+          const c = raw.charCodeAt(i);
+          if (c >= 65 && c <= 90) shifted += String.fromCharCode(((c - 65 + s) % 26) + 65);
+          else if (c >= 97 && c <= 122) shifted += String.fromCharCode(((c - 97 + s) % 26) + 97);
+          else shifted += raw[i];
+        }
+        if (shifted.includes('GETSFLAG{')) {
+          res.unshift(`★ [MATCH Shift ${s}]: ${shifted}`);
+          foundFlag = true;
+        } else {
+          res.push(`[Shift ${s}]: ${shifted}`);
+        }
+      }
+      const el = document.getElementById('caesar-output');
+      el.classList.toggle('has-flag', foundFlag);
+      el.innerHTML = formatFlagOutput(res.join('\n'));
+    }
+
+    function solveVigenere(encrypt) {
+      const input = document.getElementById('vig-input').value;
+      const key = document.getElementById('vig-key').value.toUpperCase().replace(/[^A-Z]/g, '');
+      if (!key) { alert('Masukkan kunci Vigenere!'); return; }
+      let out = '';
+      let kIdx = 0;
+      for (let i = 0; i < input.length; i++) {
+        const c = input.charCodeAt(i);
+        const k = key.charCodeAt(kIdx % key.length) - 65;
+        if (c >= 65 && c <= 90) {
+          const shift = encrypt ? k : 26 - k;
+          out += String.fromCharCode(((c - 65 + shift) % 26) + 65);
+          kIdx++;
+        } else if (c >= 97 && c <= 122) {
+          const shift = encrypt ? k : 26 - k;
+          out += String.fromCharCode(((c - 97 + shift) % 26) + 97);
+          kIdx++;
+        } else {
+          out += input[i];
+        }
+      }
+      const el = document.getElementById('vig-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function solveXor() {
+      const raw = document.getElementById('xor-input').value.trim();
+      const key = document.getElementById('xor-key').value;
+      let bytes = [];
+      if (/^[0-9a-fA-F]+$/.test(raw) && raw.length % 2 === 0) {
+        for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
+      } else {
+        for (let i = 0; i < raw.length; i++) bytes.push(raw.charCodeAt(i));
+      }
+
+      let res = [];
+      let foundFlag = false;
+
+      if (!key) {
+        // Brute force single byte
+        for (let k = 0; k < 256; k++) {
+          const xored = bytes.map(b => String.fromCharCode(b ^ k)).join('');
+          if (xored.includes('GETSFLAG{')) {
+            res.unshift(`★ [MATCH Key 0x${k.toString(16).padStart(2, '0')} (${k})]: ${xored}`);
+            foundFlag = true;
+          } else if (k < 10) {
+            res.push(`[Key 0x${k.toString(16).padStart(2, '0')}]: ${xored}`);
+          }
+        }
+      } else {
+        const keyBytes = key.split('').map(c => c.charCodeAt(0));
+        const xored = bytes.map((b, i) => String.fromCharCode(b ^ keyBytes[i % keyBytes.length])).join('');
+        res.push(`[XOR Result]: ${xored}`);
+        if (xored.includes('GETSFLAG{')) foundFlag = true;
+      }
+
+      const el = document.getElementById('xor-output');
+      el.classList.toggle('has-flag', foundFlag);
+      el.innerHTML = formatFlagOutput(res.join('\n'));
+    }
+
+    function solveAtbash() {
+      const input = document.getElementById('atbash-input').value;
+      let out = '';
+      for (let i = 0; i < input.length; i++) {
+        const c = input.charCodeAt(i);
+        if (c >= 65 && c <= 90) out += String.fromCharCode(90 - (c - 65));
+        else if (c >= 97 && c <= 122) out += String.fromCharCode(122 - (c - 97));
+        else out += input[i];
+      }
+      const el = document.getElementById('atbash-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function solveAffine() {
+      const input = document.getElementById('atbash-input').value;
+      const a = parseInt(document.getElementById('affine-a').value);
+      const b = parseInt(document.getElementById('affine-b').value);
+      // find modular inverse of a mod 26
+      let aInv = -1;
+      for (let x = 1; x < 26; x++) {
+        if ((a * x) % 26 === 1) { aInv = x; break; }
+      }
+      if (aInv === -1) { alert('Nilai a tidak memiliki invers modular modulo 26!'); return; }
+      let out = '';
+      for (let i = 0; i < input.length; i++) {
+        const c = input.charCodeAt(i);
+        if (c >= 65 && c <= 90) {
+          out += String.fromCharCode((((aInv * ((c - 65 - b + 260)) % 26) + 26) % 26) + 65);
+        } else if (c >= 97 && c <= 122) {
+          out += String.fromCharCode((((aInv * ((c - 97 - b + 260)) % 26) + 26) % 26) + 97);
+        } else {
+          out += input[i];
+        }
+      }
+      const el = document.getElementById('atbash-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function solveRailFence() {
+      const ct = document.getElementById('rf-input').value;
+      const rails = parseInt(document.getElementById('rf-rails').value);
+      if (rails < 2) return;
+      
+      const n = ct.length;
+      let railLens = new Array(rails).fill(0);
+      let r = 0, dir = 1;
+      for (let i = 0; i < n; i++) {
+        railLens[r]++;
+        r += dir;
+        if (r === rails - 1) dir = -1;
+        else if (r === 0) dir = 1;
+      }
+
+      let railStrings = [];
+      let idx = 0;
+      for (let i = 0; i < rails; i++) {
+        railStrings.push(ct.substr(idx, railLens[i]));
+        idx += railLens[i];
+      }
+
+      let railPointers = new Array(rails).fill(0);
+      let res = '';
+      r = 0; dir = 1;
+      for (let i = 0; i < n; i++) {
+        res += railStrings[r][railPointers[r]++];
+        r += dir;
+        if (r === rails - 1) dir = -1;
+        else if (r === 0) dir = 1;
+      }
+
+      const el = document.getElementById('rf-output');
+      el.classList.toggle('has-flag', res.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(res);
+    }
+
+    function bruteRailFence() {
+      const ct = document.getElementById('rf-input').value;
+      let lines = [];
+      for (let rails = 2; rails <= 16; rails++) {
+        document.getElementById('rf-rails').value = rails;
+        solveRailFence();
+        lines.push(`[Rails ${rails}]: ` + document.getElementById('rf-output').innerText);
+      }
+      document.getElementById('rf-output').innerHTML = formatFlagOutput(lines.join('\n'));
+    }
+
+    // RSA BigInt Solver
+    function solveRSA() {
+      try {
+        const p = BigInt(document.getElementById('rsa-p').value.trim());
+        const q = BigInt(document.getElementById('rsa-q').value.trim());
+        const e = BigInt(document.getElementById('rsa-e').value.trim());
+        const cRaw = document.getElementById('rsa-c').value.trim();
+
+        const n = p * q;
+        const phi = (p - 1n) * (q - 1n);
+
+        // Extended Euclidean Algorithm for modInverse
+        function egcd(a, b) {
+          if (b === 0n) return [1n, 0n, a];
+          const [x1, y1, gcd] = egcd(b, a % b);
+          return [y1, x1 - (a / b) * y1, gcd];
+        }
+        let [x, y, gcd] = egcd(e, phi);
+        let d = (x % phi + phi) % phi;
+
+        function modPow(base, exp, mod) {
+          let res = 1n;
+          base = base % mod;
+          while (exp > 0n) {
+            if (exp % 2n === 1n) res = (res * base) % mod;
+            base = (base * base) % mod;
+            exp = exp / 2n;
+          }
+          return res;
+        }
+
+        const cipherTokens = cRaw.split(/[\s,]+/);
+        let decryptedChars = [];
+        for (const token of cipherTokens) {
+          if (!token) continue;
+          const c = BigInt(token);
+          const m = modPow(c, d, n);
+          // if small int, direct char, else byte unpack
+          if (m < 256n) {
+            decryptedChars.push(String.fromCharCode(Number(m)));
+          } else {
+            let hex = m.toString(16);
+            if (hex.length % 2 !== 0) hex = '0' + hex;
+            for (let i = 0; i < hex.length; i += 2) {
+              decryptedChars.push(String.fromCharCode(parseInt(hex.substr(i, 2), 16)));
+            }
+          }
+        }
+        const text = decryptedChars.join('');
+        const res = `RSA Private Key (d): ${d}\nModulus (n): ${n}\nDecrypted Text:\n${text}`;
+        const el = document.getElementById('rsa-output');
+        el.classList.toggle('has-flag', text.includes('GETSFLAG{'));
+        el.innerHTML = formatFlagOutput(res);
+      } catch (err) {
+        document.getElementById('rsa-output').innerText = 'Error kalkulasi RSA: ' + err.message;
+      }
+    }
+
+    // ==================== TAB 3: ENCODING & TRANSFORMS ====================
+    function decodeBase(type) {
+      const raw = document.getElementById('base-input').value.trim();
+      let res = '';
+      try {
+        if (type === 'hex') {
+          const clean = raw.replace(/[^0-9a-fA-F]/g, '');
+          for (let i = 0; i < clean.length; i += 2) res += String.fromCharCode(parseInt(clean.substr(i, 2), 16));
+        } else if (type === 'b64') {
+          res = atob(raw.replace(/\s+/g, ''));
+        } else if (type === 'b32') {
+          // RFC 4648 Base32
+          const b32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+          let bits = "";
+          for (let i = 0; i < raw.length; i++) {
+            const idx = b32chars.indexOf(raw[i].toUpperCase());
+            if (idx >= 0) bits += idx.toString(2).padStart(5, '0');
+          }
+          let out = [];
+          for (let i = 0; i < bits.length - 7; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
+          res = String.fromCharCode(...out);
+        } else if (type === 'b58') {
+          // Bitcoin Base58
+          const b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+          let num = 0n;
+          for (let i = 0; i < raw.length; i++) {
+            const idx = BigInt(b58.indexOf(raw[i]));
+            if (idx < 0n) continue;
+            num = num * 58n + idx;
+          }
+          let hex = num.toString(16);
+          if (hex.length % 2 !== 0) hex = '0' + hex;
+          for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        } else if (type === 'b62') {
+          const b62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+          let num = 0n;
+          for (let i = 0; i < raw.length; i++) {
+            const idx = BigInt(b62.indexOf(raw[i]));
+            if (idx < 0n) continue;
+            num = num * 62n + idx;
+          }
+          let hex = num.toString(16);
+          if (hex.length % 2 !== 0) hex = '0' + hex;
+          for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        } else if (type === 'b45') {
+          // Base45 RFC 9285
+          const b45 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+          let bytes = [];
+          for (let i = 0; i < raw.length; i += 3) {
+            if (i + 2 < raw.length) {
+              const c = b45.indexOf(raw[i]) + b45.indexOf(raw[i+1]) * 45 + b45.indexOf(raw[i+2]) * 45 * 45;
+              bytes.push((c >> 8) & 0xff, c & 0xff);
+            } else if (i + 1 < raw.length) {
+              const c = b45.indexOf(raw[i]) + b45.indexOf(raw[i+1]) * 45;
+              bytes.push(c);
+            }
+          }
+          res = String.fromCharCode(...bytes);
+        } else if (type === 'z85') {
+          const z85chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#";
+          const z85map = {};
+          for (let i = 0; i < z85chars.length; i++) z85map[z85chars[i]] = i;
+          let bytes = [];
+          for (let i = 0; i < raw.length; i += 5) {
+            let val = 0;
+            for (let j = 0; j < 5; j++) val = val * 85 + z85map[raw[i + j]];
+            bytes.push((val >> 24) & 0xff, (val >> 16) & 0xff, (val >> 8) & 0xff, val & 0xff);
+          }
+          res = String.fromCharCode(...bytes);
+        }
+      } catch (e) {
+        res = 'Error decoding: ' + e.message;
+      }
+      const el = document.getElementById('base-output');
+      el.classList.toggle('has-flag', res.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(res);
+    }
+
+    // UUencode decoder
+    function decodeUU() {
+      const raw = document.getElementById('framing-input').value;
+      const lines = raw.split(/\r?\n/);
+      let out = [];
+      let inData = false;
+      for (const line of lines) {
+        if (line.startsWith('begin')) { inData = true; continue; }
+        if (line.startsWith('end') || line === '`') { inData = false; continue; }
+        if (inData && line.length > 0) {
+          const len = (line.charCodeAt(0) - 32) & 0x3f;
+          let bytesInLine = 0;
+          for (let i = 1; i < line.length && bytesInLine < len; i += 4) {
+            const b0 = (line.charCodeAt(i) - 32) & 0x3f;
+            const b1 = (line.charCodeAt(i+1) - 32) & 0x3f;
+            const b2 = (line.charCodeAt(i+2) - 32) & 0x3f;
+            const b3 = (line.charCodeAt(i+3) - 32) & 0x3f;
+            out.push((b0 << 2) | (b1 >> 4));
+            bytesInLine++;
+            if (bytesInLine < len) { out.push(((b1 & 0x0f) << 4) | (b2 >> 2)); bytesInLine++; }
+            if (bytesInLine < len) { out.push(((b2 & 0x03) << 6) | b3); bytesInLine++; }
+          }
+        }
+      }
+      const res = String.fromCharCode(...out);
+      const el = document.getElementById('framing-output');
+      el.classList.toggle('has-flag', res.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(res);
+    }
+
+    // yEnc decoder
+    function decodeYEnc() {
+      const raw = document.getElementById('framing-input').value;
+      const lines = raw.split(/\r?\n/);
+      let out = [];
+      let inData = false;
+      for (const line of lines) {
+        if (line.startsWith('=ybegin')) { inData = true; continue; }
+        if (line.startsWith('=yend') || line.startsWith('=ypart')) { inData = false; continue; }
+        if (inData) {
+          for (let i = 0; i < line.length; i++) {
+            let c = line.charCodeAt(i);
+            if (c === 61) { // '='
+              i++;
+              c = (line.charCodeAt(i) - 42 - 64 + 256) % 256;
+            } else {
+              c = (c - 42 + 256) % 256;
+            }
+            out.push(c);
+          }
+        }
+      }
+      const res = String.fromCharCode(...out);
+      const el = document.getElementById('framing-output');
+      el.classList.toggle('has-flag', res.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(res);
+    }
+
+    // Zero-Width Decoder
+    function decodeZeroWidth() {
+      const raw = document.getElementById('zw-input').value;
+      let bits = '';
+      for (const ch of raw) {
+        if (ch === '\u200b') bits += '0';
+        else if (ch === '\u200c') bits += '1';
+        else if (ch === '\u200d') bits += '1';
+        else if (ch === '\ufeff') bits += '0';
+      }
+      let out = '';
+      for (let i = 0; i < bits.length - 7; i += 8) {
+        out += String.fromCharCode(parseInt(bits.substr(i, 8), 2));
+      }
+      const el = document.getElementById('zw-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(`[Ekstraksi Zero-Width (${bits.length} bits)]:\n${out}`);
+    }
+
+    function decodeUnicodeTags() {
+      const raw = document.getElementById('zw-input').value;
+      let out = '';
+      for (let i = 0; i < raw.length; i++) {
+        const cp = raw.codePointAt(i);
+        if (cp >= 0xE0000 && cp <= 0xE007F) {
+          out += String.fromCharCode(cp - 0xE0000);
+        }
+      }
+      const el = document.getElementById('zw-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(`[Unicode Tags U+E0000]:\n${out}`);
+    }
+
+    // Braille Decoder (ord(c) - 0x2800)
+    function decodeBraille() {
+      const raw = document.getElementById('tactical-input').value;
+      let out = '';
+      for (const ch of raw) {
+        const cp = ch.charCodeAt(0);
+        if (cp >= 0x2800 && cp <= 0x28ff) {
+          out += String.fromCharCode(cp - 0x2800);
+        }
+      }
+      const el = document.getElementById('tactical-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // Tap Code 5x5
+    function decodeTapCode() {
+      const raw = document.getElementById('tactical-input').value.trim();
+      const grid = [
+        ['A', 'B', 'C/K', 'D', 'E'],
+        ['F', 'G', 'H', 'I', 'J'],
+        ['L', 'M', 'N', 'O', 'P'],
+        ['Q', 'R', 'S', 'T', 'U'],
+        ['V', 'W', 'X', 'Y', 'Z']
+      ];
+      const tokens = raw.split(/[\s,]+/);
+      let out = '';
+      for (let t of tokens) {
+        if (t.length === 2) {
+          const r = parseInt(t[0]) - 1;
+          const c = parseInt(t[1]) - 1;
+          if (r >= 0 && r < 5 && c >= 0 && c < 5) out += grid[r][c];
+        }
+      }
+      const el = document.getElementById('tactical-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // Chemical Elements (Z-1 Hex Nibble Decoder)
+    function decodeChemical() {
+      const raw = document.getElementById('chem-input').value.trim();
+      const pt = {
+        'H':1,'HE':2,'LI':3,'BE':4,'B':5,'C':6,'N':7,'O':8,'F':9,'NE':10,
+        'NA':11,'MG':12,'AL':13,'SI':14,'P':15,'S':16,'CL':17,'AR':18,'K':19,'CA':20,
+        'SC':21,'TI':22,'V':23,'CR':24,'MN':25,'FE':26,'CO':27,'NI':28,'CU':29,'ZN':30,
+        'GA':31,'GE':32,'AS':33,'SE':34,'BR':35,'KR':36,'RB':37,'SR':38,'Y':39,'ZR':40,
+        'NB':41,'MO':42,'TC':43,'RU':44,'RH':45,'PD':46,'AG':47,'CD':48,'IN':49,'SN':50
+      };
+      const tokens = raw.toUpperCase().split(/[\s,]+/);
+      let hex = '';
+      for (let t of tokens) {
+        if (pt[t] !== undefined) {
+          hex += (pt[t] - 1).toString(16);
+        }
+      }
+      let out = '';
+      for (let i = 0; i < hex.length - 1; i += 2) {
+        out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      }
+      const el = document.getElementById('chem-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(`[Hex]: ${hex}\n[ASCII]: ${out}`);
+    }
+
+    // Roman Numerals
+    function decodeRoman() {
+      const raw = document.getElementById('roman-input').value.trim();
+      function r2i(s) {
+        const v = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+        let tot = 0, prev = 0;
+        for (let i = s.length - 1; i >= 0; i--) {
+          const val = v[s[i].toUpperCase()] || 0;
+          if (val < prev) tot -= val;
+          else tot += val;
+          prev = val;
+        }
+        return tot;
+      }
+      const tokens = raw.split(/[\s,]+/);
+      const nums = tokens.map(t => r2i(t));
+      const chars = nums.map(n => String.fromCharCode(n)).join('');
+      const el = document.getElementById('roman-output');
+      el.classList.toggle('has-flag', chars.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(chars);
+    }
+
+    // ==================== TAB 4: ESOLANGS & VIRTUAL MACHINES ====================
+    function runBF() {
+      const code = document.getElementById('bf-code').value;
+      const stdin = document.getElementById('bf-stdin').value;
+      let tape = new Uint8Array(30000);
+      let ptr = 0, pc = 0, stdinIdx = 0;
+      let out = '';
+
+      let brackets = {};
+      let stack = [];
+      for (let i = 0; i < code.length; i++) {
+        if (code[i] === '[') stack.push(i);
+        else if (code[i] === ']') {
+          const j = stack.pop();
+          brackets[j] = i;
+          brackets[i] = j;
+        }
+      }
+
+      let steps = 0;
+      while (pc < code.length && steps < 1000000) {
+        steps++;
+        const c = code[pc];
+        if (c === '>') ptr = (ptr + 1) % 30000;
+        else if (c === '<') ptr = (ptr - 1 + 30000) % 30000;
+        else if (c === '+') tape[ptr] = (tape[ptr] + 1) & 0xff;
+        else if (c === '-') tape[ptr] = (tape[ptr] - 1) & 0xff;
+        else if (c === '.') out += String.fromCharCode(tape[ptr]);
+        else if (c === ',') tape[ptr] = stdinIdx < stdin.length ? stdin.charCodeAt(stdinIdx++) : 0;
+        else if (c === '[') { if (tape[ptr] === 0) pc = brackets[pc]; }
+        else if (c === ']') { if (tape[ptr] !== 0) pc = brackets[pc]; }
+        pc++;
+      }
+
+      const el = document.getElementById('bf-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function runOok() {
+      const raw = document.getElementById('bf-code').value;
+      const tokens = raw.match(/Ook[\.\?\!]/g) || [];
+      let bf = '';
+      for (let i = 0; i < tokens.length - 1; i += 2) {
+        const pair = tokens[i] + ' ' + tokens[i+1];
+        if (pair === 'Ook. Ook?') bf += '>';
+        else if (pair === 'Ook? Ook.') bf += '<';
+        else if (pair === 'Ook. Ook.') bf += '+';
+        else if (pair === 'Ook! Ook!') bf += '-';
+        else if (pair === 'Ook! Ook.') bf += '.';
+        else if (pair === 'Ook. Ook!') bf += ',';
+        else if (pair === 'Ook! Ook?') bf += '[';
+        else if (pair === 'Ook? Ook!') bf += ']';
+      }
+      document.getElementById('bf-code').value = bf;
+      runBF();
+    }
+
+    function runSpoon() {
+      const raw = document.getElementById('bf-code').value.replace(/[^01]/g, '');
+      const spoonTable = [
+        ['0010110', ','],
+        ['001010', '.'],
+        ['00100', '['],
+        ['0011', ']'],
+        ['010', '>'],
+        ['011', '<'],
+        ['000', '-'],
+        ['1', '+']
+      ];
+      let bf = '';
+      let i = 0;
+      while (i < raw.length) {
+        let matched = false;
+        for (const [code, op] of spoonTable) {
+          if (raw.startsWith(code, i)) {
+            bf += op;
+            i += code.length;
+            matched = true;
+            break;
+          }
+        }
+        if (!matched) i++;
+      }
+      document.getElementById('bf-code').value = bf;
+      runBF();
+    }
+
+    function loadBFHello() {
+      document.getElementById('bf-code').value = '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.';
+      runBF();
+    }
+
+    // Befunge-93 2D Interpreter
+    function runBefunge() {
+      const raw = document.getElementById('befunge-code').value;
+      const lines = raw.split(/\r?\n/);
+      let grid = [];
+      for (let r = 0; r < 25; r++) {
+        let row = (lines[r] || '').padEnd(80, ' ');
+        grid.push(row.split(''));
+      }
+
+      let x = 0, y = 0, dx = 1, dy = 0;
+      let stack = [];
+      let stringMode = false;
+      let out = '';
+      let steps = 0;
+
+      while (steps < 200000) {
+        steps++;
+        const c = grid[y][x];
+
+        if (stringMode) {
+          if (c === '"') stringMode = false;
+          else stack.push(c.charCodeAt(0));
+        } else {
+          if (c >= '0' && c <= '9') stack.push(parseInt(c));
+          else if (c === '+') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a + b); }
+          else if (c === '-') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a - b); }
+          else if (c === '*') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a * b); }
+          else if (c === '/') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(b === 0 ? 0 : Math.floor(a / b)); }
+          else if (c === '!') { const a = stack.pop()||0; stack.push(a === 0 ? 1 : 0); }
+          else if (c === '>') { dx = 1; dy = 0; }
+          else if (c === '<') { dx = -1; dy = 0; }
+          else if (c === '^') { dx = 0; dy = -1; }
+          else if (c === 'v') { dx = 0; dy = 1; }
+          else if (c === '"') { stringMode = true; }
+          else if (c === ':') { const a = stack.pop()||0; stack.push(a); stack.push(a); }
+          else if (c === '.') { out += (stack.pop()||0) + ' '; }
+          else if (c === ',') { out += String.fromCharCode(stack.pop()||0); }
+          else if (c === '@') break;
+        }
+
+        x = (x + dx + 80) % 80;
+        y = (y + dy + 25) % 25;
+      }
+
+      const el = document.getElementById('befunge-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // Deadfish
+    function runDeadfish() {
+      const code = document.getElementById('deadfish-code').value;
+      let val = 0;
+      let out = '';
+      for (const c of code) {
+        if (c === 'i') val++;
+        else if (c === 'd') val--;
+        else if (c === 's') val = val * val;
+        else if (c === 'o') out += String.fromCharCode(val);
+        if (val === 288 || val === -1) val = 0;
+      }
+      const el = document.getElementById('deadfish-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // Stack VM
+    function runStackVM() {
+      const code = document.getElementById('stackvm-code').value;
+      const lines = code.split(/\r?\n/);
+      let stack = [];
+      let out = '';
+      for (let l of lines) {
+        l = l.trim();
+        if (!l || l.startsWith(';')) continue;
+        const p = l.split(/\s+/);
+        if (p[0] === 'PUSH') stack.push(parseInt(p[1]));
+        else if (p[0] === 'ADD') { const b = stack.pop(), a = stack.pop(); stack.push(a + b); }
+        else if (p[0] === 'SUB') { const b = stack.pop(), a = stack.pop(); stack.push(a - b); }
+        else if (p[0] === 'MUL') { const b = stack.pop(), a = stack.pop(); stack.push(a * b); }
+        else if (p[0] === 'EMIT') out += String.fromCharCode(stack.pop());
+      }
+      const el = document.getElementById('stackvm-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // ==================== TAB 5: MATH & SEQUENCES ====================
+    function solveCollatz() {
+      const raw = document.getElementById('collatz-input').value.trim();
+      const mode = document.getElementById('collatz-mode').value;
+      const nums = raw.split(/[\s,]+/).map(x => BigInt(x));
+
+      function collatzSteps(n) {
+        let steps = 1;
+        while (n !== 1n) {
+          if (n % 2n === 0n) n = n / 2n;
+          else n = 3n * n + 1n;
+          steps++;
+        }
+        return steps;
+      }
+
+      let chars = '';
+      for (const num of nums) {
+        const s = collatzSteps(num);
+        if (mode === 'sub1') chars += String.fromCharCode(s - 1);
+        else if (mode === 'add31') chars += String.fromCharCode(s + 31);
+        else chars += String.fromCharCode(s);
+      }
+
+      const el = document.getElementById('collatz-output');
+      el.classList.toggle('has-flag', chars.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(chars);
+    }
+
+    function solveFibonacci() {
+      const raw = document.getElementById('fib-input').value.trim();
+      const tokens = raw.split(/[\s,]+/);
+
+      let fibMap = new Map();
+      let a = 0n, b = 1n;
+      fibMap.set('0', 0);
+      fibMap.set('1', 1);
+      for (let i = 2; i <= 200; i++) {
+        const next = a + b;
+        a = b;
+        b = next;
+        fibMap.set(next.toString(), i);
+      }
+
+      let chars = '';
+      for (const t of tokens) {
+        if (fibMap.has(t)) {
+          chars += String.fromCharCode(fibMap.get(t));
+        }
+      }
+
+      const el = document.getElementById('fib-output');
+      el.classList.toggle('has-flag', chars.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(chars);
+    }
+
+    function solveRPN() {
+      const raw = document.getElementById('rpn-input').value.trim();
+      const lines = raw.split(/\r?\n/);
+      let out = '';
+      for (const line of lines) {
+        const tokens = line.trim().split(/\s+/);
+        let stack = [];
+        for (const t of tokens) {
+          if (!t) continue;
+          if (!isNaN(t)) stack.push(parseInt(t));
+          else if (t === '+') { const b = stack.pop(), a = stack.pop(); stack.push(a + b); }
+          else if (t === '-') { const b = stack.pop(), a = stack.pop(); stack.push(a - b); }
+          else if (t === '*') { const b = stack.pop(), a = stack.pop(); stack.push(a * b); }
+          else if (t === '/') { const b = stack.pop(), a = stack.pop(); stack.push(Math.floor(a / b)); }
+        }
+        if (stack.length > 0) out += String.fromCharCode(stack.pop());
+      }
+      const el = document.getElementById('rpn-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    // ==================== TAB 6: AUDIO SIGNALS (WEB AUDIO API) ====================
+    let audioBufferData = null;
+    let audioSampleRate = 8000;
+
+    function loadAudioFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const actx = new (window.AudioContext || window.webkitAudioContext)();
+        actx.decodeAudioData(e.target.result, function(buffer) {
+          audioBufferData = buffer.getChannelData(0);
+          audioSampleRate = buffer.sampleRate;
+          document.getElementById('audio-info').innerText = `Berkas: ${file.name} | Durasi: ${buffer.duration.toFixed(2)}s | Sample Rate: ${audioSampleRate} Hz | Samples: ${audioBufferData.length}`;
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function decodeAudioDTMF() {
+      if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
+      const dtmfLow = [697, 770, 852, 941];
+      const dtmfHigh = [1209, 1336, 1477, 1633];
+      const keyMap = [
+        ['1', '2', '3', 'A'],
+        ['4', '5', '6', 'B'],
+        ['7', '8', '9', 'C'],
+        ['*', '0', '#', 'D']
+      ];
+
+      // Envelope detection
+      const win = Math.floor(audioSampleRate * 0.01);
+      let env = new Float32Array(audioBufferData.length);
+      for (let i = 0; i < audioBufferData.length; i++) {
+        let sum = 0;
+        for (let j = Math.max(0, i - win); j < Math.min(audioBufferData.length, i + win); j++) {
+          sum += audioBufferData[j] * audioBufferData[j];
+        }
+        env[i] = Math.sqrt(sum / (win * 2));
+      }
+
+      let maxEnv = 0;
+      for (let i = 0; i < env.length; i++) if (env[i] > maxEnv) maxEnv = env[i];
+      const thresh = maxEnv * 0.25;
+
+      let bursts = [];
+      let inBurst = false, start = 0;
+      for (let i = 0; i < env.length; i++) {
+        if (!inBurst && env[i] > thresh) { inBurst = true; start = i; }
+        else if (inBurst && env[i] < thresh) {
+          inBurst = false;
+          if (i - start > audioSampleRate * 0.03) bursts.push([start, i]);
+        }
+      }
+
+      let keys = '';
+      for (const [s, e] of bursts) {
+        // Goertzel for frequencies
+        function goertzel(targetFreq) {
+          const k = Math.round(0.5 + ((e - s) * targetFreq) / audioSampleRate);
+          const w = (2 * Math.PI * k) / (e - s);
+          const coeff = 2 * Math.cos(w);
+          let q1 = 0, q2 = 0;
+          for (let i = s; i < e; i++) {
+            const q0 = coeff * q1 - q2 + audioBufferData[i];
+            q2 = q1;
+            q1 = q0;
+          }
+          return q1 * q1 + q2 * q2 - q1 * q2 * coeff;
+        }
+
+        let bestLow = 0, maxL = 0;
+        for (let i = 0; i < dtmfLow.length; i++) {
+          const p = goertzel(dtmfLow[i]);
+          if (p > maxL) { maxL = p; bestLow = i; }
+        }
+
+        let bestHigh = 0, maxH = 0;
+        for (let j = 0; j < dtmfHigh.length; j++) {
+          const p = goertzel(dtmfHigh[j]);
+          if (p > maxH) { maxH = p; bestHigh = j; }
+        }
+
+        keys += keyMap[bestLow][bestHigh];
+      }
+
+      let res = `[DTMF Keys]: ${keys}\n`;
+      // Check hex pairs
+      if (/^[0-9A-Fa-f#]+$/.test(keys)) {
+        const hex = keys.replace(/#/g, 'F');
+        let ascii = '';
+        for (let i = 0; i < hex.length - 1; i += 2) {
+          ascii += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        }
+        res += `[Hex Pairs Decoded]: ${ascii}\n`;
+      }
+      // Check 3-digit decimals
+      if (/^\d+$/.test(keys)) {
+        let ascii = '';
+        for (let i = 0; i < keys.length - 2; i += 3) {
+          ascii += String.fromCharCode(parseInt(keys.substr(i, 3), 10));
+        }
+        res += `[Decimal Triplet Decoded]: ${ascii}\n`;
+      }
+
+      const el = document.getElementById('audio-output');
+      el.classList.toggle('has-flag', res.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(res);
+    }
+
+    // Tone per Byte (300 + 10 * ASCII)
+    function decodeAudioToneByte() {
+      if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
+      // Detect pulses
+      const win = Math.floor(audioSampleRate * 0.01);
+      let env = new Float32Array(audioBufferData.length);
+      for (let i = 0; i < audioBufferData.length; i++) {
+        let sum = 0;
+        for (let j = Math.max(0, i - win); j < Math.min(audioBufferData.length, i + win); j++) {
+          sum += audioBufferData[j] * audioBufferData[j];
+        }
+        env[i] = Math.sqrt(sum / (win * 2));
+      }
+      let maxEnv = Math.max(...env);
+      let bursts = [];
+      let inBurst = false, start = 0;
+      for (let i = 0; i < env.length; i++) {
+        if (!inBurst && env[i] > maxEnv * 0.25) { inBurst = true; start = i; }
+        else if (inBurst && env[i] < maxEnv * 0.25) {
+          inBurst = false;
+          if (i - start > audioSampleRate * 0.03) bursts.push([start, i]);
+        }
+      }
+
+      let chars = '';
+      for (const [s, e] of bursts) {
+        // Zero-crossings
+        let zc = 0;
+        for (let i = s; i < e - 1; i++) {
+          if (audioBufferData[i] * audioBufferData[i+1] < 0) zc++;
+        }
+        const freq = (zc * audioSampleRate) / (2 * (e - s));
+        const ascii = Math.round((freq - 300) / 10);
+        if (ascii >= 32 && ascii <= 126) chars += String.fromCharCode(ascii);
+      }
+      const el = document.getElementById('audio-output');
+      el.classList.toggle('has-flag', chars.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(`[Tone-per-Byte Decoded]: ${chars}`);
+    }
+
+    // ==================== TAB 7: FORENSICS & STEGO ====================
+    function reassembleHexdump() {
+      const raw = document.getElementById('hexdump-input').value;
+      const lines = raw.split(/\r?\n/);
+      let bytes = [];
+      for (const l of lines) {
+        const parts = l.split(':');
+        if (parts.length === 2) {
+          const hexPart = parts[1].substr(0, 36).replace(/\s+/g, '');
+          for (let i = 0; i < hexPart.length - 1; i += 2) {
+            bytes.push(parseInt(hexPart.substr(i, 2), 16));
+          }
+        }
+      }
+      const out = String.fromCharCode(...bytes);
+      const el = document.getElementById('hexdump-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function unpackShuffledRecords() {
+      const raw = document.getElementById('record-input').value.trim().replace(/[^0-9a-fA-F]/g, '');
+      let bytes = [];
+      for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
+      
+      // LREC format: 4 bytes 'LREC', 2 bytes count, then 3 bytes per record (2 bytes index LE, 1 byte char)
+      let records = {};
+      for (let i = 6; i < bytes.length - 2; i += 3) {
+        const idx = bytes[i] | (bytes[i+1] << 8);
+        const ch = String.fromCharCode(bytes[i+2]);
+        records[idx] = ch;
+      }
+      let out = '';
+      const total = Object.keys(records).length;
+      for (let i = 0; i < total; i++) out += records[i] || '?';
+      const el = document.getElementById('record-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function unpackBigEndianUtf16() {
+      const raw = document.getElementById('record-input').value.trim().replace(/[^0-9a-fA-F]/g, '');
+      let out = '';
+      for (let i = 8; i < raw.length - 3; i += 4) {
+        const val = parseInt(raw.substr(i, 4), 16);
+        if (val > 0) out += String.fromCharCode(val);
+      }
+      const el = document.getElementById('record-output');
+      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(out);
+    }
+
+    function inspectStegoFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const u8 = new Uint8Array(e.target.result);
+        let findings = [`Analisis Berkas: ${file.name} (${u8.length} bytes)`];
+
+        // Convert to string
+        let binStr = '';
+        for (let i = 0; i < u8.length; i++) binStr += String.fromCharCode(u8[i]);
+
+        // 1. Direct Regex
+        const m = binStr.match(/GETSFLAG\{[^\}]+\}/g);
+        if (m) findings.push(`★ [Direct Text Flag]: ${m.join(', ')}`);
+
+        // 2. PNG Chunks
+        if (binStr.startsWith('\x89PNG')) {
+          findings.push('[Header]: Valid PNG 8-byte Magic Detected');
+          const chunks = ['tEXt', 'zTXt', 'iTXt'];
+          for (const ch of chunks) {
+            let pos = 0;
+            while ((pos = binStr.indexOf(ch, pos)) !== -1) {
+              const snippet = binStr.substr(pos, 100);
+              findings.push(`[Chunk ${ch} di offset ${pos}]: ${snippet.replace(/[^ -~]/g, '.')}`);
+              pos += 4;
+            }
+          }
+          const iend = binStr.indexOf('IEND');
+          if (iend !== -1 && iend + 8 < binStr.length) {
+            const trailing = binStr.substr(iend + 8);
+            findings.push(`★ [Trailing Data After IEND (${trailing.length} bytes)]: ${trailing.substr(0, 100)}`);
+          }
+        }
+
+        // 3. JPEG COM & EXIF
+        if (binStr.startsWith('\xff\xd8')) {
+          findings.push('[Header]: Valid JPEG SOI Magic Detected');
+          let pos = 0;
+          while ((pos = binStr.indexOf('\xff\xfe', pos)) !== -1) {
+            const len = (u8[pos+2] << 8) | u8[pos+3];
+            const com = binStr.substr(pos + 4, len - 2);
+            findings.push(`★ [JPEG COM Marker (${len} bytes)]: ${com}`);
+            pos += len + 2;
+          }
+          const eoi = binStr.lastIndexOf('\xff\xd9');
+          if (eoi !== -1 && eoi + 2 < binStr.length) {
+            const trailing = binStr.substr(eoi + 2);
+            findings.push(`★ [Trailing Data After EOI (${trailing.length} bytes)]: ${trailing.substr(0, 100)}`);
+          }
+        }
+
+        // 4. Embedded ZIP
+        const zipIdx = binStr.indexOf('PK\x03\x04');
+        if (zipIdx !== -1) {
+          findings.push(`★ [Embedded ZIP Detected at offset ${zipIdx}]`);
+        }
+
+        const el = document.getElementById('stego-output');
+        el.classList.toggle('has-flag', findings.some(f => f.includes('GETSFLAG{')));
+        el.innerHTML = formatFlagOutput(findings.join('\n'));
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  </script>
+</body>
+</html>
