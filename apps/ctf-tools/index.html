@@ -9,9 +9,11 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    /* Hallmark · 2026-11-09 · engine: antislop-craft · surface: dark */
+    /* Hallmark · dismissed 58 · interactive security toolkit with seven tabbed panels and detailed parameter labels */
     :root {
       --bg-base: #060913;
       --bg-surface: #0a1122;
@@ -30,19 +32,39 @@
       --rose-accent: #f43f5e;
       --purple-accent: #a855f7;
 
-      --text-white: #ffffff;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
+      --text-paper: #edf2f7;
+      --text-secondary: #cbd5e1;
+      --text-muted: #9bb2c9;
+      --text-dark: #070d18;
 
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --badge-emerald-bg: rgba(16, 185, 129, 0.12);
+      --badge-emerald-border: rgba(16, 185, 129, 0.28);
+      --badge-cyan-bg: rgba(0, 210, 255, 0.12);
+      --badge-cyan-border: rgba(0, 210, 255, 0.3);
+      --badge-neutral-bg: rgba(255, 255, 255, 0.06);
+
+      --btn-secondary-bg: rgba(255, 255, 255, 0.05);
+      --btn-secondary-hover-bg: rgba(255, 255, 255, 0.12);
+
+      --output-box-flag-bg: rgba(16, 185, 129, 0.08);
+      --output-highlight-bg: rgba(16, 185, 129, 0.2);
+      --output-highlight-text: #2dd4bf;
+
+      --toast-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html, body {
+      overflow-x: clip;
+    }
+
     body {
       background-color: var(--bg-base);
-      color: var(--text-white);
+      color: var(--text-paper);
       font-family: var(--font-sans);
       font-size: 15px;
       line-height: 1.6;
@@ -71,7 +93,7 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text-white);
+      color: var(--text-paper);
     }
 
     .brand img {
@@ -82,8 +104,8 @@
 
     .brand-title {
       font-size: 17px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
     .brand-title span {
@@ -93,16 +115,16 @@
     }
 
     .header-badge {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      background: rgba(16, 185, 129, 0.15);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      background: var(--badge-emerald-bg);
       color: var(--emerald-live);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 4px 10px;
+      border: 1px solid var(--badge-emerald-border);
+      padding: 4px 12px;
       border-radius: 6px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .header-badge::before {
@@ -111,7 +133,6 @@
       height: 8px;
       background: var(--emerald-live);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--emerald-live);
     }
 
     /* Navigation Tabs */
@@ -132,7 +153,7 @@
       font-family: var(--font-sans);
       font-size: 14px;
       font-weight: 600;
-      padding: 10px 18px;
+      padding: 12px 20px;
       border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
@@ -140,19 +161,28 @@
       gap: 8px;
       white-space: nowrap;
       min-height: 44px;
-      transition: all 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
 
     .tab-btn:hover {
       background: var(--bg-card);
-      color: var(--text-white);
+      color: var(--text-paper);
       border-color: var(--border-medium);
     }
 
     .tab-btn.active {
-      background: rgba(0, 210, 255, 0.12);
+      background: var(--badge-cyan-bg);
       color: var(--cyan-primary);
       border-color: var(--cyan-primary);
+    }
+
+    .tab-btn:active {
+      transform: translateY(1px);
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--cyan-primary);
+      outline-offset: 2px;
     }
 
     /* Layout */
@@ -187,6 +217,7 @@
 
     .card {
       background: var(--bg-card);
+      color: var(--text-paper);
       border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 20px;
@@ -211,18 +242,18 @@
     .card-title {
       font-size: 16px;
       font-weight: 700;
-      color: var(--text-white);
+      color: var(--text-paper);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .card-badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 3px 8px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      padding: 4px 8px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--badge-neutral-bg);
       color: var(--text-secondary);
     }
 
@@ -230,7 +261,7 @@
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     label {
@@ -242,18 +273,19 @@
     input[type="text"], input[type="number"], select, textarea {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      color: var(--text-white);
+      color: var(--text-paper);
       font-family: var(--font-mono);
       font-size: 13px;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-radius: 6px;
       width: 100%;
       outline: none;
       transition: border-color 0.15s ease;
     }
 
-    input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
-      border-color: var(--cyan-primary);
+    input[type="text"]:focus-visible, input[type="number"]:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--cyan-primary);
+      outline-offset: 1px;
     }
 
     textarea {
@@ -265,18 +297,18 @@
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
 
     button.btn {
-      background: rgba(0, 210, 255, 0.15);
+      background: var(--badge-cyan-bg);
       border: 1px solid var(--cyan-primary);
       color: var(--cyan-primary);
       font-family: var(--font-sans);
       font-size: 13px;
-      font-weight: 700;
-      padding: 10px 16px;
+      font-weight: 600;
+      padding: 12px 16px;
       border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
@@ -285,23 +317,38 @@
       gap: 8px;
       min-height: 44px;
       min-width: 44px;
-      transition: all 0.15s ease;
+      white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
 
     button.btn:hover {
       background: var(--cyan-primary);
-      color: #000;
+      color: var(--text-dark);
+    }
+
+    button.btn:active {
+      transform: translateY(1px);
+    }
+
+    button.btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    button.btn:focus-visible {
+      outline: 2px solid var(--cyan-primary);
+      outline-offset: 2px;
     }
 
     button.btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--btn-secondary-bg);
       border-color: var(--border-medium);
       color: var(--text-secondary);
     }
 
     button.btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--text-white);
+      background: var(--btn-secondary-hover-bg);
+      color: var(--text-paper);
     }
 
     /* Output Box */
@@ -309,10 +356,10 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 6px;
-      padding: 12px 14px;
+      padding: 12px 16px;
       font-family: var(--font-mono);
       font-size: 13px;
-      color: var(--text-white);
+      color: var(--text-paper);
       word-break: break-all;
       white-space: pre-wrap;
       max-height: 200px;
@@ -322,15 +369,16 @@
 
     .output-box.has-flag {
       border-color: var(--emerald-live);
-      background: rgba(16, 185, 129, 0.06);
+      background: var(--output-box-flag-bg);
     }
 
     .flag-highlight {
-      background: rgba(16, 185, 129, 0.25);
-      color: #34d399;
+      background: var(--output-highlight-bg);
+      color: var(--output-highlight-text);
       font-weight: bold;
       padding: 2px 4px;
       border-radius: 4px;
+      cursor: pointer;
     }
 
     /* Toast Notification */
@@ -340,12 +388,11 @@
       right: 24px;
       background: var(--bg-card);
       border: 1px solid var(--emerald-live);
-      color: #34d399;
+      color: var(--output-highlight-text);
       padding: 12px 20px;
       border-radius: 8px;
       font-family: var(--font-mono);
       font-size: 13px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       display: none;
       z-index: 1000;
     }
@@ -354,7 +401,7 @@
       background: var(--bg-surface);
       border-top: 1px solid var(--border-subtle);
       padding: 20px 24px;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
@@ -376,9 +423,9 @@
       <div class="brand-title">CYLAB <span>CTF OMNITOOL</span></div>
     </a>
     <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-      <span class="header-badge">510+ ALGORITMA AKTIF</span>
-      <span class="header-badge" style="border-color: rgba(0, 210, 255, 0.3); color: var(--cyan-primary); background: rgba(0, 210, 255, 0.1);">RANK #1 GETSFLAG ENGINE</span>
-      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 6px 12px; text-decoration: none;">Kembali ke Portal</a>
+      <span class="header-badge">510+ modul algoritma terverifikasi</span>
+      <span class="header-badge" style="border-color: var(--badge-cyan-border); color: var(--cyan-primary); background: var(--badge-cyan-bg);">Engine peringkat 1 Getsflag</span>
+      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 8px 16px; text-decoration: none;">Kembali ke Portal</a>
     </div>
   </header>
 
@@ -387,7 +434,7 @@
     <button class="tab-btn active" onclick="switchTab('tab-universal')">Universal Auto-Detect</button>
     <button class="tab-btn" onclick="switchTab('tab-crypto')">Kriptografi Klasik & Modern</button>
     <button class="tab-btn" onclick="switchTab('tab-encoding')">Encoding & Transformasi</button>
-    <button class="tab-btn" onclick="switchTab('tab-esolang')">Esolangs & Virtual Machines</button>
+    <button class="tab-btn" onclick="switchTab('tab-esolang')">Esolangs & Mesin Virtual</button>
     <button class="tab-btn" onclick="switchTab('tab-math')">Matematika & Sekuens</button>
     <button class="tab-btn" onclick="switchTab('tab-audio')">Audio & Sinyal Frekuensi</button>
     <button class="tab-btn" onclick="switchTab('tab-forensics')">Forensik Berkas & Stego</button>
@@ -404,14 +451,14 @@
           <span class="card-badge">Instant Brute Force</span>
         </div>
         <p style="color: var(--text-secondary); font-size: 14px;">
-          Tempel string ciphertext, hexdump, base64, base85, atau susunan teks terobfuskasi apa pun. Sistem akan mengeksekusi puluhan decoder paralel secara simultan dan mencari format flag <code>GETSFLAG{...}</code> atau pola flag kustom.
+          Tempel string ciphertext, hexdump, base64, base85, atau susunan teks terobfuskasi apa pun. Sistem akan mengeksekusi puluhan decoder paralel secara simultan dan mencari format flag <code>GETSFLAG{…}</code> atau pola flag kustom.
         </p>
         <div class="form-group">
           <label>Input Ciphertext / Data Terenkode:</label>
-          <textarea id="univ-input" placeholder="Tempel ciphertext atau data di sini... Contoh: R0VUU0ZMQUd7dW5pdmVyc2FsX3NvbHZlcn0="></textarea>
+          <textarea id="univ-input" placeholder="Tempel ciphertext atau data di sini… Contoh: R0VUU0ZMQUd7dW5pdmVyc2FsX3NvbHZlcn0="></textarea>
         </div>
         <div class="btn-row">
-          <button class="btn" onclick="runUniversalScan()">Jalankan Multi-Decoder Scan</button>
+          <button class="btn" onclick="runUniversalScan()">Pindai Multi-Decoder</button>
           <button class="btn btn-secondary" onclick="loadUnivSample(1)">Sample Base64</button>
           <button class="btn btn-secondary" onclick="loadUnivSample(2)">Sample Hex</button>
           <button class="btn btn-secondary" onclick="loadUnivSample(3)">Sample Caesar ROT13</button>
@@ -419,7 +466,7 @@
         </div>
         <div class="form-group" style="margin-top: 12px;">
           <label>Hasil Temuan Flag & Ekstraksi:</label>
-          <div id="univ-output" class="output-box">Menunggu input...</div>
+          <div id="univ-output" class="output-box">Menunggu input…</div>
         </div>
       </div>
     </div>
@@ -432,69 +479,69 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">Caesar / ROT Brute-Forcer (1-25)</div>
-            <span class="card-badge">Classic</span>
+            <span class="card-badge">Klasik</span>
           </div>
           <div class="form-group">
             <label>Input Teks:</label>
             <textarea id="caesar-input" placeholder="Contoh: TRGFSYNT{pnrfne_ebg13}"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveCaesar()">Brute-Force Semua Shift (1-25)</button>
+            <button class="btn" onclick="solveCaesar()">Brute Force Shift 1-25</button>
             <button class="btn btn-secondary" onclick="document.getElementById('caesar-input').value='TRGFSYNT{pnrfne_ebg13}'">Sample</button>
           </div>
-          <div class="output-box" id="caesar-output">Hasil akan muncul di sini...</div>
+          <div class="output-box" id="caesar-output">Hasil akan muncul di sini…</div>
         </div>
 
         <!-- Vigenere Cipher -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Vigenère Cipher Solver</div>
-            <span class="card-badge">Polyalphabetic</span>
+            <span class="card-badge">Polialfabetik</span>
           </div>
           <div class="form-group">
             <label>Ciphertext:</label>
-            <input type="text" id="vig-input" placeholder="Ciphertext..." value="OIXYDVNI{kce_wgppae}">
+            <input type="text" id="vig-input" placeholder="Ciphertext…" value="OIXYDVNI{kce_wgppae}">
           </div>
           <div class="form-group">
             <label>Kunci (Key):</label>
-            <input type="text" id="vig-key" placeholder="Kunci..." value="KEY">
+            <input type="text" id="vig-key" placeholder="Kunci…" value="KEY">
           </div>
           <div class="btn-row">
             <button class="btn" onclick="solveVigenere(false)">Dekripsi</button>
             <button class="btn btn-secondary" onclick="solveVigenere(true)">Enkripsi</button>
           </div>
-          <div class="output-box" id="vig-output">Hasil dekripsi...</div>
+          <div class="output-box" id="vig-output">Hasil dekripsi…</div>
         </div>
 
         <!-- XOR Solver -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">XOR Multi-Mode Solver</div>
-            <span class="card-badge">Stream & Byte</span>
+            <span class="card-badge">Stream biner</span>
           </div>
           <div class="form-group">
             <label>Input (Hex atau String):</label>
-            <input type="text" id="xor-input" placeholder="Hex string: 17150403061c1117..." value="17150403061c11172b3d332f0f283f221d">
+            <input type="text" id="xor-input" placeholder="Hex string: 17150403061c1117…" value="17150403061c11172b3d332f0f283f221d">
           </div>
           <div class="form-group">
             <label>Kunci (Key - String atau Hex):</label>
-            <input type="text" id="xor-key" placeholder="Kosongkan untuk Brute Force Single Byte (0-255)..." value="">
+            <input type="text" id="xor-key" placeholder="Kosongkan untuk Brute Force Single Byte (0-255)…" value="">
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveXor()">Eksekusi XOR / Auto-Bruteforce</button>
+            <button class="btn" onclick="solveXor()">Jalankan XOR</button>
           </div>
-          <div class="output-box" id="xor-output">Hasil XOR...</div>
+          <div class="output-box" id="xor-output">Hasil XOR…</div>
         </div>
 
         <!-- Atbash & Affine -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Atbash & Affine Cipher</div>
-            <span class="card-badge">Substitution</span>
+            <span class="card-badge">Substitusi</span>
           </div>
           <div class="form-group">
             <label>Input Teks:</label>
-            <input type="text" id="atbash-input" placeholder="Teks..." value="TVTHUOZT{zgyzhy_xrkzi}">
+            <input type="text" id="atbash-input" placeholder="Teks…" value="TVTHUOZT{zgyzhy_xrkzi}">
           </div>
           <div class="form-group" style="display: flex; gap: 8px;">
             <div style="flex: 1;">
@@ -510,18 +557,18 @@
             <button class="btn" onclick="solveAtbash()">Dekripsi Atbash</button>
             <button class="btn btn-secondary" onclick="solveAffine()">Dekripsi Affine</button>
           </div>
-          <div class="output-box" id="atbash-output">Hasil dekripsi...</div>
+          <div class="output-box" id="atbash-output">Hasil dekripsi…</div>
         </div>
 
         <!-- Rail Fence Transposition -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Rail Fence Transposition</div>
-            <span class="card-badge">Transposition</span>
+            <span class="card-badge">Transposisi</span>
           </div>
           <div class="form-group">
             <label>Ciphertext:</label>
-            <input type="text" id="rf-input" placeholder="Teks..." value="GTA{ae_ea}ESLGmcrlfn">
+            <input type="text" id="rf-input" placeholder="Teks…" value="GTA{ae_ea}ESLGmcrlfn">
           </div>
           <div class="form-group">
             <label>Jumlah Rails:</label>
@@ -529,37 +576,37 @@
           </div>
           <div class="btn-row">
             <button class="btn" onclick="solveRailFence()">Dekripsi Rail Fence</button>
-            <button class="btn btn-secondary" onclick="bruteRailFence()">Brute Force Rails (2-16)</button>
+            <button class="btn btn-secondary" onclick="bruteRailFence()">Brute Rails 2-16</button>
           </div>
-          <div class="output-box" id="rf-output">Hasil dekripsi...</div>
+          <div class="output-box" id="rf-output">Hasil dekripsi…</div>
         </div>
 
         <!-- RSA Mathematical Solver -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">RSA Key & Parameter Solver</div>
-            <span class="card-badge">Asymmetric</span>
+            <span class="card-badge">Asimetris</span>
           </div>
           <div class="form-group">
             <label>p (Prime 1):</label>
-            <input type="text" id="rsa-p" placeholder="p..." value="61">
+            <input type="text" id="rsa-p" placeholder="p…" value="61">
           </div>
           <div class="form-group">
             <label>q (Prime 2):</label>
-            <input type="text" id="rsa-q" placeholder="q..." value="53">
+            <input type="text" id="rsa-q" placeholder="q…" value="53">
           </div>
           <div class="form-group">
             <label>e (Public Exponent):</label>
-            <input type="text" id="rsa-e" placeholder="e..." value="17">
+            <input type="text" id="rsa-e" placeholder="e…" value="17">
           </div>
           <div class="form-group">
             <label>c (Ciphertext integer atau list integer dipisah spasi):</label>
-            <input type="text" id="rsa-c" placeholder="c..." value="2790">
+            <input type="text" id="rsa-c" placeholder="c…" value="2790">
           </div>
           <div class="btn-row">
             <button class="btn" onclick="solveRSA()">Hitung Private Key (d) & Dekripsi</button>
           </div>
-          <div class="output-box" id="rsa-output">Hasil kalkulasi RSA...</div>
+          <div class="output-box" id="rsa-output">Hasil kalkulasi RSA…</div>
         </div>
 
       </div>
@@ -577,7 +624,7 @@
           </div>
           <div class="form-group">
             <label>Payload Terenkode:</label>
-            <textarea id="base-input" placeholder="Masukkan Base16, Base32, Base45, Base58, Base62, Base64, Base85, Z85..."></textarea>
+            <textarea id="base-input" placeholder="Masukkan Base16, Base32, Base45, Base58, Base62, Base64, Base85, Z85…"></textarea>
           </div>
           <div class="btn-row">
             <button class="btn" onclick="decodeBase('hex')">Hex (16)</button>
@@ -589,25 +636,25 @@
             <button class="btn" onclick="decodeBase('b85')">Base85</button>
             <button class="btn" onclick="decodeBase('z85')">Z85 (ZMQ)</button>
           </div>
-          <div class="output-box" id="base-output">Hasil dekode...</div>
+          <div class="output-box" id="base-output">Hasil dekode…</div>
         </div>
 
         <!-- UUencode, XXencode & yEnc -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">UUencode, XXencode & yEnc</div>
-            <span class="card-badge">Binary Framing</span>
+            <span class="card-badge">Binary framing</span>
           </div>
           <div class="form-group">
             <label>Input Stream:</label>
-            <textarea id="framing-input" placeholder="Masukkan teks UUencode, XXencode, atau yEnc (=ybegin ... =yend)..."></textarea>
+            <textarea id="framing-input" placeholder="Masukkan teks UUencode, XXencode, atau yEnc (=ybegin … =yend)…"></textarea>
           </div>
           <div class="btn-row">
             <button class="btn" onclick="decodeUU()">Decode UUencode</button>
             <button class="btn" onclick="decodeXX()">Decode XXencode</button>
             <button class="btn" onclick="decodeYEnc()">Decode yEnc</button>
           </div>
-          <div class="output-box" id="framing-output">Hasil dekode...</div>
+          <div class="output-box" id="framing-output">Hasil dekode…</div>
         </div>
 
         <!-- Zero-Width & Invisible Stego -->
@@ -618,24 +665,24 @@
           </div>
           <div class="form-group">
             <label>Teks berisi karakter tidak terlihat (ZWSP, ZWNJ, ZWJ):</label>
-            <textarea id="zw-input" placeholder="Tempel teks di sini..."></textarea>
+            <textarea id="zw-input" placeholder="Tempel teks di sini…"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="decodeZeroWidth()">Ekstrak Bit Zero-Width</button>
-            <button class="btn btn-secondary" onclick="decodeUnicodeTags()">Ekstrak Unicode Tags (U+E0000)</button>
+            <button class="btn" onclick="decodeZeroWidth()">Ekstrak Zero-Width</button>
+            <button class="btn btn-secondary" onclick="decodeUnicodeTags()">Ekstrak Unicode Tags</button>
           </div>
-          <div class="output-box" id="zw-output">Hasil ekstraksi stego...</div>
+          <div class="output-box" id="zw-output">Hasil ekstraksi stego…</div>
         </div>
 
         <!-- Braille, Tap Code, NATO & Morse -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Sinyal Taktis & Sandi Klasik</div>
-            <span class="card-badge">Signals</span>
+            <span class="card-badge">Sandi & sinyal</span>
           </div>
           <div class="form-group">
             <label>Input (Braille, Tap Code 5x5, Morse teks, atau NATO Phonetic):</label>
-            <textarea id="tactical-input" placeholder="Contoh Tap Code: 22 15 44 43 21 31 11 22..."></textarea>
+            <textarea id="tactical-input" placeholder="Contoh Tap Code: 22 15 44 43 21 31 11 22…"></textarea>
           </div>
           <div class="btn-row">
             <button class="btn" onclick="decodeBraille()">Braille Mask</button>
@@ -643,43 +690,43 @@
             <button class="btn" onclick="decodeMorseText()">Morse Teks</button>
             <button class="btn" onclick="decodeNATO()">NATO Phonetic</button>
           </div>
-          <div class="output-box" id="tactical-output">Hasil dekode sandi...</div>
+          <div class="output-box" id="tactical-output">Hasil dekode sandi…</div>
         </div>
 
         <!-- Periodic Table & 7-Segment -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Unsur Kimia & 7-Segment Display</div>
-            <span class="card-badge">Logic</span>
+            <span class="card-badge">Display & logika</span>
           </div>
           <div class="form-group">
             <label>Input Formula Unsur Kimia atau Konfigurasi 7-Segment:</label>
-            <input type="text" id="chem-input" placeholder="Contoh Kimia: B O Be Al C O B N... / 7-Segment: 071 069 084...">
+            <input type="text" id="chem-input" placeholder="Contoh Kimia: B O Be Al C O B N… / 7-Segment: 071 069 084…">
           </div>
           <div class="btn-row">
             <button class="btn" onclick="decodeChemical()">Decode Kimia (Z-1 Hex)</button>
             <button class="btn" onclick="decode7Segment()">Decode 7-Segment</button>
             <button class="btn btn-secondary" onclick="decodeT9()">Decode T9 Keypad</button>
           </div>
-          <div class="output-box" id="chem-output">Hasil dekode...</div>
+          <div class="output-box" id="chem-output">Hasil dekode…</div>
         </div>
 
         <!-- Roman & Bacon -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Angka Romawi & Baconian Cipher</div>
-            <span class="card-badge">Historical</span>
+            <span class="card-badge">Sandi historis</span>
           </div>
           <div class="form-group">
             <label>Input Romawi (dipisah spasi) atau Baconian AB/Case:</label>
-            <textarea id="roman-input" placeholder="LXXI LXIX LXXXIV LXXXIII... atau AAAAA BAABA..."></textarea>
+            <textarea id="roman-input" placeholder="LXXI LXIX LXXXIV LXXXIII… atau AAAAA BAABA…"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="decodeRoman()">Romawi ke Karakter ASCII</button>
+            <button class="btn" onclick="decodeRoman()">Romawi ke ASCII</button>
             <button class="btn" onclick="decodeBacon()">Decode Baconian (AB)</button>
-            <button class="btn btn-secondary" onclick="decodeBaconCase()">Baconian Case (Besar/Kecil)</button>
+            <button class="btn btn-secondary" onclick="decodeBaconCase()">Baconian Case</button>
           </div>
-          <div class="output-box" id="roman-output">Hasil dekode...</div>
+          <div class="output-box" id="roman-output">Hasil dekode…</div>
         </div>
 
       </div>
@@ -693,30 +740,30 @@
         <div class="card" style="grid-column: 1 / -1;">
           <div class="card-header">
             <div class="card-title">Brainfuck, Ook! & Spoon Simulator (30.000 Sel)</div>
-            <span class="card-badge">Turing Complete</span>
+            <span class="card-badge">Turing complete</span>
           </div>
           <div class="form-group">
             <label>Source Code Esolang:</label>
-            <textarea id="bf-code" style="height: 120px;" placeholder="Kode Brainfuck (+-<>[],.), Ook! (Ook. Ook?), atau Spoon bitstream (100101...)..."></textarea>
+            <textarea id="bf-code" style="height: 120px;" placeholder="Kode Brainfuck (+-<>[],.), Ook! (Ook. Ook?), atau Spoon bitstream (100101…)…"></textarea>
           </div>
           <div class="form-group">
             <label>Standard Input (Opsional):</label>
-            <input type="text" id="bf-stdin" placeholder="Input stdin...">
+            <input type="text" id="bf-stdin" placeholder="Input stdin…">
           </div>
           <div class="btn-row">
             <button class="btn" onclick="runBF()">Jalankan Brainfuck</button>
-            <button class="btn btn-secondary" onclick="runOok()">Transpile & Jalankan Ook!</button>
-            <button class="btn btn-secondary" onclick="runSpoon()">Transpile & Jalankan Spoon</button>
+            <button class="btn btn-secondary" onclick="runOok()">Jalankan Ook!</button>
+            <button class="btn btn-secondary" onclick="runSpoon()">Jalankan Spoon</button>
             <button class="btn btn-secondary" onclick="loadBFHello()">Load Sample Brainfuck</button>
           </div>
-          <div class="output-box" id="bf-output">Keluaran program esolang...</div>
+          <div class="output-box" id="bf-output">Keluaran program esolang…</div>
         </div>
 
         <!-- Befunge-93 2D Grid -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Befunge-93 2D Grid Interpreter</div>
-            <span class="card-badge">2D Stack Matrix</span>
+            <span class="card-badge">Stack matriks 2D</span>
           </div>
           <div class="form-group">
             <label>Grid Matrix (80x25):</label>
@@ -726,23 +773,23 @@
             <button class="btn" onclick="runBefunge()">Jalankan Befunge-93</button>
             <button class="btn btn-secondary" onclick="document.getElementById('befunge-code').value='\"}dirg_egnufeb_acm{GALFSTEG\",,,,,,,,,,,,,,,,,,,,,,,,,,@'">Sample</button>
           </div>
-          <div class="output-box" id="befunge-output">Keluaran Befunge...</div>
+          <div class="output-box" id="befunge-output">Keluaran Befunge…</div>
         </div>
 
         <!-- Deadfish Simulator -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Deadfish Language Simulator</div>
-            <span class="card-badge">Accumulator (288 / -1 Reset)</span>
+            <span class="card-badge">Akumulator 288 / -1</span>
           </div>
           <div class="form-group">
             <label>Instruksi Deadfish (i = inc, d = dec, s = square, o = output):</label>
-            <textarea id="deadfish-code" placeholder="iissso..."></textarea>
+            <textarea id="deadfish-code" placeholder="iissso…"></textarea>
           </div>
           <div class="btn-row">
             <button class="btn" onclick="runDeadfish()">Eksekusi Deadfish</button>
           </div>
-          <div class="output-box" id="deadfish-output">Keluaran Deadfish...</div>
+          <div class="output-box" id="deadfish-output">Keluaran Deadfish…</div>
         </div>
 
         <!-- Whitespace Language -->
@@ -753,29 +800,29 @@
           </div>
           <div class="form-group">
             <label>Whitespace Source (atau upload file .ws):</label>
-            <textarea id="ws-code" placeholder="Gunakan spasi, tab, dan newline..."></textarea>
+            <textarea id="ws-code" placeholder="Gunakan spasi, tab, dan newline…"></textarea>
             <input type="file" id="ws-file" accept=".ws,.txt" style="margin-top: 6px;" onchange="loadWSFile(event)">
           </div>
           <div class="btn-row">
             <button class="btn" onclick="runWhitespace()">Eksekusi Whitespace</button>
           </div>
-          <div class="output-box" id="ws-output">Keluaran Whitespace...</div>
+          <div class="output-box" id="ws-output">Keluaran Whitespace…</div>
         </div>
 
         <!-- Custom Stack VM -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Stack VM Bytecode Runner</div>
-            <span class="card-badge">PUSH / ADD / SUB / EMIT</span>
+            <span class="card-badge">Push / add / sub / emit</span>
           </div>
           <div class="form-group">
             <label>Assembly Instructions:</label>
-            <textarea id="stackvm-code" placeholder="PUSH 71&#10;EMIT&#10;PUSH 69&#10;EMIT..."></textarea>
+            <textarea id="stackvm-code" placeholder="PUSH 71&#10;EMIT&#10;PUSH 69&#10;EMIT…"></textarea>
           </div>
           <div class="btn-row">
             <button class="btn" onclick="runStackVM()">Eksekusi Stack VM</button>
           </div>
-          <div class="output-box" id="stackvm-output">Keluaran VM...</div>
+          <div class="output-box" id="stackvm-output">Keluaran VM…</div>
         </div>
 
       </div>
@@ -793,7 +840,7 @@
           </div>
           <div class="form-group">
             <label>Daftar Bilangan (dipisah spasi atau baris):</label>
-            <textarea id="collatz-input" placeholder="Masukkan daftar angka Collatz..."></textarea>
+            <textarea id="collatz-input" placeholder="Masukkan daftar angka Collatz…"></textarea>
           </div>
           <div class="form-group">
             <label>Transformasi Karakter:</label>
@@ -804,61 +851,61 @@
             </select>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveCollatz()">Hitung Langkah & Ekstrak String</button>
+            <button class="btn" onclick="solveCollatz()">Hitung Lintasan Collatz</button>
           </div>
-          <div class="output-box" id="collatz-output">Hasil Collatz...</div>
+          <div class="output-box" id="collatz-output">Hasil Collatz…</div>
         </div>
 
         <!-- Fibonacci Sequence Index -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Fibonacci Number-to-Index Mapper</div>
-            <span class="card-badge">Golden Ratio</span>
+            <span class="card-badge">Rasio emas</span>
           </div>
           <div class="form-group">
             <label>Daftar Bilangan Fibonacci (dipisah spasi):</label>
-            <textarea id="fib-input" placeholder="Contoh: 190392490709135 12586269025..."></textarea>
+            <textarea id="fib-input" placeholder="Contoh: 190392490709135 12586269025…"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveFibonacci()">Cari Indeks Fibonacci & Konversi ke Karakter</button>
+            <button class="btn" onclick="solveFibonacci()">Petakan Indeks Fibonacci</button>
           </div>
-          <div class="output-box" id="fib-output">Hasil Fibonacci...</div>
+          <div class="output-box" id="fib-output">Hasil Fibonacci…</div>
         </div>
 
         <!-- RPN Evaluator -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">RPN (Reverse Polish Notation) Stack</div>
-            <span class="card-badge">Stack Math</span>
+            <span class="card-badge">Stack aritmatika</span>
           </div>
           <div class="form-group">
             <label>Ekspresi RPN (per baris atau token dipisah spasi):</label>
             <textarea id="rpn-input" placeholder="Contoh per baris:&#10;50 21 +&#10;100 31 -"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveRPN()">Evaluasi RPN ke Karakter ASCII</button>
+            <button class="btn" onclick="solveRPN()">Evaluasi Tumpukan RPN</button>
           </div>
-          <div class="output-box" id="rpn-output">Hasil RPN...</div>
+          <div class="output-box" id="rpn-output">Hasil RPN…</div>
         </div>
 
         <!-- GF(2) Linear SAT / Parity Solver -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">GF(2) Gaussian Elimination Solver</div>
-            <span class="card-badge">SAT & Linear Constraints</span>
+            <span class="card-badge">Kendala linear biner</span>
           </div>
           <div class="form-group">
             <label>Vektor b (stream bit 0 dan 1):</label>
-            <input type="text" id="gf2-b" placeholder="Contoh b: 1011001...">
+            <input type="text" id="gf2-b" placeholder="Contoh b: 1011001…">
           </div>
           <div class="form-group">
             <label>Matriks A (baris flat bit string N x N):</label>
-            <textarea id="gf2-a" placeholder="Contoh A: 101010110..."></textarea>
+            <textarea id="gf2-a" placeholder="Contoh A: 101010110…"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveGF2()">Selesaikan Sistem Linear GF(2)</button>
+            <button class="btn" onclick="solveGF2()">Selesaikan Eliminasi GF(2)</button>
           </div>
-          <div class="output-box" id="gf2-output">Solusi bitstream & flag...</div>
+          <div class="output-box" id="gf2-output">Solusi bitstream & flag…</div>
         </div>
 
       </div>
@@ -879,17 +926,17 @@
           <input type="file" id="audio-file" accept=".wav" onchange="loadAudioFile(event)">
         </div>
         <div class="btn-row">
-          <button class="btn" onclick="decodeAudioDTMF()">Decode DTMF (Tombol Telepon)</button>
+          <button class="btn" onclick="decodeAudioDTMF()">Decode DTMF Telepon</button>
           <button class="btn" onclick="decodeAudioMorse()">Decode CW Morse Audio</button>
-          <button class="btn" onclick="decodeAudioToneByte()">Decode Nada Tunggal ($300 + 10 \times \text{ASCII}$)</button>
-          <button class="btn" onclick="decodeAudioToneNibble()">Decode Tangga Nada ($400 + 120 \times \text{nibble}$)</button>
-          <button class="btn" onclick="decodeAudioFSK()">Decode 2FSK Modem (1000/1800 Hz)</button>
-          <button class="btn" onclick="decodeAudio4FSK()">Decode 4FSK (800/1200/1600/2000 Hz)</button>
+          <button class="btn" onclick="decodeAudioToneByte()">Decode Nada Tunggal</button>
+          <button class="btn" onclick="decodeAudioToneNibble()">Decode Tangga Nada</button>
+          <button class="btn" onclick="decodeAudioFSK()">Decode 2FSK Modem</button>
+          <button class="btn" onclick="decodeAudio4FSK()">Decode 4FSK Modem</button>
         </div>
         <div class="form-group" style="margin-top: 14px;">
           <label>Informasi Berkas Audio & Spektrum Frekuensi:</label>
           <div id="audio-info" style="font-family: var(--font-mono); font-size: 12px; color: var(--cyan-primary); margin-bottom: 8px;">Tidak ada berkas yang dimuat.</div>
-          <div id="audio-output" class="output-box">Keluaran analisis sinyal audio...</div>
+          <div id="audio-output" class="output-box">Keluaran analisis sinyal audio…</div>
         </div>
       </div>
     </div>
@@ -902,40 +949,40 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">Hexdump / xxd Reassembler</div>
-            <span class="card-badge">Binary Recovery</span>
+            <span class="card-badge">Pemulihan biner</span>
           </div>
           <div class="form-group">
             <label>Teks Hexdump Kanonikal / xxd:</label>
             <textarea id="hexdump-input" style="height: 120px;" placeholder="00000000: 4745 5453 464c 4147 7b68 6578 5f78 7864  GETSFLAG{hex_xxd&#10;00000010: 5f73 7479 6c65 5f64 756d 707d            _style_dump}"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="reassembleHexdump()">Rakit Ulang Binary / ASCII</button>
+            <button class="btn" onclick="reassembleHexdump()">Rakit Ulang Binary</button>
           </div>
-          <div class="output-box" id="hexdump-output">Hasil rakitan...</div>
+          <div class="output-box" id="hexdump-output">Hasil rakitan…</div>
         </div>
 
         <!-- Shuffled Struct Record Unpacker -->
         <div class="card">
           <div class="card-header">
             <div class="card-title">Shuffled Record Unpacker</div>
-            <span class="card-badge">Firmware Binary</span>
+            <span class="card-badge">Firmware biner</span>
           </div>
           <div class="form-group">
             <label>Hex Data Berkas Rekaman (LREC / FREC):</label>
-            <textarea id="record-input" placeholder="4c52454321001b00630500..."></textarea>
+            <textarea id="record-input" placeholder="4c52454321001b00630500…"></textarea>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="unpackShuffledRecords()">Urutkan Rekaman Berdasarkan Index</button>
-            <button class="btn btn-secondary" onclick="unpackBigEndianUtf16()">Decode Big-Endian UTF-16</button>
+            <button class="btn" onclick="unpackShuffledRecords()">Urutkan Rekaman</button>
+            <button class="btn btn-secondary" onclick="unpackBigEndianUtf16()">Decode UTF-16 BE</button>
           </div>
-          <div class="output-box" id="record-output">Hasil rekaman terurut...</div>
+          <div class="output-box" id="record-output">Hasil rekaman terurut…</div>
         </div>
 
         <!-- PNG Chunk & Stego Inspector -->
         <div class="card" style="grid-column: 1 / -1;">
           <div class="card-header">
             <div class="card-title">PNG, JPEG & Office Metadata Stego Extractor</div>
-            <span class="card-badge">File Carving & Metadata</span>
+            <span class="card-badge">Ekstraksi berkas</span>
           </div>
           <p style="color: var(--text-secondary); font-size: 14px;">
             Unggah berkas PNG, JPEG, GIF, PDF, atau DOCX/XLSX. Modul akan memindai seluruh blok metadata tersembunyi (tEXt, zTXt, iTXt, private chunks, JPEG COM markers, EXIF UserComment, IEND/EOI trailing data, serta struktur ZIP internal).
@@ -944,7 +991,7 @@
             <label>Pilih File untuk Diinspeksi:</label>
             <input type="file" id="stego-file" onchange="inspectStegoFile(event)">
           </div>
-          <div class="output-box" id="stego-output" style="max-height: 280px;">Menunggu unggahan berkas...</div>
+          <div class="output-box" id="stego-output" style="max-height: 280px;">Menunggu unggahan berkas…</div>
         </div>
 
       </div>
@@ -1155,7 +1202,6 @@
       let foundFlag = false;
 
       if (!key) {
-        // Brute force single byte
         for (let k = 0; k < 256; k++) {
           const xored = bytes.map(b => String.fromCharCode(b ^ k)).join('');
           if (xored.includes('GETSFLAG{')) {
@@ -1195,7 +1241,6 @@
       const input = document.getElementById('atbash-input').value;
       const a = parseInt(document.getElementById('affine-a').value);
       const b = parseInt(document.getElementById('affine-b').value);
-      // find modular inverse of a mod 26
       let aInv = -1;
       for (let x = 1; x < 26; x++) {
         if ((a * x) % 26 === 1) { aInv = x; break; }
@@ -1276,7 +1321,6 @@
         const n = p * q;
         const phi = (p - 1n) * (q - 1n);
 
-        // Extended Euclidean Algorithm for modInverse
         function egcd(a, b) {
           if (b === 0n) return [1n, 0n, a];
           const [x1, y1, gcd] = egcd(b, a % b);
@@ -1302,7 +1346,6 @@
           if (!token) continue;
           const c = BigInt(token);
           const m = modPow(c, d, n);
-          // if small int, direct char, else byte unpack
           if (m < 256n) {
             decryptedChars.push(String.fromCharCode(Number(m)));
           } else {
@@ -1334,7 +1377,6 @@
         } else if (type === 'b64') {
           res = atob(raw.replace(/\s+/g, ''));
         } else if (type === 'b32') {
-          // RFC 4648 Base32
           const b32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
           let bits = "";
           for (let i = 0; i < raw.length; i++) {
@@ -1345,7 +1387,6 @@
           for (let i = 0; i < bits.length - 7; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
           res = String.fromCharCode(...out);
         } else if (type === 'b58') {
-          // Bitcoin Base58
           const b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
           let num = 0n;
           for (let i = 0; i < raw.length; i++) {
@@ -1368,7 +1409,6 @@
           if (hex.length % 2 !== 0) hex = '0' + hex;
           for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
         } else if (type === 'b45') {
-          // Base45 RFC 9285
           const b45 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
           let bytes = [];
           for (let i = 0; i < raw.length; i += 3) {
@@ -1443,7 +1483,7 @@
         if (inData) {
           for (let i = 0; i < line.length; i++) {
             let c = line.charCodeAt(i);
-            if (c === 61) { // '='
+            if (c === 61) {
               i++;
               c = (line.charCodeAt(i) - 42 - 64 + 256) % 256;
             } else {
@@ -1868,7 +1908,6 @@
         ['*', '0', '#', 'D']
       ];
 
-      // Envelope detection
       const win = Math.floor(audioSampleRate * 0.01);
       let env = new Float32Array(audioBufferData.length);
       for (let i = 0; i < audioBufferData.length; i++) {
@@ -1895,7 +1934,6 @@
 
       let keys = '';
       for (const [s, e] of bursts) {
-        // Goertzel for frequencies
         function goertzel(targetFreq) {
           const k = Math.round(0.5 + ((e - s) * targetFreq) / audioSampleRate);
           const w = (2 * Math.PI * k) / (e - s);
@@ -1925,7 +1963,6 @@
       }
 
       let res = `[DTMF Keys]: ${keys}\n`;
-      // Check hex pairs
       if (/^[0-9A-Fa-f#]+$/.test(keys)) {
         const hex = keys.replace(/#/g, 'F');
         let ascii = '';
@@ -1934,7 +1971,6 @@
         }
         res += `[Hex Pairs Decoded]: ${ascii}\n`;
       }
-      // Check 3-digit decimals
       if (/^\d+$/.test(keys)) {
         let ascii = '';
         for (let i = 0; i < keys.length - 2; i += 3) {
@@ -1948,10 +1984,8 @@
       el.innerHTML = formatFlagOutput(res);
     }
 
-    // Tone per Byte (300 + 10 * ASCII)
     function decodeAudioToneByte() {
       if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
-      // Detect pulses
       const win = Math.floor(audioSampleRate * 0.01);
       let env = new Float32Array(audioBufferData.length);
       for (let i = 0; i < audioBufferData.length; i++) {
@@ -1974,7 +2008,6 @@
 
       let chars = '';
       for (const [s, e] of bursts) {
-        // Zero-crossings
         let zc = 0;
         for (let i = s; i < e - 1; i++) {
           if (audioBufferData[i] * audioBufferData[i+1] < 0) zc++;
@@ -2013,7 +2046,6 @@
       let bytes = [];
       for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
       
-      // LREC format: 4 bytes 'LREC', 2 bytes count, then 3 bytes per record (2 bytes index LE, 1 byte char)
       let records = {};
       for (let i = 6; i < bytes.length - 2; i += 3) {
         const idx = bytes[i] | (bytes[i+1] << 8);
@@ -2048,15 +2080,12 @@
         const u8 = new Uint8Array(e.target.result);
         let findings = [`Analisis Berkas: ${file.name} (${u8.length} bytes)`];
 
-        // Convert to string
         let binStr = '';
         for (let i = 0; i < u8.length; i++) binStr += String.fromCharCode(u8[i]);
 
-        // 1. Direct Regex
         const m = binStr.match(/GETSFLAG\{[^\}]+\}/g);
         if (m) findings.push(`★ [Direct Text Flag]: ${m.join(', ')}`);
 
-        // 2. PNG Chunks
         if (binStr.startsWith('\x89PNG')) {
           findings.push('[Header]: Valid PNG 8-byte Magic Detected');
           const chunks = ['tEXt', 'zTXt', 'iTXt'];
@@ -2075,7 +2104,6 @@
           }
         }
 
-        // 3. JPEG COM & EXIF
         if (binStr.startsWith('\xff\xd8')) {
           findings.push('[Header]: Valid JPEG SOI Magic Detected');
           let pos = 0;
@@ -2092,7 +2120,6 @@
           }
         }
 
-        // 4. Embedded ZIP
         const zipIdx = binStr.indexOf('PK\x03\x04');
         if (zipIdx !== -1) {
           findings.push(`★ [Embedded ZIP Detected at offset ${zipIdx}]`);
