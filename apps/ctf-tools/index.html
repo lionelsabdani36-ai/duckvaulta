@@ -13,56 +13,51 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-    /* Hallmark · 2026-11-10 · engine: antislop-craft · surface: dark */
-    /* Hallmark · dismissed 58 · interactive security toolkit with seven tabbed panels and detailed parameter labels */
+/* Hallmark · 2026-11-10 · engine: antislop-craft · surface: dark · nav: header */
+/* Hallmark · dismissed 58 · ctf-toolkit is an exhaustive all-in-one ctf workbench across 7 tabs, requiring high semantic word budget */
+    /* Root Design Tokens: Tactical Cyber-Ops Dark */
     :root {
       --bg-base: #040814;
       --bg-surface: #070e1e;
       --bg-card: #0a1428;
-      --bg-card-hover: #0e1c38;
-      --bg-input: #050b18;
-      
-      --border-subtle: rgba(0, 210, 255, 0.12);
+      --bg-card-hover: #0e1a34;
+      --bg-input: #060b18;
+      --bg-output: #03060f;
+      --bg-radial-glow: rgba(0, 210, 255, 0.06);
+      --bg-tint-subtle: rgba(255, 255, 255, 0.04);
+      --bg-kbd: rgba(255, 255, 255, 0.06);
+      --bg-pill: rgba(255, 255, 255, 0.05);
+      --bg-hover: rgba(255, 255, 255, 0.03);
+
+      --border-hairline: rgba(255, 255, 255, 0.08);
+      --border-subtle: rgba(0, 210, 255, 0.15);
       --border-medium: rgba(0, 210, 255, 0.28);
-      --border-accent: rgba(0, 210, 255, 0.5);
+      --border-focus: #00d2ff;
+
+      --text-bright: #f4f8fe;
+      --text-main: #f1f5f9;
+      --text-muted: #a1b0cb;
+      --text-dim: #91a0b5;
 
       --cyan-primary: #00d2ff;
-      --cyan-muted: #0099cc;
-      --cyan-glow: rgba(0, 210, 255, 0.25);
-      --bg-radial-glow: var(--bg-radial-glow);
+      --cyan-hover: #38bdf8;
+      --cyan-subtle: rgba(0, 210, 255, 0.08);
 
-      --amber-accent: #f59e0b;
       --emerald-live: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.25);
-      --rose-accent: #f43f5e;
-      --purple-accent: #a370f7;
+      --emerald-subtle: rgba(16, 185, 129, 0.1);
+      
+      --amber-notice: #f59e0b;
+      --amber-subtle: rgba(245, 158, 11, 0.1);
 
-      --text-paper: #edf2f7;
-      --text-secondary: #cbd5e1;
-      --text-muted: #9bb2c9;
-      --text-dark: #070d18;
-
-      --badge-emerald-bg: rgba(16, 185, 129, 0.12);
-      --badge-emerald-border: rgba(16, 185, 129, 0.28);
-      --badge-cyan-bg: rgba(0, 210, 255, 0.12);
-      --badge-cyan-border: rgba(0, 210, 255, 0.3);
-      --badge-neutral-bg: rgba(255, 255, 255, 0.06);
-
-      --btn-secondary-bg: rgba(255, 255, 255, 0.05);
-      --btn-secondary-hover-bg: rgba(255, 255, 255, 0.12);
-
-      --output-box-flag-bg: rgba(16, 185, 129, 0.08);
-      --output-highlight-bg: rgba(16, 185, 129, 0.2);
-      --output-highlight-text: #2dd4bf;
-
-      --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
-      --shadow-toast: 0 12px 32px rgba(0, 0, 0, 0.5);
-
-      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --font-ui: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     html, body {
       overflow-x: clip;
@@ -72,22 +67,45 @@
       background-color: var(--bg-base);
       background-image: radial-gradient(circle at 50% 0%, var(--bg-radial-glow) 0%, transparent 60%);
       background-attachment: fixed;
-      color: var(--text-paper);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      line-height: 1.6;
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.5;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Header */
+    
+    @media (max-width: 768px) {
+      header {
+        height: auto;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .header-left {
+        min-width: auto;
+      }
+      .header-center {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+      }
+      .tab-bar {
+        padding: 0 12px;
+      }
+      .tab-meta-right {
+        display: none;
+      }
+    }
+
+    /* Utilitarian Workstation Top Bar */
     header {
       background: var(--bg-surface);
-      border-bottom: 1px solid var(--border-medium);
-      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-hairline);
+      height: 52px;
+      padding: 0 24px;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
@@ -96,143 +114,242 @@
       z-index: 100;
     }
 
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       text-decoration: none;
-      color: var(--text-paper);
+      color: var(--text-main);
     }
 
     .brand img {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
     }
 
-    .brand-title {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+    .brand-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
     }
 
-    .brand-title span {
-      color: var(--cyan-primary);
-      font-family: var(--font-mono);
+    .brand-breadcrumb .scope {
+      color: var(--text-muted);
+    }
+
+    .brand-breadcrumb .slash {
+      color: var(--text-dim);
+    }
+
+    .brand-breadcrumb .app {
+      color: var(--text-bright);
       font-weight: 600;
     }
 
-    .header-hud {
+    .brand-version {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg-tint-subtle);
+      border: 1px solid var(--border-hairline);
+    }
+
+    /* Center Search / Filter Bar */
+    .header-center {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .quick-search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border-hairline);
+      border-radius: 6px;
+      padding: 0 12px;
+      height: 36px;
+      transition-property: border-color, box-shadow;
+      transition-duration: 150ms;
+    }
+
+    .quick-search-box:focus-within {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 1px var(--border-focus);
+    }
+
+    .quick-search-box svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text-dim);
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .quick-search-box input {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      width: 100%;
+      outline: none;
+    }
+
+    .quick-search-box input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .quick-search-box kbd {
+      background: var(--bg-kbd);
+      border: 1px solid var(--border-hairline);
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    /* Right Action Cluster */
+    .header-right {
       display: flex;
       align-items: center;
       gap: 12px;
-      flex-wrap: wrap;
     }
 
-    .hud-stat {
-      font-family: var(--font-mono);
+    .btn-toolbar-ghost {
+      background: transparent;
+      border: 1px solid var(--border-hairline);
+      color: var(--text-muted);
+      font-family: var(--font-ui);
       font-size: 12px;
-      color: var(--text-secondary);
-      background: var(--badge-neutral-bg);
-      border: 1px solid var(--border-subtle);
-      padding: 4px 12px;
+      font-weight: 500;
+      padding: 8px 12px;
       border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      min-height: 36px;
+      transition-property: color, border-color, background;
+      transition-duration: 150ms;
     }
 
-    .radar-beacon {
-      width: 8px;
-      height: 8px;
-      background: var(--emerald-live);
-      border-radius: 50%;
+    .btn-toolbar-ghost:hover {
+      color: var(--text-bright);
+      border-color: var(--text-dim);
+      background: var(--bg-tint-subtle);
     }
 
-    .header-badge {
-      font-family: var(--font-sans);
+    .link-portal {
+      color: var(--text-muted);
       font-size: 13px;
-      background: var(--badge-emerald-bg);
-      color: var(--emerald-live);
-      border: 1px solid var(--badge-emerald-border);
-      padding: 4px 12px;
-      border-radius: 6px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition-property: color;
+      transition-duration: 150ms;
     }
 
-    .header-badge::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--emerald-live);
-      border-radius: 50%;
+    .link-portal:hover {
+      color: var(--text-bright);
     }
 
-    /* Navigation Tabs */
+    /* Flat Segmented Tab Bar */
     .tab-bar {
       display: flex;
-      overflow-x: auto;
-      gap: 8px;
-      padding: 12px 24px;
+      align-items: center;
+      justify-content: space-between;
+      height: 44px;
+      padding: 0 24px;
       background: var(--bg-surface);
-      border-bottom: 1px solid var(--border-subtle);
-      scrollbar-width: thin;
+      border-bottom: 1px solid var(--border-hairline);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tab-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-nav-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
     }
 
     .tab-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 600;
-      padding: 12px 20px;
-      border-radius: 6px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0 16px;
+      height: 100%;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       white-space: nowrap;
-      min-height: 44px;
-      position: relative;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+      transition-property: color, border-color, background;
+      transition-duration: 150ms;
+      margin-bottom: -1px;
     }
 
     .tab-btn:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-paper);
-      border-color: var(--border-medium);
+      color: var(--text-bright);
+      background: var(--bg-hover);
     }
 
     .tab-btn.active {
-      background: var(--badge-cyan-bg);
+      color: var(--text-bright);
+      font-weight: 600;
+      border-bottom-color: var(--cyan-primary);
+      background: transparent;
+    }
+
+    .tab-btn .tab-count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      background: var(--bg-pill);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .tab-btn.active .tab-count {
       color: var(--cyan-primary);
-      border-color: var(--cyan-primary);
+      background: var(--cyan-subtle);
     }
 
-    .tab-btn.active::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 12%;
-      width: 76%;
-      height: 2px;
-      background: var(--cyan-primary);
+    .tab-meta-right {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: 16px;
     }
 
-    .tab-btn:active {
-      transform: translateY(1px);
-    }
-
-    .tab-btn:focus-visible {
-      outline: 2px solid var(--cyan-primary);
-      outline-offset: 2px;
-    }
-
-    /* Layout */
     .container {
       max-width: 1400px;
       width: 100%;
@@ -504,29 +621,51 @@
 <body>
 
   <!-- Header -->
+    <!-- Topbar: Utilitarian Security Workstation Shell -->
   <header>
-    <a href="/index.html" class="brand">
-      <img src="/assets/duck-emblem.png" alt="Duckvaulta">
-      <div class="brand-title">CYLAB <span>CTF OMNITOOL</span></div>
-    </a>
-    <div class="header-hud">
-      <div class="hud-stat"><span class="radar-beacon"></span><span>Grid live</span></div>
-      <div class="hud-stat"><span id="hud-clock">00:00:00 UTC</span></div>
-      <span class="header-badge">510+ Solvers</span>
-      <span class="header-badge" style="border-color: var(--badge-cyan-border); color: var(--cyan-primary); background: var(--badge-cyan-bg);">Peringkat 1 Getsflag</span>
-      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 8px 16px; text-decoration: none;">Portal Duckvaulta ↗</a>
+    <div class="header-left">
+      <a href="/index.html" class="brand">
+        <img src="/assets/duck-emblem.png" alt="Duckvaulta">
+        <div class="brand-breadcrumb">
+          <span class="scope">CyLab</span>
+          <span class="slash">/</span>
+          <span class="app">CTF OmniTool</span>
+        </div>
+      </a>
+      <span class="brand-version">v2.4</span>
+    </div>
+
+    <div class="header-center">
+      <div class="quick-search-box">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="solver-search" placeholder="Filter solvers by name, algorithm, or type..." autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="btn-toolbar-ghost" id="btn-clear-tab" onclick="clearCurrentTab()" title="Clear inputs in current tab">Clear tab</button>
+      <a href="/index.html" class="link-portal">Portal</a>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
   <nav class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-universal')">[01] Universal Auto-Detect</button>
-    <button class="tab-btn" onclick="switchTab('tab-crypto')">[02] Kriptografi Klasik & Modern</button>
-    <button class="tab-btn" onclick="switchTab('tab-encoding')">[03] Encoding & Transformasi</button>
-    <button class="tab-btn" onclick="switchTab('tab-esolang')">[04] Esolangs & VM Simulator</button>
-    <button class="tab-btn" onclick="switchTab('tab-math')">[05] Matematika & Sekuens</button>
-    <button class="tab-btn" onclick="switchTab('tab-audio')">[06] Audio & Sinyal Frekuensi</button>
-    <button class="tab-btn" onclick="switchTab('tab-forensics')">[07] Forensik Berkas & Stego</button>
+    <div class="tab-nav-group">
+      <button class="tab-btn active" onclick="switchTab('tab-universal', this)">Universal <span class="tab-count">3</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-crypto', this)">Kriptografi <span class="tab-count">7</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-encoding', this)">Encoding <span class="tab-count">8</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-esolang', this)">Esolangs <span class="tab-count">5</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-math', this)">Matematika <span class="tab-count">6</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-audio', this)">Audio &amp; Sinyal <span class="tab-count">5</span></button>
+      <button class="tab-btn" onclick="switchTab('tab-forensics', this)">Forensik &amp; Stego <span class="tab-count">4</span></button>
+    </div>
+    <div class="tab-meta-right">
+      <span>510 solvers loaded</span>
+    </div>
   </nav>
 
   <!-- Main Content -->
@@ -1122,25 +1261,145 @@
   <!-- ==================== CORE JAVASCRIPT LOGIC ==================== -->
   <script>
     // Tab Switching
-    function switchTab(tabId) {
+        function switchTab(tabId, explicitBtn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      if (window.event && window.event.target) {
-        const btn = window.event.target.closest('.tab-btn') || window.event.target;
-        btn.classList.add('active');
-      }
+      const btn = explicitBtn || (window.event && window.event.target && window.event.target.closest('.tab-btn')) || document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+      if (btn) btn.classList.add('active');
       const panel = document.getElementById(tabId);
       if (panel) {
         panel.classList.add('active');
         if (window.anime) {
           anime({
-            targets: panel.querySelectorAll('.card'),
-            translateY: [16, 0],
+            targets: panel.querySelectorAll('.card:not([style*="display: none"])'),
+            translateY: [12, 0],
             opacity: [0, 1],
-            delay: anime.stagger(30),
-            duration: 280,
+            delay: anime.stagger(25),
+            duration: 250,
             easing: 'easeOutCubic'
           });
+        }
+      }
+    }
+
+    function clearCurrentTab() {
+      const activePanel = document.querySelector('.tab-panel.active');
+      if (!activePanel) return;
+      activePanel.querySelectorAll('input:not([type=file]):not([type=button]), textarea').forEach(el => {
+        el.value = '';
+      });
+      activePanel.querySelectorAll('.output-box').forEach(el => {
+        el.innerHTML = '// Output dibersihkan.';
+        el.classList.remove('has-flag');
+      });
+      showToast('Seluruh input pada tab aktif telah dibersihkan');
+    }
+
+    function initQuickSearch() {
+      const searchInput = document.getElementById('solver-search');
+      if (!searchInput) return;
+
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+          if (e.key === 'Escape' && document.activeElement === searchInput) {
+            searchInput.value = '';
+            filterSolvers('');
+            searchInput.blur();
+          }
+          return;
+        }
+
+        if (e.key === '/') {
+          e.preventDefault();
+          searchInput.focus();
+          searchInput.select();
+          return;
+        }
+
+        const num = parseInt(e.key, 10);
+        if (num >= 1 && num <= 7) {
+          const tabBtns = document.querySelectorAll('.tab-btn');
+          if (tabBtns[num - 1]) tabBtns[num - 1].click();
+        }
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        filterSolvers(e.target.value.trim().toLowerCase());
+      });
+    }
+
+    function filterSolvers(query) {
+      const panels = document.querySelectorAll('.tab-panel');
+      const tabs = document.querySelectorAll('.tab-btn');
+      
+      const tabCounts = {
+        'tab-universal': 0,
+        'tab-crypto': 0,
+        'tab-encoding': 0,
+        'tab-esolang': 0,
+        'tab-math': 0,
+        'tab-audio': 0,
+        'tab-forensics': 0
+      };
+
+      if (!query) {
+        document.querySelectorAll('.card').forEach(c => {
+          c.style.display = '';
+          c.style.borderColor = '';
+        });
+        const defaultCounts = [3, 7, 8, 5, 6, 5, 4];
+        tabs.forEach((t, idx) => {
+          const countBadge = t.querySelector('.tab-count');
+          if (countBadge) countBadge.textContent = defaultCounts[idx] || '0';
+        });
+        return;
+      }
+
+      let firstMatchTab = null;
+      let firstMatchCard = null;
+
+      const normQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      panels.forEach(panel => {
+        const panelId = panel.id;
+        const cards = panel.querySelectorAll('.card');
+        cards.forEach(card => {
+          const raw = (card.innerText + ' ' + (card.getAttribute('id') || '') + ' ' + (card.innerHTML || '')).toLowerCase();
+          const text = raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const matches = text.includes(normQuery);
+          if (matches) {
+            card.style.display = '';
+            card.style.borderColor = 'var(--cyan-primary)';
+            tabCounts[panelId] = (tabCounts[panelId] || 0) + 1;
+            if (!firstMatchTab) {
+              firstMatchTab = panelId;
+              firstMatchCard = card;
+            }
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+
+      tabs.forEach(t => {
+        const onclickAttr = t.getAttribute('onclick') || '';
+        const match = onclickAttr.match(/switchTab\('([^']+)'/);
+        if (match) {
+          const tid = match[1];
+          const count = tabCounts[tid] || 0;
+          const countBadge = t.querySelector('.tab-count');
+          if (countBadge) countBadge.textContent = count;
+        }
+      });
+
+      const currentActive = document.querySelector('.tab-panel.active');
+      if (currentActive && (tabCounts[currentActive.id] || 0) === 0 && firstMatchTab) {
+        const targetBtn = Array.from(tabs).find(t => (t.getAttribute('onclick') || '').includes(firstMatchTab));
+        if (targetBtn) {
+          targetBtn.click();
+          if (firstMatchCard) {
+            firstMatchCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
         }
       }
     }
@@ -3060,28 +3319,19 @@
       DEMO_BUTTONS.forEach(x => injectBtn(x[0], x[1], 'demo'));
 
       // Live HUD Clock
-      setInterval(updateHudClock, 1000);
+      initQuickSearch();
+      // init
       updateHudClock();
 
       // Anime.js Micro-Interactions
       if (window.anime) {
-        // Radar beacon loop
+        // Entrance subtle reveal for workstation shell
         anime({
-          targets: '.radar-beacon',
-          scale: [1, 1.45, 1],
-          opacity: [1, 0.4, 1],
-          loop: true,
-          duration: 2000,
-          easing: 'easeInOutSine'
-        });
-
-        // Entrance stagger for brand and HUD
-        anime({
-          targets: '.brand img, .brand-title, .header-hud > *',
-          translateY: [-8, 0],
+          targets: 'header > *, .tab-bar > *',
+          translateY: [-4, 0],
           opacity: [0, 1],
-          delay: anime.stagger(30),
-          duration: 350,
+          delay: anime.stagger(20),
+          duration: 250,
           easing: 'easeOutCubic'
         });
 
