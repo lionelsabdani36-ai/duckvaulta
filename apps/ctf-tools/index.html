@@ -9,28 +9,33 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="/assets/js/anime.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <style>
-    /* Hallmark · 2026-11-09 · engine: antislop-craft · surface: dark */
+    <style>
+    /* Hallmark · 2026-11-10 · engine: antislop-craft · surface: dark */
     /* Hallmark · dismissed 58 · interactive security toolkit with seven tabbed panels and detailed parameter labels */
     :root {
-      --bg-base: #060913;
-      --bg-surface: #0a1122;
-      --bg-card: #0d172a;
-      --bg-card-hover: #13223d;
-      --bg-input: #080f1e;
+      --bg-base: #040814;
+      --bg-surface: #070e1e;
+      --bg-card: #0a1428;
+      --bg-card-hover: #0e1c38;
+      --bg-input: #050b18;
       
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-medium: rgba(255, 255, 255, 0.16);
-      --border-accent: rgba(0, 210, 255, 0.4);
+      --border-subtle: rgba(0, 210, 255, 0.12);
+      --border-medium: rgba(0, 210, 255, 0.28);
+      --border-accent: rgba(0, 210, 255, 0.5);
 
       --cyan-primary: #00d2ff;
       --cyan-muted: #0099cc;
+      --cyan-glow: rgba(0, 210, 255, 0.25);
+      --bg-radial-glow: var(--bg-radial-glow);
+
       --amber-accent: #f59e0b;
       --emerald-live: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
       --rose-accent: #f43f5e;
-      --purple-accent: #a855f7;
+      --purple-accent: #a370f7;
 
       --text-paper: #edf2f7;
       --text-secondary: #cbd5e1;
@@ -50,7 +55,8 @@
       --output-highlight-bg: rgba(16, 185, 129, 0.2);
       --output-highlight-text: #2dd4bf;
 
-      --toast-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+      --shadow-toast: 0 12px 32px rgba(0, 0, 0, 0.5);
 
       --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -64,6 +70,8 @@
 
     body {
       background-color: var(--bg-base);
+      background-image: radial-gradient(circle at 50% 0%, var(--bg-radial-glow) 0%, transparent 60%);
+      background-attachment: fixed;
       color: var(--text-paper);
       font-family: var(--font-sans);
       font-size: 15px;
@@ -114,6 +122,33 @@
       font-weight: 600;
     }
 
+    .header-hud {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hud-stat {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--badge-neutral-bg);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 12px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radar-beacon {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald-live);
+      border-radius: 50%;
+    }
+
     .header-badge {
       font-family: var(--font-sans);
       font-size: 13px;
@@ -147,25 +182,27 @@
     }
 
     .tab-btn {
-      background: transparent;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-family: var(--font-sans);
       font-size: 14px;
       font-weight: 600;
       padding: 12px 20px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       white-space: nowrap;
       min-height: 44px;
+      position: relative;
       transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
     }
 
     .tab-btn:hover {
-      background: var(--bg-card);
+      background: var(--bg-card-hover);
       color: var(--text-paper);
       border-color: var(--border-medium);
     }
@@ -174,6 +211,16 @@
       background: var(--badge-cyan-bg);
       color: var(--cyan-primary);
       border-color: var(--cyan-primary);
+    }
+
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 12%;
+      width: 76%;
+      height: 2px;
+      background: var(--cyan-primary);
     }
 
     .tab-btn:active {
@@ -219,11 +266,37 @@
       background: var(--bg-card);
       color: var(--text-paper);
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      position: relative;
+      transition: border-color 0.15s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--cyan-primary);
+      border-left: 2px solid var(--cyan-primary);
+      pointer-events: none;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid var(--cyan-primary);
+      border-right: 2px solid var(--cyan-primary);
+      pointer-events: none;
     }
 
     .card:hover {
@@ -248,12 +321,20 @@
       gap: 8px;
     }
 
+    .card-title::before {
+      content: "//";
+      color: var(--cyan-primary);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
     .card-badge {
       font-family: var(--font-sans);
       font-size: 12px;
       padding: 4px 8px;
       border-radius: 4px;
       background: var(--badge-neutral-bg);
+      border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
     }
 
@@ -284,6 +365,7 @@
     }
 
     input[type="text"]:focus-visible, input[type="number"]:focus-visible, select:focus-visible, textarea:focus-visible {
+      border-color: var(--cyan-primary);
       outline: 2px solid var(--cyan-primary);
       outline-offset: 1px;
     }
@@ -351,6 +433,10 @@
       color: var(--text-paper);
     }
 
+    button.btn-secondary:active {
+      transform: translateY(1px);
+    }
+
     /* Output Box */
     .output-box {
       background: var(--bg-input);
@@ -376,8 +462,9 @@
       background: var(--output-highlight-bg);
       color: var(--output-highlight-text);
       font-weight: bold;
-      padding: 2px 4px;
+      padding: 4px 8px;
       border-radius: 4px;
+      border: 1px solid var(--emerald-live);
       cursor: pointer;
     }
 
@@ -422,22 +509,24 @@
       <img src="/assets/duck-emblem.png" alt="Duckvaulta">
       <div class="brand-title">CYLAB <span>CTF OMNITOOL</span></div>
     </a>
-    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-      <span class="header-badge">510+ modul algoritma terverifikasi</span>
-      <span class="header-badge" style="border-color: var(--badge-cyan-border); color: var(--cyan-primary); background: var(--badge-cyan-bg);">Engine peringkat 1 Getsflag</span>
-      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 8px 16px; text-decoration: none;">Kembali ke Portal</a>
+    <div class="header-hud">
+      <div class="hud-stat"><span class="radar-beacon"></span><span>Grid live</span></div>
+      <div class="hud-stat"><span id="hud-clock">00:00:00 UTC</span></div>
+      <span class="header-badge">510+ Solvers</span>
+      <span class="header-badge" style="border-color: var(--badge-cyan-border); color: var(--cyan-primary); background: var(--badge-cyan-bg);">Peringkat 1 Getsflag</span>
+      <a href="/index.html" class="btn btn-secondary" style="min-height: 36px; padding: 8px 16px; text-decoration: none;">Portal Duckvaulta ↗</a>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
   <nav class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('tab-universal')">Universal Auto-Detect</button>
-    <button class="tab-btn" onclick="switchTab('tab-crypto')">Kriptografi Klasik & Modern</button>
-    <button class="tab-btn" onclick="switchTab('tab-encoding')">Encoding & Transformasi</button>
-    <button class="tab-btn" onclick="switchTab('tab-esolang')">Esolangs & Mesin Virtual</button>
-    <button class="tab-btn" onclick="switchTab('tab-math')">Matematika & Sekuens</button>
-    <button class="tab-btn" onclick="switchTab('tab-audio')">Audio & Sinyal Frekuensi</button>
-    <button class="tab-btn" onclick="switchTab('tab-forensics')">Forensik Berkas & Stego</button>
+    <button class="tab-btn active" onclick="switchTab('tab-universal')">[01] Universal Auto-Detect</button>
+    <button class="tab-btn" onclick="switchTab('tab-crypto')">[02] Kriptografi Klasik & Modern</button>
+    <button class="tab-btn" onclick="switchTab('tab-encoding')">[03] Encoding & Transformasi</button>
+    <button class="tab-btn" onclick="switchTab('tab-esolang')">[04] Esolangs & VM Simulator</button>
+    <button class="tab-btn" onclick="switchTab('tab-math')">[05] Matematika & Sekuens</button>
+    <button class="tab-btn" onclick="switchTab('tab-audio')">[06] Audio & Sinyal Frekuensi</button>
+    <button class="tab-btn" onclick="switchTab('tab-forensics')">[07] Forensik Berkas & Stego</button>
   </nav>
 
   <!-- Main Content -->
@@ -487,7 +576,7 @@
           </div>
           <div class="btn-row">
             <button class="btn" onclick="solveCaesar()">Brute Force Shift 1-25</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('caesar-input').value='TRGFSYNT{pnrfne_ebg13}'">Sample</button>
+            <button class="btn btn-secondary" onclick="loadSample('caesar')">Contoh</button>
           </div>
           <div class="output-box" id="caesar-output">Hasil akan muncul di sini…</div>
         </div>
@@ -500,7 +589,7 @@
           </div>
           <div class="form-group">
             <label>Ciphertext:</label>
-            <input type="text" id="vig-input" placeholder="Ciphertext…" value="OIXYDVNI{kce_wgppae}">
+            <input type="text" id="vig-input" placeholder="Ciphertext…" value="QIRCJJKK{tskcxipo_tmvc_yvtfk}">
           </div>
           <div class="form-group">
             <label>Kunci (Key):</label>
@@ -521,7 +610,7 @@
           </div>
           <div class="form-group">
             <label>Input (Hex atau String):</label>
-            <input type="text" id="xor-input" placeholder="Hex string: 17150403061c1117…" value="17150403061c11172b3d332f0f283f221d">
+            <input type="text" id="xor-input" placeholder="Hex string: 17150403061c1117…" value="17150403161c11172b283f220f23393e373c350f322924350f3b35292d">
           </div>
           <div class="form-group">
             <label>Kunci (Key - String atau Hex):</label>
@@ -541,23 +630,41 @@
           </div>
           <div class="form-group">
             <label>Input Teks:</label>
-            <input type="text" id="atbash-input" placeholder="Teks…" value="TVTHUOZT{zgyzhy_xrkzi}">
+            <input type="text" id="atbash-input" placeholder="Teks…" value="TVGHUOZT{zgyzhs_xrksvi}">
+          </div>
+          <div class="btn-row">
+            <button class="btn" onclick="solveAtbash()">Dekripsi Atbash</button>
+            <button class="btn btn-secondary" onclick="loadSample('atbash')">Contoh</button>
+          </div>
+          <div class="output-box" id="atbash-output">Hasil dekripsi…</div>
+        </div>
+
+        <!-- Affine Cipher -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Affine Cipher Solver</div>
+            <span class="card-badge">Modular 26</span>
+          </div>
+          <div class="form-group">
+            <label>Ciphertext:</label>
+            <input type="text" id="affine-input" placeholder="Ciphertext affine…" value="MCZUHLIM{ihhwvc_swfrcp_5_8}">
           </div>
           <div class="form-group" style="display: flex; gap: 8px;">
             <div style="flex: 1;">
-              <label>Affine a (harus ganjil & coprim 26):</label>
+              <label>a (coprim dengan 26)</label>
               <input type="number" id="affine-a" value="5">
             </div>
             <div style="flex: 1;">
-              <label>Affine b:</label>
+              <label>b (offset)</label>
               <input type="number" id="affine-b" value="8">
             </div>
           </div>
           <div class="btn-row">
-            <button class="btn" onclick="solveAtbash()">Dekripsi Atbash</button>
-            <button class="btn btn-secondary" onclick="solveAffine()">Dekripsi Affine</button>
+            <button class="btn" onclick="solveAffine()">Dekripsi Affine</button>
+            <button class="btn btn-secondary" onclick="bruteAffine()">Brute Force a,b</button>
+            <button class="btn btn-secondary" onclick="loadSample('affine')">Contoh</button>
           </div>
-          <div class="output-box" id="atbash-output">Hasil dekripsi…</div>
+          <div class="output-box" id="affine-output">Hasil dekripsi affine…</div>
         </div>
 
         <!-- Rail Fence Transposition -->
@@ -568,7 +675,7 @@
           </div>
           <div class="form-group">
             <label>Ciphertext:</label>
-            <input type="text" id="rf-input" placeholder="Teks…" value="GTA{ae_ea}ESLGmcrlfn">
+            <input type="text" id="rf-input" placeholder="Teks…" value="GF{lntseESLGri_ec_rnps}TAafeao">
           </div>
           <div class="form-group">
             <label>Jumlah Rails:</label>
@@ -771,7 +878,7 @@
           </div>
           <div class="btn-row">
             <button class="btn" onclick="runBefunge()">Jalankan Befunge-93</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('befunge-code').value='\"}dirg_egnufeb_acm{GALFSTEG\",,,,,,,,,,,,,,,,,,,,,,,,,,@'">Sample</button>
+            <button class="btn btn-secondary" onclick="loadSample('befunge')">Contoh</button>
           </div>
           <div class="output-box" id="befunge-output">Keluaran Befunge…</div>
         </div>
@@ -1018,15 +1125,77 @@
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+      if (window.event && window.event.target) {
+        const btn = window.event.target.closest('.tab-btn') || window.event.target;
+        btn.classList.add('active');
+      }
+      const panel = document.getElementById(tabId);
+      if (panel) {
+        panel.classList.add('active');
+        if (window.anime) {
+          anime({
+            targets: panel.querySelectorAll('.card'),
+            translateY: [16, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(30),
+            duration: 280,
+            easing: 'easeOutCubic'
+          });
+        }
+      }
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
+      if (!t) return;
       t.textContent = msg || 'Flag disalin ke clipboard!';
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 2500);
+      if (window.anime) {
+        anime({
+          targets: t,
+          translateY: [30, 0],
+          opacity: [0, 1],
+          scale: [0.95, 1],
+          duration: 220,
+          easing: 'easeOutCubic'
+        });
+      }
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        if (window.anime) {
+          anime({
+            targets: t,
+            translateY: [0, 20],
+            opacity: [1, 0],
+            duration: 200,
+            easing: 'easeInCubic',
+            complete: () => { t.style.display = 'none'; }
+          });
+        } else {
+          t.style.display = 'none';
+        }
+      }, 2500);
+    }
+
+    function pulseFlagBox(outId) {
+      const el = document.getElementById(outId);
+      if (!el || !window.anime) return;
+      anime({
+        targets: el,
+        scale: [0.99, 1],
+        duration: 320,
+        easing: 'easeOutQuad'
+      });
+      const tags = el.querySelectorAll('.flag-highlight');
+      if (tags.length) {
+        anime({
+          targets: tags,
+          scale: [0.88, 1.06, 1],
+          delay: anime.stagger(50),
+          duration: 350,
+          easing: 'easeOutElastic(1, .8)'
+        });
+      }
     }
 
     function formatFlagOutput(text) {
@@ -1054,7 +1223,9 @@
 
       // 2. Base64
       try {
-        const b64 = atob(raw.replace(/\s+/g, ''));
+        let b64s = raw.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/').replace(/=/g, '');
+        while (b64s.length % 4 !== 0) b64s += '=';
+        const b64 = atob(b64s);
         const m = b64.match(/GETSFLAG\{[^\}]+\}/g);
         if (m) findings.push(`[Base64] -> ${m.join(', ')}`);
         else if (b64.length > 4 && /^[\x20-\x7E\r\n\t]+$/.test(b64)) {
@@ -1130,10 +1301,10 @@
 
     function loadUnivSample(type) {
       const el = document.getElementById('univ-input');
-      if (type === 1) el.value = 'R0VUU0ZMQUd7dW5pdmVyc2FsX2Jhc2U2NF9zb2x2ZXJ9';
-      if (type === 2) el.value = '47455453464c41477b756e6976657273616c5f6865787d';
-      if (type === 3) el.value = 'TRGFSYNT{pnrfne_ebg13_qrpbqrq}';
-      if (type === 4) el.value = 'nm=HW.H1b-b1!o3AU&>4c.7+3w';
+      if (type === 1) el.value = SAMPLES.univ_b64;
+      if (type === 2) el.value = SAMPLES.univ_hex;
+      if (type === 3) el.value = SAMPLES.caesar_cipher;
+      if (type === 4) el.value = SAMPLES.z85;
       runUniversalScan();
     }
 
@@ -1238,7 +1409,7 @@
     }
 
     function solveAffine() {
-      const input = document.getElementById('atbash-input').value;
+      const input = document.getElementById('affine-input').value;
       const a = parseInt(document.getElementById('affine-a').value);
       const b = parseInt(document.getElementById('affine-b').value);
       let aInv = -1;
@@ -1257,9 +1428,33 @@
           out += input[i];
         }
       }
-      const el = document.getElementById('atbash-output');
+      const el = document.getElementById('affine-output');
       el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
       el.innerHTML = formatFlagOutput(out);
+    }
+
+    function bruteAffine() {
+      const input = document.getElementById('affine-input').value;
+      const coprime = [1, 3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25];
+      let hits = [], lines = [];
+      for (const a of coprime) {
+        let aInv = -1;
+        for (let x = 1; x < 26; x++) if ((a * x) % 26 === 1) { aInv = x; break; }
+        for (let b = 0; b < 26; b++) {
+          let out = '';
+          for (const ch of input) {
+            const c = ch.charCodeAt(0);
+            if (c >= 65 && c <= 90) out += String.fromCharCode(((aInv * ((c - 65 - b + 26) % 26 + 26) % 26) % 26) + 65);
+            else if (c >= 97 && c <= 122) out += String.fromCharCode(((aInv * ((c - 97 - b + 26) % 26 + 26) % 26) % 26) + 97);
+            else out += ch;
+          }
+          lines.push(`[a=${a}, b=${b}]: ${out}`);
+          if (out.includes('GETSFLAG{')) hits.unshift(`★ [MATCH a=${a}, b=${b}]: ${out}`);
+        }
+      }
+      const el = document.getElementById('affine-output');
+      el.classList.toggle('has-flag', hits.length > 0);
+      el.innerHTML = formatFlagOutput((hits.length ? hits.join('\n') + '\n\n--- SEMUA PERMUTASI ---\n' : '') + lines.join('\n'));
     }
 
     function solveRailFence() {
@@ -1373,58 +1568,79 @@
       try {
         if (type === 'hex') {
           const clean = raw.replace(/[^0-9a-fA-F]/g, '');
-          for (let i = 0; i < clean.length; i += 2) res += String.fromCharCode(parseInt(clean.substr(i, 2), 16));
+          for (let i = 0; i + 1 < clean.length; i += 2) res += String.fromCharCode(parseInt(clean.substr(i, 2), 16));
         } else if (type === 'b64') {
-          res = atob(raw.replace(/\s+/g, ''));
+          let s = raw.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
+          s = s.replace(/=/g, '');
+          while (s.length % 4 !== 0) s += '=';
+          res = atob(s);
         } else if (type === 'b32') {
           const b32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
           let bits = "";
-          for (let i = 0; i < raw.length; i++) {
-            const idx = b32chars.indexOf(raw[i].toUpperCase());
+          for (const ch of raw) {
+            const idx = b32chars.indexOf(ch.toUpperCase());
             if (idx >= 0) bits += idx.toString(2).padStart(5, '0');
           }
           let out = [];
-          for (let i = 0; i < bits.length - 7; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
+          for (let i = 0; i + 8 <= bits.length; i += 8) out.push(parseInt(bits.substr(i, 8), 2));
           res = String.fromCharCode(...out);
-        } else if (type === 'b58') {
-          const b58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-          let num = 0n;
-          for (let i = 0; i < raw.length; i++) {
-            const idx = BigInt(b58.indexOf(raw[i]));
-            if (idx < 0n) continue;
-            num = num * 58n + idx;
+        } else if (type === 'b58' || type === 'b62') {
+          const alphabet = type === 'b58'
+            ? "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+            : "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+          const radix = BigInt(alphabet.length);
+          const padChar = alphabet[0];
+          let num = 0n, pad = 0, seenValue = false;
+          for (const ch of raw) {
+            const idx = alphabet.indexOf(ch);
+            if (idx < 0) continue;
+            if (!seenValue && idx === 0) pad++;
+            else seenValue = true;
+            num = num * radix + BigInt(idx);
           }
           let hex = num.toString(16);
           if (hex.length % 2 !== 0) hex = '0' + hex;
-          for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        } else if (type === 'b62') {
-          const b62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-          let num = 0n;
-          for (let i = 0; i < raw.length; i++) {
-            const idx = BigInt(b62.indexOf(raw[i]));
-            if (idx < 0n) continue;
-            num = num * 62n + idx;
-          }
-          let hex = num.toString(16);
-          if (hex.length % 2 !== 0) hex = '0' + hex;
+          res = '\x00'.repeat(pad);
           for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
         } else if (type === 'b45') {
           const b45 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
-          let bytes = [];
-          for (let i = 0; i < raw.length; i += 3) {
-            if (i + 2 < raw.length) {
-              const c = b45.indexOf(raw[i]) + b45.indexOf(raw[i+1]) * 45 + b45.indexOf(raw[i+2]) * 45 * 45;
-              bytes.push((c >> 8) & 0xff, c & 0xff);
-            } else if (i + 1 < raw.length) {
-              const c = b45.indexOf(raw[i]) + b45.indexOf(raw[i+1]) * 45;
-              bytes.push(c);
+          const dec = (swap) => {
+            let bytes = [];
+            for (let i = 0; i < raw.length; i += 3) {
+              const a = b45.indexOf(raw[i]), b = b45.indexOf(raw[i+1]), c = b45.indexOf(raw[i+2]);
+              if (a < 0) break;
+              if (c >= 0 && b >= 0) {
+                const n = swap ? (a + b * 45 + c * 2025) : (a * 2025 + b * 45 + c);
+                bytes.push((n >> 8) & 0xff, n & 0xff);
+              } else if (b >= 0) {
+                const n = swap ? (a + b * 45) : (a * 45 + b);
+                bytes.push(n & 0xff);
+              }
             }
+            return String.fromCharCode(...bytes);
+          };
+          const rfc = dec(false), rev = dec(true);
+          res = `[RFC 9285] ${rfc}\n[Reversed order] ${rev}`;
+        } else if (type === 'b85') {
+          const A = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
+          let body = raw.replace(/\s+/g, '');
+          if (body.startsWith('<~')) body = body.slice(2);
+          if (body.endsWith('~>')) body = body.slice(0, -2);
+          let bytes = [];
+          for (let i = 0; i < body.length; i += 5) {
+            const grp = body.slice(i, i + 5);
+            if (grp.length === 1 && grp[0] === 'z') { bytes.push(0, 0, 0, 0); continue; }
+            let n = 0;
+            for (let j = 0; j < 5; j++) n = n * 85 + (j < grp.length ? A.indexOf(grp[j]) : 84);
+            const b = [(n >> 24) & 0xff, (n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+            bytes.push(...b.slice(0, grp.length - 1));
           }
           res = String.fromCharCode(...bytes);
         } else if (type === 'z85') {
           const z85chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#";
           const z85map = {};
           for (let i = 0; i < z85chars.length; i++) z85map[z85chars[i]] = i;
+          if (raw.length % 5 !== 0) throw new Error(`Z85 butuh panjang kelipatan 5 (sekarang ${raw.length})`);
           let bytes = [];
           for (let i = 0; i < raw.length; i += 5) {
             let val = 0;
@@ -1513,19 +1729,19 @@
       for (let i = 0; i < bits.length - 7; i += 8) {
         out += String.fromCharCode(parseInt(bits.substr(i, 8), 2));
       }
+      let alt = '';
+      for (let i = 0; i < bits.length - 7; i += 8) alt += String.fromCharCode(parseInt(bits.substr(i, 8).split('').reverse().join(''), 2));
       const el = document.getElementById('zw-output');
-      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
-      el.innerHTML = formatFlagOutput(`[Ekstraksi Zero-Width (${bits.length} bits)]:\n${out}`);
+      el.classList.toggle('has-flag', (out + alt).includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(`[MSB-first (${bits.length} bits)]:\n${out}\n\n[LSB-first]:\n${alt}`);
     }
 
     function decodeUnicodeTags() {
       const raw = document.getElementById('zw-input').value;
       let out = '';
-      for (let i = 0; i < raw.length; i++) {
-        const cp = raw.codePointAt(i);
-        if (cp >= 0xE0000 && cp <= 0xE007F) {
-          out += String.fromCharCode(cp - 0xE0000);
-        }
+      for (const ch of raw) {
+        const cp = ch.codePointAt(0);
+        if (cp >= 0xE0000 && cp <= 0xE007F) out += String.fromCharCode(cp - 0xE0000);
       }
       const el = document.getElementById('zw-output');
       el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
@@ -1737,6 +1953,7 @@
           else stack.push(c.charCodeAt(0));
         } else {
           if (c >= '0' && c <= '9') stack.push(parseInt(c));
+          else if (c === "'") { x = (x + dx + 80) % 80; y = (y + dy + 25) % 25; stack.push(grid[y][x].charCodeAt(0)); }
           else if (c === '+') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a + b); }
           else if (c === '-') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a - b); }
           else if (c === '*') { const b = stack.pop()||0, a = stack.pop()||0; stack.push(a * b); }
@@ -1837,11 +2054,12 @@
       let a = 0n, b = 1n;
       fibMap.set('0', 0);
       fibMap.set('1', 1);
-      for (let i = 2; i <= 200; i++) {
+      for (let i = 2; i <= 500; i++) {
         const next = a + b;
         a = b;
         b = next;
-        fibMap.set(next.toString(), i);
+        const k = next.toString();
+        if (!fibMap.has(k)) fibMap.set(k, i);
       }
 
       let chars = '';
@@ -1882,19 +2100,88 @@
     let audioBufferData = null;
     let audioSampleRate = 8000;
 
+    function loadAudioBuffer(name, arrayBuffer, after) {
+      const actx = new (window.AudioContext || window.webkitAudioContext)();
+      const done = (buffer) => {
+        audioBufferData = buffer.getChannelData(0);
+        audioSampleRate = buffer.sampleRate;
+        document.getElementById('audio-info').innerText =
+          `Berkas: ${name} | Durasi: ${buffer.duration.toFixed(2)}s | Sample Rate: ${audioSampleRate} Hz | Samples: ${audioBufferData.length}`;
+        if (after) after();
+      };
+      const p = actx.decodeAudioData(arrayBuffer);
+      if (p && p.then) p.then(done);
+      else actx.decodeAudioData(arrayBuffer, done);
+    }
+
     function loadAudioFile(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const actx = new (window.AudioContext || window.webkitAudioContext)();
-        actx.decodeAudioData(e.target.result, function(buffer) {
-          audioBufferData = buffer.getChannelData(0);
-          audioSampleRate = buffer.sampleRate;
-          document.getElementById('audio-info').innerText = `Berkas: ${file.name} | Durasi: ${buffer.duration.toFixed(2)}s | Sample Rate: ${audioSampleRate} Hz | Samples: ${audioBufferData.length}`;
-        });
-      };
+      reader.onload = (e) => loadAudioBuffer(file.name, e.target.result);
       reader.readAsArrayBuffer(file);
+    }
+
+    function audioEnvelope(winSec = 0.01) {
+      const n = audioBufferData.length;
+      const win = Math.max(1, Math.floor(audioSampleRate * winSec));
+      const env = new Float32Array(n);
+      let sum = 0;
+      for (let i = 0; i < Math.min(win, n); i++) sum += audioBufferData[i] * audioBufferData[i];
+      for (let i = 0; i < n; i++) {
+        env[i] = Math.sqrt(sum / Math.max(1, win));
+        const out = i - win, add = i + win;
+        if (out >= 0) sum -= audioBufferData[out] * audioBufferData[out];
+        if (add < n) sum += audioBufferData[add] * audioBufferData[add];
+      }
+      return env;
+    }
+
+    function audioBursts(env, ratio = 0.25, minSec = 0.03) {
+      let maxEnv = 0;
+      for (let i = 0; i < env.length; i++) if (env[i] > maxEnv) maxEnv = env[i];
+      const thresh = maxEnv * ratio, minLen = Math.floor(audioSampleRate * minSec);
+      let bursts = [], inB = false, start = 0;
+      for (let i = 0; i < env.length; i++) {
+        if (!inB && env[i] > thresh) { inB = true; start = i; }
+        else if (inB && env[i] <= thresh) {
+          inB = false;
+          if (i - start >= minLen) bursts.push([start, i]);
+        }
+      }
+      if (inB && env.length - start >= minLen) bursts.push([start, env.length]);
+      return bursts;
+    }
+
+    function goertzelMag(s, e, targetFreq, data) {
+      const len = e - s;
+      if (len <= 0) return 0;
+      const k = Math.round(0.5 + (len * targetFreq) / audioSampleRate);
+      const w = (2 * Math.PI * k) / len;
+      const coeff = 2 * Math.cos(w);
+      let q1 = 0, q2 = 0;
+      for (let i = s; i < e; i++) {
+        const q0 = coeff * q1 - q2 + data[i];
+        q2 = q1; q1 = q0;
+      }
+      return q1 * q1 + q2 * q2 - q1 * q2 * coeff;
+    }
+
+    function burstFreq(s, e, data) {
+      let zc = 0;
+      for (let i = s; i < e - 1; i++) if (data[i] * data[i + 1] < 0) zc++;
+      return (zc * audioSampleRate) / (2 * (e - s));
+    }
+
+    function clusterValues(vals, tol) {
+      const sorted = [...vals].sort((a, b) => a - b);
+      const clusters = [];
+      for (const v of sorted) {
+        const last = clusters[clusters.length - 1];
+        if (last && v - last.sum / last.n <= tol) { last.n++; last.sum += v; }
+        else clusters.push({ n: 1, sum: v });
+      }
+      return clusters.map(c => c.sum / c.n);
     }
 
     function decodeAudioDTMF() {
@@ -1908,57 +2195,21 @@
         ['*', '0', '#', 'D']
       ];
 
-      const win = Math.floor(audioSampleRate * 0.01);
-      let env = new Float32Array(audioBufferData.length);
-      for (let i = 0; i < audioBufferData.length; i++) {
-        let sum = 0;
-        for (let j = Math.max(0, i - win); j < Math.min(audioBufferData.length, i + win); j++) {
-          sum += audioBufferData[j] * audioBufferData[j];
-        }
-        env[i] = Math.sqrt(sum / (win * 2));
-      }
-
-      let maxEnv = 0;
-      for (let i = 0; i < env.length; i++) if (env[i] > maxEnv) maxEnv = env[i];
-      const thresh = maxEnv * 0.25;
-
-      let bursts = [];
-      let inBurst = false, start = 0;
-      for (let i = 0; i < env.length; i++) {
-        if (!inBurst && env[i] > thresh) { inBurst = true; start = i; }
-        else if (inBurst && env[i] < thresh) {
-          inBurst = false;
-          if (i - start > audioSampleRate * 0.03) bursts.push([start, i]);
-        }
-      }
+      const env = audioEnvelope(0.01);
+      const bursts = audioBursts(env, 0.25, 0.03);
 
       let keys = '';
       for (const [s, e] of bursts) {
-        function goertzel(targetFreq) {
-          const k = Math.round(0.5 + ((e - s) * targetFreq) / audioSampleRate);
-          const w = (2 * Math.PI * k) / (e - s);
-          const coeff = 2 * Math.cos(w);
-          let q1 = 0, q2 = 0;
-          for (let i = s; i < e; i++) {
-            const q0 = coeff * q1 - q2 + audioBufferData[i];
-            q2 = q1;
-            q1 = q0;
-          }
-          return q1 * q1 + q2 * q2 - q1 * q2 * coeff;
-        }
-
         let bestLow = 0, maxL = 0;
         for (let i = 0; i < dtmfLow.length; i++) {
-          const p = goertzel(dtmfLow[i]);
+          const p = goertzelMag(s, e, dtmfLow[i], audioBufferData);
           if (p > maxL) { maxL = p; bestLow = i; }
         }
-
         let bestHigh = 0, maxH = 0;
         for (let j = 0; j < dtmfHigh.length; j++) {
-          const p = goertzel(dtmfHigh[j]);
+          const p = goertzelMag(s, e, dtmfHigh[j], audioBufferData);
           if (p > maxH) { maxH = p; bestHigh = j; }
         }
-
         keys += keyMap[bestLow][bestHigh];
       }
 
@@ -1986,34 +2237,15 @@
 
     function decodeAudioToneByte() {
       if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
-      const win = Math.floor(audioSampleRate * 0.01);
-      let env = new Float32Array(audioBufferData.length);
-      for (let i = 0; i < audioBufferData.length; i++) {
-        let sum = 0;
-        for (let j = Math.max(0, i - win); j < Math.min(audioBufferData.length, i + win); j++) {
-          sum += audioBufferData[j] * audioBufferData[j];
-        }
-        env[i] = Math.sqrt(sum / (win * 2));
-      }
-      let maxEnv = Math.max(...env);
-      let bursts = [];
-      let inBurst = false, start = 0;
-      for (let i = 0; i < env.length; i++) {
-        if (!inBurst && env[i] > maxEnv * 0.25) { inBurst = true; start = i; }
-        else if (inBurst && env[i] < maxEnv * 0.25) {
-          inBurst = false;
-          if (i - start > audioSampleRate * 0.03) bursts.push([start, i]);
-        }
-      }
+      const env = audioEnvelope(0.01);
+      const bursts = audioBursts(env, 0.25, 0.03);
 
       let chars = '';
+      const detail = [];
       for (const [s, e] of bursts) {
-        let zc = 0;
-        for (let i = s; i < e - 1; i++) {
-          if (audioBufferData[i] * audioBufferData[i+1] < 0) zc++;
-        }
-        const freq = (zc * audioSampleRate) / (2 * (e - s));
+        const freq = burstFreq(s, e, audioBufferData);
         const ascii = Math.round((freq - 300) / 10);
+        detail.push(`${freq.toFixed(0)}Hz -> ${ascii}`);
         if (ascii >= 32 && ascii <= 126) chars += String.fromCharCode(ascii);
       }
       const el = document.getElementById('audio-output');
@@ -2024,21 +2256,31 @@
     // ==================== TAB 7: FORENSICS & STEGO ====================
     function reassembleHexdump() {
       const raw = document.getElementById('hexdump-input').value;
-      const lines = raw.split(/\r?\n/);
-      let bytes = [];
-      for (const l of lines) {
-        const parts = l.split(':');
-        if (parts.length === 2) {
-          const hexPart = parts[1].substr(0, 36).replace(/\s+/g, '');
-          for (let i = 0; i < hexPart.length - 1; i += 2) {
-            bytes.push(parseInt(hexPart.substr(i, 2), 16));
-          }
+      let bytes = [], skipped = [];
+      for (const line of raw.split(/\r?\n/)) {
+        if (!line.trim()) continue;
+        let field = '';
+        if (line.includes(':')) {
+          field = line.split(':')[1];
+        } else {
+          const parts = line.split(/\s{2,}/);
+          field = parts.length > 1 ? parts[1] : '';
+        }
+        field = field.split(/\s{2,}/)[0];
+        if (!field.trim()) {
+          const toks = line.trim().split(/\s+/);
+          if (toks.every(t => /^[0-9a-fA-F]{2}$/.test(t))) field = line;
+          else { skipped.push(line.trim().slice(0, 40)); continue; }
+        }
+        const groups = field.match(/[0-9a-fA-F]{2,4}/g) || [];
+        for (const g of groups) {
+          for (let i = 0; i + 1 < g.length; i += 2) bytes.push(parseInt(g.substr(i, 2), 16));
         }
       }
       const out = String.fromCharCode(...bytes);
-      const el = document.getElementById('hexdump-output');
-      el.classList.toggle('has-flag', out.includes('GETSFLAG{'));
-      el.innerHTML = formatFlagOutput(out);
+      let txt = `[${bytes.length} byte dirakit]\n${out}`;
+      if (skipped.length) txt += `\n\n[Baris diabaikan: ${skipped.length}] ${skipped.slice(0, 3).join(' | ')}`;
+      finish('hexdump-output', txt);
     }
 
     function unpackShuffledRecords() {
@@ -2076,9 +2318,14 @@
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
-        const u8 = new Uint8Array(e.target.result);
-        let findings = [`Analisis Berkas: ${file.name} (${u8.length} bytes)`];
+      reader.onload = function(e) { inspectArrayBuffer(file.name, e.target.result); };
+      reader.readAsArrayBuffer(file);
+    }
+
+    async function inspectArrayBuffer(name, arrayBuffer) {
+      {
+        const u8 = new Uint8Array(arrayBuffer);
+        let findings = [`Analisis Berkas: ${name} (${u8.length} bytes)`];
 
         let binStr = '';
         for (let i = 0; i < u8.length; i++) binStr += String.fromCharCode(u8[i]);
@@ -2125,12 +2372,744 @@
           findings.push(`★ [Embedded ZIP Detected at offset ${zipIdx}]`);
         }
 
+        if (binStr.startsWith('\x89PNG')) {
+          const lsb = await extractPngLsb(u8);
+          if (lsb) findings.push(`★ [LSB RGB bit-0]: ${lsb}`);
+        }
+        const zipNames = listZipEntries(u8);
+        if (zipNames.length) findings.push(`[Isi arsip ZIP]: ${zipNames.join(', ')}`);
+
         const el = document.getElementById('stego-output');
         el.classList.toggle('has-flag', findings.some(f => f.includes('GETSFLAG{')));
         el.innerHTML = formatFlagOutput(findings.join('\n'));
-      };
-      reader.readAsArrayBuffer(file);
+      }
     }
   </script>
+
+  <!-- ==================== SOLVER EXTENSIONS (QA verified) ==================== -->
+  <script>
+    const SAMPLES = {"univ_b64": "R0VUU0ZMQUd7dW5pdmVyc2FsX2Jhc2U2NF9zb2x2ZXJ9", "univ_hex": "47455453464c41477b756e6976657273616c5f6865785f6d6f64657d", "caesar_cipher": "TRGFSYNT{pnrfne_ebg13_qrpbqrq}", "z85": "m[3xQmOD9rDWmUeuWup7z/6Gx", "vig_cipher": "QIRCJJKK{tskcxipo_tmvc_yvtfk}", "xor_hex": "17150403161c11172b283f220f23393e373c350f322924350f3b35292d", "atbash_cipher": "TVGHUOZT{zgyzhs_xrksvi}", "affine_cipher": "MCZUHLIM{ihhwvc_swfrcp_5_8}", "rf_cipher": "GF{lntseESLGri_ec_rnps}TAafeao", "morse": "--. . - ... ..-. .-.. .- --. -.--. -- --- .-. ... . ..--.- -.. --- - ..--.- -.. .- ... .... -.--.-", "nato": "Golf Echo Tango Sierra Foxtrot Lima Alfa Golf", "t9": "4 33 8 7777 333 555 2 4", "tap": "22 15 44 43 21 31 11 22", "chem": "B O B C C B C Be B N B Al B He B O", "roman": "LXXI LXIX LXXXIV LXXXIII LXX LXXVI LXV LXXI", "seg_ascii_dec": "071 069 084 083 070 076 065 071", "seg_mask": "0111101 1001111 1110111 0111101 0011111 1001111 1001111 1000111", "bacon24": "aabba aabaa baaba baaab aabab ababa aaaaa aabba", "bacon26": "aabba aabaa baabb baaba aabab ababb aaaaa aabba", "bacon_case": "thE QuicK brOwn FOX juMps oVeR tHe LAzy dog whILe packs run far", "braille": "⡇⡅⡔⡓⡆⡌⡁⡇", "zw": "​‌​​​‌‌‌​‌​​​‌​‌​‌​‌​‌​​​‌​‌​​‌‌​‌​​​‌‌​​‌​​‌‌​​​‌​​​​​‌​‌​​​‌‌‌​‌‌‌‌​‌‌​‌‌‌‌​‌​​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​​​​​‌​‌‌‌‌‌​‌‌​‌​​​​‌‌​‌​​‌​‌‌​​‌​​​‌‌​​‌​​​‌‌​​‌​‌​‌‌​‌‌‌​​‌‌‌‌‌​‌", "utags": "󠁇󠁅󠁔󠁓󠁆󠁌󠁁󠁇󠁻󠁵󠁮󠁩󠁣󠁯󠁤󠁥󠁟󠁴󠁡󠁧󠁳󠁽", "uu": "begin 644 flag.txt\n;1T544T9,04=[9G)A;6EN9U]R96-O=F5R961]\n`\nend", "xx": "begin 644 flag.txt\nPFoJIIoNAEIRvNb7VPKZiNpxmNKBjRaJmNKFx\n+\nend", "yenc": "=ybegin line=128 size=27 name=flag.txt\nqo~}pvkq¥ §\n=yend size=27\r\n", "hexdump": "00000000: 4745 5453 464c 4147 7b68 6578 5f78 7864  GETSFLAG{hex_xxd\n00000010: 5f73 7479 6c65 5f64 756d 707d          _style_dump}", "record_hex": "4c52454321000400460700471b00780000470200541700640300530f00651a006408007b0e006c0d006615006f1000640100451c007d0600411400630900731900690c00660a006805004c18005f1200720b007516007211005f1300650000", "collatz_input": "444 111 466 233 222 395 251 444 514 322 27 124 124 447 145 257 121 73 145 27 54 342", "fib_input": "308061521170129 117669030460994 160500643816367088 99194853094755497 190392490709135 3416454622906707 17167680177565 308061521170129 22698374052006863956975682 927372692193078999176 3928413764606871165730 135301852344706746049 31940434634990099905 3928413764606871165730 43566776258854844738105 354224848179261915075 573147844013817084101 5358359254990966640871840 59425114757512643212875125", "rpn_input": "100 29 -\n100 31 -\n100 16 -\n100 17 -\n100 30 -\n100 24 -\n100 35 -\n100 29 -\n100 -23 -\n100 -14 -\n100 -12 -\n100 -10 -\n100 5 -\n100 -15 -\n100 -16 -\n100 3 -\n100 1 -\n100 -7 -\n100 -25 -", "gf2_b": "1011000110000100000011111110111100111111001001110100110000101000", "gf2_a": "1001111010100100000100001011010111111011110110011100111101001110010101000100101110110010101011100000010001101001101101000000010010110001101000110111010010111000110011010011001011010000000011011010110001011101110011011010110111011111000111001010010000011001100001011110000100101101001101100010100111010111101001111111010011101001101111001011111110100100010100100001111011010001111001011010010011010001001010011101011111011000000101001100011110010100111000100001101110010011101011011111010100000110000001100101111010011011011100111011111111000001000100000011101001111111100010110010100001000011100000001010010001100010001001011101101110101111011010111100000000001011100001101101000010100010011101001111101100111111101001101110011000000110101111001101111000100101001100111110011001100011001111000001010111001000110110001001100011001010110000100001011101101101110011111011101010110000101001000000001011101001100101100011000001010110100001111100011100001101001001010100011000101111101101010100101010110101010010100110010001111110111101000001111011001001110000111110011111010111001101101001111011110001100011010010111101010100101011110010010110110100111010100111001100110110100001101110010111100001000010001111111101101000101100011100110001111110010001000111000101111000011010110000001100111001101010101101001101110111011001011100010111100111111100010111110000010101100101111010011110111111111011000000010100000010100100011000111011100001100111100000010010011001000111010110001100100011001011011001001001110010000110001110110011001010100111000110101001001001101011100100011101111100100000111110000011100001001010011001111011011001011110110011001001111101101001110000111010010010000111100100000001111001001011000110000110111100001000101110001010111011101111010000100110001101001000000110110111011011101001111001110010010101001110111100111110011000010000110101101011111011010000100010111110111010111110011111001100010111000011001100011101111101111011111110001101001011000111101110011001001111111110110010001100101010110000010111011100011010000000110001110111011001011111110000010100011001011011110011110010001100101001111111010001100101101111001111111011100110001100000010000001011110001001100111000011100110001110011101111010010000011001110001110010011111100011010100100100010000001101101111011001011001001110110010010100101000111010100000011001101110011000011010111001100110010000010011000000000001111110010101011010010011010001100110000100110101000110011000100101000100101101000011110001011010111011101101010101110111010011111001000110000001000110000111101101011010100010110011111110000111100000001001100111010100000111110001000000010111011110110110111111001100010101101011001001001001001010011010101110110011100110111010001011101111111100010100111000010010011010110111111010010011111110010010011100101001010100001001110001110011110001100100011110010011110001000000110101101101010000100000011100100110001010110111100110001010110110001110010111111101001010010111111110100011110011101010100110100011100111111010101110100011111100101001111111000111101101011101100111011000010111101010010101011101011011101111100000000010110111000011101101110010100111001000101011101111110100011010101111000101100010101100000111000101100110010000111111101010001110001100001110101111000100011001000101011101111001100010010100101011101100010101000111001010000001010111111100010110010111111110000110010011110011100101000110011011010110100010100001011001011100110110111111111011000011010110101111111001010111101100000010110111101111111110100100010001010000010101110011010100101011100011000111000010101010100011001011001010110001110111010111000011000101111100111111000110001000011010011100000101001000110010001101010101011001011111100111110011000101110011111001000011101010101110100101111001001101110010001000011101000010110101011000000111111100000110010000001110000010100011110111001111111010100000101001010001100001010010000010010011000100001000110111010001001001010001001101010101101100011010000111101001110111000101000110101010001000110101010101101011010010101010101110000001110110011011100001101111011111111110000011011110", "ws_program": "   \t   \t\t\t\n\t\t    \t   \t \t\n\t\t    \t \t \t  \n\t\t    \t \t  \t\t\n\t\t    \t   \t\t \n\t\t    \t  \t\t  \n\t\t    \t     \t\n\t\t    \t   \t\t\t\n\t\t    \t\t\t\t \t\t\n\t\t    \t\t\t \t\t\t\n\t\t    \t\t\t  \t\t\n\t\t    \t \t\t\t\t\t\n\t\t    \t\t \t\t  \n\t\t    \t\t    \t\n\t\t    \t\t \t\t\t \n\t\t    \t\t  \t\t\t\n\t\t    \t\t\t\t\t \t\n\t\t \n\n\n", "stackvm_program": "PUSH 71\nEMIT\nPUSH 69\nEMIT\nPUSH 84\nEMIT\nPUSH 83\nEMIT\nPUSH 70\nEMIT\nPUSH 76\nEMIT\nPUSH 65\nEMIT\nPUSH 71\nEMIT\nPUSH 123\nEMIT\nPUSH 115\nEMIT\nPUSH 116\nEMIT\nPUSH 97\nEMIT\nPUSH 99\nEMIT\nPUSH 107\nEMIT\nPUSH 95\nEMIT\nPUSH 118\nEMIT\nPUSH 109\nEMIT\nPUSH 125\nEMIT", "deadfish_program": "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiioddoiiiiiiiiiiiiiiiododddddddddddddoiiiiiiodddddddddddoiiiiiio", "befunge_code": "\"}d2_egnufeb{GALFSTEG\",,,,,,,,,,,,,,,,,,,,@", "b16": "47455453464c41477b6261736531365f6865787d", "b32": "I5CVIU2GJRAUO63CMFZWKMZSL5ZGMYZUGY2DQ7I=", "b45": "90KATW8*-8BGFQ-CEHCZX6XSEK CP:", "b58": "7Vr2iECYrZFPuxoL197Pnuaj64azZoAap", "b62": "2nNBFtIUls8wdBn5QnETNRec73ZANB", "b64": "R0VUU0ZMQUd7YmFzZTY0X3N0ZH0=", "b85": "<~M@3XqMod9Rdtx{>eE~>", "zw_carrier": "Laporan insiden Q3 (terlampir)", "bf_hello": "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."};
+
+    const MORSE_TABLE = {
+      'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+      'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+      'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+      'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+      '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '{': '-.--.', '}': '-.--.-',
+      '_': '..--.-', '?': '..--..', '/': '-..-.', '!': '-.-.--'
+    };
+    const MORSE_REV = {};
+    for (const k in MORSE_TABLE) if (!MORSE_REV[MORSE_TABLE[k]]) MORSE_REV[MORSE_TABLE[k]] = k;
+
+    const NATO_REV = {
+      ALFA: 'A', ALPHA: 'A', BRAVO: 'B', CHARLIE: 'C', DELTA: 'D', ECHO: 'E', FOXTROT: 'F', GOLF: 'G',
+      HOTEL: 'H', INDIA: 'I', JULIETT: 'J', JULIET: 'J', KILO: 'K', LIMA: 'L', MIKE: 'M', NOVEMBER: 'N',
+      OSCAR: 'O', PAPA: 'P', QUEBEC: 'Q', ROMEO: 'R', SIERRA: 'S', TANGO: 'T', UNIFORM: 'U', VICTOR: 'V',
+      WHISKEY: 'W', XRAY: 'X', YANKEE: 'Y', ZULU: 'Z', ZERO: '0', ONE: '1', TWO: '2', THREE: '3',
+      FOUR: '4', FIVE: '5', SIX: '6', SEVEN: '7', EIGHT: '8', NINE: '9'
+    };
+
+    const T9_KEY = { '2': 'ABC', '3': 'DEF', '4': 'GHI', '5': 'JKL', '6': 'MNO', '7': 'PQRS', '8': 'TUV', '9': 'WXYZ' };
+    const SEG7 = { 126: '0', 48: '1', 109: '2', 121: '3', 51: '4', 91: '5', 95: '6', 112: '7', 127: '8', 123: '9', 119: 'A', 31: 'B', 78: 'C', 61: 'D', 79: 'E', 71: 'F' };
+    const BACON26 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const BACON24 = "ABCDEFGHIKLMNOPQRSTUWXYZ";
+
+    function finish(outId, text) {
+      const el = document.getElementById(outId);
+      el.classList.toggle('has-flag', text.includes('GETSFLAG{'));
+      el.innerHTML = formatFlagOutput(text);
+      if (el.classList.contains('has-flag')) pulseFlagBox(outId);
+    }
+    function printable(ch) { return ch >= 32 && ch < 127 ? String.fromCharCode(ch) : '.'; }
+
+    // ---------- XXencode ----------
+    function decodeXX() {
+      const raw = document.getElementById('framing-input').value;
+      const A = "+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      let bytes = [], inData = false;
+      for (const line of raw.split(/\r?\n/)) {
+        const t = line.replace(/\r$/, '');
+        if (/^begin\b/.test(t)) { inData = true; continue; }
+        if (/^end\b/.test(t)) { inData = false; continue; }
+        if (!inData || !t.length) continue;
+        const n = A.indexOf(t[0]);
+        if (n <= 0) continue;
+        let bits = '';
+        for (let i = 1; i < t.length; i++) {
+          const v = A.indexOf(t[i]);
+          if (v < 0) break;
+          bits += v.toString(2).padStart(6, '0');
+        }
+        let cnt = 0;
+        for (let i = 0; i + 8 <= bits.length && cnt < n; i += 8) { bytes.push(parseInt(bits.substr(i, 8), 2)); cnt++; }
+      }
+      finish('framing-output', `[XXencode, ${bytes.length} byte]:\n${String.fromCharCode(...bytes)}`);
+    }
+
+    // ---------- Morse teks ----------
+    function decodeMorseText() {
+      const raw = document.getElementById('tactical-input').value.trim();
+      let out = '', unknown = [];
+      for (const tk of raw.split(/[\s,]+/).filter(Boolean)) {
+        if (tk === '/' || tk === '|') { out += ' '; continue; }
+        const sym = tk.replace(/[\u00b7\u2022]/g, '.').replace(/[\u2013\u2014\u2212\u2500-]/g, '-');
+        if (MORSE_REV[sym]) out += MORSE_REV[sym];
+        else unknown.push(tk);
+      }
+      let txt = out;
+      if (unknown.length) txt += `\n\n[Token tak dikenal]: ${unknown.join(' ')}`;
+      finish('tactical-output', txt);
+    }
+
+    // ---------- NATO ----------
+    function decodeNATO() {
+      const raw = document.getElementById('tactical-input').value.toUpperCase();
+      const words = raw.replace(/X-RAY/g, 'XRAY').replace(/[^A-Z0-9]+/g, ' ').split(/\s+/).filter(Boolean);
+      let out = '', unknown = [];
+      for (const w of words) {
+        if (NATO_REV[w]) out += NATO_REV[w];
+        else if (/^[0-9]$/.test(w)) out += w;
+        else unknown.push(w);
+      }
+      let txt = out;
+      if (unknown.length) txt += `\n\n[Kata tak dikenal]: ${unknown.join(' ')}`;
+      finish('tactical-output', txt);
+    }
+
+    // ---------- T9 ----------
+    function decodeT9() {
+      const raw = document.getElementById('tactical-input').value.trim();
+      let byToken = '', bad = [];
+      for (const t of raw.split(/[\s,]+/).filter(Boolean)) {
+        if (/^[2-9]$/.test(t)) byToken += T9_KEY[t][0];
+        else if (/^([2-9])\1*$/.test(t)) {
+          const i = t.length - 1;
+          byToken += i < T9_KEY[t[0]].length ? T9_KEY[t[0]][i] : '?';
+        } else bad.push(t);
+      }
+      const digits = raw.replace(/[^2-9]/g, '');
+      let byRun = '';
+      for (let i = 0; i < digits.length;) {
+        let j = i;
+        while (j < digits.length && digits[j] === digits[i]) j++;
+        const i2 = (j - i) - 1;
+        byRun += i2 < T9_KEY[digits[i]].length ? T9_KEY[digits[i]][i2] : '?';
+        i = j;
+      }
+      const firsts = [...digits].map(d => T9_KEY[d] ? T9_KEY[d][0] : '').join('');
+      let txt = `[Token terpisah]: ${byToken}\n[Run digit berurutan]: ${byRun}\n[Huruf pertama tiap digit]: ${firsts}`;
+      if (bad.length) txt += `\n\n[Diabaikan]: ${bad.join(' ')}`;
+      finish('tactical-output', txt);
+    }
+
+    // ---------- 7-segment ----------
+    function reverseBits(v, w) {
+      let r = 0;
+      for (let i = 0; i < w; i++) if ((v >> i) & 1) r |= 1 << (w - 1 - i);
+      return r;
+    }
+    function decode7Segment() {
+      const toks = document.getElementById('chem-input').value.trim().split(/[\s,]+/).filter(Boolean);
+      let fwd = '', rev = '', dec = '', oct = '';
+      for (const t of toks) {
+        if (/^[01]{7}$/.test(t)) {
+          const v = parseInt(t, 2);
+          fwd += SEG7[v] || '.';
+          rev += SEG7[reverseBits(v, 7)] || '.';
+        } else if (/^\d{2,4}$/.test(t)) {
+          const d = parseInt(t, 10);
+          dec += printable(d);
+          const o = parseInt(t, 8);
+          oct += printable(o);
+        }
+      }
+      finish('chem-output',
+        `[Masker abcdefg (MSB=a)]: ${fwd}\n[Masker gfedcba (reversed)]: ${rev}\n[Desimal ASCII]: ${dec}\n[Okta ASCII]: ${oct}`);
+    }
+
+    // ---------- Baconian ----------
+    function baconGroups(bits, alphabet) {
+      let out = '';
+      for (let i = 0; i + 5 <= bits.length; i += 5) {
+        const idx = parseInt(bits.substr(i, 5), 2);
+        out += idx < alphabet.length ? alphabet[idx] : '?';
+      }
+      return out;
+    }
+    function decodeBacon() {
+      const raw = document.getElementById('roman-input').value;
+      let bits = raw.toUpperCase().replace(/A/g, '0').replace(/B/g, '1').replace(/[^01]/g, '');
+      let srcName = 'A/B';
+      if (bits.length < 5) {
+        bits = raw.replace(/[\.\u00b7]/g, '0').replace(/[-\u2013\u2014]/g, '1').replace(/[^01]/g, '');
+        srcName = 'titik/garis';
+      }
+      finish('roman-output',
+        `[${srcName}, ${bits.length} bit]\n[Alfabet 26 huruf]: ${baconGroups(bits, BACON26)}\n[Alfabet 24 huruf (I=J, U=V)]: ${baconGroups(bits, BACON24)}`);
+    }
+    function decodeBaconCase() {
+      const letters = document.getElementById('roman-input').value.replace(/[^A-Za-z]/g, '');
+      const upIs1 = [...letters].map(c => (c === c.toUpperCase() && c !== c.toLowerCase()) ? '1' : '0').join('');
+      const loIs1 = [...upIs1].map(b => b === '1' ? '0' : '1').join('');
+      finish('roman-output',
+        `[Huruf saja: ${letters.length}]\n[Uppercase = bit 1, 26 huruf]: ${baconGroups(upIs1, BACON26)}\n[Uppercase = bit 0, 26 huruf]: ${baconGroups(loIs1, BACON26)}\n[Uppercase = bit 1, 24 huruf]: ${baconGroups(upIs1, BACON24)}\n[Uppercase = bit 0, 24 huruf]: ${baconGroups(loIs1, BACON24)}`);
+    }
+
+    // ---------- Whitespace ----------
+    function runWhitespace() {
+      const src = document.getElementById('ws-code').value;
+      const p = (src.match(/[ \t\n]/g) || []).join('');
+      if (!p.length) { finish('ws-output', 'Tidak ada karakter spasi/tab/newline pada input.'); return; }
+      const stack = [], heap = new Map(), labels = {}, callStack = [];
+      let ip = 0, out = '', guard = 0, stdinIdx = 0;
+      const stdin = document.getElementById('bf-stdin').value;
+      const readNumber = () => {
+        const sign = p[ip] === ' ' ? 1 : -1; ip++;
+        let bits = '';
+        while (ip < p.length && p[ip] !== '\n') { bits += p[ip] === ' ' ? '0' : '1'; ip++; }
+        ip++;
+        return sign * (bits ? parseInt(bits, 2) : 0);
+      };
+      const readLabel = () => {
+        let l = '';
+        while (ip < p.length && p[ip] !== '\n') { l += p[ip]; ip++; }
+        ip++;
+        return l;
+      };
+      const jumpTo = (name) => {
+        if (labels[name] === undefined) { out += `\n[Label "${name}" tidak ditemukan]`; ip = p.length; return false; }
+        ip = labels[name]; return true;
+      };
+      while (ip < p.length && guard++ < 400000) {
+        const imp = p[ip];
+        if (imp === ' ') {
+          ip++;
+          const m = p[ip];
+          if (m === ' ') { ip++; stack.push(readNumber()); }
+          else if (m === '\n') { ip++; stack.push(stack[stack.length - 1] || 0); }
+          else if (m === '\t') {
+            ip++;
+            const a = p[ip], b = p[ip + 1];
+            const pop = () => stack.pop() || 0;
+            if (a === ' ' && b === '\t') { ip += 2; const q = pop(), r = pop(); stack.push(r * q); }
+            else if (a === '\t' && b === '\t') { ip += 2; const q = pop(), r = pop(); stack.push(q === 0 ? 0 : Math.trunc(r / q)); }
+            else if (a === '\t' && b === ' ') { ip += 2; const q = pop(), r = pop(); stack.push(q === 0 ? 0 : ((r % q) + q) % q); }
+            else if (a === ' ') { ip++; const t = stack.pop(), v = stack.pop(); stack.push(t, v); }
+            else if (a === '\n') { ip++; const q = pop(), r = pop(); stack.push(r + q); }
+            else if (a === '\t') { ip++; const q = pop(), r = pop(); stack.push(r - q); }
+            else break;
+          } else break;
+        } else if (imp === '\t') {
+          ip++;
+          const a = p[ip], b = p[ip + 1];
+          if (a === '\t' && b === ' ') { ip += 2; out += String.fromCharCode((stack.pop() || 0) & 0xff); }
+          else if (a === '\n' && b === ' ') { ip += 2; out += String(stack.pop() || 0); }
+          else if (a === ' ' && b === '\t') { ip += 2; heap.set(stack.pop() || 0, stdinIdx < stdin.length ? stdin.charCodeAt(stdinIdx++) : 0); }
+          else if (a === '\n' && b === '\t') { ip += 2; heap.set(stack.pop() || 0, 0); }
+          else break;
+        } else if (imp === '\n') {
+          ip++;
+          const a = p[ip], b = p[ip + 1];
+          if (a === '\n' && b === '\n') { ip += 2; break; }
+          else if (a === ' ' && b === ' ') { ip += 2; labels[readLabel()] = ip; }
+          else if (a === ' ' && b === '\t') { ip += 2; const l = readLabel(); callStack.push(ip); if (!jumpTo(l)) break; }
+          else if (a === ' ' && b === '\n') { ip += 2; if (!jumpTo(readLabel())) break; }
+          else if (a === '\t' && b === ' ') { ip += 2; const l = readLabel(); if ((stack.pop() || 0) === 0 && !jumpTo(l)) break; }
+          else if (a === '\t' && b === '\t') { ip += 2; const l = readLabel(); if ((stack.pop() || 0) < 0 && !jumpTo(l)) break; }
+          else if (a === '\t' && b === '\n') { ip += 2; const ret = callStack.pop(); if (ret === undefined) break; ip = ret; }
+          else break;
+        } else break;
+      }
+      if (!out) {
+        const bits = p.replace(/\n/g, '').replace(/ /g, '0').replace(/\t/g, '1');
+        let bin = '';
+        for (let i = 0; i + 8 <= bits.length; i += 8) bin += printable(parseInt(bits.substr(i, 8), 2));
+        finish('ws-output', `[Program Whitespace standar tidak menghasilkan keluaran.]\n[Mode biner: spasi=0, tab=1, ${bits.length} bit]\n${bin}`);
+        return;
+      }
+      finish('ws-output', out);
+    }
+
+    function loadWSFile(event) {
+      const f = event.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = (e) => { document.getElementById('ws-code').value = e.target.result; runWhitespace(); };
+      r.readAsText(f);
+    }
+
+    // ---------- GF(2) ----------
+    function solveGF2() {
+      const bStr = document.getElementById('gf2-b').value.replace(/[^01]/g, '');
+      const aStr = document.getElementById('gf2-a').value.replace(/[^01]/g, '');
+      const n = bStr.length;
+      if (!n || !aStr.length) { finish('gf2-output', 'Isi vektor b dan matriks A dengan bit 0/1.'); return; }
+      if (aStr.length !== n * n) {
+        const root = Math.sqrt(aStr.length);
+        const isSquare = Math.abs(root - Math.round(root)) < 1e-9;
+        finish('gf2-output', `Ukuran tidak cocok: b = ${n} bit, A = ${aStr.length} bit` +
+          (isSquare ? ` (A tampak ${Math.round(root)}x${Math.round(root)}, butuh ${n}x${n}).` : ` (A harus N x N dengan N = ${n}).`));
+        return;
+      }
+      const m = [];
+      for (let r = 0; r < n; r++) {
+        const row = new Uint8Array(n + 1);
+        for (let c = 0; c < n; c++) row[c] = aStr.charCodeAt(r * n + c) - 48;
+        row[n] = bStr.charCodeAt(r) - 48;
+        m.push(row);
+      }
+      const where = new Int32Array(n).fill(-1);
+      let row = 0;
+      for (let col = 0; col < n && row < n; col++) {
+        let sel = -1;
+        for (let r = row; r < n; r++) if (m[r][col]) { sel = r; break; }
+        if (sel === -1) continue;
+        const tmp = m[row]; m[row] = m[sel]; m[sel] = tmp;
+        for (let r = 0; r < n; r++) {
+          if (r !== row && m[r][col]) {
+            const a = m[r], b2 = m[row];
+            for (let c = col; c <= n; c++) a[c] ^= b2[c];
+          }
+        }
+        where[row] = col; row++;
+      }
+      for (let r = row; r < n; r++) if (m[r][n]) { finish('gf2-output', 'Sistem tidak konsisten: tidak ada solusi.'); return; }
+      const x = new Uint8Array(n);
+      for (let r = row - 1; r >= 0; r--) {
+        const c = where[r];
+        let v = m[r][n];
+        for (let k = c + 1; k < n; k++) if (m[r][k]) v ^= x[k];
+        x[c] = v;
+      }
+      const bits = x.join('');
+      let msb = '', lsb = '';
+      for (let i = 0; i + 8 <= bits.length; i += 8) {
+        const g = bits.substr(i, 8);
+        msb += printable(parseInt(g, 2));
+        lsb += printable(parseInt(g.split('').reverse().join(''), 2));
+      }
+      finish('gf2-output',
+        `[Rank matriks]: ${row}/${n}\n[Solusi x, ${n} bit]:\n${(bits.match(/.{1,8}/g) || []).join(' ')}\n\n[ASCII MSB-first]: ${msb}\n[ASCII LSB-first]: ${lsb}`);
+    }
+
+    // ---------- Audio: CW Morse ----------
+    function decodeAudioMorse() {
+      if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
+      const env = audioEnvelope(0.005);
+      const bursts = audioBursts(env, 0.2, 0.01);
+      if (!bursts.length) { finish('audio-output', 'Tidak ada burst nada terdeteksi.'); return; }
+      const durs = bursts.map(b => b[1] - b[0]);
+      const gaps = [];
+      for (let i = 1; i < bursts.length; i++) gaps.push(bursts[i][0] - bursts[i - 1][1]);
+      const tol = Math.max(16, audioSampleRate * 0.006);
+      const dc = clusterValues(durs, tol), gc = clusterValues(gaps, tol);
+      const ditTh = dc.length > 1 ? (dc[0] + dc[1]) / 2 : dc[0] * 2;
+      const intraTh = gc.length > 1 ? (gc[0] + gc[1]) / 2 : gc[0] * 2;
+      const letterTh = gc.length > 2 ? (gc[1] + gc[2]) / 2 : Infinity;
+      let code = '';
+      for (let i = 0; i < bursts.length; i++) {
+        code += durs[i] < ditTh ? '.' : '-';
+        if (i + 1 < bursts.length) {
+          const g = gaps[i];
+          if (g > intraTh && g <= letterTh) code += ' ';
+          else if (g > letterTh) code += '  ';
+        }
+      }
+      const text = code.split(/ +/).map(t => MORSE_REV[t] || '').join('');
+      finish('audio-output',
+        `[${bursts.length} burst] dit ~ ${(dc[0] / audioSampleRate * 1000).toFixed(0)}ms` +
+        (dc[1] ? ` | dah ~ ${(dc[1] / audioSampleRate * 1000).toFixed(0)}ms` : '') +
+        `\n[Kode]: ${code}\n[Teks]: ${text}`);
+    }
+
+    // ---------- Audio: tangga nada per nibble ----------
+    function decodeAudioToneNibble() {
+      if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
+      const env = audioEnvelope(0.008);
+      const bursts = audioBursts(env, 0.22, 0.02);
+      if (!bursts.length) { finish('audio-output', 'Tidak ada burst nada terdeteksi.'); return; }
+      const freqs = bursts.map(b => burstFreq(b[0], b[1], audioBufferData));
+      const centers = clusterValues(freqs, Math.max(25, audioSampleRate * 0.004));
+      const idx = freqs.map(f => {
+        let best = 0, bd = Infinity;
+        for (let i = 0; i < centers.length; i++) { const d = Math.abs(f - centers[i]); if (d < bd) { bd = d; best = i; } }
+        return best;
+      });
+      const nib = v => (v < 10 ? String(v) : String.fromCharCode(87 + v));
+      let txt = `[${bursts.length} burst, ${centers.length} tingkatan]\n[Nada]: ${centers.map(f => f.toFixed(0) + 'Hz').join(' ')}\n`;
+      if (centers.length >= 8) {
+        const hexStr = idx.map(nib).join('');
+        let ascii = '';
+        for (let i = 0; i + 1 < hexStr.length; i += 2) ascii += printable(parseInt(hexStr.substr(i, 2), 16));
+        txt += `\n[1 nibble per burst] hex: ${hexStr}\n[ASCII]: ${ascii}`;
+      } else if (centers.length >= 4) {
+        const pairs = ['00', '01', '10', '11'];
+        const bits = idx.map(v => pairs[v] || '00').join('');
+        let ascii = '';
+        for (let i = 0; i + 8 <= bits.length; i += 8) ascii += printable(parseInt(bits.substr(i, 8), 2));
+        txt += `\n[2 bit per nada] ${bits.length} bit\n[ASCII]: ${ascii}`;
+      } else {
+        txt += `\n[Hanya ${centers.length} tingkatan nada: gunakan decoder 2FSK atau tone-per-byte.]`;
+      }
+      finish('audio-output', txt);
+    }
+
+    // ---------- Audio: FSK ----------
+    function fskCarriers(maxN) {
+      const data = audioBufferData, N = data.length;
+      const grid = [];
+      for (let f = 200; f <= 4000; f += 25) grid.push({ f, m: goertzelMag(0, N, f, data) });
+      grid.sort((a, b) => b.m - a.m);
+      const picked = [];
+      for (const g of grid) {
+        if (picked.length >= maxN) break;
+        if (picked.some(x => Math.abs(x - g.f) < 150)) continue;
+        picked.push(g.f);
+      }
+      return picked.sort((a, b) => a - b);
+    }
+
+    function fskDecode(nCarriers, bitsPerSymbol, label) {
+      if (!audioBufferData) { alert('Unggah berkas WAV terlebih dahulu!'); return; }
+      const carriers = fskCarriers(nCarriers);
+      const step = Math.max(4, Math.floor(audioSampleRate * 0.0004));
+      const win = Math.max(24, Math.floor(audioSampleRate * 0.003));
+      const seq = [];
+      for (let s = 0; s + win < audioBufferData.length; s += step) {
+        let best = 0, bm = -1;
+        for (let c = 0; c < carriers.length; c++) {
+          const mg = goertzelMag(s, s + win, carriers[c], audioBufferData);
+          if (mg > bm) { bm = mg; best = c; }
+        }
+        seq.push(best);
+      }
+      const smooth = seq.map((v, i) => {
+        const cnt = new Array(nCarriers).fill(0);
+        for (let k = -2; k <= 2; k++) cnt[seq[Math.min(seq.length - 1, Math.max(0, i + k))]]++;
+        let bi = 0;
+        for (let k = 1; k < cnt.length; k++) if (cnt[k] > cnt[bi]) bi = k;
+        return bi;
+      });
+      const runs = [];
+      for (let i = 0; i < smooth.length;) {
+        let j = i;
+        while (j < smooth.length && smooth[j] === smooth[i]) j++;
+        runs.push({ state: smooth[i], len: j - i });
+        i = j;
+      }
+      const total = smooth.length;
+      let unit = Math.min(...runs.map(r => r.len));
+      for (let it = 0; it < 8; it++) {
+        let symbols = 0;
+        for (const r of runs) symbols += Math.max(1, Math.round(r.len / unit));
+        const refined = total / symbols;
+        if (Math.abs(refined - unit) < 0.05) { unit = refined; break; }
+        unit = refined;
+      }
+      const symbols = [];
+      for (const r of runs) {
+        const k = Math.max(1, Math.round(r.len / unit));
+        for (let t = 0; t < k; t++) symbols.push(r.state);
+      }
+      const bits = symbols.map(v => v.toString(2).padStart(bitsPerSymbol, '0')).join('');
+      const conv = (rev, size) => {
+        let out = '';
+        for (let i = 0; i + size <= bits.length; i += size) {
+          const g = rev ? bits.substr(i, size).split('').reverse().join('') : bits.substr(i, size);
+          out += printable(parseInt(g, 2));
+        }
+        return out;
+      };
+      finish('audio-output',
+        `${label} | carrier: ${carriers.map(c => c.toFixed(0) + 'Hz').join(', ')}` +
+        ` | simbol: ${(unit * step / audioSampleRate * 1000).toFixed(1)}ms | ${symbols.length} simbol | ${bits.length} bit\n` +
+        `[MSB-first 8]: ${conv(false, 8)}\n[LSB-first 8]: ${conv(true, 8)}\n[MSB-first 7]: ${conv(false, 7)}`);
+    }
+
+    function decodeAudioFSK() { fskDecode(2, 1, '2FSK'); }
+    function decodeAudio4FSK() { fskDecode(4, 2, '4FSK'); }
+
+    // ---------- PNG LSB + ZIP listing ----------
+    async function inflateAsync(bytes) {
+      if (typeof DecompressionStream === 'undefined') return null;
+      const ds = new DecompressionStream('deflate');
+      const w = ds.writable.getWriter();
+      w.write(bytes); w.close();
+      const r = ds.readable.getReader();
+      const chunks = [];
+      let size = 0;
+      for (;;) {
+        const res = await r.read();
+        if (res.done) break;
+        chunks.push(res.value); size += res.value.length;
+      }
+      const out = new Uint8Array(size);
+      let o = 0;
+      for (const c of chunks) { out.set(c, o); o += c.length; }
+      return out;
+    }
+
+    async function extractPngLsb(u8) {
+      try {
+        if (u8.length < 33) return '';
+        const w = ((u8[16] << 24) | (u8[17] << 16) | (u8[18] << 8) | u8[19]) >>> 0;
+        const h = ((u8[20] << 24) | (u8[21] << 16) | (u8[22] << 8) | u8[23]) >>> 0;
+        const depth = u8[24], color = u8[25];
+        if (depth !== 8 || (color !== 2 && color !== 6)) return '';
+        const dec = new TextDecoder('latin1');
+        const idat = [];
+        let pos = 8;
+        while (pos + 12 <= u8.length) {
+          const len = ((u8[pos] << 24) | (u8[pos + 1] << 16) | (u8[pos + 2] << 8) | u8[pos + 3]) >>> 0;
+          const type = dec.decode(u8.subarray(pos + 4, pos + 8));
+          if (type === 'IDAT') idat.push(u8.subarray(pos + 8, pos + 8 + len));
+          if (type === 'IEND') break;
+          pos += 12 + len;
+        }
+        if (!idat.length) return '';
+        const comp = new Uint8Array(idat.reduce((a, b) => a + b.length, 0));
+        let o = 0;
+        for (const c of idat) { comp.set(c, o); o += c.length; }
+        const raw = await inflateAsync(comp);
+        if (!raw) return '[DecompressionStream tidak tersedia di browser ini]';
+        const ch = color === 6 ? 4 : 3;
+        const stride = w * ch;
+        const prev = new Uint8Array(stride), cur = new Uint8Array(stride);
+        let rp = 0, bits = '';
+        for (let y = 0; y < h && rp < raw.length; y++) {
+          const ft = raw[rp++];
+          for (let x = 0; x < stride && rp < raw.length; x++) {
+            const v = raw[rp++];
+            const a = x >= ch ? cur[x - ch] : 0, b = prev[x], c2 = x >= ch ? prev[x - ch] : 0;
+            let val = v;
+            if (ft === 1) val = (v + a) & 0xff;
+            else if (ft === 2) val = (v + b) & 0xff;
+            else if (ft === 3) val = (v + ((a + b) >> 1)) & 0xff;
+            else if (ft === 4) {
+              const p = a + b - c2, pa = Math.abs(p - a), pb = Math.abs(p - b), pc = Math.abs(p - c2);
+              val = (v + (pa <= pb && pa <= pc ? a : pb <= pc ? b : c2)) & 0xff;
+            }
+            cur[x] = val;
+            bits += (val & 1);
+          }
+          prev.set(cur);
+          if (bits.length > 600000) break;
+        }
+        let out = '';
+        for (let i = 0; i + 8 <= bits.length; i += 8) {
+          const c = parseInt(bits.substr(i, 8), 2);
+          if (c === 0 && out.length) break;
+          out += printable(c);
+        }
+        return out.replace(/\.{3,}$/, '').slice(0, 200);
+      } catch (e) { return '[LSB error: ' + e.message + ']'; }
+    }
+
+    function listZipEntries(u8) {
+      const names = [];
+      const dec = new TextDecoder('latin1');
+      for (let i = 0; i + 30 <= u8.length && names.length < 40; i++) {
+        if (u8[i] === 0x50 && u8[i + 1] === 0x4b && u8[i + 2] === 0x03 && u8[i + 3] === 0x04) {
+          const nlen = u8[i + 26] | (u8[i + 27] << 8);
+          const elen = u8[i + 28] | (u8[i + 29] << 8);
+          if (nlen > 0 && nlen < 256 && i + 30 + nlen <= u8.length) {
+            names.push(dec.decode(u8.subarray(i + 30, i + 30 + nlen)));
+            i += 30 + nlen + elen;
+          }
+        }
+      }
+      return names;
+    }
+
+    // ---------- Demo assets ----------
+    const DEMO_FILES = {
+      dtmf: '/assets/ctfqa/dtmf.wav', morse: '/assets/ctfqa/morse.wav', tonebyte: '/assets/ctfqa/tonebyte.wav',
+      nibble: '/assets/ctfqa/nibble.wav', fsk: '/assets/ctfqa/fsk.wav', fsk4: '/assets/ctfqa/fsk4.wav',
+      png: '/assets/ctfqa/stego.png', jpeg: '/assets/ctfqa/stego.jpg', zip: '/assets/ctfqa/embedded.pkg'
+    };
+    const DEMO_RUN = {
+      dtmf: decodeAudioDTMF, morse: decodeAudioMorse, tonebyte: decodeAudioToneByte,
+      nibble: decodeAudioToneNibble, fsk: decodeAudioFSK, fsk4: decodeAudio4FSK
+    };
+    async function loadDemo(kind) {
+      const btn = document.querySelector(`[data-demo="demo:${kind}"]`);
+      if (btn) { btn.disabled = true; btn.textContent = 'Memuat…'; }
+      try {
+        const res = await fetch(DEMO_FILES[kind]);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const buf = await res.arrayBuffer();
+        const name = DEMO_FILES[kind].split('/').pop();
+        if (DEMO_RUN[kind]) loadAudioBuffer(name, buf, DEMO_RUN[kind]);
+        else inspectArrayBuffer(name, buf);
+      } catch (e) {
+        showToast('Gagal memuat contoh: ' + e.message);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label; }
+      }
+    }
+
+    // ---------- Sample dispatcher ----------
+    function loadSample(key) {
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+      switch (key) {
+        case 'univ': set('univ-input', SAMPLES.univ_b64); runUniversalScan(); break;
+        case 'caesar': set('caesar-input', SAMPLES.caesar_cipher); solveCaesar(); break;
+        case 'vigenere': set('vig-input', SAMPLES.vig_cipher); set('vig-key', 'KEY'); solveVigenere(false); break;
+        case 'xor': set('xor-input', SAMPLES.xor_hex); set('xor-key', ''); solveXor(); break;
+        case 'atbash': set('atbash-input', SAMPLES.atbash_cipher); solveAtbash(); break;
+        case 'affine': set('affine-input', SAMPLES.affine_cipher); set('affine-a', 5); set('affine-b', 8); solveAffine(); break;
+        case 'railfence': set('rf-input', SAMPLES.rf_cipher); set('rf-rails', 3); solveRailFence(); break;
+        case 'base': set('base-input', SAMPLES.b64); decodeBase('b64'); break;
+        case 'b85': set('base-input', SAMPLES.b85); decodeBase('b85'); break;
+        case 'b45': set('base-input', SAMPLES.b45); decodeBase('b45'); break;
+        case 'z85x': set('base-input', SAMPLES.z85); decodeBase('z85'); break;
+        case 'framing': set('framing-input', SAMPLES.uu); decodeUU(); break;
+        case 'xx': set('framing-input', SAMPLES.xx); decodeXX(); break;
+        case 'yenc': set('framing-input', SAMPLES.yenc); decodeYEnc(); break;
+        case 'zwsp': set('zw-input', SAMPLES.zw_carrier + SAMPLES.zw); decodeZeroWidth(); break;
+        case 'utags': set('zw-input', SAMPLES.utags); decodeUnicodeTags(); break;
+        case 'morse': set('tactical-input', SAMPLES.morse); decodeMorseText(); break;
+        case 'nato': set('tactical-input', SAMPLES.nato); decodeNATO(); break;
+        case 'tap': set('tactical-input', SAMPLES.tap); decodeTapCode(); break;
+        case 'braille': set('tactical-input', SAMPLES.braille); decodeBraille(); break;
+        case 't9': set('tactical-input', SAMPLES.t9); decodeT9(); break;
+        case 'chem': set('chem-input', SAMPLES.chem); decodeChemical(); break;
+        case 'seg': set('chem-input', SAMPLES.seg_mask); decode7Segment(); break;
+        case 'segdec': set('chem-input', SAMPLES.seg_ascii_dec); decode7Segment(); break;
+        case 'roman': set('roman-input', SAMPLES.roman); decodeRoman(); break;
+        case 'bacon': set('roman-input', SAMPLES.bacon26); decodeBacon(); break;
+        case 'baconcase': set('roman-input', SAMPLES.bacon_case); decodeBaconCase(); break;
+        case 'bf': set('bf-code', SAMPLES.bf_hello); set('bf-stdin', ''); runBF(); break;
+        case 'befunge': set('befunge-code', SAMPLES.befunge_code); runBefunge(); break;
+        case 'deadfish': set('deadfish-code', SAMPLES.deadfish_program); runDeadfish(); break;
+        case 'stackvm': set('stackvm-code', SAMPLES.stackvm_program); runStackVM(); break;
+        case 'ws': set('ws-code', SAMPLES.ws_program); runWhitespace(); break;
+        case 'collatz': set('collatz-input', SAMPLES.collatz_input); set('collatz-mode', 'sub1'); solveCollatz(); break;
+        case 'fib': set('fib-input', SAMPLES.fib_input); solveFibonacci(); break;
+        case 'rpn': set('rpn-input', SAMPLES.rpn_input); solveRPN(); break;
+        case 'gf2': set('gf2-b', SAMPLES.gf2_b); set('gf2-a', SAMPLES.gf2_a); solveGF2(); break;
+        case 'hexdump': set('hexdump-input', SAMPLES.hexdump); reassembleHexdump(); break;
+        case 'record': set('record-input', SAMPLES.record_hex); unpackShuffledRecords(); break;
+        default: showToast('Contoh tidak dikenal: ' + key); break;
+      }
+    }
+
+    // ---------- inject sample / demo buttons ----------
+    const SAMPLE_BUTTONS = [
+      ['#univ-output', [['univ', 'Contoh']]],
+      ['#caesar-output', [['caesar', 'Contoh']]],
+      ['#vig-output', [['vigenere', 'Contoh']]],
+      ['#xor-output', [['xor', 'Contoh']]],
+      ['#affine-output', [['affine', 'Contoh']]],
+      ['#rf-output', [['railfence', 'Contoh']]],
+      ['#base-output', [['base', 'Base64'], ['b85', 'Base85'], ['b45', 'Base45'], ['z85x', 'Z85']]],
+      ['#framing-output', [['framing', 'UU'], ['xx', 'XX'], ['yenc', 'yEnc']]],
+      ['#zw-output', [['zwsp', 'Zero-Width'], ['utags', 'Unicode Tags']]],
+      ['#tactical-output', [['morse', 'Morse'], ['nato', 'NATO'], ['tap', 'Tap'], ['braille', 'Braille'], ['t9', 'T9']]],
+      ['#chem-output', [['chem', 'Unsur'], ['seg', '7-Seg'], ['segdec', '7-Seg Desimal']]],
+      ['#roman-output', [['roman', 'Romawi'], ['bacon', 'Bacon AB'], ['baconcase', 'Bacon Case']]],
+      ['#bf-output', [['bf', 'Contoh']]],
+      ['#befunge-output', [['befunge', 'Contoh']]],
+      ['#deadfish-output', [['deadfish', 'Contoh']]],
+      ['#stackvm-output', [['stackvm', 'Contoh']]],
+      ['#ws-output', [['ws', 'Contoh']]],
+      ['#collatz-output', [['collatz', 'Contoh']]],
+      ['#fib-output', [['fib', 'Contoh']]],
+      ['#rpn-output', [['rpn', 'Contoh']]],
+      ['#gf2-output', [['gf2', 'Contoh']]],
+      ['#hexdump-output', [['hexdump', 'Contoh']]],
+      ['#record-output', [['record', 'Contoh']]]
+    ];
+    const DEMO_BUTTONS = [
+      ['#audio-output', [['dtmf', 'Contoh DTMF'], ['morse', 'Contoh Morse CW'], ['tonebyte', 'Contoh Nada Byte'], ['nibble', 'Contoh Tangga Nada'], ['fsk', 'Contoh 2FSK'], ['fsk4', 'Contoh 4FSK']]],
+      ['#stego-output', [['png', 'Contoh PNG Stego'], ['jpeg', 'Contoh JPEG COM'], ['zip', 'Contoh Arsip ZIP']]]
+    ];
+    function injectBtn(hostSel, items, kind) {
+      const host = document.querySelector(hostSel);
+      if (!host) return;
+      const card = host.closest('.card') || host.parentElement;
+      let target = card.querySelector('.btn-row');
+      if (!target) {
+        target = document.createElement('div');
+        target.className = 'btn-row';
+        target.style.marginTop = '12px';
+        card.insertBefore(target, host);
+      }
+      for (const [key, label] of items) {
+        if (target.querySelector(`[data-demo="${kind}:${key}"]`)) continue;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn btn-secondary';
+        b.dataset.demo = `${kind}:${key}`;
+        b.dataset.label = label;
+        b.textContent = label;
+        b.addEventListener('click', () => (kind === 'sample' ? loadSample(key) : loadDemo(key)));
+        target.appendChild(b);
+      }
+    }
+    function updateHudClock() {
+      const el = document.getElementById('hud-clock');
+      if (!el) return;
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      el.textContent = `${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())}:${pad(now.getUTCSeconds())} UTC`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      SAMPLE_BUTTONS.forEach(x => injectBtn(x[0], x[1], 'sample'));
+      DEMO_BUTTONS.forEach(x => injectBtn(x[0], x[1], 'demo'));
+
+      // Live HUD Clock
+      setInterval(updateHudClock, 1000);
+      updateHudClock();
+
+      // Anime.js Micro-Interactions
+      if (window.anime) {
+        // Radar beacon loop
+        anime({
+          targets: '.radar-beacon',
+          scale: [1, 1.45, 1],
+          opacity: [1, 0.4, 1],
+          loop: true,
+          duration: 2000,
+          easing: 'easeInOutSine'
+        });
+
+        // Entrance stagger for brand and HUD
+        anime({
+          targets: '.brand img, .brand-title, .header-hud > *',
+          translateY: [-8, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(30),
+          duration: 350,
+          easing: 'easeOutCubic'
+        });
+
+        // Initial cards reveal in active tab
+        anime({
+          targets: '#tab-universal .card',
+          translateY: [16, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(35, { start: 100 }),
+          duration: 320,
+          easing: 'easeOutCubic'
+        });
+
+        // Tactile button click compression
+        document.addEventListener('click', (e) => {
+          const btn = e.target.closest('button.btn, button.tab-btn');
+          if (btn) {
+            anime({
+              targets: btn,
+              scale: [0.96, 1],
+              duration: 150,
+              easing: 'easeOutQuad'
+            });
+          }
+        });
+      }
+    });
+  </script>
+
 </body>
 </html>
