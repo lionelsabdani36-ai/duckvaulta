@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import re
 import math
+import random
 import gmpy2
 import sympy
 import requests
@@ -16,14 +17,31 @@ def hunt_flag(text):
 
 def parse_rsa_input(text):
     params = {}
+    multi_primes = []
     lines = text.splitlines()
+
     for line in lines:
         line = line.strip()
         if not line or line.startswith('#'):
             continue
-        m = re.match(r'([a-zA-Z0-9_]+)\s*[:=]\s*([0-9a-fA-FxX]+)', line)
+
+        # Check for list of primes: primes = [...] or primes: [...]
+        list_match = re.search(r'(?:primes|factors)\s*[:=]\s*\[([^\]]+)\]', line, re.I)
+        if list_match:
+            raw_nums = list_match.group(1).split(',')
+            for item in raw_nums:
+                item = item.strip()
+                try:
+                    multi_primes.append(int(item, 16 if item.startswith(('0x', '0X')) else 10))
+                except ValueError:
+                    pass
+            continue
+
+        # Match key = val or key : val or key = 0x...
+        # Also supports greek letters φ and variables like phi(n)
+        m = re.match(r'([a-zA-Z0-9_φΦ()]+)\s*[:=]\s*([0-9a-fA-FxX]+)', line)
         if m:
-            k = m.group(1).lower()
+            k = m.group(1).lower().replace('(', '').replace(')', '')
             val_str = m.group(2).strip()
             try:
                 if val_str.startswith(('0x', '0X')):
@@ -38,28 +56,54 @@ def parse_rsa_input(text):
     norm = {}
     if 'n' in params: norm['n'] = params['n']
     elif 'modulus' in params: norm['n'] = params['modulus']
+    elif 'mod' in params: norm['n'] = params['mod']
 
     if 'e' in params: norm['e'] = params['e']
     elif 'exp' in params or 'exponent' in params: norm['e'] = params.get('exp') or params.get('exponent')
+    elif 'pubexp' in params: norm['e'] = params['pubexp']
     else: norm['e'] = 65537
 
     if 'c' in params: norm['c'] = params['c']
     elif 'ct' in params or 'ciphertext' in params: norm['c'] = params.get('ct') or params.get('ciphertext')
+    elif 'cipher' in params: norm['c'] = params['cipher']
 
     if 'p' in params: norm['p'] = params['p']
+    elif 'prime1' in params: norm['p'] = params['prime1']
+    elif 'p1' in params: norm['p'] = params['p1']
+
     if 'q' in params: norm['q'] = params['q']
+    elif 'prime2' in params: norm['q'] = params['prime2']
+    elif 'p2' in params: norm['q'] = params['p2']
+
+    if 'r' in params: norm['r'] = params['r']
+    elif 'prime3' in params: norm['r'] = params['prime3']
+    elif 'p3' in params: norm['r'] = params['p3']
+
     if 'd' in params: norm['d'] = params['d']
-    if 'phi' in params: norm['phi'] = params['phi']
+    elif 'priv' in params or 'privkey' in params or 'private_key' in params:
+        norm['d'] = params.get('priv') or params.get('privkey') or params.get('private_key')
+
+    # Phi / Euler Totient detection
+    for phi_key in ['phi', 'phin', 'totient', 'eulertotient', 'φ', 'Φ']:
+        if phi_key in params:
+            norm['phi'] = params[phi_key]
+            break
+
     if 'dp' in params: norm['dp'] = params['dp']
+    elif 'dmp1' in params: norm['dp'] = params['dmp1']
+
     if 'dq' in params: norm['dq'] = params['dq']
+    elif 'dmq1' in params: norm['dq'] = params['dmq1']
 
     # Multiple pairs
     for k in ['n1', 'c1', 'e1', 'n2', 'c2', 'e2', 'n3', 'c3', 'e3']:
         if k in params:
             norm[k] = params[k]
 
-    return norm
+    if multi_primes:
+        norm['primes'] = multi_primes
 
+    return norm
 
 def check_truncation_warning(c, n, flag_found):
     if c and n and not flag_found:
@@ -70,7 +114,6 @@ def check_truncation_warning(c, n, flag_found):
 def decode_message(m_int):
     try:
         raw_bytes = long_to_bytes(int(m_int))
-        # try utf-8
         try:
             txt = raw_bytes.decode('utf-8')
         except UnicodeDecodeError:
@@ -86,6 +129,48 @@ def decode_message(m_int):
             "hex": hex(int(m_int)),
             "flag": None
         }
+
+def format_result(method, m, n, c, dec, extra=None):
+    res = {
+        "method": method,
+        "plaintext": dec["text"],
+        "flag": dec["flag"],
+        "decimal": str(m) if m is not None else None,
+        "hex": dec["hex"],
+    }
+    if extra:
+        res.update(extra)
+    warn = check_truncation_warning(c, n, dec["flag"])
+    if warn:
+        res["warning"] = warn
+    return {"success": True, "data": res}
+
+def factor_n_with_d(n, e, d):
+    """Miller's probabilistic algorithm to factor n using known e and d"""
+    try:
+        k = e * d - 1
+        s = 0
+        t = k
+        while t % 2 == 0:
+            s += 1
+            t //= 2
+        for _ in range(100):
+            g = random.randint(2, n - 2)
+            y = pow(g, t, n)
+            if y == 1 or y == n - 1:
+                continue
+            for _ in range(1, s):
+                x = pow(y, 2, n)
+                if x == n - 1:
+                    break
+                if x == 1:
+                    p_cand = math.gcd(y - 1, n)
+                    if 1 < p_cand < n:
+                        return p_cand, n // p_cand
+                y = x
+    except Exception:
+        pass
+    return None
 
 def solve_fermat(n, max_iter=2000000):
     a, exact = gmpy2.iroot(n, 2)
@@ -103,7 +188,6 @@ def solve_fermat(n, max_iter=2000000):
     return None
 
 def solve_wiener(n, e):
-    # Continued fractions of e/n
     a, b = e, n
     cf = []
     while b != 0:
@@ -134,7 +218,7 @@ def solve_wiener(n, e):
                         return int(d), int(p), int(q)
     return None
 
-def solve_small_e(c, e, n, max_k=500):
+def solve_small_e(c, e, n, max_k=1000):
     for k in range(max_k + 1):
         target = c + k * n
         m, exact = gmpy2.iroot(target, e)
@@ -195,56 +279,61 @@ def solve_common_modulus(n, e1, c1, e2, c2):
     m = (term1 * term2) % n
     return m
 
-
-def format_result(method, m, n, c, dec, extra=None):
-    res = {
-        "method": method,
-        "plaintext": dec["text"],
-        "flag": dec["flag"],
-        "decimal": str(m) if m is not None else None,
-        "hex": dec["hex"],
-    }
-    if extra:
-        res.update(extra)
-    warn = check_truncation_warning(c, n, dec["flag"])
-    if warn:
-        res["warning"] = warn
-    return {"success": True, "data": res}
-
 def solve_rsa_auto(params):
     n = params.get('n')
     e = params.get('e', 65537)
     c = params.get('c')
     p = params.get('p')
     q = params.get('q')
+    r = params.get('r')
     d = params.get('d')
     phi = params.get('phi')
     dp = params.get('dp')
     dq = params.get('dq')
+    primes = params.get('primes', [])
 
-    # Common modulus check
+    # Case 0: Common modulus attack
     if 'n1' in params and 'c1' in params and 'e1' in params and 'e2' in params and 'c2' in params:
         m = solve_common_modulus(params['n1'], params['e1'], params['c1'], params['e2'], params['c2'])
         if m:
             dec = decode_message(m)
-            return {
-                "success": True,
-                "data": {
-                    "method": "Common Modulus Attack (n sama, 2 pasang e/c)",
-                    "plaintext": dec["text"],
-                    "flag": dec["flag"],
-                    "decimal": str(m),
-                    "hex": dec["hex"],
-                    "n": str(params['n1']),
-                    "e1": str(params['e1']),
-                    "e2": str(params['e2'])
-                }
-            }
+            return format_result("Common Modulus Attack (n sama, 2 pasang e/c)", m, params['n1'], params['c1'], dec, {
+                "n": str(params['n1']), "e1": str(params['e1']), "e2": str(params['e2'])
+            })
 
-    if not n and not (p and q):
-        return {"success": False, "message": "Modulus n tidak ditemukan di input."}
+    # Case 1: Trivial e = 1 (c = m)
+    if e == 1 and c is not None:
+        m = c if not n else (c % n)
+        dec = decode_message(m)
+        return format_result("Trivial RSA (e = 1, Ciphertext = Plaintext)", m, n, c, dec)
 
-    # Case 1: p and q known
+    # Case 2: Multi-Prime RSA (n = p * q * r ... or primes list given)
+    all_primes = list(primes)
+    if p: all_primes.append(p)
+    if q: all_primes.append(q)
+    if r: all_primes.append(r)
+    # Deduplicate while preserving order
+    unique_primes = []
+    for pr in all_primes:
+        if pr not in unique_primes:
+            unique_primes.append(pr)
+
+    if len(unique_primes) >= 3 and c:
+        calc_n = 1
+        calc_phi = 1
+        for pr in unique_primes:
+            calc_n *= pr
+            calc_phi *= (pr - 1)
+        use_n = n or calc_n
+        d_val = int(gmpy2.invert(e, calc_phi))
+        m = pow(c, d_val, use_n)
+        dec = decode_message(m)
+        return format_result(f"Multi-Prime RSA ({len(unique_primes)} faktor prima)", m, use_n, c, dec, {
+            "n": str(use_n), "d": str(d_val), "phi": str(calc_phi),
+            "primes": ", ".join(str(pr) for pr in unique_primes)
+        })
+
+    # Case 3: Both p and q known
     if p and q:
         n = p * q
         phi = (p - 1) * (q - 1)
@@ -256,120 +345,147 @@ def solve_rsa_auto(params):
                 "p": str(p), "q": str(q), "d": str(d), "phi": str(phi)
             })
 
-    # Case 2: d known
+    # Case 4: Known Modulus n and single factor p or q
+    # Check if p is provided with n
+    if n and p and not q:
+        if n % p == 0:
+            q = n // p
+            phi = (p - 1) * (q - 1)
+            d = int(gmpy2.invert(e, phi))
+            if c:
+                m = pow(c, d, n)
+                dec = decode_message(m)
+                return format_result("Factor Given with Modulus n (q = n / p)", m, n, c, dec, {
+                    "p": str(p), "q": str(q), "d": str(d), "phi": str(phi)
+                })
+        else:
+            # HEURISTIC: What if p was actually phi(n)?
+            # In RSA: phi = n - (p_real + q_real) + 1 => s = p_real + q_real = n - phi + 1
+            s = n - p + 1
+            if s > 0:
+                disc = s * s - 4 * n
+                if disc >= 0:
+                    sq, exact = gmpy2.iroot(disc, 2)
+                    if exact:
+                        p_real = int((s - sq) // 2)
+                        q_real = int((s + sq) // 2)
+                        if p_real * q_real == n:
+                            phi_val = p
+                            d_val = int(gmpy2.invert(e, phi_val))
+                            if c:
+                                m = pow(c, d_val, n)
+                                dec = decode_message(m)
+                                return format_result("Given Euler Totient phi (Parameter berlabel p terdeteksi sebagai phi(n))", m, n, c, dec, {
+                                    "p": str(p_real), "q": str(q_real), "d": str(d_val), "phi": str(phi_val)
+                                })
+
+    # Check if q is provided with n
+    if n and q and not p:
+        if n % q == 0:
+            p = n // q
+            phi = (p - 1) * (q - 1)
+            d = int(gmpy2.invert(e, phi))
+            if c:
+                m = pow(c, d, n)
+                dec = decode_message(m)
+                return format_result("Factor Given with Modulus n (p = n / q)", m, n, c, dec, {
+                    "p": str(p), "q": str(q), "d": str(d), "phi": str(phi)
+                })
+        else:
+            # HEURISTIC: What if q was actually phi(n)?
+            s = n - q + 1
+            if s > 0:
+                disc = s * s - 4 * n
+                if disc >= 0:
+                    sq, exact = gmpy2.iroot(disc, 2)
+                    if exact:
+                        p_real = int((s - sq) // 2)
+                        q_real = int((s + sq) // 2)
+                        if p_real * q_real == n:
+                            phi_val = q
+                            d_val = int(gmpy2.invert(e, phi_val))
+                            if c:
+                                m = pow(c, d_val, n)
+                                dec = decode_message(m)
+                                return format_result("Given Euler Totient phi (Parameter berlabel q terdeteksi sebagai phi(n))", m, n, c, dec, {
+                                    "p": str(p_real), "q": str(q_real), "d": str(d_val), "phi": str(phi_val)
+                                })
+
+    # Case 5: Phi known explicitly
+    if phi and c:
+        d = int(gmpy2.invert(e, phi))
+        extra = {"phi": str(phi), "d": str(d)}
+        if n:
+            m = pow(c, d, n)
+            # Try to factor n as well via quadratic equation
+            s = n - phi + 1
+            if s > 0:
+                disc = s * s - 4 * n
+                if disc >= 0:
+                    sq, exact = gmpy2.iroot(disc, 2)
+                    if exact:
+                        extra["p"] = str(int((s - sq) // 2))
+                        extra["q"] = str(int((s + sq) // 2))
+            dec = decode_message(m)
+            return format_result("Given Euler Totient (phi)", m, n, c, dec, extra)
+
+    # Case 6: Private Exponent d known
     if d and c and n:
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Given Private Exponent (d)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "d": str(d)
-            }
-        }
+        extra = {"d": str(d)}
+        # Try to factor n into p and q using Miller's algorithm
+        factors = factor_n_with_d(n, e, d)
+        if factors:
+            extra["p"] = str(factors[0])
+            extra["q"] = str(factors[1])
+            extra["phi"] = str((factors[0] - 1) * (factors[1] - 1))
+        return format_result("Given Private Exponent (d)", m, n, c, dec, extra)
 
-    # Case 3: phi known
-    if phi and c and n:
-        d = int(gmpy2.invert(e, phi))
-        m = pow(c, d, n)
-        dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Given Euler Totient (phi)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "d": str(d),
-                "phi": str(phi)
-            }
-        }
-
-    # Case 4: dp known (CRT)
+    # Case 7: dp known (CRT)
     if dp and p and c:
         m = pow(c, dp, p)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Chinese Remainder Theorem (dp = d mod p-1)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"]
-            }
-        }
+        return format_result("Chinese Remainder Theorem (dp = d mod p-1)", m, n, c, dec, {"p": str(p), "dp": str(dp)})
+
+    if not n:
+        return {"success": False, "message": "Modulus n tidak ditemukan di input."}
 
     if not c:
         return {"success": False, "message": "Ciphertext c tidak ditemukan di input."}
 
-    # Case 5: Small exponent root
-    if e < 30:
-        m = solve_small_e(c, e, n, max_k=300)
+    # Case 8: Small Exponent root (e <= 17)
+    if e <= 17:
+        m = solve_small_e(c, e, n, max_k=1000)
         if m:
             dec = decode_message(m)
-            return {
-                "success": True,
-                "data": {
-                    "method": f"Small Exponent Attack (e={e}, integer root)",
-                    "plaintext": dec["text"],
-                    "flag": dec["flag"],
-                    "decimal": str(m),
-                    "hex": dec["hex"]
-                }
-            }
+            return format_result(f"Small Exponent Attack (e={e}, integer root)", m, n, c, dec)
 
-    # Case 6: Fermat Factorization
-    fermat_res = solve_fermat(n)
+    # Case 9: Fermat Factorization (p ≈ q)
+    fermat_res = solve_fermat(n, max_iter=2000000)
     if fermat_res:
         p, q = fermat_res
         phi = (p - 1) * (q - 1)
         d = int(gmpy2.invert(e, phi))
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Fermat Factorization (Prima p & q berdekatan)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "p": str(p),
-                "q": str(q),
-                "d": str(d),
-                "phi": str(phi)
-            }
-        }
+        return format_result("Fermat Factorization (Prima p & q berdekatan)", m, n, c, dec, {
+            "p": str(p), "q": str(q), "d": str(d), "phi": str(phi)
+        })
 
-    # Case 7: Wiener Attack
+    # Case 10: Wiener Attack (Small d < 1/3 n^0.25)
     wiener_res = solve_wiener(n, e)
     if wiener_res:
         d, p, q = wiener_res
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Wiener Attack (Small Private Exponent d)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "p": str(p),
-                "q": str(q),
-                "d": str(d)
-            }
-        }
+        return format_result("Wiener Attack (Small Private Exponent d)", m, n, c, dec, {
+            "p": str(p), "q": str(q), "d": str(d)
+        })
 
-    # Case 8: Small Prime Factorization
+    # Case 11: Small Prime Factorization (Trial division)
     small_p = None
-    for p_cand in sympy.primerange(2, 500000):
+    for p_cand in sympy.primerange(2, 2500000):
         if n % p_cand == 0:
             small_p = int(p_cand)
             break
@@ -380,43 +496,23 @@ def solve_rsa_auto(params):
         d = int(gmpy2.invert(e, phi))
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": f"Trial Division (Faktor prima kecil: {p})",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "p": str(p),
-                "q": str(q),
-                "d": str(d)
-            }
-        }
+        return format_result(f"Trial Division (Faktor prima kecil: {p})", m, n, c, dec, {
+            "p": str(p), "q": str(q), "d": str(d)
+        })
 
-    # Case 9: Pollard p-1
-    pollard_res = solve_pollard_p1(n, B=80000)
+    # Case 12: Pollard p-1
+    pollard_res = solve_pollard_p1(n, B=100000)
     if pollard_res:
         p, q = pollard_res
         phi = (p - 1) * (q - 1)
         d = int(gmpy2.invert(e, phi))
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "Pollard's p-1 Factorization (p-1 smooth)",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "p": str(p),
-                "q": str(q),
-                "d": str(d)
-            }
-        }
+        return format_result("Pollard's p-1 Factorization (p-1 smooth)", m, n, c, dec, {
+            "p": str(p), "q": str(q), "d": str(d)
+        })
 
-    # Case 10: FactorDB Online
+    # Case 13: FactorDB Online
     fdb_res = solve_factordb(n)
     if fdb_res:
         p, q = fdb_res
@@ -424,19 +520,9 @@ def solve_rsa_auto(params):
         d = int(gmpy2.invert(e, phi))
         m = pow(c, d, n)
         dec = decode_message(m)
-        return {
-            "success": True,
-            "data": {
-                "method": "FactorDB Database Factorization",
-                "plaintext": dec["text"],
-                "flag": dec["flag"],
-                "decimal": str(m),
-                "hex": dec["hex"],
-                "p": str(p),
-                "q": str(q),
-                "d": str(d)
-            }
-        }
+        return format_result("FactorDB Database Factorization", m, n, c, dec, {
+            "p": str(p), "q": str(q), "d": str(d)
+        })
 
     return {
         "success": False,
