@@ -454,6 +454,33 @@ def solve_rsa_auto(params):
     if not c:
         return {"success": False, "message": "Ciphertext c tidak ditemukan di input."}
 
+    # Case: Power Modulus Attack (n = p^k, e.g. n = p^2, n = p^3)
+    for k in range(2, 9):
+        r, exact = gmpy2.iroot(n, k)
+        if exact:
+            p_root = int(r)
+            phi_val = (p_root ** (k - 1)) * (p_root - 1)
+            d_val = int(gmpy2.invert(e, phi_val))
+            m = pow(c, d_val, n)
+            dec = decode_message(m)
+            return format_result(f"Square/Power Modulus Attack (n = p^{k})", m, n, c, dec, {
+                "p": str(p_root),
+                "k": str(k),
+                "phi": str(phi_val),
+                "d": str(d_val)
+            })
+
+    # Case: Prime Modulus (n is a prime, phi = n - 1)
+    if sympy.isprime(n):
+        phi_val = n - 1
+        d_val = int(gmpy2.invert(e, phi_val))
+        m = pow(c, d_val, n)
+        dec = decode_message(m)
+        return format_result("Prime Modulus Attack (n bilangan prima, phi = n - 1)", m, n, c, dec, {
+            "phi": str(phi_val),
+            "d": str(d_val)
+        })
+
     # Case 8: Small Exponent root (e <= 17)
     if e <= 17:
         m = solve_small_e(c, e, n, max_k=1000)
@@ -465,7 +492,7 @@ def solve_rsa_auto(params):
     fermat_res = solve_fermat(n, max_iter=2000000)
     if fermat_res:
         p, q = fermat_res
-        phi = (p - 1) * (q - 1)
+        phi = p * (p - 1) if p == q else (p - 1) * (q - 1)
         d = int(gmpy2.invert(e, phi))
         m = pow(c, d, n)
         dec = decode_message(m)

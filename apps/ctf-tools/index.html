@@ -302,6 +302,8 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           <div class="row">
             <select id="rsa_attack_type" class="select" onchange="toggleRSAAttackInputs(this.value)">
               <option value="wiener">Wiener Attack (d < 1/3 n^0.25)</option>
+              <option value="power_mod">Power / Square Modulus Attack (n = p^k, misal n = p²)</option>
+              <option value="fermat">Fermat Factorization (Prima p & q berdekatan)</option>
               <option value="common_mod">Common Modulus Attack (n sama, e1 & e2 coprime)</option>
               <option value="hastad">Hastad Broadcast Attack (e=3, 3 pairs c & n)</option>
             </select>
@@ -1894,6 +1896,10 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     const wrap = document.getElementById('rsa_special_inputs');
     if (type === 'wiener') {
       wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n</label><input id="w_n" class="input"></div><div class="grow"><label class="lbl">Exponent e</label><input id="w_e" class="input"></div><div class="grow"><label class="lbl">Ciphertext c (opsional)</label><input id="w_c" class="input"></div></div>';
+    } else if (type === 'power_mod') {
+      wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n (n = p^k)</label><input id="pm_n" class="input"></div><div class="grow"><label class="lbl">Pangkat k (default 2)</label><input id="pm_k" class="input" value="2"></div></div><div class="row" style="margin-top:8px"><div class="grow"><label class="lbl">Exponent e</label><input id="pm_e" class="input" value="65537"></div><div class="grow"><label class="lbl">Ciphertext c</label><input id="pm_c" class="input"></div></div>';
+    } else if (type === 'fermat') {
+      wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n</label><input id="f_n" class="input"></div><div class="grow"><label class="lbl">Exponent e</label><input id="f_e" class="input" value="65537"></div><div class="grow"><label class="lbl">Ciphertext c (opsional)</label><input id="f_c" class="input"></div></div>';
     } else if (type === 'common_mod') {
       wrap.innerHTML = '<div class="row"><div class="grow"><label class="lbl">Modulus n</label><input id="cm_n" class="input"></div><div class="grow"><label class="lbl">e1</label><input id="cm_e1" class="input"></div><div class="grow"><label class="lbl">e2</label><input id="cm_e2" class="input"></div></div><div class="row" style="margin-top:8px"><div class="grow"><label class="lbl">c1</label><input id="cm_c1" class="input"></div><div class="grow"><label class="lbl">c2</label><input id="cm_c2" class="input"></div></div>';
     } else if (type === 'hastad') {
@@ -1959,6 +1965,73 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           out.innerHTML = renderCodeBox('WIENER ATTACK SUCCESS', rep);
         } else {
           out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Wiener attack gagal: d mungkin tidak cukup kecil (< 1/3 n^0.25).</span></div>';
+        }
+      } else if (type === 'power_mod') {
+        const n = BigInt(document.getElementById('pm_n').value.trim());
+        const k = parseInt(document.getElementById('pm_k').value.trim() || '2', 10);
+        const e = BigInt(document.getElementById('pm_e').value.trim());
+        const c = BigInt(document.getElementById('pm_c').value.trim());
+
+        let p;
+        if (k === 2) {
+          p = integerSqrt(n);
+          if (p * p !== n) throw new Error('Modulus n bukan kuadrat sempurna (p^2)!');
+        } else if (k === 3) {
+          p = integerCbrt(n);
+          if (p * p * p !== n) throw new Error('Modulus n bukan pangkat 3 sempurna (p^3)!');
+        } else {
+          p = integerSqrt(n);
+        }
+        let pk_1 = 1n;
+        for (let i = 0; i < k - 1; i++) pk_1 *= p;
+        const phi = pk_1 * (p - 1n);
+        const d = modInverse(e, phi);
+        const m = modPow(c, d, n);
+        let rep = 'Power/Square Modulus Attack Berhasil!\n'
+                + 'Faktor Prima p     : ' + p.toString() + '\n'
+                + 'Eksponen Kuadrat k : ' + k + '\n'
+                + 'Euler Totient phi  : ' + phi.toString() + '\n'
+                + 'Private Exponent d : ' + d.toString() + '\n'
+                + 'Plaintext (Desimal): ' + m.toString() + '\n'
+                + 'Plaintext (ASCII)  : ' + bigIntToAscii(m);
+        out.innerHTML = renderCodeBox('POWER MODULUS RECOVERED', rep);
+      } else if (type === 'fermat') {
+        const n = BigInt(document.getElementById('f_n').value.trim());
+        const e = BigInt(document.getElementById('f_e').value.trim());
+        const cVal = document.getElementById('f_c').value.trim();
+
+        let a = integerSqrt(n);
+        if (a * a < n) a += 1n;
+        let b2 = a * a - n;
+        let b = integerSqrt(b2);
+        let iter = 0;
+        let p = null, q = null;
+        while (b * b !== b2 && iter < 1000000) {
+          a += 1n;
+          b2 = a * a - n;
+          b = integerSqrt(b2);
+          iter++;
+        }
+        if (b * b === b2) {
+          p = a + b;
+          q = a - b;
+        }
+        if (p && q && p * q === n) {
+          const phi = p === q ? p * (p - 1n) : (p - 1n) * (q - 1n);
+          const d = modInverse(e, phi);
+          let rep = 'Fermat Factorization Berhasil!\n'
+                  + 'Prime p            : ' + p.toString() + '\n'
+                  + 'Prime q            : ' + q.toString() + '\n'
+                  + 'Totient phi        : ' + phi.toString() + '\n'
+                  + 'Private Exponent d : ' + d.toString();
+          if (cVal) {
+            const c = BigInt(cVal);
+            const m = modPow(c, d, n);
+            rep += '\nPlaintext (ASCII)  : ' + bigIntToAscii(m);
+          }
+          out.innerHTML = renderCodeBox('FERMAT RECOVERED', rep);
+        } else {
+          throw new Error('Fermat factorization mencapai batas iterasi (p dan q tidak cukup dekat).');
         }
       } else if (type === 'common_mod') {
         const n = BigInt(document.getElementById('cm_n').value.trim());
