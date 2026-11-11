@@ -1180,6 +1180,7 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           + (d.phi ? ('<span style="color:var(--muted)">phi:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.phi) + '</span>') : '')
           + (d.hex ? ('<span style="color:var(--muted)">Hex:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.hex) + '</span>') : '')
           + (d.decimal ? ('<span style="color:var(--muted)">Desimal:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.decimal) + '</span>') : '')
+          + (d.warning ? ('<div style="grid-column:1 / -1; margin-top:8px; padding:8px 10px; background:rgba(234,179,8,0.1); border:1px solid rgba(234,179,8,0.3); border-radius:4px; color:#facc15; font-size:11px; line-height:1.4">⚠️ ' + esc(d.warning) + '</div>') : '')
           + '</div>';
 
         out.innerHTML = renderCodeBox('PLAINTEXT RECOVERED', d.plaintext) + details;
@@ -1298,6 +1299,7 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           + (data.q ? ('<span style="color:var(--muted)">q:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.q) + '</span>') : '')
           + (data.d ? ('<span style="color:var(--muted)">d:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.d) + '</span>') : '')
           + (data.phi ? ('<span style="color:var(--muted)">phi:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.phi) + '</span>') : '')
+          + (data.warning ? ('<div style="grid-column:1 / -1; margin-top:8px; padding:8px 10px; background:rgba(234,179,8,0.1); border:1px solid rgba(234,179,8,0.3); border-radius:4px; color:#facc15; font-size:11px; line-height:1.4">⚠️ ' + esc(data.warning) + '</div>') : '')
           + '</div>';
         out.innerHTML = renderCodeBox('RSA RECOVERED', data.plaintext) + details;
         if (data.flag) scanText(data.flag);

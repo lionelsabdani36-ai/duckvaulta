@@ -60,6 +60,13 @@ def parse_rsa_input(text):
 
     return norm
 
+
+def check_truncation_warning(c, n, flag_found):
+    if c and n and not flag_found:
+        if c.bit_length() < n.bit_length() * 0.7:
+            return f"Ciphertext c ({c.bit_length()} bit) jauh lebih kecil dari modulus n ({n.bit_length()} bit). Kemungkinan nilai c terpotong saat disalin dari soal CTF."
+    return None
+
 def decode_message(m_int):
     try:
         raw_bytes = long_to_bytes(int(m_int))
@@ -188,6 +195,22 @@ def solve_common_modulus(n, e1, c1, e2, c2):
     m = (term1 * term2) % n
     return m
 
+
+def format_result(method, m, n, c, dec, extra=None):
+    res = {
+        "method": method,
+        "plaintext": dec["text"],
+        "flag": dec["flag"],
+        "decimal": str(m) if m is not None else None,
+        "hex": dec["hex"],
+    }
+    if extra:
+        res.update(extra)
+    warn = check_truncation_warning(c, n, dec["flag"])
+    if warn:
+        res["warning"] = warn
+    return {"success": True, "data": res}
+
 def solve_rsa_auto(params):
     n = params.get('n')
     e = params.get('e', 65537)
@@ -229,20 +252,9 @@ def solve_rsa_auto(params):
         if c:
             m = pow(c, d, n)
             dec = decode_message(m)
-            return {
-                "success": True,
-                "data": {
-                    "method": "Given Primes (p, q)",
-                    "plaintext": dec["text"],
-                    "flag": dec["flag"],
-                    "decimal": str(m),
-                    "hex": dec["hex"],
-                    "p": str(p),
-                    "q": str(q),
-                    "d": str(d),
-                    "phi": str(phi)
-                }
-            }
+            return format_result("Given Primes (p, q)", m, n, c, dec, {
+                "p": str(p), "q": str(q), "d": str(d), "phi": str(phi)
+            })
 
     # Case 2: d known
     if d and c and n:
