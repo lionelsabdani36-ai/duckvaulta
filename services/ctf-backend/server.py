@@ -1,3 +1,4 @@
+from rsa_solver import parse_rsa_input, solve_rsa_auto, decode_message, solve_wiener, solve_common_modulus
 #!/usr/bin/env python3
 import os
 import sys
@@ -81,6 +82,160 @@ class CTFRequestHandler(BaseHTTPRequestHandler):
         content_type = self.headers.get('Content-Type', '')
         content_len = int(self.headers.get('Content-Length', 0))
 
+        # RSA Auto & Specialized Solvers
+        if path.endswith('/api/crypto/solve/rsa_auto'):
+            body = self.rfile.read(content_len).decode('utf-8')
+            params_req = json.loads(body) if body else {}
+            raw_text = params_req.get('text', '')
+            parsed_params = parse_rsa_input(raw_text)
+            res = solve_rsa_auto(parsed_params)
+            self._send_json(res)
+            return
+
+        if path.endswith('/api/crypto/solve/rsa'):
+            body = self.rfile.read(content_len).decode('utf-8')
+            req_data = json.loads(body) if body else {}
+            # Normalize integers
+            clean_params = {}
+            for k in ['n', 'e', 'c', 'p', 'q', 'phi', 'd']:
+                v = req_data.get(k)
+                if v:
+                    try:
+                        clean_params[k] = int(str(v).strip(), 16 if str(v).strip().startswith(('0x', '0X')) else 10)
+                    except ValueError:
+                        pass
+            # Check multi-prime
+            primes_str = req_data.get('primes', '')
+            if primes_str:
+                try:
+                    primes = [int(x.strip()) for x in primes_str.split(',') if x.strip()]
+                    if len(primes) >= 2 and 'c' in clean_params:
+                        import gmpy2
+                        n = 1
+                        phi = 1
+                        for pr in primes:
+                            n *= pr
+                            phi *= (pr - 1)
+                        e = clean_params.get('e', 65537)
+                        d = int(gmpy2.invert(e, phi))
+                        m = pow(clean_params['c'], d, n)
+                        dec = decode_message(m)
+                        self._send_json({
+                            "success": True,
+                            "data": {
+                                "method": f"Multi-Prime RSA ({len(primes)} primes)",
+                                "plaintext": dec["text"],
+                                "flag": dec["flag"],
+                                "decimal": str(m),
+                                "hex": dec["hex"],
+                                "d": str(d),
+                                "phi": str(phi)
+                            }
+                        })
+                        return
+                except Exception as err:
+                    pass
+
+            res = solve_rsa_auto(clean_params)
+            self._send_json(res)
+            return
+
+        if path.endswith('/api/crypto/solve/rsa_wiener'):
+            body = self.rfile.read(content_len).decode('utf-8')
+            req_data = json.loads(body) if body else {}
+            try:
+                n = int(str(req_data.get('n', '')).strip(), 16 if str(req_data.get('n', '')).strip().startswith(('0x', '0X')) else 10)
+                e = int(str(req_data.get('e', '')).strip(), 16 if str(req_data.get('e', '')).strip().startswith(('0x', '0X')) else 10)
+                c_val = req_data.get('c')
+                c = int(str(c_val).strip(), 16 if str(c_val).strip().startswith(('0x', '0X')) else 10) if c_val else None
+                wiener_res = solve_wiener(n, e)
+                if wiener_res:
+                    d, p, q = wiener_res
+                    data_out = {"method": "Wiener Attack", "d": str(d), "p": str(p), "q": str(q)}
+                    if c:
+                        m = pow(c, d, n)
+                        dec = decode_message(m)
+                        data_out.update({"plaintext": dec["text"], "flag": dec["flag"], "hex": dec["hex"], "decimal": str(m)})
+                    self._send_json({"success": True, "data": data_out})
+                    return
+                else:
+                    self._send_json({"success": False, "message": "Wiener attack gagal: d tidak cukup kecil (< 1/3 n^0.25)."})
+                    return
+            except Exception as err:
+                self._send_json({"success": False, "message": f"Error: {err}"})
+                return
+
+        if path.endswith('/api/crypto/solve/rsa_common'):
+            body = self.rfile.read(content_len).decode('utf-8')
+            req_data = json.loads(body) if body else {}
+            try:
+                n = int(str(req_data.get('n', '')).strip())
+                e1 = int(str(req_data.get('e1', '')).strip())
+                c1 = int(str(req_data.get('c1', '')).strip())
+                e2 = int(str(req_data.get('e2', '')).strip())
+                c2 = int(str(req_data.get('c2', '')).strip())
+                m = solve_common_modulus(n, e1, c1, e2, c2)
+                if m is not None:
+                    dec = decode_message(m)
+                    self._send_json({
+                        "success": True,
+                        "data": {
+                            "method": "Common Modulus Attack",
+                            "plaintext": dec["text"],
+                            "flag": dec["flag"],
+                            "hex": dec["hex"],
+                            "decimal": str(m)
+                        }
+                    })
+                    return
+                else:
+                    self._send_json({"success": False, "message": "Common Modulus gagal: gcd(e1, e2) != 1."})
+                    return
+            except Exception as err:
+                self._send_json({"success": False, "message": f"Error: {err}"})
+                return
+
+        if path.endswith('/api/crypto/solve/rsa_hastad'):
+            body = self.rfile.read(content_len).decode('utf-8')
+            req_data = json.loads(body) if body else {}
+            try:
+                import gmpy2
+                pairs = req_data.get('pairs', [])
+                if len(pairs) >= 3:
+                    c1, n1 = int(pairs[0][0]), int(pairs[0][1])
+                    c2, n2 = int(pairs[1][0]), int(pairs[1][1])
+                    c3, n3 = int(pairs[2][0]), int(pairs[2][1])
+                    N = n1 * n2 * n3
+                    N1 = n2 * n3
+                    N2 = n1 * n3
+                    N3 = n1 * n2
+                    u1 = int(gmpy2.invert(N1, n1))
+                    u2 = int(gmpy2.invert(N2, n2))
+                    u3 = int(gmpy2.invert(N3, n3))
+                    C = (c1 * N1 * u1 + c2 * N2 * u2 + c3 * N3 * u3) % N
+                    m, exact = gmpy2.iroot(C, 3)
+                    if exact:
+                        dec = decode_message(int(m))
+                        self._send_json({
+                            "success": True,
+                            "data": {
+                                "method": "Hastad Broadcast Attack (e=3)",
+                                "plaintext": dec["text"],
+                                "flag": dec["flag"],
+                                "hex": dec["hex"],
+                                "decimal": str(int(m))
+                            }
+                        })
+                        return
+                    else:
+                        self._send_json({"success": False, "message": "Hastad broadcast gagal: C mod N bukan pangkat 3 sempurna."})
+                        return
+                else:
+                    self._send_json({"success": False, "message": "Hastad memerlukan minimal 3 pasangan (c, n)."})
+                    return
+            except Exception as err:
+                self._send_json({"success": False, "message": f"Error: {err}"})
+                return
         # 1. Pwn Cyclic Generation
         if path.endswith('/api/pwn/cyclic'):
             body = self.rfile.read(content_len).decode('utf-8')

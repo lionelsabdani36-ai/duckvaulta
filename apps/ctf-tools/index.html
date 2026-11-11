@@ -261,7 +261,17 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
       <!-- Tabpanel: RSA -->
       <div class="tabpanel" data-group="crypto" data-tab="rsa" hidden>
-        <div class="card">
+        <div class="card" style="border-color:var(--red-dim-bd)">
+          <h2>⚡ Auto-detect — tinggal paste params</h2>
+          <p class="sub" style="margin-bottom:10px">Tempel isi file soal apa adanya (n, e, c, p, q, phi, d, dp, atau n1/c1/n2/c2…). Server deteksi &amp; coba semua serangan yang cocok (Fermat, Wiener, Small e, Pollard p-1, Small Primes, FactorDB, Multi-prime, Common Modulus), lalu kembalikan yang berhasil.</p>
+          <textarea id="rauto" class="textarea" placeholder="n = 133360...&#10;e = 65537&#10;c = 981274..."></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn--primary" id="autobtn" onclick="runRSAAuto()">Auto-detect &amp; pecahkan</button>
+          </div>
+          <div id="autoout"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
           <h2>RSA: Manual Solver</h2>
           <p class="sub" style="margin-bottom:12px">Masukkan parameter yang diketahui (n, e, c, p, q, d, atau phi). Kosongkan yang tidak ada.</p>
           <div class="row">
@@ -269,14 +279,16 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
             <div style="width:140px"><label class="lbl" for="rsa_e">Exponent e</label><input id="rsa_e" class="input" value="65537"></div>
           </div>
           <div class="row" style="margin-top:10px">
-            <div class="grow"><label class="lbl" for="rsa_c">Ciphertext c</label><input id="rsa_c" class="input" placeholder="c"></div>
+            <div class="grow"><label class="lbl" for="rsa_p">Prime p (opsional)</label><input id="rsa_p" class="input" placeholder="p"></div>
+            <div class="grow"><label class="lbl" for="rsa_q">Prime q (opsional)</label><input id="rsa_q" class="input" placeholder="q"></div>
+            <div class="grow"><label class="lbl" for="rsa_phi">Totient phi (opsional)</label><input id="rsa_phi" class="input" placeholder="phi"></div>
           </div>
           <div class="row" style="margin-top:10px">
-            <div class="grow"><label class="lbl" for="rsa_p">Prime p</label><input id="rsa_p" class="input" placeholder="p (opsional)"></div>
-            <div class="grow"><label class="lbl" for="rsa_q">Prime q</label><input id="rsa_q" class="input" placeholder="q (opsional)"></div>
+            <div class="grow"><label class="lbl" for="rsa_primes">Daftar prima (multi-prime, pisah koma — mis. p,q,r). Opsional.</label><input id="rsa_primes" class="input" placeholder="p, q, r, …"></div>
           </div>
           <div class="row" style="margin-top:10px">
-            <div class="grow"><label class="lbl" for="rsa_d">Private key d</label><input id="rsa_d" class="input" placeholder="d (opsional)"></div>
+            <div class="grow"><label class="lbl" for="rsa_c">Ciphertext c</label><input id="rsa_c" class="input" placeholder="c (integer / hex)"></div>
+            <div style="width:200px"><label class="lbl" for="rsa_d">Private key d (opsional)</label><input id="rsa_d" class="input" placeholder="d"></div>
           </div>
           <div class="row" style="margin-top:14px">
             <button class="btn btn--primary" onclick="solveRSAManual()">Pecahkan RSA</button>
@@ -1142,37 +1154,182 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     return s;
   }
 
-  function solveRSAManual() {
-    const nStr = document.getElementById('rsa_n').value.trim();
-    const eStr = document.getElementById('rsa_e').value.trim() || '65537';
-    const cStr = document.getElementById('rsa_c').value.trim();
-    const pStr = document.getElementById('rsa_p').value.trim();
-    const qStr = document.getElementById('rsa_q').value.trim();
-    const dStr = document.getElementById('rsa_d').value.trim();
-    const out = document.getElementById('rsa_out');
+  // ---------------- RSA AUTO-DETECT & SOLVERS ----------------
+  async function runRSAAuto() {
+    const txt = document.getElementById('rauto').value.trim();
+    const out = document.getElementById('autoout');
+    if (!txt) { out.innerHTML = ''; return; }
+
+    out.innerHTML = '<div class="infobox"><span>Menganalisa parameter RSA & mencoba berbagai serangan (Fermat, Wiener, Small e, Pollard p-1, Small Primes, FactorDB)…</span></div>';
 
     try {
-      const e = BigInt(eStr);
-      let d = null;
-      let n = nStr ? BigInt(nStr) : null;
+      const res = await fetch('/api/crypto/solve/rsa_auto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: txt })
+      });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        const d = j.data;
+        let details = '<div style="background:var(--card); border:1px solid var(--border-soft); border-radius:6px; padding:12px; margin-top:10px; font-size:12px; display:grid; grid-template-columns:auto 1fr; gap:6px 14px;">'
+          + '<span style="color:var(--muted)">Metode:</span><span style="font-weight:600; color:var(--accent)">' + esc(d.method) + '</span>'
+          + (d.flag ? ('<span style="color:var(--muted)">Flag:</span><span style="font-weight:700; color:var(--green)">' + esc(d.flag) + '</span>') : '')
+          + (d.p ? ('<span style="color:var(--muted)">p:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.p) + '</span>') : '')
+          + (d.q ? ('<span style="color:var(--muted)">q:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.q) + '</span>') : '')
+          + (d.d ? ('<span style="color:var(--muted)">d:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.d) + '</span>') : '')
+          + (d.phi ? ('<span style="color:var(--muted)">phi:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.phi) + '</span>') : '')
+          + (d.hex ? ('<span style="color:var(--muted)">Hex:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.hex) + '</span>') : '')
+          + (d.decimal ? ('<span style="color:var(--muted)">Desimal:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(d.decimal) + '</span>') : '')
+          + '</div>';
 
-      if (dStr) {
-        d = BigInt(dStr);
-      } else if (pStr && qStr) {
-        const p = BigInt(pStr);
-        const q = BigInt(qStr);
-        if (!n) n = p * q;
-        const phi = (p - 1n) * (q - 1n);
-        d = modInverse(e, phi);
+        out.innerHTML = renderCodeBox('PLAINTEXT RECOVERED', d.plaintext) + details;
+        if (d.flag) scanText(d.flag);
+        return;
+      } else if (j && !j.success) {
+        out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>' + esc(j.message || 'Gagal memecahkan RSA.') + '</span></div>';
+        return;
       }
+    } catch(err) {
+      console.warn("Backend error, running client fallback", err);
+    }
 
-      if (!d || !n || !cStr) {
-        out.innerHTML = '<div class="infobox" style="margin-top:10px"><span>Memerlukan parameter minimum: (p, q, e, c) ATAU (n, d, c).</span></div>';
+    solveRSAAutoClient(txt, out);
+  }
+
+  function solveRSAAutoClient(txt, out) {
+    try {
+      const nMatch = txt.match(/n\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+      const eMatch = txt.match(/e\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+      const cMatch = txt.match(/c\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+      const pMatch = txt.match(/p\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+      const qMatch = txt.match(/q\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+      const dMatch = txt.match(/d\s*[:=]\s*([0-9a-fA-FxX]+)/i);
+
+      const parseBig = s => {
+        if (!s) return null;
+        s = s.trim();
+        return s.startsWith('0x') || s.startsWith('0X') ? BigInt(s) : BigInt(s);
+      };
+
+      const n = nMatch ? parseBig(nMatch[1]) : null;
+      const e = eMatch ? parseBig(eMatch[1]) : 65537n;
+      const c = cMatch ? parseBig(cMatch[1]) : null;
+      const p = pMatch ? parseBig(pMatch[1]) : null;
+      const q = qMatch ? parseBig(qMatch[1]) : null;
+      const d = dMatch ? parseBig(dMatch[1]) : null;
+
+      if (d && c && n) {
+        const m = modPow(c, d, n);
+        out.innerHTML = renderCodeBox('RSA PLAINTEXT (Given d)', bigIntToAscii(m));
         return;
       }
 
-      const c = BigInt(cStr);
-      const m = modPow(c, d, n);
+      if (p && q && c) {
+        const mod = n || (p * q);
+        const phi = (p - 1n) * (q - 1n);
+        const priv = modInverse(e, phi);
+        const m = modPow(c, priv, mod);
+        out.innerHTML = renderCodeBox('RSA PLAINTEXT (Given p, q)', bigIntToAscii(m));
+        return;
+      }
+
+      if (e === 3n && c) {
+        const m = integerCbrt(c);
+        if (m * m * m === c) {
+          out.innerHTML = renderCodeBox('RSA PLAINTEXT (Cube root e=3)', bigIntToAscii(m));
+          return;
+        }
+      }
+
+      // Fermat client fallback
+      if (n && c) {
+        let a = integerSqrt(n);
+        if (a * a < n) a += 1n;
+        for (let i = 0; i < 20000; i++) {
+          const b2 = a * a - n;
+          const b = integerSqrt(b2);
+          if (b * b === b2) {
+            const pF = a - b;
+            const qF = a + b;
+            if (pF * qF === n && pF > 1n) {
+              const phi = (pF - 1n) * (qF - 1n);
+              const priv = modInverse(e, phi);
+              const m = modPow(c, priv, n);
+              out.innerHTML = renderCodeBox('RSA PLAINTEXT (Fermat Factorization)', bigIntToAscii(m));
+              return;
+            }
+          }
+          a += 1n;
+        }
+      }
+
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Format tidak dapat dipecahkan secara instan. Pastikan ciphertext c dan modulus n terdefinisi.</span></div>';
+    } catch(err) {
+      out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Error client: ' + esc(err.message) + '</span></div>';
+    }
+  }
+
+  async function solveRSAManual() {
+    const n = document.getElementById('rsa_n').value.trim();
+    const e = document.getElementById('rsa_e').value.trim() || '65537';
+    const c = document.getElementById('rsa_c').value.trim();
+    const p = document.getElementById('rsa_p').value.trim();
+    const q = document.getElementById('rsa_q').value.trim();
+    const phi = document.getElementById('rsa_phi') ? document.getElementById('rsa_phi').value.trim() : '';
+    const d = document.getElementById('rsa_d').value.trim();
+    const primes = document.getElementById('rsa_primes') ? document.getElementById('rsa_primes').value.trim() : '';
+    const out = document.getElementById('rsa_out');
+
+    out.innerHTML = '<div class="infobox"><span>Menghitung parameter RSA…</span></div>';
+
+    try {
+      const res = await fetch('/api/crypto/solve/rsa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ n, e, c, p, q, phi, d, primes })
+      });
+      const j = await res.json();
+      if (j && j.success && j.data) {
+        const data = j.data;
+        let details = '<div style="background:var(--card); border:1px solid var(--border-soft); border-radius:6px; padding:12px; margin-top:10px; font-size:12px; display:grid; grid-template-columns:auto 1fr; gap:6px 14px;">'
+          + '<span style="color:var(--muted)">Metode:</span><span style="font-weight:600; color:var(--accent)">' + esc(data.method) + '</span>'
+          + (data.flag ? ('<span style="color:var(--muted)">Flag:</span><span style="font-weight:700; color:var(--green)">' + esc(data.flag) + '</span>') : '')
+          + (data.p ? ('<span style="color:var(--muted)">p:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.p) + '</span>') : '')
+          + (data.q ? ('<span style="color:var(--muted)">q:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.q) + '</span>') : '')
+          + (data.d ? ('<span style="color:var(--muted)">d:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.d) + '</span>') : '')
+          + (data.phi ? ('<span style="color:var(--muted)">phi:</span><span style="font-family:var(--font-mono); word-break:break-all">' + esc(data.phi) + '</span>') : '')
+          + '</div>';
+        out.innerHTML = renderCodeBox('RSA RECOVERED', data.plaintext) + details;
+        if (data.flag) scanText(data.flag);
+        return;
+      }
+    } catch(err) {
+      console.warn("Backend error, using client fallback", err);
+    }
+
+    // Client fallback
+    try {
+      const eBn = BigInt(e);
+      let dBn = null;
+      let nBn = n ? BigInt(n) : null;
+
+      if (d) {
+        dBn = BigInt(d);
+      } else if (p && q) {
+        const pBn = BigInt(p);
+        const qBn = BigInt(q);
+        if (!nBn) nBn = pBn * qBn;
+        const phiBn = (pBn - 1n) * (qBn - 1n);
+        dBn = modInverse(eBn, phiBn);
+      }
+
+      if (!dBn || !nBn || !c) {
+        out.innerHTML = '<div class="infobox" style="margin-top:10px; border-color:var(--red)"><span>Memerlukan parameter minimum: (p, q, e, c) ATAU (n, d, c).</span></div>';
+        return;
+      }
+
+      const cBn = BigInt(c);
+      const m = modPow(cBn, dBn, nBn);
       const ascii = bigIntToAscii(m);
       const hex = m.toString(16);
 
@@ -2785,6 +2942,7 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     initBurger();
     loadCheatsheetsLive().then(() => renderCheatsheets('ALL'));
     renderShellcode('x64_execve');
+    toggleRSAAttackInputs('wiener');
 
     // DOM MutationObserver for Flag Sniffer
     const obs = new MutationObserver(muts => {
